@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+<!--
+    <item
+        android:id="@+id/myList"
+        android:icon="@drawable/mylist"
+        android:title="@string/my_list" /> -->
+
+    <item
+        android:id="@+id/home_button"
+        android:icon="@drawable/ic_home_black_24dp"
+        android:title="Home" />
+
+
+    <item
+        android:id="@+id/moreCoupons"
+        android:icon="@drawable/morecoupon"
+        android:title="Coupons" />
+
+    <item
+        android:id="@+id/savings"
+        android:icon="@drawable/saveactive"
+        android:title="Saving" />
+
+    <item
+        android:id="@+id/filter"
+        android:icon="@drawable/filter"
+        android:title="Filter" />
+
+</menu>

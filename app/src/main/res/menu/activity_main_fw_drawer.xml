@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+    <!--<group android:checkableBehavior="single" android:id="@+id/welcome">-->
+    <item
+        android:id="@+id/nav_welcome"
+        android:title="@string/GrocerKey"
+        android:icon="@drawable/welcome"
+        />
+    <!--</group>-->
+    <!--<group android:checkableBehavior="single" android:id="@+id/mythankucard">-->
+   <!-- <item
+        android:id="@+id/nav_my_tyc"
+        android:title="@string/my_tyc"
+        android:icon="@drawable/card"
+        /> -->
+    <!--</group>-->
+    <!--<group android:checkableBehavior="single" android:id="@+id/mypersonal">-->
+    <item
+        android:id="@+id/nav_my_pp"
+        android:title="@string/my_pp"
+        android:icon="@drawable/prices"
+
+        />
+    <!--</group>-->
+    <!--<group android:checkableBehavior="single" android:id="@+id/shopping">-->
+   <!-- <item
+        android:id="@+id/nav_shopping_list"
+        android:title="@string/shoping_list"
+        android:icon="@drawable/add_item"
+        /> -->
+    <!--</group>-->
+
+    <!--<group android:checkableBehavior="single" android:id="@+id/wpa">-->
+ <!--   <item
+        android:id="@+id/nav_shopping_wpa"
+        android:title="@string/wpa"
+        android:icon="@drawable/print_add"
+        /> -->
+    <!--</group>-->
+
+    <!--<group android:checkableBehavior="single" android:id="@+id/settings">-->
+   <!-- <item
+        android:id="@+id/nav_settings"
+        android:title="@string/settings"
+        android:icon="@drawable/setting"
+        /> -->
+    <!--</group>-->
+
+    <!--<group android:checkableBehavior="single" android:id="@+id/app_feedback">-->
+  <!--  <item
+        android:id="@+id/nav_app_feedback"
+        android:title="@string/app_feedback"
+        android:icon="@drawable/feedback"
+        /> -->
+    <!--</group>-->
+    <!--<group android:checkableBehavior="single" android:id="@+id/logout">-->
+    <!--<item
+        android:id="@+id/nav_logout"
+        android:title="@string/logout"
+        android:icon="@drawable/logout"
+        /> -->
+    <!--</group>-->
+</menu>

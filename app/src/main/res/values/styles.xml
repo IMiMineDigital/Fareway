@@ -1,0 +1,84 @@
+<resources>
+
+    <!-- Base application theme. -->
+    <style name="AppTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/blue</item>
+        <item name="colorPrimaryDark">@color/blue</item>
+        <item name="colorAccent">@color/blue</item>
+    </style>
+    <style name="FarewayMainTheme" parent="Theme.AppCompat.Light.DarkActionBar">
+        <!-- Customize your theme here. -->
+        <item name="colorPrimary">@color/red</item>
+        <item name="colorPrimaryDark">@color/red</item>
+        <item name="colorAccent">@color/red</item>
+    </style>
+<!--
+    <style name="AppTheme.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+    </style> -->
+    <style name="FarewayTheme" parent="Theme.AppCompat.Light.NoActionBar">
+        <item name="windowActionBar">false</item>
+        <item name="windowNoTitle">true</item>
+        <item name="colorPrimary">@color/white</item>
+        <item name="colorPrimaryDark">@color/light_grey</item>
+        <item name="colorAccent">@color/red</item>
+    </style>
+
+    <style name="FarewayThemeToolbar" parent="Theme.AppCompat.Light">
+        <item name="colorControlNormal">@color/black</item>
+    </style>
+
+    <style name="FarewayMainTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
+
+    <style name="FarewayMainTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+
+    <!--Splash theme-->
+    <style name="AppSplashTheme" parent="Theme.AppCompat.NoActionBar">
+        <item name="android:windowBackground">@drawable/splash</item>
+    </style>
+
+    <style name="label_et" parent="android:Widget.TextView">
+        <item name="android:textSize">@dimen/_14ssp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:paddingTop">@dimen/_15sdp</item>
+        <item name="android:paddingBottom">@dimen/_15sdp</item>
+        <item name="android:paddingLeft">@dimen/_5sdp</item>
+        <item name="android:paddingRight">@dimen/_5sdp</item>
+
+
+    </style>
+
+    <style name="label_et2" parent="android:Widget.TextView">
+        <item name="android:textSize">@dimen/_12ssp</item>
+        <item name="android:textColor">@color/black</item>
+        <item name="android:padding">@dimen/_5sdp</item>
+
+
+
+    </style>
+
+    <style name="label_tx" parent="android:Widget.TextView">
+        <item name="android:textSize">@dimen/_12ssp</item>
+        <item name="android:textColor">@color/dark_grey</item>
+
+    </style>
+
+    <style name="NavigationTheme" parent="FarewayMainTheme">
+        <item name="android:textSize">@dimen/_10ssp</item>
+
+    </style>
+
+    <style name="ourStyle.Drawer" parent="FarewayMainTheme">
+        <item name="android:textSize">@dimen/_14ssp</item>
+    </style>
+
+    <style name="MyStyle" parent="Widget.Design.TabLayout">
+        <item name="tabIndicatorColor">#FFFF</item>
+        <item name="tabIndicatorHeight">5dp</item>
+        <item name="tabPaddingStart">8dp</item>
+        <item name="tabPaddingEnd">8dp</item>
+    </style>
+
+</resources>

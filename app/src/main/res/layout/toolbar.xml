@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+
+        android:gravity="center"
+        android:padding="@dimen/_2sdp"
+        >
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:background="@drawable/white_round_bg"
+            android:gravity="center_horizontal"
+            android:layout_weight="1"
+            android:paddingBottom="@dimen/_5sdp"
+            android:paddingTop="@dimen/_5sdp"
+            android:layout_marginRight="@dimen/_20sdp"
+
+
+
+            >
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:layout_marginLeft="@dimen/_5sdp"
+                >
+
+                <ImageView
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:src="@drawable/micro_recorder"
+                    android:id="@+id/imv_micro_recorder"
+                    android:tint="@color/grey" />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="@dimen/_5sdp"
+                android:layout_weight="1"
+                >
+<!--
+                <EditText
+                    android:id="@+id/et_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/black"
+                    android:background="@null"
+                    android:hint="@string/search"
+                    android:textSize="@dimen/_12ssp"
+                    android:textColorHint="@color/grey"
+                    android:cursorVisible="false"
+                    />-->
+                <EditText
+                    android:id="@+id/search_edit"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:inputType="text"
+                    android:singleLine="true"
+                    android:imeOptions="actionSearch"
+                    android:textColor="@color/black"
+                    android:background="@null"
+                    android:hint="@string/search"
+                    android:textSize="@dimen/_12ssp"
+                    android:textColorHint="@color/grey"
+                    android:cursorVisible="false"
+                    />
+
+            </LinearLayout>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight="0"
+                android:layout_marginLeft="@dimen/_5sdp"
+                >
+
+                <ImageView
+                    android:layout_width="@dimen/_15sdp"
+                    android:layout_height="@dimen/_15sdp"
+                    android:src="@drawable/ic_search_black_24dp"
+                    android:id="@+id/submit_btn"
+                    android:tint="@color/grey" />
+
+            </LinearLayout>
+        </LinearLayout>
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_weight="0"
+            android:layout_marginRight="@dimen/_8sdp"
+
+
+            >
+
+            <ImageView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:src="@drawable/ic_apps_black_24dp"
+                android:id="@+id/imv_view_list"
+                />
+
+<!--
+              <ImageView
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:src="@drawable/tileicon"
+                android:id="@+id/imv_view_list"
+                /> -->
+
+
+        </LinearLayout>
+
+    </LinearLayout>
+
+
+</RelativeLayout>

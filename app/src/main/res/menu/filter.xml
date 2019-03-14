@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:id="@+id/filter_by_categories"
+        android:orderInCategory="100"
+        android:title="@string/filter_by_categories"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/filter_by_all_offer"
+        android:orderInCategory="100"
+        android:title="All offer"
+        app:showAsAction="never" />
+    <!--   <item
+          android:id="@+id/filter_by_personal_deal"
+          android:orderInCategory="100"
+          android:title="My Deal"
+          app:showAsAction="never" />
+      <item
+          android:id="@+id/filter_by_personal_coupon"
+          android:orderInCategory="100"
+          android:title="Personal Coupon"
+          app:showAsAction="never" />
+      <item
+          android:id="@+id/filter_by_thank_you_card"
+          android:orderInCategory="100"
+          android:title="Ad Price"
+          app:showAsAction="never" /> -->
+</menu>
