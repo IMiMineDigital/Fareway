@@ -1,8 +1,9 @@
 //apply plugin: 'com.android.application'
+
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 group 'IMeMine'
-version '1.0'
+version '1.2'
 android {
     compileSdkVersion 28
     defaultConfig {

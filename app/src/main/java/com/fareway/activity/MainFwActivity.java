@@ -142,7 +142,7 @@ public class MainFwActivity extends AppCompatActivity
     ImageView submit_btn,imv_micro_recorder;
     EditText edit_txt;
     ScrollView scrollView;
-    TextView group_count_text;
+    TextView group_count_text,header_title;
     String Group="";
     int groupcount=0;
     Product productrelated2;
@@ -243,6 +243,7 @@ public class MainFwActivity extends AppCompatActivity
     private void linkUIElements()
 
     {
+        header_title = findViewById(R.id.header_title);
 
         Display display = ((Activity)   activity).getWindowManager().getDefaultDisplay();
         DisplayMetrics metrics = new DisplayMetrics();
@@ -294,13 +295,15 @@ public class MainFwActivity extends AppCompatActivity
         navigation = (BottomNavigationView) findViewById(R.id.navigation);
         if(comeFrom.equalsIgnoreCase("mpp"))
         {
-            navigation.getMenu().findItem(R.id.moreCoupons).setTitle("Digital Coupon");
+            navigation.getMenu().findItem(R.id.moreCoupons).setTitle("MoreSavings");
             Log.i("navif", String.valueOf(x));
+            header_title.setText("Personal Ad");
         }
         else  if(comeFrom.equalsIgnoreCase("moreOffer"))
         {
             //navigation.getMenu().findItem(R.id.moreCoupons).setTitle(getString(R.string.more_coupons));
-            navigation.getMenu().findItem(R.id.moreCoupons).setTitle("Personal Ad");
+            navigation.getMenu().findItem(R.id.moreCoupons).setTitle("PersonalAd");
+            header_title.setText("More Savings");
             Log.i("navelse", String.valueOf(x));
         }
 
@@ -391,7 +394,7 @@ public class MainFwActivity extends AppCompatActivity
         }
 
         messageLoad();
-        moreCouponLoad();
+        //moreCouponLoad();
     }
 
     private BottomNavigationView.OnNavigationItemSelectedListener mOnNavigationItemSelectedListener
@@ -408,7 +411,8 @@ public class MainFwActivity extends AppCompatActivity
                     comeFrom="moreOffer";
                     fetchMoreCoupon();
                     x=1;
-                    navigation.getMenu().findItem(R.id.moreCoupons).setTitle("Personal Ad");
+                    navigation.getMenu().findItem(R.id.moreCoupons).setTitle("PersonalAd");
+                    header_title.setText("More Savings");
                     Log.i("ifbottom", String.valueOf(x)+comeFrom);
 
                 } else if(x==1) {
@@ -416,7 +420,8 @@ public class MainFwActivity extends AppCompatActivity
                     comeFrom="mpp";
                     x=0;
                     tmp=0;
-                    navigation.getMenu().findItem(R.id.moreCoupons).setTitle("Digital Coupon");
+                    navigation.getMenu().findItem(R.id.moreCoupons).setTitle("MoreSavings");
+                    header_title.setText("Personal Ad");
                     fetchProduct();
                     Log.i("elsebottom", String.valueOf(x)+comeFrom);
                 }
@@ -717,6 +722,7 @@ public class MainFwActivity extends AppCompatActivity
                                             moreCouponLoad();
                                             x=1;
                                         }else {
+                                            moreCouponLoad();
                                             fetchProduct();
                                         }
 
@@ -1222,9 +1228,9 @@ public class MainFwActivity extends AppCompatActivity
     private void moreCouponLoad() {
         if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
             try {
-                //progressDialog = new ProgressDialog(activity);
-                //progressDialog.setMessage("Processing");
-                // progressDialog.show();
+                progressDialog = new ProgressDialog(activity);
+                progressDialog.setMessage("Processing");
+                progressDialog.show();
                 StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET,Constant.WEB_URL + Constant.MORECOUPON+"?MemberId="+appUtil.getPrefrence("MemberId")+"&Plateform=2&CircularType=0",
                         new Response.Listener<String>(){
                             @Override
@@ -1236,7 +1242,7 @@ public class MainFwActivity extends AppCompatActivity
                                     root.getString("errorcode");
                                     Log.i("errorcode", root.getString("errorcode"));
                                     if (root.getString("errorcode").equals("0")){
-                                        // progressDialog.dismiss();
+                                        progressDialog.dismiss();
                                         message2= root.getJSONArray("message");
                                         if (comeFrom.equalsIgnoreCase("moreOffer")){
                                             fetchMoreCoupon();

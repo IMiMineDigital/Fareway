@@ -8,7 +8,8 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context=".activity.MainFwActivity"
     tools:showIn="@layout/app_bar_main_fw"
-    android:id="@+id/main">
+    android:id="@+id/main"
+    android:background="@drawable/tileable_wood">
     <!-- android:layout_marginBottom="@dimen/_40sdp" -->
     <TextView
         android:fontFamily="@font/roboto"
@@ -18,6 +19,15 @@
         android:layout_height="wrap_content"
         android:text=""
         android:id="@+id/group_count_text"/>
+
+    <TextView
+        android:textColor="@color/black"
+        android:textStyle="bold"
+        android:layout_marginLeft="@dimen/_5sdp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="Personal Ad"
+        android:id="@+id/header_title"/>
 
     <android.support.v7.widget.RecyclerView
         android:visibility="gone"
@@ -38,6 +48,7 @@
         android:visibility="gone"/>
 
     <android.support.v7.widget.RecyclerView
+        android:layout_below="@+id/header_title"
         android:id="@+id/rv_items"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
