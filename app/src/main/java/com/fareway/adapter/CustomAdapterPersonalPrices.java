@@ -1143,7 +1143,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                                 //product.setClickCount(0);
                                 product.setListCount(0);
                                 product.setQuantity("0");
-                                holder.tv_status.setText("Add\nTo List");
+                                holder.tv_status.setText("Add");
                                 holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
                                 holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
                                // holder.tv_quantity.setText("1");

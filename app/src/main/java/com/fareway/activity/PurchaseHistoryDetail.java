@@ -77,7 +77,7 @@ public class PurchaseHistoryDetail extends AppCompatActivity {
         //String rate = getIntent().getExtras().getString("PURCHASETOTALAMOUNT");
         tv_header_bar.setText(getIntent().getExtras().getString("PURCHASEDATE"));
         tv_header_location.setText(getIntent().getExtras().getString("PURCHASESTORELOCATION"));
-        tv_header_total_price.setText(getIntent().getExtras().getString("PURCHASETOTALAMOUNT"));
+        tv_header_total_price.setText("$"+getIntent().getExtras().getString("PURCHASETOTALAMOUNT"));
 
         purchaseArrayList = new ArrayList<>();
         rv_purchase_history = (RecyclerView) findViewById(R.id.rv_purchase_history);
@@ -88,7 +88,7 @@ public class PurchaseHistoryDetail extends AppCompatActivity {
        /* Drawable dividerDrawableShoppingList = ContextCompat.getDrawable(activity, R.drawable.divider);
         rv_purchase_history.addItemDecoration(new DividerRVDecoration(dividerDrawableShoppingList));*/
 
-        getSupportActionBar().setTitle("PAST PURCHASES DETAIL");
+        getSupportActionBar().setTitle("Past Purchase Detail");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 

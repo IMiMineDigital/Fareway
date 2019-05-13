@@ -70,7 +70,7 @@ public class PurchaseHistory extends AppCompatActivity implements PurchaseHistor
        /* Drawable dividerDrawableShoppingList = ContextCompat.getDrawable(activity, R.drawable.divider);
         rv_purchase_history.addItemDecoration(new DividerRVDecoration(dividerDrawableShoppingList));*/
 
-        getSupportActionBar().setTitle("PAST PURCHASES");
+        getSupportActionBar().setTitle("Past Purchase");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         purchaseHistoryLoad();

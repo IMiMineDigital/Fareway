@@ -239,12 +239,12 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:gravity="center">
+            android:layout_marginLeft="@dimen/_10sdp">
+            <!--
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal"
-                android:layout_marginRight="@dimen/_50sdp">
+                android:orientation="horizontal">
                 <ImageView
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -257,19 +257,64 @@
                     android:textStyle="bold"
                     android:layout_width="@dimen/_20sdp"
                     android:layout_height="@dimen/_20sdp"/>
-            </LinearLayout>
+            </LinearLayout> -->
+
+            <RelativeLayout
+                android:layout_gravity="center"
+                android:id="@+id/layoutforprofileimage"
+                android:layout_width="40dp"
+                android:layout_height="40dp">
+
+                <ImageView
+                    android:id="@+id/image"
+                    android:layout_width="100dp"
+                    android:padding="2dp"
+                    android:src="@drawable/notebookicon"
+                    android:layout_height="100dp"
+                    android:layout_margin="6dp"/>
+
+                <TextView
+                    android:id="@+id/tv_number_item"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:scaleType="fitStart"
+                    android:layout_marginRight="0dp"
+                    android:padding="2dp"
+                    android:background="@drawable/circular_red_bg"
+                    android:gravity="center"
+                    android:minWidth="17sp"
+                    android:adjustViewBounds="true"
+                    android:minHeight="17sp"
+                    android:paddingBottom="1dp"
+                    android:paddingLeft="4dp"
+                    android:paddingRight="4dp"
+                    android:text="0"
+                    android:textColor="#ffffffff"
+                    android:textSize="12sp"
+                    android:visibility="visible"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_alignParentTop="true"
+                    android:layout_alignParentEnd="true"
+                    />
+
+            </RelativeLayout>
+
 
             <TextView
+                android:layout_marginLeft="@dimen/_10sdp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="My Fareway List"
                 android:textColor="@color/black"
-                android:textSize="20sp"/>
+                android:textSize="20sp"
+                android:textStyle="bold"/>
+            <!--
             <ImageView
                 android:layout_marginLeft="@dimen/_50sdp"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:src="@drawable/topiconshover"/>
+                -->
 
         </LinearLayout>
 

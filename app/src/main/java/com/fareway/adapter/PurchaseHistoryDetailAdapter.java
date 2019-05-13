@@ -84,6 +84,8 @@ public class PurchaseHistoryDetailAdapter extends RecyclerView.Adapter<PurchaseH
                 holder.tv_coupon_flag.setBackgroundColor(mContext.getResources().getColor(R.color.green));
             }else if(purchase.getCouponflag().equalsIgnoreCase("My Personal Deal")){
                 holder.tv_coupon_flag.setBackgroundColor(mContext.getResources().getColor(R.color.red));
+            }else {
+                holder.tv_coupon_flag.setVisibility(View.GONE);
             }
             holder.tv_coupon_flag.setText(purchase.getCouponflag());
 

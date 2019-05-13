@@ -63,6 +63,7 @@
                     android:gravity="center"
                     android:orientation="vertical">
                     <TextView
+                        android:textStyle="bold"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="REMOVE"
@@ -83,52 +84,11 @@
                     android:gravity="center"
                     android:orientation="vertical">
 
-                    <!--
-                    <LinearLayout
-                        android:visibility="visible"
-                        android:id="@+id/count_product_number"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
-                        <TextView
-                            android:clickable="true"
-                            android:id="@+id/add_minus"
-                            android:textStyle="bold"
-                            android:layout_marginEnd="@dimen/_5sdp"
-                            android:background="@drawable/circular_white_bg"
-                            android:layout_width="@dimen/_15sdp"
-                            android:textAlignment="center"
-                            android:layout_height="@dimen/_15sdp"
-                            android:text="-"
-                            android:textColor="@color/dark_green"/>
-                        <TextView
-                            android:id="@+id/tv_quantity"
-                            android:textStyle="bold"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="1"
-                            android:textColor="@color/white"/>
-                        <TextView
-                            android:clickable="true"
-                            android:id="@+id/add_plus"
-                            android:textStyle="bold"
-                            android:layout_marginStart="@dimen/_5sdp"
-                            android:background="@drawable/circular_white_bg"
-                            android:layout_width="@dimen/_15sdp"
-                            android:textAlignment="center"
-                            android:layout_height="@dimen/_15sdp"
-                            android:text="+"
-                            android:textColor="@color/dark_green"/>
-
-                    </LinearLayout>
-                    -->
-
                     <TextView
                         android:maxLines="2"
                         android:id="@+id/tv_status"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:fontFamily="@font/roboto"
                         android:gravity="center"
                         android:text="Added"
                         android:textColor="@color/white"
@@ -157,7 +117,6 @@
                     android:id="@+id/tv_varieties"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-
                     android:layout_weight="1"
                     android:gravity="left"
                     android:text="6 Participate Item"
@@ -212,7 +171,7 @@
                     android:text="$1.13"
                     android:textColor="#ed1d26"
                     android:textStyle="bold"
-                    android:textSize="32sp"
+                    android:textSize="38sp"
                     android:maxLines="1"/>
 
             </LinearLayout>

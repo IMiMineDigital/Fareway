@@ -112,7 +112,8 @@ import java.util.regex.Pattern;
 
 public class MainFwActivity extends AppCompatActivity
         implements CustomAdapterPersonalPrices.CustomAdapterPersonalPricesListener,
-        CustomAdapterParticipateItems.CustomAdapterParticipateItemsListener,CustomGroupAdapter.CustomAdapterGroupItemsListener{
+        CustomAdapterParticipateItems.CustomAdapterParticipateItemsListener,CustomGroupAdapter.CustomAdapterGroupItemsListener,
+        ShoppingListAdapter.ShoppingListAdapterListener{
 
     private DrawerLayout drawer;
     private Toolbar toolbar;private Toolbar DetaileToolbar;private Toolbar participateToolbar;
@@ -163,6 +164,7 @@ public class MainFwActivity extends AppCompatActivity
     Product productrelated2;
     private View notificationBadge;
     private LinearLayout shopping_list_header;
+    TextView tv;
 
 
     @Override
@@ -266,7 +268,7 @@ public class MainFwActivity extends AppCompatActivity
 
         View badge = LayoutInflater.from(this)
                 .inflate(R.layout.view_notification_badge, bottomNavigationMenuView, false);
-        TextView tv = badge.findViewById(R.id.notification_badge);
+        tv = badge.findViewById(R.id.notification_badge);
         tv.setText("10");
         itemView.addView(badge);
 
@@ -310,13 +312,15 @@ public class MainFwActivity extends AppCompatActivity
 
         shoppingArrayList = new ArrayList<>();
         rv_shopping_list_items = (RecyclerView) findViewById(R.id.rv_shopping_list_items);
-        shoppingListAdapter = new ShoppingListAdapter(this, shoppingArrayList);
+        shoppingListAdapter = new ShoppingListAdapter(this, shoppingArrayList,this);
         RecyclerView.LayoutManager mLayoutManagerShoppingList = new LinearLayoutManager(activity);
         rv_shopping_list_items.setLayoutManager(mLayoutManagerShoppingList);
         rv_shopping_list_items.setAdapter(shoppingListAdapter);
         //Drawable dividerDrawableShoppingList = ContextCompat.getDrawable(activity, R.drawable.divider);
         //rv_shopping_list_items.addItemDecoration(new DividerRVDecoration(dividerDrawableShoppingList));
-        enableSwipeToDeleteAndUndo();
+
+        //swep item
+        //enableSwipeToDeleteAndUndo();
 
         rowLayout = findViewById(R.id.rowLayout);
         rowLayout0 = findViewById(R.id.rowLayout0);
@@ -447,6 +451,7 @@ public class MainFwActivity extends AppCompatActivity
         }
 
         messageLoad();
+
 
         //moreCouponLoad();
         addBadgeView();
@@ -811,6 +816,7 @@ public class MainFwActivity extends AppCompatActivity
                                         }else {
                                             //moreCouponLoad();
                                             fetchProduct();
+                                            shoppingListLoad();
                                             //shoppingListLoad();
                                         }
 
@@ -3252,14 +3258,14 @@ public class MainFwActivity extends AppCompatActivity
                 }else if (relatedItem.getListCount()==0){
                     circular_layout_detaile.setBackground(getResources().getDrawable(R.drawable.circular_red_bg));
                     imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.addwhite));
-                    tv_status_detaile.setText("Add\nTo List");
+                    tv_status_detaile.setText("Add");
                     //count_product_number_detail.setVisibility(View.GONE);
                     remove_layout_detail.setVisibility(View.GONE);
                 }
             }else {
                 circular_layout_detaile.setBackground(getResources().getDrawable(R.drawable.circular_red_bg));
                 imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.addwhite));
-                tv_status_detaile.setText("Activate");
+                tv_status_detaile.setText("Add");
             }
 
             bottomLayout_detaile.setBackgroundColor(getResources().getColor(R.color.mehrune));
@@ -3328,14 +3334,14 @@ public class MainFwActivity extends AppCompatActivity
                 }else if (relatedItem.getListCount()==0){
                     circular_layout_detaile.setBackground(getResources().getDrawable(R.drawable.circular_red_bg));
                     imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.addwhite));
-                    tv_status_detaile.setText("Add\nTo List");
+                    tv_status_detaile.setText("Add");
                    // count_product_number_detail.setVisibility(View.GONE);
                     remove_layout_detail.setVisibility(View.GONE);
                 }
             }else {
                 circular_layout_detaile.setBackground(getResources().getDrawable(R.drawable.circular_red_bg));
                 imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.addwhite));
-                tv_status_detaile.setText("Activate");
+                tv_status_detaile.setText("Add");
             }
 
             bottomLayout_detaile.setBackgroundColor(getResources().getColor(R.color.mehrune));
@@ -3394,7 +3400,7 @@ public class MainFwActivity extends AppCompatActivity
                 Log.i("elselistCount", String.valueOf(relatedItem.getListCount()));
                 circular_layout_detaile.setBackground(getResources().getDrawable(R.drawable.circular_red_bg));
                 imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.addwhite));
-                tv_status_detaile.setText("Add\nTo List");
+                tv_status_detaile.setText("Add");
               //  count_product_number_detail.setVisibility(View.GONE);
                 remove_layout_detail.setVisibility(View.GONE);
             }
@@ -3805,9 +3811,9 @@ public class MainFwActivity extends AppCompatActivity
     private void shoppingListLoad() {
         if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
             try {
-                //progressDialog = new ProgressDialog(activity);
-                //progressDialog.setMessage("Processing");
-                //progressDialog.show();
+                progressDialog = new ProgressDialog(activity);
+                progressDialog.setMessage("Processing");
+                progressDialog.show();
                 StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET,Constant.WEB_URL + Constant.ShoppingList+"MemberId="+appUtil.getPrefrence("MemberId")+"&CategoryID=1",
                         new Response.Listener<String>(){
                             @Override
@@ -3823,7 +3829,7 @@ public class MainFwActivity extends AppCompatActivity
 
                                     JSONObject root2 = new JSONObject(root.getString("message"));
                                     if (root.getString("errorcode").equals("0")){
-                                        //progressDialog.dismiss();
+                                        progressDialog.dismiss();
                                         Log.i("anshuman","test");
 
                                         try
@@ -3837,12 +3843,18 @@ public class MainFwActivity extends AppCompatActivity
 
                                         if (shopping==null ){
                                             Log.i("anshuman","test");
+                                            shoppingArrayList.clear();
+                                            shoppingListAdapter.notifyDataSetChanged();
+                                            tv_number_item.setText(String.valueOf(0));
+                                            tv.setText(String.valueOf(shopping.length()));
+
                                         }else {
                                             Log.i("shopping", String.valueOf(shopping));
 
                                             for (int i = 0; i < shopping.length(); i++) {
                                             }
                                             tv_number_item.setText(String.valueOf(shopping.length()));
+                                            tv.setText(String.valueOf(shopping.length()));
 
                                             shoppingArrayList.clear();
                                             List<Shopping> items = new Gson().fromJson(shopping.toString(), new TypeToken<List<Shopping>>() {
@@ -3860,7 +3872,7 @@ public class MainFwActivity extends AppCompatActivity
                     public void onErrorResponse(VolleyError error) {
                         Log.i("Volley error resp", "error----" + error.getMessage());
                         error.printStackTrace();
-                        //progressDialog.dismiss();
+                        progressDialog.dismiss();
                     }
                 })
                 {
@@ -3900,7 +3912,7 @@ public class MainFwActivity extends AppCompatActivity
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                //progressDialog.dismiss();
+                progressDialog.dismiss();
 //                displayAlert();
             }
         } else {
@@ -4052,6 +4064,79 @@ public class MainFwActivity extends AppCompatActivity
 
         ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeToDeleteCallback);
         itemTouchhelper.attachToRecyclerView(rv_shopping_list_items);
+    }
+
+    @Override
+    public void onShoppingItemSelected(Shopping shopping) {
+        Log.i("test",shopping.getDisplayUPC().replace("UPC: ",""));
+
+        for (int i = 0; i < message.length(); i++) {
+
+
+            try {
+                if (message.getJSONObject(i).getString("UPC").contains(shopping.getDisplayUPC().replace("UPC: ",""))) {
+                    message.getJSONObject(i).put("ListCount", 0);
+                    message.getJSONObject(i).put("ClickCount", 0);
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+        fetchProduct();
+        //shoppingListLoad();
+
+        Log.i("remove","remove");
+        String url = Constant.WEB_URL+Constant.SHOPPINGLISTSINGAL+shopping.getShoppingListItemID()+"&MemberId="+appUtil.getPrefrence("MemberId");
+        StringRequest  jsonObjectRequest = new StringRequest (Request.Method.DELETE, url,
+                new Response.Listener<String >() {
+                    @Override
+                    public void onResponse(String  response) {
+                        Log.i("success", String.valueOf(response));
+                        shoppingListLoad();
+                       // remove_layout_detail.setVisibility(View.GONE);
+                        //    count_product_number_detail.setVisibility(View.GONE);
+                       // product.setClickCount(1);
+                       // tv_status_detaile.setText("Add");
+                       // circular_layout_detaile.setBackground(getResources().getDrawable(R.drawable.circular_red_bg));
+                      //  imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.addwhite));
+                        //remove quantity
+                      //  SetRemoveActivateDetail(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("fail", String.valueOf(error));
+            }
+        }){
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                params.put("Content-Type", "application/json ;charset=utf-8");
+                return params;
+            }
+        };
+        RetryPolicy policy = new DefaultRetryPolicy
+                (50000,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        jsonObjectRequest.setRetryPolicy(policy);
+        try {
+            mQueue.add(jsonObjectRequest);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+
+
     }
 
 

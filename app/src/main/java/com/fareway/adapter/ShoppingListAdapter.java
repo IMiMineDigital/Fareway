@@ -25,6 +25,8 @@ import com.fareway.model.Shopping;
 import com.fareway.utility.AppUtilFw;
 import com.fareway.utility.Constant;
 
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -35,12 +37,14 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     private Context mContext;
     private List<Shopping> shoppingArrayList;
     public static AppUtilFw appUtil;
+    private ShoppingListAdapterListener listener2;
+    public MainFwActivity activate = new MainFwActivity();
 
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView tv_type,tv_purchase_amount,tv_purchase_qty,tv_header_title,tv_coupon_description;
-        private ImageView imv_go,imv_shopping_item;
+        private ImageView imv_go,imv_shopping_item,imv_remove_shopping;
         private LinearLayout rowLayout,liner_header_title,single_item_remove,liner_shopping_list_body,liner_coupon_description,
                 liner_personal_description;
         private View header_line_view;
@@ -63,14 +67,27 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             // rowLayout= (LinearLayout) view.findViewById(R.id.rowLayout);
 
             header_line_view=(View)view.findViewById(R.id.header_line_view);
+
+            imv_remove_shopping=(ImageView)view.findViewById(R.id.imv_remove_shopping);
+
+            imv_remove_shopping.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener2.onShoppingItemSelected(shoppingArrayList.get(getAdapterPosition()));
+                    //circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                    //imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                    //tv_status.setText("Added");
+                }
+            });
         }
     }
 
 
-    public ShoppingListAdapter(Context mContext, List<Shopping> shoppingArrayList) {
+    public ShoppingListAdapter(Context mContext, List<Shopping> shoppingArrayList,ShoppingListAdapterListener listener2) {
         this.mContext = mContext;
         this.shoppingArrayList = shoppingArrayList;
         appUtil=new AppUtilFw(mContext);
+        this.listener2 = listener2;
     }
 
     @Override
@@ -223,6 +240,24 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                     @Override
                     public void onResponse(String  response) {
                         Log.i("success", String.valueOf(response));
+/*
+                        for (int i = 0; i < message.length(); i++) {
+
+
+                            try {
+                                if (message.getJSONObject(i).getString("UPC").contains(shopping.getDisplayUPC().replace("UPC: ",""))) {
+                                    message.getJSONObject(i).put("ListCount", 0);
+                                    message.getJSONObject(i).put("ClickCount", 0);
+
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
+
+                        }
+                        fetchProduct();*/
+
+
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -259,6 +294,10 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         }
         shoppingArrayList.remove(position);
         notifyItemRemoved(position);
+    }
+
+    public interface ShoppingListAdapterListener {
+        void onShoppingItemSelected(Shopping shopping);
     }
 
 }

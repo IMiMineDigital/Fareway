@@ -11,6 +11,7 @@ public class Shopping {
     private String UPC;
     private String CouponDescription;
     private String ShoppingListItemID;
+    private String DisplayUPC;
 
     public int getCategoryID() {
         return CategoryID;
@@ -90,5 +91,13 @@ public class Shopping {
 
     public void setShoppingListItemID(String shoppingListItemID) {
         ShoppingListItemID = shoppingListItemID;
+    }
+
+    public String getDisplayUPC() {
+        return DisplayUPC;
+    }
+
+    public void setDisplayUPC(String displayUPC) {
+        DisplayUPC = displayUPC;
     }
 }
