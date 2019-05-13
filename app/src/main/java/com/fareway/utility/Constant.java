@@ -16,6 +16,23 @@ public class Constant {
     public static final String MORECOUPON="Circular/CouponGallary";
     public static final String SAVING="Circular/Saving";
     public static final String SEARCH="Circular/searchItems?";
+    public static final String SHOPPINGLIST="ShoppingList/List/Item?MemberId=";
+    public static final String REMOVE="ShoopingList/ShoppingListItemByupc?upccode=";
+    public static final String SHOPPINGLISTSINGAL="ShoopingList/ShoppingListById?ShoppingListItemID=";
+    public static final String ShoppingList="ShoopingList/ShoppingListByvTYC?";
+    public static final String SHOPPINGLISTALL = "ShoopingList/ShoppingListByTYC?shoppinglistid=0";
+    public static final String PURCHASEHISTORY = "Account/PurchaseHistory?MemberId=";
+    public static final String PURCHASEDETAILHISTORY = "Account/PurchaseHistoryDetails?PurchaseId=";
+
+
+
+
+    //url: APIUrl + "api/v1/ShoopingList/ShoppingListByTYC" + "?shoppinglistid=’0’&MemberId=’3433443’
+
+    //api/v1/ShoopingList/ShoppingListById?ShoppingListItemID=’45656’&MemberId=’4558885’
+
+
+    // http://platformapi.immdemo.net/api/v1/ShoopingList/ShoppingListItemByupc?upccode=7398132891&MemberId=1
 
 
     public static final String MEMBERID="memberid";

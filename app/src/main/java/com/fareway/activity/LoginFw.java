@@ -248,11 +248,11 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
                         Map<String, String> params = new HashMap<String, String>();
 
                        //params.put("UserName", "kprajapati@epsilonium.com");
-                      // params.put("password", "12345678");
-                        //params.put("UserName", et_email.getText().toString());
-                        //params.put("password", et_pwd.getText().toString());
-                        params.put("UserName", appUtil.getPrefrence("Email"));
-                        params.put("password", appUtil.getPrefrence("Password"));
+                       //params.put("password", "12345678");
+                        params.put("UserName", et_email.getText().toString());
+                        params.put("password", et_pwd.getText().toString());
+                        //params.put("UserName", appUtil.getPrefrence("Email"));
+                        //params.put("password", appUtil.getPrefrence("Password"));
                         //test
                         params.put("Device", "5");
                         return params;

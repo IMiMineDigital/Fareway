@@ -7,15 +7,16 @@
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
     <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
-<!--
+
     <application
-        android:usesCleartextTraffic="true"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="true">
+
         <activity
             android:name=".activity.SplashFw"
             android:theme="@style/FarewayMainTheme">
@@ -40,13 +41,20 @@
             android:theme="@style/FarewayMainTheme" />
         <activity
             android:name=".activity.WelcomeActivity"
-            android:theme="@style/FarewayTheme.NoActionBar"></activity>
+            android:theme="@style/FarewayTheme.NoActionBar" />
+        <activity
+            android:name=".activity.ShopperId"
+            android:theme="@style/FarewayMainTheme" />
+        <activity
+            android:name=".activity.PurchaseHistory"
+            android:theme="@style/FarewayMainTheme" />
+        <activity
+            android:name=".activity.PurchaseHistoryDetail"
+            android:theme="@style/FarewayMainTheme"/>
 
         <meta-data
             android:name="preloaded_fonts"
             android:resource="@array/preloaded_fonts" />
-
     </application>
-    -->
 
 </manifest>

@@ -72,7 +72,7 @@ public class SplashFw extends AppCompatActivity {
             SimpleDateFormat dateformat2 = new SimpleDateFormat("dd MMM yyyy");
             String currentDate = dateformat2.format(c2.getTime());
             System.out.println(currentDate);
-            //appUtil.setPrefrence("comeFrom","mpp");
+            appUtil.setPrefrence("comeFrom","mpp");
 
             if(appUtil.getPrefrence("isLogin").equalsIgnoreCase("yes")){
                 if (saveDate.equalsIgnoreCase(currentDate)){

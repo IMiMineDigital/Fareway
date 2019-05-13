@@ -10,6 +10,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:theme="@style/FarewayMainTheme.AppBarOverlay">
+
         <android.support.v7.widget.Toolbar
             android:id="@+id/toolbar"
             android:layout_width="match_parent"
@@ -19,6 +20,7 @@
             <include layout="@layout/toolbar"/>
 
         </android.support.v7.widget.Toolbar>
+
         <android.support.v7.widget.Toolbar
             app:theme="@style/FarewayThemeToolbar"
             android:visibility="gone"
@@ -26,6 +28,7 @@
             android:layout_width="match_parent"
             android:layout_height="?attr/actionBarSize"
             app:navigationIcon="?attr/homeAsUpIndicator" />
+
         <android.support.v7.widget.Toolbar
             app:theme="@style/FarewayThemeToolbar"
             android:visibility="gone"
@@ -40,7 +43,7 @@
 
     <android.support.design.widget.BottomNavigationView
         android:id="@+id/navigation"
-        android:layout_width="match_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_gravity="bottom"
         android:background="@color/white"
@@ -48,6 +51,6 @@
         app:itemIconTint="@drawable/bottom_navigation_selector"
         app:itemTextColor="@drawable/bottom_navigation_selector"
         app:labelVisibilityMode="labeled"
-        android:theme="@style/NavigationTheme" />
+        android:theme="@style/NavigationTheme"/>
 
 </android.support.design.widget.CoordinatorLayout>

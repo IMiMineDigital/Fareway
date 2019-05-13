@@ -33,7 +33,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView tv_status, tv_price, tv_unit, tv_saving,tv_deal_type,tv_detail,tv_varieties;
         private ImageView imv_item, imv_info, imv_more, imv_status;
-        private LinearLayout circular_layout, bottomLayout;
+        private LinearLayout circular_layout, bottomLayout,remove_layout;
         private CardView card_view;
         private RelativeLayout imv_layout;
 
@@ -47,6 +47,9 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
             tv_saving = (TextView) view.findViewById(R.id.tv_saving);
             tv_detail = (TextView) view.findViewById(R.id.tv_detail);
             tv_deal_type = (TextView) view.findViewById(R.id.tv_deal_type);
+          /*  tv_quantity = (TextView) view.findViewById(R.id.tv_quantity);
+            add_plus = (TextView) view.findViewById(R.id.add_plus);
+            add_minus = (TextView) view.findViewById(R.id.add_minus);*/
             imv_item = (ImageView) view.findViewById(R.id.imv_item);
             tv_varieties = view.findViewById(R.id.tv_varieties);
             //liner_save = (LinearLayout) view.findViewById(R.id.liner_save);
@@ -54,6 +57,8 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
             imv_status = (ImageView) view.findViewById(R.id.imv_status);
             circular_layout= (LinearLayout) view.findViewById(R.id.circular_layout);
             bottomLayout= (LinearLayout) view.findViewById(R.id.bottomLayout);
+           // count_product_number = (LinearLayout)view.findViewById(R.id.count_product_number);
+            remove_layout = (LinearLayout)view.findViewById(R.id.remove_layout);
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -123,15 +128,22 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                     holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
                     holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
                     holder.tv_status.setText("Added");
+                   // holder.count_product_number.setVisibility(View.VISIBLE);
+                    holder.remove_layout.setVisibility(View.VISIBLE);
+                   // holder.tv_quantity.setText(relatedItem.getQuantity());
                 }else if (relatedItem.getListCount()==0){
                     holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
                     holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
-                    holder.tv_status.setText("Add\nTo List");
+                    holder.tv_status.setText("Add");
+                   // holder.count_product_number.setVisibility(View.GONE);
+                    holder.remove_layout.setVisibility(View.GONE);
                 }
                 }else {
                     holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
                     holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
                     holder.tv_status.setText("Activate");
+                   // holder.count_product_number.setVisibility(View.GONE);
+                    holder.remove_layout.setVisibility(View.GONE);
                 }
 
             }
@@ -142,7 +154,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 String chars = capitalize(relatedItem.getDescription());
                 holder.tv_detail.setText(chars);
 
-                holder.circular_layout.setVisibility(View.VISIBLE);
+                holder.circular_layout.setVisibility(View.GONE);
                 holder.tv_saving.setVisibility(View.VISIBLE);
                 holder.tv_varieties.setVisibility(View.INVISIBLE);
                 try {
@@ -154,21 +166,28 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 }
                 Spanned result = Html.fromHtml(relatedItem.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
                 holder.tv_price.setText(result);
-                holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.mehrune));
+                holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.green));
                 if (relatedItem.getClickCount()>0) {
                     if (relatedItem.getListCount()>0){
                         holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
                         holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
                         holder.tv_status.setText("Added");
+                       // holder.count_product_number.setVisibility(View.VISIBLE);
+                        holder.remove_layout.setVisibility(View.GONE);
+                      ///  holder.tv_quantity.setText(relatedItem.getQuantity());
                     }else if (relatedItem.getListCount()==0){
                         holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
                         holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
-                        holder.tv_status.setText("Add\nTo List");
+                        holder.tv_status.setText("Add");
+                      //  holder.count_product_number.setVisibility(View.GONE);
+                        holder.remove_layout.setVisibility(View.GONE);
                     }
                 }else {
                     holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
                     holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
                     holder.tv_status.setText("Activate");
+                  //  holder.count_product_number.setVisibility(View.GONE);
+                    holder.remove_layout.setVisibility(View.GONE);
                 }
             }else if (relatedItem.getPrimaryOfferTypeId() == 1) {
                 holder.tv_deal_type.setText(relatedItem.getOfferTypeTagName());
@@ -193,10 +212,15 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                     holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
                     holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
                     holder.tv_status.setText("Added");
+                  //  holder.count_product_number.setVisibility(View.VISIBLE);
+                    holder.remove_layout.setVisibility(View.VISIBLE);
+                  //  holder.tv_quantity.setText(relatedItem.getQuantity());
                 }else if (relatedItem.getListCount()==0){
                     holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
                     holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
-                    holder.tv_status.setText("Add\nTo List");
+                    holder.tv_status.setText("Add");
+                  //  holder.count_product_number.setVisibility(View.GONE);
+                    holder.remove_layout.setVisibility(View.GONE);
                 }
             }
 
@@ -239,7 +263,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                     }else if (relatedItem.getListCount()==0){
                         holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
                         holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
-                        holder.tv_status.setText("Add\nTo List");
+                        holder.tv_status.setText("Add");
                     }
                 }else {
                     holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
@@ -255,7 +279,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 String chars = capitalize(relatedItem.getDescription());
                 holder.tv_detail.setText(chars);
 
-                holder.circular_layout.setVisibility(View.VISIBLE);
+                holder.circular_layout.setVisibility(View.GONE);
                 holder.tv_saving.setVisibility(View.VISIBLE);
                 holder.tv_varieties.setVisibility(View.INVISIBLE);
                 try {
@@ -276,7 +300,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                     }else if (relatedItem.getListCount()==0){
                         holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
                         holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
-                        holder.tv_status.setText("Add\nTo List");
+                        holder.tv_status.setText("Add");
                     }
                 }else {
                     holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
@@ -309,7 +333,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 }else if (relatedItem.getListCount()==0){
                     holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
                     holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
-                    holder.tv_status.setText("Add\nTo List");
+                    holder.tv_status.setText("Add");
                 }
             }
 

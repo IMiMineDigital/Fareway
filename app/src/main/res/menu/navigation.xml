@@ -11,11 +11,11 @@
         android:icon="@drawable/ic_home_black_24dp"
         android:title="Home" />
 
-
+<!--
     <item
         android:id="@+id/moreCoupons"
         android:icon="@drawable/morecoupon"
-        android:title="Coupons" />
+        android:title="Coupons" /> -->
 
     <item
         android:id="@+id/savings"
@@ -27,8 +27,12 @@
         android:icon="@drawable/filter"
         android:title="Filter" />
     <item
-        android:id="@+id/List"
+        android:id="@+id/ShoppingList"
         android:icon="@drawable/ic_view_list_black_24dp"
         android:title="My List" />
+    <item
+        android:id="@+id/ShopperID"
+        android:icon="@drawable/shopperideye"
+        android:title="More" />
 
 </menu>

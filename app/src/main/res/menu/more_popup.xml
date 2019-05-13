@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+    <item
+        android:icon="@drawable/shopperideye"
+        android:id="@+id/by_shopper_id"
+        android:orderInCategory="100"
+        android:title="Shopper ID"
+        app:showAsAction="never" />
+    <item
+        android:id="@+id/by_purchase_history"
+        android:orderInCategory="100"
+        android:title="Purchase History"
+        app:showAsAction="never" />
+</menu>

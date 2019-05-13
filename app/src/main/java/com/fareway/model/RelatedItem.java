@@ -44,6 +44,7 @@ public class RelatedItem {
     private String TileNumber;
     private String AdPrice;
     private String PricingMasterID;
+    private String Quantity;
 
     public String getName() {
         return name;
@@ -379,5 +380,13 @@ public class RelatedItem {
 
     public void setPricingMasterID(String pricingMasterID) {
         PricingMasterID = pricingMasterID;
+    }
+
+    public String getQuantity() {
+        return Quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        Quantity = quantity;
     }
 }

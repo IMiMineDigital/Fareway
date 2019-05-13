@@ -51,6 +51,12 @@ public class Product {
     private String AdPrice;
     private String PricingMasterID;
     private String RewardType;
+    private String Quantity;
+    private int MinAmount;
+    private String PercentSavings;
+    private String RewardValue;
+    private String RewardQty;
+    private int OfferDefinitionId;
 
 
 
@@ -448,6 +454,54 @@ public class Product {
 
     public void setRewardType(String rewardType) {
         RewardType = rewardType;
+    }
+
+    public String getQuantity() {
+        return Quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        Quantity = quantity;
+    }
+
+    public int getMinAmount() {
+        return MinAmount;
+    }
+
+    public void setMinAmount(int minAmount) {
+        MinAmount = minAmount;
+    }
+
+    public String getPercentSavings() {
+        return PercentSavings;
+    }
+
+    public void setPercentSavings(String percentSavings) {
+        PercentSavings = percentSavings;
+    }
+
+    public String getRewardValue() {
+        return RewardValue;
+    }
+
+    public void setRewardValue(String rewardValue) {
+        RewardValue = rewardValue;
+    }
+
+    public String getRewardQty() {
+        return RewardQty;
+    }
+
+    public void setRewardQty(String rewardQty) {
+        RewardQty = rewardQty;
+    }
+
+    public int getOfferDefinitionId() {
+        return OfferDefinitionId;
+    }
+
+    public void setOfferDefinitionId(int offerDefinitionId) {
+        OfferDefinitionId = offerDefinitionId;
     }
 }
 

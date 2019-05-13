@@ -39,7 +39,7 @@
             android:layout_weight="1"
             android:paddingBottom="@dimen/_5sdp"
             android:paddingTop="@dimen/_5sdp"
-            android:layout_marginRight="@dimen/_20sdp"
+            android:layout_marginRight="@dimen/_7sdp"
 
 
 
@@ -123,7 +123,7 @@
             <ImageView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:src="@drawable/ic_apps_black_24dp"
+                android:src="@drawable/ic_view_quilt_black_24dp"
                 android:id="@+id/imv_view_list"
                 />
 
