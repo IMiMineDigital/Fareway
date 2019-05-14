@@ -115,7 +115,7 @@ public class PurchaseHistoryDetail extends AppCompatActivity {
                                     if (root.getString("errorcode").equals("0")){
                                         progressDialog.dismiss();
                                         purchasemessage= root.getJSONArray("purchasemessage");
-                                        for (int i = 0; i < purchasemessage.length(); i++) {
+                                        for (int i = 0; i < 1; i++) {
                                             tv_bottom_bar1.setText(purchasemessage.getJSONObject(i).getString("totalquantity"));
                                             tv_bottom_bar2.setText(purchasemessage.getJSONObject(i).getString("subsavingamount"));
                                             tv_bottom_bar3.setText(purchasemessage.getJSONObject(i).getString("totalamount"));

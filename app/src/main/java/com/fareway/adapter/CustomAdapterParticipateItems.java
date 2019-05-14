@@ -8,6 +8,7 @@ import android.text.Spanned;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -36,9 +37,11 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
         private LinearLayout circular_layout, bottomLayout,remove_layout;
         private CardView card_view;
         private RelativeLayout imv_layout;
+        //private Button all_Varieties_activate;
 
         public MyViewHolder(View view) {
             super(view);
+            //all_Varieties_activate= (Button)view.findViewById(R.id.all_Varieties_activate);
             imv_layout = (RelativeLayout) view.findViewById(R.id.imv_layout);
             card_view=(CardView) view.findViewById(R.id.card_view);
             tv_status = (TextView) view.findViewById(R.id.tv_status);

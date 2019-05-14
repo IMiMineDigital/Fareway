@@ -20,6 +20,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
+
             <TextView
                 android:textStyle="bold"
                 android:textColor="@color/red"
@@ -126,6 +127,8 @@
                     android:maxLines="2"/>
 
                 <TextView
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:id="@+id/tv_coupon_flag"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
@@ -163,6 +166,7 @@
                 </LinearLayout> -->
 
                 <TextView
+                    android:layout_marginRight="@dimen/_10sdp"
                     android:id="@+id/tv_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

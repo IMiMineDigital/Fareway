@@ -65,7 +65,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
     public static AppUtilFw appUtil;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView tv_status,tv_price,tv_unit,tv_saving,tv_detail,tv_deal_type,tv_varieties,limit,must,add_plus,add_minus;
+        private TextView tv_status,tv_price,tv_unit,tv_saving,tv_detail,tv_deal_type,
+                tv_coupon_flag,tv_varieties,limit,must,add_plus,add_minus;
         public ImageView imv_item, imv_info,imv_status;
         private LinearLayout circular_layout,bottomLayout,liner_save,count_product_number,remove_layout;
         private CardView card_view;
@@ -81,6 +82,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             tv_saving = (TextView) view.findViewById(R.id.tv_saving);
             tv_detail = (TextView) view.findViewById(R.id.tv_detail);
             tv_deal_type = (TextView) view.findViewById(R.id.tv_deal_type);
+            tv_coupon_flag=(TextView)view.findViewById(R.id.tv_coupon_flag);
           /*  tv_quantity = (TextView) view.findViewById(R.id.tv_quantity);
             add_plus = (TextView) view.findViewById(R.id.add_plus);
             add_minus = (TextView) view.findViewById(R.id.add_minus);*/
@@ -344,6 +346,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             }else {
                 Log.i("elseincircular", String.valueOf(product.getInCircular()));
                 if (product.getPrimaryOfferTypeId() == 3) {
+                    holder.tv_coupon_flag.setText("With MyFareway");
                     holder.limit.setText("");
                     holder.tv_unit.setText(product.getPackagingSize());
                     holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.mehrune));
@@ -409,7 +412,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
                         holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
                         if (product.getRequiresActivation().contains("True")){
-                            holder.tv_status.setText("Add");
+                            holder.tv_status.setText("Activate");
                            // holder.count_product_number.setVisibility(View.GONE);
                             holder.remove_layout.setVisibility(View.GONE);
                         }else if (product.getRequiresActivation().contains("False")){
@@ -421,6 +424,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }
 
                 } else if (product.getPrimaryOfferTypeId() == 2) {
+                    holder.tv_coupon_flag.setText("With Coupon");
                     holder.liner_save.setVisibility(View.GONE);
                     holder.tv_unit.setText(product.getPackagingSize());
                     holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.green));
@@ -622,6 +626,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }
 
                 }else if (product.getPrimaryOfferTypeId() == 1) {
+                    holder.tv_coupon_flag.setText("");
                     holder.limit.setText("");
                     holder.tv_unit.setText(product.getPackagingSize());
                     holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.blue));

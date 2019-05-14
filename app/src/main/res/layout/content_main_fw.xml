@@ -10,7 +10,29 @@
     android:id="@+id/main"
     android:background="@drawable/tileable_wood">
     <!-- android:layout_marginBottom="@dimen/_40sdp" -->
+<LinearLayout
+    android:visibility="gone"
+    android:id="@+id/liner_all_Varieties_activate"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <Button
+        android:layout_marginTop="@dimen/_10sdp"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:visibility="gone"
+        android:id="@+id/all_Varieties_activate"
+        android:textAllCaps="false"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/_25sdp"
+        android:text="Activate"
+        android:background="@color/red"
+        android:textColor="@color/white"
+        android:layout_gravity="right"/>
+</LinearLayout>
+
+
     <TextView
+        android:layout_below="@+id/liner_all_Varieties_activate"
         android:fontFamily="@font/roboto"
         android:textSize="@dimen/_15sdp"
         android:visibility="gone"

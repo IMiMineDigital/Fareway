@@ -165,6 +165,8 @@ public class MainFwActivity extends AppCompatActivity
     private View notificationBadge;
     private LinearLayout shopping_list_header;
     TextView tv;
+    Button all_Varieties_activate;
+    LinearLayout liner_all_Varieties_activate;
 
 
     @Override
@@ -278,6 +280,8 @@ public class MainFwActivity extends AppCompatActivity
     private void linkUIElements()
 
     {
+        liner_all_Varieties_activate=findViewById(R.id.liner_all_Varieties_activate);
+        all_Varieties_activate = findViewById(R.id.all_Varieties_activate);
         imv_logo=findViewById(R.id.imv_logo);
         imv_logo.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1602,7 +1606,7 @@ public class MainFwActivity extends AppCompatActivity
                 if (product.getClickCount()==0){
                     circular_layout_detaile.setBackground(getResources().getDrawable(R.drawable.circular_red_bg));
                     imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.addwhite));
-                    tv_status_detaile.setText("Add");
+                    tv_status_detaile.setText("Activate");
                 //    count_product_number_detail.setVisibility(View.GONE);
                     remove_layout_detail.setVisibility(View.GONE);
                 }else {
@@ -1719,7 +1723,7 @@ public class MainFwActivity extends AppCompatActivity
                     imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.tick));
                     tv_status_detaile.setText("Activated");
                   //  count_product_number_detail.setVisibility(View.VISIBLE);
-                    remove_layout_detail.setVisibility(View.VISIBLE);
+                    remove_layout_detail.setVisibility(View.GONE);
                 }else if (product.getListCount()==0){
                     circular_layout_detaile.setBackground(getResources().getDrawable(R.drawable.circular_red_bg));
                     imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.addwhite));
@@ -1741,7 +1745,7 @@ public class MainFwActivity extends AppCompatActivity
                         imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.tick));
                         tv_status_detaile.setText("Activated");
                  //       count_product_number_detail.setVisibility(View.VISIBLE);
-                        remove_layout_detail.setVisibility(View.VISIBLE);
+                        remove_layout_detail.setVisibility(View.GONE);
                     }else if (product.getListCount()==0){
                         circular_layout_detaile.setBackground(getResources().getDrawable(R.drawable.circular_red_bg));
                         imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.addwhite));
@@ -2081,14 +2085,26 @@ public class MainFwActivity extends AppCompatActivity
                                         @Override
                                         public void onResponse(String response) {
                                             Log.i("Fareway response Main", response.toString());
-                                            circular_layout_detaile.setBackground(getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                                            imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.tick));
-                                            tv_status_detaile.setText("Added");
-                                            SetProductActivateDetaile(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1,String.valueOf((Integer.parseInt(product.getQuantity())+1)));
-                                         //   count_product_number_detail.setVisibility(View.VISIBLE);
-                                            remove_layout_detail.setVisibility(View.VISIBLE);
-                                            product.setQuantity(String.valueOf((Integer.parseInt(product.getQuantity())+1)));
-                                        //    tv_quantity_detail.setText(product.getQuantity());
+                                            if (product.getPrimaryOfferTypeId()==2){
+                                                circular_layout_detaile.setBackground(getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                                                imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.tick));
+                                                tv_status_detaile.setText("Activated");
+                                                SetProductActivateDetaile(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1,String.valueOf((Integer.parseInt(product.getQuantity())+1)));
+                                                //   count_product_number_detail.setVisibility(View.VISIBLE);
+                                                remove_layout_detail.setVisibility(View.GONE);
+                                                product.setQuantity(String.valueOf((Integer.parseInt(product.getQuantity())+1)));
+                                                //    tv_quantity_detail.setText(product.getQuantity());
+                                            }else {
+                                                circular_layout_detaile.setBackground(getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                                                imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.tick));
+                                                tv_status_detaile.setText("Added");
+                                                SetProductActivateDetaile(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1,String.valueOf((Integer.parseInt(product.getQuantity())+1)));
+                                                //   count_product_number_detail.setVisibility(View.VISIBLE);
+                                                remove_layout_detail.setVisibility(View.VISIBLE);
+                                                product.setQuantity(String.valueOf((Integer.parseInt(product.getQuantity())+1)));
+                                                //    tv_quantity_detail.setText(product.getQuantity());
+                                            }
+
 
                                         }
                                     }, new Response.ErrorListener() {
@@ -2168,6 +2184,29 @@ public class MainFwActivity extends AppCompatActivity
 //////////////////////////////////////////////////////////////////////////
     @Override
     public void onProductVeritiesSelected(final Product product) {
+        if (product.getPrimaryOfferTypeId()==3){
+
+            if (product.getClickCount()==0){
+                liner_all_Varieties_activate.setVisibility(View.VISIBLE);
+                all_Varieties_activate.setVisibility(View.VISIBLE);
+                all_Varieties_activate.setText("Activate");
+               // all_Varieties_activate.setBackground(getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                //all_Varieties_activate.setTextColor(Color.red());
+                //all_Varieties_activate.setBackgroundColor(Color.RED);
+                all_Varieties_activate.setBackgroundColor(getResources().getColor(R.color.red));
+
+            } else {
+                liner_all_Varieties_activate.setVisibility(View.VISIBLE);
+                all_Varieties_activate.setVisibility(View.VISIBLE);
+                all_Varieties_activate.setText("Activated");
+                //all_Varieties_activate.setBackgroundColor(Color.GREEN);
+                all_Varieties_activate.setBackgroundColor(getResources().getColor(R.color.dark_green));
+            }
+        }else {
+            liner_all_Varieties_activate.setVisibility(View.GONE);
+            all_Varieties_activate.setVisibility(View.GONE);
+        }
+
         Group="";
         productrelated2=product;
         groupItemsList.clear();
@@ -2198,6 +2237,8 @@ public class MainFwActivity extends AppCompatActivity
         participateToolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                liner_all_Varieties_activate.setVisibility(View.GONE);
+                all_Varieties_activate.setVisibility(View.GONE);
                 if (x==0){
                     rv_items_group.setVisibility(View.GONE);
                     rv_items_verite.setVisibility(View.GONE);
@@ -3846,7 +3887,7 @@ public class MainFwActivity extends AppCompatActivity
                                             shoppingArrayList.clear();
                                             shoppingListAdapter.notifyDataSetChanged();
                                             tv_number_item.setText(String.valueOf(0));
-                                            tv.setText(String.valueOf(shopping.length()));
+                                            tv.setText(String.valueOf(0));
 
                                         }else {
                                             Log.i("shopping", String.valueOf(shopping));
