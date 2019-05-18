@@ -1534,6 +1534,208 @@ public class MainFwActivity extends AppCompatActivity
         TextView tv_deal_type_detaile = (TextView) findViewById(R.id.tv_deal_type_detaile);
         TextView tv_coupon_detail = (TextView) findViewById(R.id.tv_coupon_detail);
         TextView tv_varieties_detail = (TextView) findViewById(R.id.tv_varieties_detail);
+        //detail verite click lisner
+        tv_varieties_detail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                navigation.setVisibility(View.GONE);
+                scrollView.setVisibility(View.GONE);
+                DetaileToolbar.setVisibility(View.GONE);
+                rv_items.setVisibility(View.GONE);
+                toolbar.setVisibility(View.GONE);
+                if (product.getPrimaryOfferTypeId()==3 || product.getPrimaryOfferTypeId()==2){
+
+                    if (product.getClickCount()==0){
+                        liner_all_Varieties_activate.setVisibility(View.VISIBLE);
+                        all_Varieties_activate.setVisibility(View.VISIBLE);
+                        all_Varieties_activate.setText("Activate");
+                        // all_Varieties_activate.setBackground(getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                        //all_Varieties_activate.setTextColor(Color.red());
+                        //all_Varieties_activate.setBackgroundColor(Color.RED);
+                        all_Varieties_activate.setBackgroundColor(getResources().getColor(R.color.red));
+
+                    } else {
+                        liner_all_Varieties_activate.setVisibility(View.VISIBLE);
+                        all_Varieties_activate.setVisibility(View.VISIBLE);
+                        all_Varieties_activate.setText("Activated");
+                        //all_Varieties_activate.setBackgroundColor(Color.GREEN);
+                        all_Varieties_activate.setBackgroundColor(getResources().getColor(R.color.dark_green));
+                    }
+                }else {
+                    liner_all_Varieties_activate.setVisibility(View.GONE);
+                    all_Varieties_activate.setVisibility(View.GONE);
+                }
+
+                Group="";
+                productrelated2=product;
+                groupItemsList.clear();
+                toolbar.setVisibility(View.GONE);
+                rv_items.setVisibility(View.GONE);
+                navigation.setVisibility(View.GONE);
+
+                participateToolbar.setVisibility(View.VISIBLE);
+                header_title.setVisibility(View.GONE);
+                participateToolbar.setTitle("Participating Items");
+                rv_items_verite.setVisibility(View.VISIBLE);
+
+                rv_items_group.setVisibility(View.VISIBLE);
+                if (product.getGroupname()==null){
+                    rv_items_group.setVisibility(View.GONE);
+                    group_count_text.setVisibility(View.GONE);
+                }else if (product.getGroupname()==""){
+                    rv_items_group.setVisibility(View.GONE);
+                    group_count_text.setVisibility(View.GONE);
+                }else if (product.getGroupname()=="null"){
+                    rv_items_group.setVisibility(View.GONE);
+                    group_count_text.setVisibility(View.GONE);
+                }else if (product.getGroupname().length()>0){
+                    veritiesGroupDetail(product.getCouponID());
+                }
+
+                relatedItemsList.clear();
+                participateToolbar.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        liner_all_Varieties_activate.setVisibility(View.GONE);
+                        all_Varieties_activate.setVisibility(View.GONE);
+                        if (x==0){
+                            rv_items_group.setVisibility(View.GONE);
+                            rv_items_verite.setVisibility(View.GONE);
+                            participateToolbar.setVisibility(View.GONE);
+                            rv_items.setVisibility(View.VISIBLE);
+                            toolbar.setVisibility(View.VISIBLE);
+                            navigation.setVisibility(View.VISIBLE);
+                            group_count_text.setVisibility(View.GONE);
+                            header_title.setVisibility(View.VISIBLE);
+                        }else {
+                            rv_items_group.setVisibility(View.GONE);
+                            rv_items_verite.setVisibility(View.GONE);
+                            participateToolbar.setVisibility(View.GONE);
+                            rv_items.setVisibility(View.VISIBLE);
+                            toolbar.setVisibility(View.VISIBLE);
+                            navigation.setVisibility(View.VISIBLE);
+                            group_count_text.setVisibility(View.GONE);
+                            header_title.setVisibility(View.VISIBLE);
+                        }
+
+
+                    }
+                });
+
+                if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+                    try {
+                        progressDialog = new ProgressDialog(activity);
+                        progressDialog.setMessage("Processing");
+                        progressDialog.show();
+                        StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST,Constant.WEB_URL + Constant.RELATEDITEMLIST+"?MemberID="+appUtil.getPrefrence("MemberId"),
+                                new Response.Listener<String>(){
+                                    @Override
+                                    public void onResponse(String response) {
+
+                                        if (!response.equals("[]")) {
+                                            try {
+                                                Log.i("Verites response", response.toString());
+                                                jsonParam = new JSONArray(response.toString());
+                                                progressDialog.dismiss();
+                                                if (product.getGroupname().length()>0){
+                                                    fetchVeritesProduct2(Group);
+                                                }else if (product.getGroupname()==null){
+                                                    fetchVeritesProduct();
+                                                }else if (product.getGroupname()=="null"){
+                                                    fetchVeritesProduct();
+                                                }else if (product.getGroupname()==""){
+                                                    fetchVeritesProduct();
+                                                }
+
+                                            } catch (Throwable e) {
+                                                progressDialog.dismiss();
+                                                Log.i("Excep", "error----" + e.getMessage());
+                                                e.printStackTrace();
+                                            }
+                                        }
+                                        else{
+                                            progressDialog.dismiss();
+                                            alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.incorrect_credentials),
+                                                    getString(R.string.ok),getString(R.string.alert));
+                                            alertDialog.show();
+                                        }
+                                    }
+                                }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.i("Volley error resp", "error----" + error.getMessage());
+                                error.printStackTrace();
+                                progressDialog.dismiss();
+                                Toast.makeText(activity, "error", Toast.LENGTH_LONG).show();
+                            }
+                        })
+                        {
+
+                            @Override
+                            public String getBodyContentType() {
+                                return "application/x-www-form-urlencoded";
+                            }
+
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String, String> params = new HashMap<String, String>();
+
+                                if (product.getPrimaryOfferTypeId()==1){
+                                    params.put("PriceAssociationCode",product.getPriceAssociationCode());
+                                    params.put("UPC", product.getUPC());
+                                    params.put("StoreId", product.getStoreID());
+                                    params.put("Plateform", "2");
+                                    params.put("PrimaryOfferTypeId", String.valueOf(product.getPrimaryOfferTypeId()));
+                                    params.put("RelevantUPC", product.getRelevantUPC());
+                                }else {
+                                    params.put("PriceAssociationCode",product.getPriceAssociationCode());
+                                    params.put("UPC", String.valueOf(product.getCouponID()));
+                                    params.put("StoreId", product.getStoreID());
+                                    params.put("Plateform", "2");
+                                    params.put("PrimaryOfferTypeId", String.valueOf(product.getPrimaryOfferTypeId()));
+                                    params.put("RelevantUPC", product.getRelevantUPC());
+                                }
+
+                                return params;
+                            }
+
+
+                            @Override
+                            public Map<String, String> getHeaders() {
+                                Map<String, String> params = new HashMap<String, String>();
+                                params.put("Content-Type", "application/x-www-form-urlencoded");
+                                params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                                return params;
+                            }
+                        };
+                        RetryPolicy policy = new DefaultRetryPolicy
+                                (50000,
+                                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                        jsonObjectRequest.setRetryPolicy(policy);
+                        try {
+
+                            mQueue.add(jsonObjectRequest);
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+
+                    } catch (Exception e) {
+
+                        e.printStackTrace();
+                        progressDialog.dismiss();
+//                displayAlert();
+                    }
+
+                } else {
+                    alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                            getString(R.string.ok),getString(R.string.alert));
+                    alertDialog.show();
+                }
+            }
+        });
 
        /* final TextView tv_quantity_detail=(TextView)findViewById(R.id.tv_quantity_detail);
         TextView add_minus_detail=(TextView)findViewById(R.id.add_minus_detail);
@@ -1569,8 +1771,8 @@ public class MainFwActivity extends AppCompatActivity
           //  tv_quantity_detail.setText(product.getQuantity());
             table_limit.setVisibility(View.GONE);
             table_limit_view.setVisibility(View.GONE);
-            table_package_view.setVisibility(View.VISIBLE);
-            table_package.setVisibility(View.VISIBLE);
+            table_package_view.setVisibility(View.GONE);
+            table_package.setVisibility(View.GONE);
             table_regular.setVisibility(View.VISIBLE);
             table_regular_view.setVisibility(View.VISIBLE);
             table_save.setVisibility(View.VISIBLE);
@@ -1629,8 +1831,15 @@ public class MainFwActivity extends AppCompatActivity
             }
 
             bottomLayout_detaile.setBackgroundColor(getResources().getColor(R.color.mehrune));
-            Spanned result = Html.fromHtml(product.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
+
+            String displayPrice=product.getDisplayPrice().toString();
+            if(product.getDisplayPrice().toString().split("\\.").length>1)
+                displayPrice= product.getDisplayPrice().split("\\.")[0]+"<sup>"+ product.getDisplayPrice().split("\\.")[1]+"<sup>";
+            Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
             tv_price_detaile.setText(result);
+
+            //Spanned result = Html.fromHtml(product.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
+            //tv_price_detaile.setText(result);
 
             String chars = capitalize(product.getDescription());
             tv_detail_detail.setText(chars+" "+product.getPackagingSize());
@@ -1756,8 +1965,17 @@ public class MainFwActivity extends AppCompatActivity
                 }
             }
             bottomLayout_detaile.setBackgroundColor(getResources().getColor(R.color.green));
-            Spanned result = Html.fromHtml(product.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
+
+            String displayPrice=product.getDisplayPrice().toString();
+            if(product.getDisplayPrice().toString().split("\\.").length>1)
+                displayPrice= product.getDisplayPrice().split("\\.")[0]+"<sup>"+ product.getDisplayPrice().split("\\.")[1]+"<sup>";
+
+            Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>")+"*");
+            Log.i("anshu", String.valueOf(result));
             tv_price_detaile.setText(result);
+
+           /* Spanned result = Html.fromHtml(product.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
+            tv_price_detaile.setText(result);*/
 
             String chars = capitalize(product.getDescription());
             tv_detail_detail.setText(chars+" "+product.getPackagingSize());
@@ -1796,14 +2014,12 @@ public class MainFwActivity extends AppCompatActivity
         }else if(product.getPrimaryOfferTypeId()==1){
             table_limit.setVisibility(View.GONE);
             table_limit_view.setVisibility(View.GONE);
-            table_package_view.setVisibility(View.VISIBLE);
-            table_package.setVisibility(View.VISIBLE);
+            table_package_view.setVisibility(View.GONE);
+            table_package.setVisibility(View.GONE);
             table_regular.setVisibility(View.VISIBLE);
             table_regular_view.setVisibility(View.VISIBLE);
             table_save.setVisibility(View.VISIBLE);
             table_save_view.setVisibility(View.VISIBLE);
-            table_package.setVisibility(View.VISIBLE);
-            table_package_view.setVisibility(View.VISIBLE);
             table_coupon.setVisibility(View.GONE);
             table_coupon_view.setVisibility(View.GONE);
             tv_package_detail.setText(product.getPackagingSize());
@@ -1822,8 +2038,16 @@ public class MainFwActivity extends AppCompatActivity
                 remove_layout_detail.setVisibility(View.GONE);
             }
             bottomLayout_detaile.setBackgroundColor(getResources().getColor(R.color.blue));
-            Spanned result = Html.fromHtml(product.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
+
+            // old display price
+            String displayPrice=product.getDisplayPrice().toString();
+            if(product.getDisplayPrice().toString().split("\\.").length>1)
+                displayPrice= product.getDisplayPrice().split("\\.")[0]+"<sup>"+ product.getDisplayPrice().split("\\.")[1]+"<sup>";
+            Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
             tv_price_detaile.setText(result);
+
+            /*Spanned result = Html.fromHtml(product.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
+            tv_price_detaile.setText(result);*/
 
             String chars = capitalize(product.getDescription());
             tv_detail_detail.setText(chars+" "+product.getPackagingSize());
@@ -2184,7 +2408,7 @@ public class MainFwActivity extends AppCompatActivity
 //////////////////////////////////////////////////////////////////////////
     @Override
     public void onProductVeritiesSelected(final Product product) {
-        if (product.getPrimaryOfferTypeId()==3){
+        if (product.getPrimaryOfferTypeId()==3 || product.getPrimaryOfferTypeId()==2){
 
             if (product.getClickCount()==0){
                 liner_all_Varieties_activate.setVisibility(View.VISIBLE);
@@ -3310,7 +3534,14 @@ public class MainFwActivity extends AppCompatActivity
             }
 
             bottomLayout_detaile.setBackgroundColor(getResources().getColor(R.color.mehrune));
-            Spanned result = Html.fromHtml(relatedItem.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
+
+            String displayPrice=relatedItem.getDisplayPrice().toString();
+            if(relatedItem.getDisplayPrice().toString().split("\\.").length>1)
+                displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ relatedItem.getDisplayPrice().split("\\.")[1]+"<sup>";
+            Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
+
+
+           // Spanned result = Html.fromHtml(relatedItem.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
             tv_price_detaile.setText(result);
 
             String chars = capitalize(relatedItem.getDescription());

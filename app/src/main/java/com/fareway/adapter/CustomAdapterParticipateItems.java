@@ -123,8 +123,15 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 } catch (Exception e) {
 
                 }
-                Spanned result = Html.fromHtml(relatedItem.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
+
+                String displayPrice=relatedItem.getDisplayPrice().toString();
+                if(relatedItem.getDisplayPrice().toString().split("\\.").length>1)
+                    displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ relatedItem.getDisplayPrice().split("\\.")[1]+"<sup>";
+                Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
                 holder.tv_price.setText(result);
+
+                /*Spanned result = Html.fromHtml(relatedItem.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
+                holder.tv_price.setText(result);*/
                 holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.mehrune));
                 if (relatedItem.getClickCount()>0) {
                 if (relatedItem.getListCount()>0){

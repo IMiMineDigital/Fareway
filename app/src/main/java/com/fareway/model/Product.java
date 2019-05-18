@@ -57,6 +57,7 @@ public class Product {
     private String RewardValue;
     private String RewardQty;
     private int OfferDefinitionId;
+    private String CouponImageURl;
 
 
 
@@ -502,6 +503,14 @@ public class Product {
 
     public void setOfferDefinitionId(int offerDefinitionId) {
         OfferDefinitionId = offerDefinitionId;
+    }
+
+    public String getCouponImageURl() {
+        return CouponImageURl;
+    }
+
+    public void setCouponImageURl(String couponImageURl) {
+        CouponImageURl = couponImageURl;
     }
 }
 
