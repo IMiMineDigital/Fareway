@@ -1534,6 +1534,7 @@ public class MainFwActivity extends AppCompatActivity
         TextView tv_deal_type_detaile = (TextView) findViewById(R.id.tv_deal_type_detaile);
         TextView tv_coupon_detail = (TextView) findViewById(R.id.tv_coupon_detail);
         TextView tv_varieties_detail = (TextView) findViewById(R.id.tv_varieties_detail);
+        tv_varieties_detail.setText(product.getRelatedItemCount()+" verieties");
         //detail verite click lisner
         tv_varieties_detail.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -6,10 +6,10 @@
     <color name="white">#ffffff</color>
     <color name="black">#000000</color>
     <color name="grey">#acaaaa</color>
-    <color name="mehrune">#d0222d</color>
-    <color name="red">#d0222d</color>
-    <color name="green">#99bb46</color>
-    <color name="dark_green">#468414</color>
+    <color name="mehrune">#d21f26</color>
+    <color name="red">#d21f26</color>
+    <color name="green">#9bbb59</color>
+    <color name="dark_green">#027c05</color>
     <color name="dark_grey">#747171</color>
     <color name="yellow">#e2c119</color>
     <color name="blue">#095295</color>

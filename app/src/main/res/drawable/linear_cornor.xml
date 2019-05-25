@@ -6,11 +6,11 @@
     <solid
         android:color="#d0222d" >
     </solid>
-
+<!--
     <stroke
         android:width="2dp"
         android:color="#C4CDE0" >
-    </stroke>
+    </stroke>-->
 
     <padding
         android:left="5dp"

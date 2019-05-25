@@ -7,8 +7,10 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="price_size">14sp</dimen>
     <dimen name="price_size2">7sp</dimen>
-    <dimen name="verites_size">@dimen/_8ssp</dimen>
-    <dimen name="verites_size2">@dimen/_5ssp</dimen>
+    <dimen name="verites_size">4sp</dimen>
+    <dimen name="verites_size2">2sp</dimen>
+    <dimen name="coupon_flag_size">4sp</dimen>
+    <dimen name="coupon_flag_size2">2sp</dimen>
     <dimen name="save_size">@dimen/_6ssp</dimen>
     <dimen name="save_size2">@dimen/_4ssp</dimen>
     <dimen name="unit_size">@dimen/_6ssp</dimen>
@@ -19,12 +21,16 @@
     <dimen name="deal_type_size2">5sp</dimen>
     <dimen name="status_size">@dimen/_6ssp</dimen>
     <dimen name="status_size2">@dimen/_3ssp</dimen>
-    <dimen name="circularlayput_size">@dimen/_70ssp</dimen>
-    <dimen name="circularlayput_size2">@dimen/_35ssp</dimen>
+    <dimen name="circularlayout_size">@dimen/_70sdp</dimen>
+    <dimen name="circularlayout_size2">@dimen/_35sdp</dimen>
+    <dimen name="remove_layout_height_size">@dimen/_50sdp</dimen>
+    <dimen name="remove_layout_width_size">@dimen/_60sdp</dimen>
+    <dimen name="remove_layout_height_size2">@dimen/_25sdp</dimen>
+    <dimen name="remove_layout_width_size2">@dimen/_30sdp</dimen>
     <dimen name="imv_layout_size">@dimen/_140sdp</dimen>
     <dimen name="imv_layout_size2">@dimen/_90sdp</dimen>
-    <dimen name="imv_status_size">@dimen/_12ssp</dimen>
-    <dimen name="imv_status_size2">@dimen/_7ssp</dimen>
+    <dimen name="imv_status_size">14sp</dimen>
+    <dimen name="imv_status_size2">7sp</dimen>
     <dimen name="saving_size">@dimen/_23ssp</dimen>
     <dimen name="saving_size2">@dimen/_15ssp</dimen>
 
