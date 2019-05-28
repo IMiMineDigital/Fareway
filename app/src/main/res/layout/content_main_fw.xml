@@ -262,24 +262,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:layout_marginLeft="@dimen/_10sdp">
-            <!--
-            <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:src="@drawable/notebookicon"/>
-                <TextView
-                    android:gravity="center"
-                    android:background="@drawable/red_circle"
-                    android:id="@+id/tv_number_item"
-                    android:textColor="@color/white"
-                    android:textStyle="bold"
-                    android:layout_width="@dimen/_20sdp"
-                    android:layout_height="@dimen/_20sdp"/>
-            </LinearLayout> -->
+
 
             <RelativeLayout
                 android:layout_gravity="center"

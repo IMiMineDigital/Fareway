@@ -283,13 +283,6 @@ public class MainFwActivity extends AppCompatActivity
         liner_all_Varieties_activate=findViewById(R.id.liner_all_Varieties_activate);
         all_Varieties_activate = findViewById(R.id.all_Varieties_activate);
         imv_logo=findViewById(R.id.imv_logo);
-        imv_logo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                startActivity(new Intent(MainFwActivity.this,PurchaseHistory.class));
-            }
-        });
-
         header_title = findViewById(R.id.header_title);
         shopping_list_header = findViewById(R.id.shopping_list_header);
         tv_number_item = findViewById(R.id.tv_number_item);
@@ -513,19 +506,15 @@ public class MainFwActivity extends AppCompatActivity
                 popupMenu.show();
                 return true;
             }else if(i == R.id.ShoppingList){
-                //rv_items.setVisibility(View.INVISIBLE);
-                //rowLayout.setVisibility(View.GONE);
                 rv_shopping_list_items.setVisibility(View.VISIBLE);
-                //fetchShoppingListLoad();
-                shoppingListLoad();
                 header_title.setVisibility(View.INVISIBLE);
                 shopping_list_header.setVisibility(View.VISIBLE);
-
                 navigation.setVisibility(View.GONE);
-                //scrollView.setVisibility(View.VISIBLE);
                 DetaileToolbar.setVisibility(View.VISIBLE);
                 rv_items.setVisibility(View.GONE);
                 toolbar.setVisibility(View.GONE);
+                shoppingListLoad();
+                //startActivity(new Intent(MainFwActivity.this,ShoppingFw.class));
                 DetaileToolbar.setTitle("Shopping List");
                 DetaileToolbar.setOnClickListener(new View.OnClickListener() {
                     @Override

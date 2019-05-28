@@ -154,9 +154,9 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             holder.tv_coupon_flag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
             holder.tv_price.setTextSize(TypedValue.COMPLEX_UNIT_SP, 38);
             holder.tv_unit.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-            holder.tv_detail.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            holder.tv_saving.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            holder.tv_detail.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
             holder.tv_deal_type.setTextSize(TypedValue.COMPLEX_UNIT_SP, 19);
-            holder.tv_saving.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
 
 
 
@@ -365,6 +365,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             }else {
                 Log.i("elseincircular", String.valueOf(product.getInCircular()));
                 if (product.getPrimaryOfferTypeId() == 3) {
+
                     holder.tv_coupon_flag.setText("With MyFareway");
                     holder.limit.setText("");
                     holder.tv_unit.setText(product.getPackagingSize());
@@ -379,8 +380,11 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
                     holder.tv_price.setText(result);
 
-                    holder.tv_saving.setVisibility(TextView.VISIBLE);
                     holder.liner_save.setVisibility(View.VISIBLE);
+                    holder.tv_saving.setVisibility(TextView.VISIBLE);
+                    holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.white));
+                    holder.liner_save.setBackground(mContext.getResources().getDrawable(R.drawable.red_strip));
+
                     try {
                         DecimalFormat dF = new DecimalFormat("00.00");
                         Number num = dF.parse(product.getSavings());
@@ -679,6 +683,12 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }
 
                 }else if (product.getPrimaryOfferTypeId() == 1) {
+
+                    holder.liner_save.setVisibility(View.VISIBLE);
+                    holder.tv_saving.setVisibility(TextView.VISIBLE);
+                    holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.white));
+                    holder.liner_save.setBackground(mContext.getResources().getDrawable(R.drawable.red_strip));
+
                     holder.tv_coupon_flag.setText("");
                     holder.limit.setText("");
                     holder.tv_unit.setText(product.getPackagingSize());
@@ -698,8 +708,6 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     /*Spanned result = Html.fromHtml(product.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
                     holder.tv_price.setText(result);*/
 
-                    holder.tv_saving.setVisibility(TextView.VISIBLE);
-                    holder.liner_save.setVisibility(View.VISIBLE);
                     try {
                         DecimalFormat dF = new DecimalFormat("0.00");
                         Number num = dF.parse(product.getSavings());

@@ -4,14 +4,12 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
-import android.graphics.drawable.Drawable;
-import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -23,13 +21,12 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.fareway.R;
-import com.fareway.adapter.PurchaseHistoryAdapter;
+import com.fareway.adapter.ShoppingListAdapter;
 import com.fareway.controller.FarewayApplication;
-import com.fareway.model.Purchase;
+import com.fareway.model.Shopping;
 import com.fareway.utility.AppUtilFw;
 import com.fareway.utility.ConnectivityReceiver;
 import com.fareway.utility.Constant;
-import com.fareway.utility.DividerRVDecoration;
 import com.fareway.utility.NetworkUtils;
 import com.fareway.utility.UserAlertDialog;
 import com.google.gson.Gson;
@@ -48,39 +45,41 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class PurchaseHistory extends AppCompatActivity implements PurchaseHistoryAdapter.PurchaseHistoryAdapterListener {
-    private ProgressDialog progressDialog;
+public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter.ShoppingListAdapterListener {
+
     AppUtilFw appUtil;
-    private Activity activity;
+    private ProgressDialog progressDialog;
     private AlertDialog alertDialog;
-    private RequestQueue mQueue;
-    private static RecyclerView rv_purchase_history;
-    private ArrayList<Purchase> purchaseArrayList;
-    private PurchaseHistoryAdapter purchaseListAdapter;
-    public static JSONArray purchasemessage;
     private UserAlertDialog userAlertDialog;
+    private Activity activity;
+    private RequestQueue mQueue;
+    private ArrayList<Shopping> shoppingArrayList;
+    public static JSONArray shopping;
+    private ShoppingListAdapter shoppingListAdapter;
+    private static RecyclerView rv_shopping_list_items;
+    private TextView tv_number_item;
+    TextView tv;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_purchase_history);
-        activity=PurchaseHistory.this;
+        setContentView(R.layout.activity_shopping_fw);
+        activity=ShoppingFw.this;
         mQueue= FarewayApplication.getmInstance(this).getmRequestQueue();
         appUtil=new AppUtilFw(activity);
         userAlertDialog=new UserAlertDialog(activity);
+        tv_number_item = findViewById(R.id.tv_number_item);
 
-        purchaseArrayList = new ArrayList<>();
-        rv_purchase_history = (RecyclerView) findViewById(R.id.rv_purchase_history);
-        purchaseListAdapter = new PurchaseHistoryAdapter(this, purchaseArrayList,this,this);
-        RecyclerView.LayoutManager mLayoutManagerShoppingList = new LinearLayoutManager(activity);
-        rv_purchase_history.setLayoutManager(mLayoutManagerShoppingList);
-        rv_purchase_history.setAdapter(purchaseListAdapter);
-       /* Drawable dividerDrawableShoppingList = ContextCompat.getDrawable(activity, R.drawable.divider);
-        rv_purchase_history.addItemDecoration(new DividerRVDecoration(dividerDrawableShoppingList));*/
-
-        getSupportActionBar().setTitle("Past Purchase");
+        getSupportActionBar().setTitle("Shopping List");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
+
+        shoppingArrayList = new ArrayList<>();
+        rv_shopping_list_items = (RecyclerView) findViewById(R.id.rv_shopping_list_items);
+        shoppingListAdapter = new ShoppingListAdapter(this, shoppingArrayList,this);
+        RecyclerView.LayoutManager mLayoutManagerShoppingList = new LinearLayoutManager(activity);
+        rv_shopping_list_items.setLayoutManager(mLayoutManagerShoppingList);
+        rv_shopping_list_items.setAdapter(shoppingListAdapter);
 
         String saveDate = appUtil.getPrefrence(".expires");
         if (saveDate.length()==0){
@@ -115,7 +114,7 @@ public class PurchaseHistory extends AppCompatActivity implements PurchaseHistor
 
                     startActivity(i);
                     finish();*/
-                    purchaseHistoryLoad();
+                    shoppingListLoad();
                 }else {
                     getTokenkey();
                 }
@@ -136,35 +135,62 @@ public class PurchaseHistory extends AppCompatActivity implements PurchaseHistor
             }
         }
 
-
     }
 
-    private void purchaseHistoryLoad() {
+    private void shoppingListLoad() {
         if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
             try {
                 progressDialog = new ProgressDialog(activity);
                 progressDialog.setMessage("Processing");
                 progressDialog.show();
-                StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET, Constant.WEB_URL + Constant.PURCHASEHISTORY+appUtil.getPrefrence("MemberId"),
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET, Constant.WEB_URL + Constant.ShoppingList+"MemberId="+appUtil.getPrefrence("MemberId")+"&CategoryID=1",
                         new Response.Listener<String>(){
                             @Override
                             public void onResponse(String response) {
-                                Log.i("Fareway Api Data", response.toString());
+                                Log.i("Fareway response Main", response.toString());
 
                                 try {
                                     JSONObject root = new JSONObject(response);
                                     root.getString("errorcode");
                                     Log.i("errorcode", root.getString("errorcode"));
+                                    Log.i("message", root.getString("message"));
+
+
+                                    JSONObject root2 = new JSONObject(root.getString("message"));
                                     if (root.getString("errorcode").equals("0")){
                                         progressDialog.dismiss();
-                                        purchasemessage= root.getJSONArray("purchasemessage");
+                                        Log.i("anshuman","test");
 
-                                        purchaseArrayList.clear();
-                                        List<Purchase> items = new Gson().fromJson(purchasemessage.toString(), new TypeToken<List<Purchase>>() {
-                                        }.getType());
-                                        purchaseArrayList.addAll(items);
-                                        purchaseListAdapter.notifyDataSetChanged();
-                                        progressDialog.dismiss();
+                                        try
+                                        {
+                                            shopping= root2.getJSONArray("ShoppingListItems");
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            shopping = null;
+                                        }
+
+                                        if (shopping==null ){
+                                            Log.i("anshuman","test");
+                                            shoppingArrayList.clear();
+                                            shoppingListAdapter.notifyDataSetChanged();
+                                            tv_number_item.setText(String.valueOf(0));
+                                           // tv.setText(String.valueOf(0));
+
+                                        }else {
+                                            Log.i("shopping", String.valueOf(shopping));
+
+                                            for (int i = 0; i < shopping.length(); i++) {
+                                            }
+                                            tv_number_item.setText(String.valueOf(shopping.length()));
+                                            //tv.setText(String.valueOf(shopping.length()));
+
+                                            shoppingArrayList.clear();
+                                            List<Shopping> items = new Gson().fromJson(shopping.toString(), new TypeToken<List<Shopping>>() {
+                                            }.getType());
+                                            shoppingArrayList.addAll(items);
+                                            shoppingListAdapter.notifyDataSetChanged();
+                                        }
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -195,7 +221,7 @@ public class PurchaseHistory extends AppCompatActivity implements PurchaseHistor
                     @Override
                     public Map<String, String> getHeaders() {
                         Map<String, String> params = new HashMap<String, String>();
-                        params.put("Content-Type", "application/x-www-form-urlencoded");
+                        //params.put("Content-Type", "application/x-www-form-urlencoded");
                         params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
                         return params;
                     }
@@ -219,11 +245,81 @@ public class PurchaseHistory extends AppCompatActivity implements PurchaseHistor
 //                displayAlert();
             }
         } else {
-            progressDialog.dismiss();
-           // alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
-           //         getString(R.string.ok),getString(R.string.alert));
-           // alertDialog.show();
-//            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
+            alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                    getString(R.string.ok),getString(R.string.alert));
+            alertDialog.show();
+            //Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    @Override
+    public void onShoppingItemSelected(Shopping shopping) {
+        Log.i("test",shopping.getDisplayUPC().replace("UPC: ",""));
+
+      /*  for (int i = 0; i < message.length(); i++) {
+
+
+            try {
+                if (message.getJSONObject(i).getString("UPC").contains(shopping.getDisplayUPC().replace("UPC: ",""))) {
+                    message.getJSONObject(i).put("ListCount", 0);
+                    message.getJSONObject(i).put("ClickCount", 0);
+
+                }
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }*/
+       // fetchProduct();
+        //shoppingListLoad();
+
+        Log.i("remove","remove");
+        String url = Constant.WEB_URL+Constant.SHOPPINGLISTSINGAL+shopping.getShoppingListItemID()+"&MemberId="+appUtil.getPrefrence("MemberId");
+        StringRequest  jsonObjectRequest = new StringRequest (Request.Method.DELETE, url,
+                new Response.Listener<String >() {
+                    @Override
+                    public void onResponse(String  response) {
+                        Log.i("success", String.valueOf(response));
+                        shoppingListLoad();
+                        // remove_layout_detail.setVisibility(View.GONE);
+                        //    count_product_number_detail.setVisibility(View.GONE);
+                        // product.setClickCount(1);
+                        // tv_status_detaile.setText("Add");
+                        // circular_layout_detaile.setBackground(getResources().getDrawable(R.drawable.circular_red_bg));
+                        //  imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.addwhite));
+                        //remove quantity
+                        //  SetRemoveActivateDetail(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("fail", String.valueOf(error));
+            }
+        }){
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                params.put("Content-Type", "application/json ;charset=utf-8");
+                return params;
+            }
+        };
+        RetryPolicy policy = new DefaultRetryPolicy
+                (50000,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        jsonObjectRequest.setRetryPolicy(policy);
+        try {
+            mQueue.add(jsonObjectRequest);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
         }
     }
 
@@ -231,23 +327,6 @@ public class PurchaseHistory extends AppCompatActivity implements PurchaseHistor
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
-    }
-
-    @Override
-    public void onProductSelected(final Purchase purchase) {
-
-        Toast.makeText(getApplicationContext(), "Selected: " + purchase.getPurchasedate(), Toast.LENGTH_SHORT).show();
-        Intent i = new Intent(PurchaseHistory.this, PurchaseHistoryDetail.class);
-        i.putExtra("PURCHASEID",purchase.getPurchaseid());
-        i.putExtra("PURCHASEDATE",purchase.getPurchasedate());
-        i.putExtra("PURCHASESTORELOCATION",purchase.getStorelocation());
-        i.putExtra("PURCHASETOTALAMOUNT",purchase.getTotalamount());
-        startActivity(i);
-    }
-
-    @Override
-    public void onProductDateSelected(Purchase purchase) {
-        Toast.makeText(getApplicationContext(), "Selected: " + purchase.getPurchasedate(), Toast.LENGTH_SHORT).show();
     }
 
     private void getTokenkey() {

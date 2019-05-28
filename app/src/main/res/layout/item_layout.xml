@@ -208,7 +208,8 @@
                     android:text="13 OZ"
                     android:textColor="@color/black"
                     android:textStyle="bold"
-                    android:maxLines="1"/>
+                    android:maxLines="2"
+                    android:lines="2"/>
 
                 <LinearLayout
                     android:id="@+id/liner_save"

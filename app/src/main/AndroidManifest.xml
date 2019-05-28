@@ -50,6 +50,8 @@
             android:theme="@style/FarewayMainTheme" />
         <activity
             android:name=".activity.PurchaseHistoryDetail"
+            android:theme="@style/FarewayMainTheme" />
+        <activity android:name=".activity.ShoppingFw"
             android:theme="@style/FarewayMainTheme"/>
 
         <meta-data
