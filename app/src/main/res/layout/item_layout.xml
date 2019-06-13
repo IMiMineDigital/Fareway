@@ -59,8 +59,9 @@
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/_16sdp"
-                    android:layout_marginTop="@dimen/_42sdp"
+                    android:layout_marginTop="@dimen/_49sdp"
+                    android:layout_marginRight="@dimen/_15sdp"
+
                     android:gravity="center"
                     android:orientation="vertical">
                     <TextView
@@ -219,6 +220,7 @@
                     android:gravity="right|center">
 
                     <TextView
+                        android:gravity="right"
                         android:id="@+id/tv_saving"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

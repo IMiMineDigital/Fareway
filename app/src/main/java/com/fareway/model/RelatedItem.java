@@ -45,6 +45,14 @@ public class RelatedItem {
     private String AdPrice;
     private String PricingMasterID;
     private String Quantity;
+    private int OfferDefinitionId;
+    private String CouponImageURl;
+    private String oCouponShortDescription;
+    private int MinAmount;
+    private String PercentSavings;
+    private String RewardValue;
+    private String RewardQty;
+    private String RewardType;
 
     public String getName() {
         return name;
@@ -388,5 +396,69 @@ public class RelatedItem {
 
     public void setQuantity(String quantity) {
         Quantity = quantity;
+    }
+
+    public int getOfferDefinitionId() {
+        return OfferDefinitionId;
+    }
+
+    public void setOfferDefinitionId(int offerDefinitionId) {
+        OfferDefinitionId = offerDefinitionId;
+    }
+
+    public String getCouponImageURl() {
+        return CouponImageURl;
+    }
+
+    public void setCouponImageURl(String couponImageURl) {
+        CouponImageURl = couponImageURl;
+    }
+
+    public String getoCouponShortDescription() {
+        return oCouponShortDescription;
+    }
+
+    public void setoCouponShortDescription(String oCouponShortDescription) {
+        this.oCouponShortDescription = oCouponShortDescription;
+    }
+
+    public int getMinAmount() {
+        return MinAmount;
+    }
+
+    public void setMinAmount(int minAmount) {
+        MinAmount = minAmount;
+    }
+
+    public String getPercentSavings() {
+        return PercentSavings;
+    }
+
+    public void setPercentSavings(String percentSavings) {
+        PercentSavings = percentSavings;
+    }
+
+    public String getRewardValue() {
+        return RewardValue;
+    }
+
+    public void setRewardValue(String rewardValue) {
+        RewardValue = rewardValue;
+    }
+
+    public String getRewardQty() {
+        return RewardQty;
+    }
+
+    public void setRewardQty(String rewardQty) {
+        RewardQty = rewardQty;
+    }
+
+    public String getRewardType() {
+        return RewardType;
+    }
+
+    public void setRewardType(String rewardType) {
+        RewardType = rewardType;
     }
 }

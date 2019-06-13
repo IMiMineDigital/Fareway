@@ -58,6 +58,7 @@ public class Product {
     private String RewardQty;
     private int OfferDefinitionId;
     private String CouponImageURl;
+    private String oCouponShortDescription;
 
 
 
@@ -511,6 +512,14 @@ public class Product {
 
     public void setCouponImageURl(String couponImageURl) {
         CouponImageURl = couponImageURl;
+    }
+
+    public String getoCouponShortDescription() {
+        return oCouponShortDescription;
+    }
+
+    public void setoCouponShortDescription(String oCouponShortDescription) {
+        this.oCouponShortDescription = oCouponShortDescription;
     }
 }
 

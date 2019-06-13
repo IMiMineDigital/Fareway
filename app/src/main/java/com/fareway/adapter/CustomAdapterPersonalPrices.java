@@ -1,6 +1,7 @@
 package com.fareway.adapter;
 
 import android.content.Context;
+import android.graphics.Typeface;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
@@ -147,6 +148,10 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             ViewGroup.LayoutParams remove = holder.remove_layout.getLayoutParams();
             remove.height = (int) mContext.getResources().getDimension(R.dimen.remove_layout_height_size);
             remove.width = (int) mContext.getResources().getDimension(R.dimen.remove_layout_width_size);
+
+            /*LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)holder.remove_layout.getLayoutParams();
+            params.setMargins(0, 0, 10, 0);
+            holder.remove_layout.setLayoutParams(params); */
 
             //holder.tv_varieties.setTextSize((int) mContext.getResources().getDimension(R.dimen.verites_size));
             //holder.tv_coupon_flag.setTextSize((int) mContext.getResources().getDimension(R.dimen.coupon_flag_size));
@@ -491,7 +496,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             DecimalFormat dF = new DecimalFormat("00.00");
                             try {
                                 Number rewardValue = dF.parse(product.getRewardValue());
-                                Spanned result = Html.fromHtml(new DecimalFormat("##.##").format(rewardValue)+"%OFF"+"<sup><small> *</small></sup>");
+                                Spanned result = Html.fromHtml(new DecimalFormat("##.##").format(rewardValue)+"% OFF"+"<sup><small> *</small></sup>");
                                 if (product.getOfferDefinitionId()==3){
                                     holder.tv_price.setText("FREE");
                                 }else {
@@ -512,13 +517,24 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }
                     holder.limit.setText(headerContent);
 
-                    String chars = capitalize("*"+product.getDescription());
-                    holder.tv_detail.setText(chars);
-                    if (product.getSavings().equalsIgnoreCase("0.0000")){
-                        holder.liner_save.setVisibility(View.GONE);
+                    if (product.getOfferDefinitionId()==3 || product.getOfferDefinitionId()==2 || product.getOfferDefinitionId()==1 || product.getOfferDefinitionId()==4){
+                        String chars = capitalize(product.getDescription());
+                        holder.tv_detail.setText(chars);
+                        if (product.getSavings().equalsIgnoreCase("0.0000")){
+                            holder.liner_save.setVisibility(View.GONE);
+                        }else {
+                            holder.liner_save.setVisibility(View.VISIBLE);
+                        }
                     }else {
-                        holder.liner_save.setVisibility(View.VISIBLE);
+                        String chars = capitalize("*"+product.getDescription());
+                        holder.tv_detail.setText(chars);
+                        if (product.getSavings().equalsIgnoreCase("0.0000")){
+                            holder.liner_save.setVisibility(View.GONE);
+                        }else {
+                            holder.liner_save.setVisibility(View.VISIBLE);
+                        }
                     }
+
 
                     try {
                         if (product.getOfferDefinitionId()==4){
@@ -536,6 +552,9 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             if (product.getRewardType().equalsIgnoreCase("1")){
                                 holder.tv_saving.setText("Get "+product.getRewardQty()+" $"+new DecimalFormat("##.##").format(reward_value)+" Off *");
                                 holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.red));
+                                holder.tv_price.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
+                                holder.tv_saving.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
+                                holder.tv_saving.setTypeface(holder.tv_saving.getTypeface(), Typeface.BOLD);
                             }else {
                                 holder.tv_saving.setText("Get "+product.getRewardQty()+" "+new DecimalFormat("##.##").format(reward_value)+" Off *");
                                 holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.black));
@@ -546,24 +565,24 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             DecimalFormat dF = new DecimalFormat("00.00");
                             Number adPrice = dF.parse(product.getAdPrice());
                             Number couponDiscount = dF.parse(product.getCouponDiscount());
-                            holder.tv_saving.setText("AD PRICE " + new DecimalFormat("##.##").format(adPrice)+"\nCOUPON $"+couponDiscount+" OFF");
+                            holder.tv_saving.setText("Ad Price " + new DecimalFormat("##.##").format(adPrice)+"\nDigital Coupon $"+couponDiscount+" Off");
                             holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.black));
                             holder.liner_save.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                         }else if (product.getOfferDefinitionId()==3){
                             DecimalFormat dF = new DecimalFormat("00.00");
                             Number adPrice = dF.parse(product.getAdPrice());
                             Number couponDiscount = dF.parse(product.getCouponDiscount());
-                            holder.tv_saving.setText("AD PRICE " + new DecimalFormat("##.##").format(adPrice)+"\nCOUPON $"+couponDiscount+" OFF");
+                            holder.tv_saving.setText("Ad Price " + new DecimalFormat("##.##").format(adPrice)+"\nDigital Coupon $"+couponDiscount+" Off");
                             holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.black));
                             holder.liner_save.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                         }else if (product.getOfferDefinitionId()==2){
                             DecimalFormat dF = new DecimalFormat("00.00");
                             Number regularPrice = dF.parse(product.getRegularPrice());
                             Number savings = dF.parse(product.getSavings());
-                            holder.tv_saving.setText("AD PRICE $ " + new DecimalFormat("##.##").format(regularPrice)+"\nSAVINGS $"+savings+" ON "+product.getRequiredQty());
+                            holder.tv_saving.setText("Ad Price $ " + new DecimalFormat("##.##").format(regularPrice)+"\nSAVINGS $"+savings+" ON "+product.getRequiredQty());
                             holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.black));
                             holder.liner_save.setBackgroundColor(mContext.getResources().getColor(R.color.white));
-                        }else if (product.getOfferDefinitionId()==5){
+                        }else if (product.getOfferDefinitionId()==5) {
                             //coupon image hai
                             DecimalFormat dF = new DecimalFormat("00.00");
                             //Number adPrice = dF.parse(product.getAdPrice());
@@ -575,6 +594,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             holder.tv_saving.setText("");
                             holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.white));
                             holder.liner_save.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                            holder.tv_detail.setText("* "+product.getoCouponShortDescription());
                         }
                        /* if (product.getRewardType().equalsIgnoreCase("3")&&product.getPrimaryOfferTypeId()==2){
                             DecimalFormat dF = new DecimalFormat("00.00");
@@ -747,14 +767,20 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
                 }
             }
-            if (product.getOfferDefinitionId()==5||product.getOfferDefinitionId()==8){
-                Glide.with(mContext)
-                        .load(product.getCouponImageURl())
-                        .into(holder.imv_item);
+            if (product.getOfferDefinitionId()==5){
+                if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+                    Glide.with(mContext)
+                            .load("http://platform.immdemo.net/web/images/GEnoimage.jpg")
+                            .into(holder.imv_item);
+                }else {
+                    Glide.with(mContext)
+                            .load(product.getCouponImageURl())
+                            .into(holder.imv_item);
+                }
             }else {
                 if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
                     Glide.with(mContext)
-                            .load("http://fwstaging.immdemo.net/webapiaccessclient/images/GEnoimage.jpg")
+                            .load("http://platform.immdemo.net/web/images/GEnoimage.jpg")
                             .into(holder.imv_item);
                 }else {
                     Glide.with(mContext)
@@ -762,9 +788,9 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             .into(holder.imv_item);
                 }
             }
-          /*  if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+         /*   if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
                 Glide.with(mContext)
-                        .load("http://fwstaging.immdemo.net/webapiaccessclient/images/GEnoimage.jpg")
+                        .load("http://platform.immdemo.net/web/images/GEnoimage.jpg")
                         .into(holder.imv_item);
             }else {
                 Glide.with(mContext)
@@ -1000,6 +1026,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             }else {
                 Log.i("elseincircular", String.valueOf(product.getInCircular()));
                 if (product.getPrimaryOfferTypeId() == 3) {
+
                     holder.tv_coupon_flag.setText("With MyFareway");
                     holder.limit.setText("");
                     holder.tv_unit.setText(product.getPackagingSize());
@@ -1014,8 +1041,11 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
                     holder.tv_price.setText(result);
 
-                    holder.tv_saving.setVisibility(TextView.VISIBLE);
                     holder.liner_save.setVisibility(View.VISIBLE);
+                    holder.tv_saving.setVisibility(TextView.VISIBLE);
+                    holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.white));
+                    holder.liner_save.setBackground(mContext.getResources().getDrawable(R.drawable.red_strip));
+
                     try {
                         DecimalFormat dF = new DecimalFormat("00.00");
                         Number num = dF.parse(product.getSavings());
@@ -1122,7 +1152,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             DecimalFormat dF = new DecimalFormat("00.00");
                             try {
                                 Number rewardValue = dF.parse(product.getRewardValue());
-                                Spanned result = Html.fromHtml(new DecimalFormat("##.##").format(rewardValue)+"%OFF"+"<sup><small> *</small></sup>");
+                                Spanned result = Html.fromHtml(new DecimalFormat("##.##").format(rewardValue)+"% OFF"+"<sup><small> *</small></sup>");
                                 if (product.getOfferDefinitionId()==3){
                                     holder.tv_price.setText("FREE");
                                 }else {
@@ -1143,13 +1173,24 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }
                     holder.limit.setText(headerContent);
 
-                    String chars = capitalize("*"+product.getDescription());
-                    holder.tv_detail.setText(chars);
-                    if (product.getSavings().equalsIgnoreCase("0.0000")){
-                        holder.liner_save.setVisibility(View.GONE);
+                    if (product.getOfferDefinitionId()==3 || product.getOfferDefinitionId()==2 || product.getOfferDefinitionId()==1 || product.getOfferDefinitionId()==4){
+                        String chars = capitalize(product.getDescription());
+                        holder.tv_detail.setText(chars);
+                        if (product.getSavings().equalsIgnoreCase("0.0000")){
+                            holder.liner_save.setVisibility(View.GONE);
+                        }else {
+                            holder.liner_save.setVisibility(View.VISIBLE);
+                        }
                     }else {
-                        holder.liner_save.setVisibility(View.VISIBLE);
+                        String chars = capitalize("*"+product.getDescription());
+                        holder.tv_detail.setText(chars);
+                        if (product.getSavings().equalsIgnoreCase("0.0000")){
+                            holder.liner_save.setVisibility(View.GONE);
+                        }else {
+                            holder.liner_save.setVisibility(View.VISIBLE);
+                        }
                     }
+
 
                     try {
                         if (product.getOfferDefinitionId()==4){
@@ -1167,6 +1208,9 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             if (product.getRewardType().equalsIgnoreCase("1")){
                                 holder.tv_saving.setText("Get "+product.getRewardQty()+" $"+new DecimalFormat("##.##").format(reward_value)+" Off *");
                                 holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.red));
+                                holder.tv_price.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
+                                holder.tv_saving.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
+                                holder.tv_saving.setTypeface(holder.tv_saving.getTypeface(), Typeface.BOLD);
                             }else {
                                 holder.tv_saving.setText("Get "+product.getRewardQty()+" "+new DecimalFormat("##.##").format(reward_value)+" Off *");
                                 holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.black));
@@ -1177,24 +1221,24 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             DecimalFormat dF = new DecimalFormat("00.00");
                             Number adPrice = dF.parse(product.getAdPrice());
                             Number couponDiscount = dF.parse(product.getCouponDiscount());
-                            holder.tv_saving.setText("AD PRICE " + new DecimalFormat("##.##").format(adPrice)+"\nCOUPON $"+couponDiscount+" OFF");
+                            holder.tv_saving.setText("Ad Price " + new DecimalFormat("##.##").format(adPrice)+"\nDigital Coupon $"+couponDiscount+" Off");
                             holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.black));
                             holder.liner_save.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                         }else if (product.getOfferDefinitionId()==3){
                             DecimalFormat dF = new DecimalFormat("00.00");
                             Number adPrice = dF.parse(product.getAdPrice());
                             Number couponDiscount = dF.parse(product.getCouponDiscount());
-                            holder.tv_saving.setText("AD PRICE " + new DecimalFormat("##.##").format(adPrice)+"\nCOUPON $"+couponDiscount+" OFF");
+                            holder.tv_saving.setText("Ad Price " + new DecimalFormat("##.##").format(adPrice)+"\nDigital Coupon $"+couponDiscount+" Off");
                             holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.black));
                             holder.liner_save.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                         }else if (product.getOfferDefinitionId()==2){
                             DecimalFormat dF = new DecimalFormat("00.00");
                             Number regularPrice = dF.parse(product.getRegularPrice());
                             Number savings = dF.parse(product.getSavings());
-                            holder.tv_saving.setText("AD PRICE $ " + new DecimalFormat("##.##").format(regularPrice)+"\nSAVINGS $"+savings+" ON "+product.getRequiredQty());
+                            holder.tv_saving.setText("Ad Price $ " + new DecimalFormat("##.##").format(regularPrice)+"\nSAVINGS $"+savings+" ON "+product.getRequiredQty());
                             holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.black));
                             holder.liner_save.setBackgroundColor(mContext.getResources().getColor(R.color.white));
-                        }else if (product.getOfferDefinitionId()==5){
+                        }else if (product.getOfferDefinitionId()==5) {
                             //coupon image hai
                             DecimalFormat dF = new DecimalFormat("00.00");
                             //Number adPrice = dF.parse(product.getAdPrice());
@@ -1206,6 +1250,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             holder.tv_saving.setText("");
                             holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.white));
                             holder.liner_save.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                            holder.tv_detail.setText("* "+product.getoCouponShortDescription());
                         }
                        /* if (product.getRewardType().equalsIgnoreCase("3")&&product.getPrimaryOfferTypeId()==2){
                             DecimalFormat dF = new DecimalFormat("00.00");
@@ -1314,6 +1359,12 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }
 
                 }else if (product.getPrimaryOfferTypeId() == 1) {
+
+                    holder.liner_save.setVisibility(View.VISIBLE);
+                    holder.tv_saving.setVisibility(TextView.VISIBLE);
+                    holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.white));
+                    holder.liner_save.setBackground(mContext.getResources().getDrawable(R.drawable.red_strip));
+
                     holder.tv_coupon_flag.setText("");
                     holder.limit.setText("");
                     holder.tv_unit.setText(product.getPackagingSize());
@@ -1333,8 +1384,6 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     /*Spanned result = Html.fromHtml(product.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
                     holder.tv_price.setText(result);*/
 
-                    holder.tv_saving.setVisibility(TextView.VISIBLE);
-                    holder.liner_save.setVisibility(View.VISIBLE);
                     try {
                         DecimalFormat dF = new DecimalFormat("0.00");
                         Number num = dF.parse(product.getSavings());
@@ -1374,14 +1423,20 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
                 }
             }
-            if (product.getOfferDefinitionId()==5||product.getOfferDefinitionId()==8){
-                Glide.with(mContext)
-                        .load(product.getCouponImageURl())
-                        .into(holder.imv_item);
+            if (product.getOfferDefinitionId()==5){
+                if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+                    Glide.with(mContext)
+                            .load("http://platform.immdemo.net/web/images/GEnoimage.jpg")
+                            .into(holder.imv_item);
+                }else {
+                    Glide.with(mContext)
+                            .load(product.getCouponImageURl())
+                            .into(holder.imv_item);
+                }
             }else {
                 if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
                     Glide.with(mContext)
-                            .load("http://fwstaging.immdemo.net/webapiaccessclient/images/GEnoimage.jpg")
+                            .load("http://platform.immdemo.net/web/images/GEnoimage.jpg")
                             .into(holder.imv_item);
                 }else {
                     Glide.with(mContext)
@@ -1389,9 +1444,9 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             .into(holder.imv_item);
                 }
             }
-          /*  if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+         /*   if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
                 Glide.with(mContext)
-                        .load("http://fwstaging.immdemo.net/webapiaccessclient/images/GEnoimage.jpg")
+                        .load("http://platform.immdemo.net/web/images/GEnoimage.jpg")
                         .into(holder.imv_item);
             }else {
                 Glide.with(mContext)

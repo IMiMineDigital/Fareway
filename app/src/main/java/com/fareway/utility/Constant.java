@@ -3,7 +3,7 @@ package com.fareway.utility;
 public class Constant {
 
 
-    public static final String WEB_URL="http://platformapi.immdemo.net/api/v1/";
+    public static final String WEB_URL="http://fwstagingapi.immdemo.net/api/v1/";
     public static final String GET_TOKEN="Token";
     public static final String LOGIN="Account/Login";
     public static final String PRODUCTLIST="Circular/Offers";
@@ -23,6 +23,8 @@ public class Constant {
     public static final String SHOPPINGLISTALL = "ShoopingList/ShoppingListByTYC?shoppinglistid=0";
     public static final String PURCHASEHISTORY = "Account/PurchaseHistory?MemberId=";
     public static final String PURCHASEDETAILHISTORY = "Account/PurchaseHistoryDetails?PurchaseId=";
+
+   // https://fwstagingapi.immdemo.net
 
 
 

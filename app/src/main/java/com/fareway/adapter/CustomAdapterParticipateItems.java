@@ -5,6 +5,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +33,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
     private CustomAdapterParticipateItemsListener listener2;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView tv_status, tv_price, tv_unit, tv_saving,tv_deal_type,tv_detail,tv_varieties;
+        private TextView tv_status, tv_price, tv_unit, tv_saving,tv_deal_type,tv_detail,tv_varieties,tv_coupon_flag;
         private ImageView imv_item, imv_info, imv_more, imv_status;
         private LinearLayout circular_layout, bottomLayout,remove_layout;
         private CardView card_view;
@@ -55,6 +56,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
             add_minus = (TextView) view.findViewById(R.id.add_minus);*/
             imv_item = (ImageView) view.findViewById(R.id.imv_item);
             tv_varieties = view.findViewById(R.id.tv_varieties);
+            tv_coupon_flag=(TextView)view.findViewById(R.id.tv_coupon_flag);
             //liner_save = (LinearLayout) view.findViewById(R.id.liner_save);
             //  imv_more = (ImageView) view.findViewById(R.id.imv_more);
             imv_status = (ImageView) view.findViewById(R.id.imv_status);
@@ -106,8 +108,27 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
 
         if(MainFwActivity.singleView) {
 
+            ViewGroup.LayoutParams active_button_params = holder.circular_layout.getLayoutParams();
+            active_button_params.height = (int) mContext.getResources().getDimension(R.dimen.circularlayout_size);
+            active_button_params.width = (int) mContext.getResources().getDimension(R.dimen.circularlayout_size);
+
+            ViewGroup.LayoutParams remove = holder.remove_layout.getLayoutParams();
+            remove.height = (int) mContext.getResources().getDimension(R.dimen.remove_layout_height_size);
+            remove.width = (int) mContext.getResources().getDimension(R.dimen.remove_layout_width_size);
+
+            //holder.tv_varieties.setTextSize((int) mContext.getResources().getDimension(R.dimen.verites_size));
+            //holder.tv_coupon_flag.setTextSize((int) mContext.getResources().getDimension(R.dimen.coupon_flag_size));
+            holder.tv_varieties.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            holder.tv_coupon_flag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            holder.tv_price.setTextSize(TypedValue.COMPLEX_UNIT_SP, 38);
+            holder.tv_unit.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            holder.tv_saving.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            holder.tv_detail.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+            holder.tv_deal_type.setTextSize(TypedValue.COMPLEX_UNIT_SP, 19);
+
             holder.tv_unit.setText(relatedItem.getPackagingSize());
             if (relatedItem.getPrimaryOfferTypeId() == 3) {
+                holder.tv_coupon_flag.setText("With MyFareway");
                 holder.tv_deal_type.setText(relatedItem.getOfferTypeTagName());
 
                 String chars = capitalize(relatedItem.getDescription());
@@ -159,6 +180,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
             }
             else if (relatedItem.getPrimaryOfferTypeId() == 2) {
                // holder.liner_save.setVisibility(View.GONE);
+                holder.tv_coupon_flag.setText("With Coupon");
                 holder.tv_deal_type.setText(relatedItem.getOfferTypeTagName());
 
                 String chars = capitalize(relatedItem.getDescription());
@@ -200,6 +222,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                     holder.remove_layout.setVisibility(View.GONE);
                 }
             }else if (relatedItem.getPrimaryOfferTypeId() == 1) {
+                holder.tv_coupon_flag.setText("");
                 holder.tv_deal_type.setText(relatedItem.getOfferTypeTagName());
 
                 String chars = capitalize(relatedItem.getDescription());
@@ -245,8 +268,29 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
             }
         }else {
 
+            //multi view code
+
+          /*  ViewGroup.LayoutParams active_button_params = holder.circular_layout.getLayoutParams();
+            active_button_params.height = (int) mContext.getResources().getDimension(R.dimen.circularlayout_size2);
+            active_button_params.width = (int) mContext.getResources().getDimension(R.dimen.circularlayout_size2);
+
+            ViewGroup.LayoutParams remove = holder.remove_layout.getLayoutParams();
+            remove.height = (int) mContext.getResources().getDimension(R.dimen.remove_layout_height_size2);
+            remove.width = (int) mContext.getResources().getDimension(R.dimen.remove_layout_width_size2);*/
+
+            //holder.tv_varieties.setTextSize((int) mContext.getResources().getDimension(R.dimen.verites_size2));
+            //holder.tv_coupon_flag.setTextSize((int) mContext.getResources().getDimension(R.dimen.coupon_flag_size2));
+            holder.tv_varieties.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
+            holder.tv_coupon_flag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
+            holder.tv_price.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
+            holder.tv_saving.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
+            holder.tv_unit.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+            holder.tv_detail.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+            holder.tv_deal_type.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+
             holder.tv_unit.setText(relatedItem.getPackagingSize());
             if (relatedItem.getPrimaryOfferTypeId() == 3) {
+                holder.tv_coupon_flag.setText("With MyFareway");
                 holder.tv_deal_type.setText(relatedItem.getOfferTypeTagName());
 
                 String chars = capitalize(relatedItem.getDescription());
@@ -262,28 +306,43 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 } catch (Exception e) {
 
                 }
-                Spanned result = Html.fromHtml(relatedItem.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
+
+                String displayPrice=relatedItem.getDisplayPrice().toString();
+                if(relatedItem.getDisplayPrice().toString().split("\\.").length>1)
+                    displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ relatedItem.getDisplayPrice().split("\\.")[1]+"<sup>";
+                Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
                 holder.tv_price.setText(result);
+
+                /*Spanned result = Html.fromHtml(relatedItem.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
+                holder.tv_price.setText(result);*/
                 holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.mehrune));
                 if (relatedItem.getClickCount()>0) {
                     if (relatedItem.getListCount()>0){
                         holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
                         holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
                         holder.tv_status.setText("Added");
+                        // holder.count_product_number.setVisibility(View.VISIBLE);
+                        holder.remove_layout.setVisibility(View.VISIBLE);
+                        // holder.tv_quantity.setText(relatedItem.getQuantity());
                     }else if (relatedItem.getListCount()==0){
                         holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
                         holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
                         holder.tv_status.setText("Add");
+                        // holder.count_product_number.setVisibility(View.GONE);
+                        holder.remove_layout.setVisibility(View.GONE);
                     }
                 }else {
                     holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
                     holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
                     holder.tv_status.setText("Activate");
+                    // holder.count_product_number.setVisibility(View.GONE);
+                    holder.remove_layout.setVisibility(View.GONE);
                 }
 
             }
             else if (relatedItem.getPrimaryOfferTypeId() == 2) {
                 // holder.liner_save.setVisibility(View.GONE);
+                holder.tv_coupon_flag.setText("With Coupon");
                 holder.tv_deal_type.setText(relatedItem.getOfferTypeTagName());
 
                 String chars = capitalize(relatedItem.getDescription());
@@ -301,23 +360,31 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 }
                 Spanned result = Html.fromHtml(relatedItem.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
                 holder.tv_price.setText(result);
-                holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.mehrune));
+                holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.green));
                 if (relatedItem.getClickCount()>0) {
                     if (relatedItem.getListCount()>0){
                         holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
                         holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
                         holder.tv_status.setText("Added");
+                        // holder.count_product_number.setVisibility(View.VISIBLE);
+                        holder.remove_layout.setVisibility(View.GONE);
+                        ///  holder.tv_quantity.setText(relatedItem.getQuantity());
                     }else if (relatedItem.getListCount()==0){
                         holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
                         holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
                         holder.tv_status.setText("Add");
+                        //  holder.count_product_number.setVisibility(View.GONE);
+                        holder.remove_layout.setVisibility(View.GONE);
                     }
                 }else {
                     holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
                     holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
                     holder.tv_status.setText("Activate");
+                    //  holder.count_product_number.setVisibility(View.GONE);
+                    holder.remove_layout.setVisibility(View.GONE);
                 }
             }else if (relatedItem.getPrimaryOfferTypeId() == 1) {
+                holder.tv_coupon_flag.setText("");
                 holder.tv_deal_type.setText(relatedItem.getOfferTypeTagName());
 
                 String chars = capitalize(relatedItem.getDescription());
@@ -340,10 +407,15 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                     holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
                     holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
                     holder.tv_status.setText("Added");
+                    //  holder.count_product_number.setVisibility(View.VISIBLE);
+                    holder.remove_layout.setVisibility(View.VISIBLE);
+                    //  holder.tv_quantity.setText(relatedItem.getQuantity());
                 }else if (relatedItem.getListCount()==0){
                     holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
                     holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
                     holder.tv_status.setText("Add");
+                    //  holder.count_product_number.setVisibility(View.GONE);
+                    holder.remove_layout.setVisibility(View.GONE);
                 }
             }
 
