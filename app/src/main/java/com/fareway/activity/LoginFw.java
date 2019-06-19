@@ -199,13 +199,14 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
                                         //appUtil.setPrefrence("comeFrom","mpp");
                                         appUtil.setPrefrence("isLogin", "yes");
                                         Intent i = new Intent(activity, MainFwActivity.class);
+                                        i.putExtra("comeFrom","mpp");
                                         //i.putExtra("comeFrom", "mpp");
-                                      if (appUtil.getPrefrence("comeFrom").equalsIgnoreCase("mpp")){
+                                    /*  if (appUtil.getPrefrence("comeFrom").equalsIgnoreCase("mpp")){
                                             i.putExtra("comeFrom","mpp");
                                         }else if (appUtil.getPrefrence("comeFrom").equalsIgnoreCase("moreOffer")){
                                             i.putExtra("comeFrom","moreOffer");
                                         }
-                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);*/
                                         // progressDialog.dismiss();
                                         startActivity(i);
                                         finish();
