@@ -66,10 +66,11 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
     public static AppUtilFw appUtil;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView tv_status,tv_price,tv_unit,tv_saving,tv_detail,tv_deal_type,
+        private TextView tv_status,tv_status_mul,tv_remove,tv_remove_mul,tv_price,tv_unit,tv_saving,tv_detail,tv_deal_type,
                 tv_coupon_flag,tv_varieties,limit,must,add_plus,add_minus;
-        public ImageView imv_item, imv_info,imv_status;
-        private LinearLayout circular_layout,bottomLayout,liner_save,count_product_number,remove_layout;
+        public ImageView imv_item, imv_info,imv_status,imv_status_mul;
+        private LinearLayout circular_layout,circular_layout_mul,bottomLayout,liner_save,count_product_number,remove_layout,
+                remove_layout_mul;
         private CardView card_view;
         private RelativeLayout imv_layout;
         public MyViewHolder(View view) {
@@ -78,6 +79,9 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             imv_layout = (RelativeLayout) view.findViewById(R.id.imv_layout);
             card_view=(CardView) view.findViewById(R.id.card_view);
             tv_status = (TextView) view.findViewById(R.id.tv_status);
+            tv_status_mul = (TextView) view.findViewById(R.id.tv_status_mul);
+            tv_remove = (TextView) view.findViewById(R.id.tv_remove);
+            tv_remove_mul = (TextView) view.findViewById(R.id.tv_remove_mul);
             tv_price = (TextView) view.findViewById(R.id.tv_price);
             tv_unit = (TextView) view.findViewById(R.id.tv_unit);
             tv_saving = (TextView) view.findViewById(R.id.tv_saving);
@@ -96,10 +100,13 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
             //  imv_more = (ImageView) view.findViewById(R.id.imv_more);
             imv_status = (ImageView) view.findViewById(R.id.imv_status);
+            imv_status_mul = (ImageView) view.findViewById(R.id.imv_status_mul);
             circular_layout= (LinearLayout) view.findViewById(R.id.circular_layout);
+            circular_layout_mul= (LinearLayout) view.findViewById(R.id.circular_layout_mul);
             bottomLayout= (LinearLayout) view.findViewById(R.id.bottomLayout);
            // count_product_number = (LinearLayout)view.findViewById(R.id.count_product_number);
             remove_layout = (LinearLayout)view.findViewById(R.id.remove_layout);
+            remove_layout_mul = (LinearLayout)view.findViewById(R.id.remove_layout_mul);
 
 
             tv_varieties.setOnClickListener(new View.OnClickListener() {
@@ -141,13 +148,18 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
         final Product product = productListFiltered.get(position);
         if(MainFwActivity.singleView) {
-            ViewGroup.LayoutParams active_button_params = holder.circular_layout.getLayoutParams();
+            holder.circular_layout_mul.setVisibility(View.INVISIBLE);
+            holder.remove_layout_mul.setVisibility(View.INVISIBLE);
+            holder.circular_layout.setVisibility(View.VISIBLE);
+            holder.remove_layout.setVisibility(View.VISIBLE);
+
+            /*ViewGroup.LayoutParams active_button_params = holder.circular_layout.getLayoutParams();
             active_button_params.height = (int) mContext.getResources().getDimension(R.dimen.circularlayout_size);
             active_button_params.width = (int) mContext.getResources().getDimension(R.dimen.circularlayout_size);
 
             ViewGroup.LayoutParams remove = holder.remove_layout.getLayoutParams();
             remove.height = (int) mContext.getResources().getDimension(R.dimen.remove_layout_height_size);
-            remove.width = (int) mContext.getResources().getDimension(R.dimen.remove_layout_width_size);
+            remove.width = (int) mContext.getResources().getDimension(R.dimen.remove_layout_width_size);*/
 
             /*LinearLayout.LayoutParams params = (LinearLayout.LayoutParams)holder.remove_layout.getLayoutParams();
             params.setMargins(0, 0, 10, 0);
@@ -162,6 +174,9 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             holder.tv_saving.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
             holder.tv_detail.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
             holder.tv_deal_type.setTextSize(TypedValue.COMPLEX_UNIT_SP, 19);
+            holder.tv_remove.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            holder.tv_status.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+
 
 
 
@@ -799,6 +814,10 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             }*/
 
         }else {
+            holder.circular_layout.setVisibility(View.INVISIBLE);
+            holder.remove_layout.setVisibility(View.INVISIBLE);
+            holder.circular_layout_mul.setVisibility(View.VISIBLE);
+            holder.remove_layout_mul.setVisibility(View.VISIBLE);
 
             //multi view code
 
@@ -819,6 +838,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             holder.tv_unit.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
             holder.tv_detail.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
             holder.tv_deal_type.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+            holder.tv_status_mul.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+            holder.tv_remove_mul.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
 
 
             if (product.getInCircular()==0){
@@ -858,38 +879,38 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
 
                     if (product.getClickCount()>0){
-                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                        holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                        holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                        holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
                         if (product.getListCount()>0){
                             if (product.getRequiresActivation().contains("True")){
-                                holder.tv_status.setText(mContext.getString(R.string.activated));
+                                holder.tv_status_mul.setText(mContext.getString(R.string.activated));
                                 holder.count_product_number.setVisibility(View.VISIBLE);
-                                holder.remove_layout.setVisibility(View.VISIBLE);
+                                holder.remove_layout_mul.setVisibility(View.VISIBLE);
                             }else if(product.getRequiresActivation().contains("False")){
-                                holder.tv_status.setText("Added");
+                                holder.tv_status_mul.setText("Added");
                                 holder.count_product_number.setVisibility(View.VISIBLE);
-                                holder.remove_layout.setVisibility(View.VISIBLE);
+                                holder.remove_layout_mul.setVisibility(View.VISIBLE);
                             }
                         }else {
                             if (product.getRequiresActivation().contains("True")){
-                                holder.tv_status.setText(mContext.getString(R.string.activate));
+                                holder.tv_status_mul.setText(mContext.getString(R.string.activate));
                                 holder.count_product_number.setVisibility(View.GONE);
-                                holder.remove_layout.setVisibility(View.GONE);
+                                holder.remove_layout_mul.setVisibility(View.GONE);
                             }else if (product.getRequiresActivation().contains("False")){
-                                holder.tv_status.setText("Add\nTo Item");
+                                holder.tv_status_mul.setText("Add\nTo Item");
                             }
                         }
 
 
                     }else if (product.getClickCount()==0){
-                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
-                        holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
+                        holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
+                        holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
                         if (product.getRequiresActivation().contains("True")){
-                            holder.tv_status.setText(mContext.getString(R.string.activate));
+                            holder.tv_status_mul.setText(mContext.getString(R.string.activate));
                             holder.count_product_number.setVisibility(View.GONE);
-                            holder.remove_layout.setVisibility(View.GONE);
+                            holder.remove_layout_mul.setVisibility(View.GONE);
                         }else if (product.getRequiresActivation().contains("False")){
-                            holder.tv_status.setText("Add\nTo anshu");
+                            holder.tv_status_mul.setText("Add\nTo anshu");
                         }
 
                     }
@@ -931,47 +952,47 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
                         if (product.getListCount()>0){
 
-                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                            holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                            holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                            holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
                             if (product.getRequiresActivation().contains("True")){
-                                holder.tv_status.setText(mContext.getString(R.string.activated));
+                                holder.tv_status_mul.setText(mContext.getString(R.string.activated));
                                 holder.count_product_number.setVisibility(View.VISIBLE);
-                                holder.remove_layout.setVisibility(View.VISIBLE);
+                                holder.remove_layout_mul.setVisibility(View.VISIBLE);
                             }else if(product.getRequiresActivation().contains("False")){
-                                holder.tv_status.setText("Added");
+                                holder.tv_status_mul.setText("Added");
                                 holder.count_product_number.setVisibility(View.VISIBLE);
-                                holder.remove_layout.setVisibility(View.VISIBLE);
+                                holder.remove_layout_mul.setVisibility(View.VISIBLE);
                             }
                         }else {
-                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
-                            holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
+                            holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
+                            holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
                             holder.count_product_number.setVisibility(View.GONE);
-                            holder.remove_layout.setVisibility(View.GONE);
+                            holder.remove_layout_mul.setVisibility(View.GONE);
 
                             if (product.getRequiresActivation().contains("True")){
                                 if (product.getClickCount()>0){
-                                    holder.tv_status.setText("Add\nTo List");
+                                    holder.tv_status_mul.setText("Add\nTo List");
                                 }else {
 
-                                    holder.tv_status.setText(mContext.getString(R.string.activate));
+                                    holder.tv_status_mul.setText(mContext.getString(R.string.activate));
                                     holder.count_product_number.setVisibility(View.GONE);
-                                    holder.remove_layout.setVisibility(View.GONE);
+                                    holder.remove_layout_mul.setVisibility(View.GONE);
                                 }
                             }else if (product.getRequiresActivation().contains("False")){
-                                holder.tv_status.setText("Add\nTo List");
+                                holder.tv_status_mul.setText("Add\nTo List");
                             }
                         }
 
 
                     }else if (product.getClickCount()==0){
-                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
-                        holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
+                        holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
+                        holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
                         if (product.getRequiresActivation().contains("True")){
-                            holder.tv_status.setText(mContext.getString(R.string.activate));
+                            holder.tv_status_mul.setText(mContext.getString(R.string.activate));
                             holder.count_product_number.setVisibility(View.GONE);
-                            holder.remove_layout.setVisibility(View.GONE);
+                            holder.remove_layout_mul.setVisibility(View.GONE);
                         }else if (product.getRequiresActivation().contains("False")){
-                            holder.tv_status.setText("Add\nTo List");
+                            holder.tv_status_mul.setText("Add\nTo List");
                         }
 
                     }
@@ -1012,15 +1033,15 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
 
                     if (product.getListCount()>0){
-                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                        holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
-                        holder.tv_status.setText("Added");
+                        holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                        holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                        holder.tv_status_mul.setText("Added");
                         holder.count_product_number.setVisibility(View.VISIBLE);
-                        holder.remove_layout.setVisibility(View.VISIBLE);
+                        holder.remove_layout_mul.setVisibility(View.VISIBLE);
                     }else if (product.getListCount()==0){
-                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
-                        holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
-                        holder.tv_status.setText("Add\nTo List");
+                        holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
+                        holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
+                        holder.tv_status_mul.setText("Add\nTo List");
                     }
                 }
             }else {
@@ -1066,48 +1087,48 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }
                     if (product.getClickCount()>0){
                         if (product.getListCount()>0){
-                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                            holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                            holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                            holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
                             if (product.getRequiresActivation().contains("True")){
-                                holder.tv_status.setText("Added");
+                                holder.tv_status_mul.setText("Added");
                                 // holder.count_product_number.setVisibility(View.VISIBLE);
-                                holder.remove_layout.setVisibility(View.VISIBLE);
+                                holder.remove_layout_mul.setVisibility(View.VISIBLE);
                                 // holder.tv_quantity.setText(product.getQuantity());
                             }else if(product.getRequiresActivation().contains("False")){
-                                holder.tv_status.setText("Added");
+                                holder.tv_status_mul.setText("Added");
                                 // holder.count_product_number.setVisibility(View.VISIBLE);
-                                holder.remove_layout.setVisibility(View.VISIBLE);
+                                holder.remove_layout_mul.setVisibility(View.VISIBLE);
                             }
                         }else {
-                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
-                            holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
+                            holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
+                            holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
                             if (product.getRequiresActivation().contains("True")){
                                 if (product.getClickCount()>0){
-                                    holder.tv_status.setText("Add");
+                                    holder.tv_status_mul.setText("Add");
                                     // holder.count_product_number.setVisibility(View.GONE);
-                                    holder.remove_layout.setVisibility(View.GONE);
+                                    holder.remove_layout_mul.setVisibility(View.GONE);
                                 }else {
-                                    holder.tv_status.setText("Add");
+                                    holder.tv_status_mul.setText("Add");
                                     // holder.count_product_number.setVisibility(View.GONE);
-                                    holder.remove_layout.setVisibility(View.GONE);
+                                    holder.remove_layout_mul.setVisibility(View.GONE);
                                 }
                             }else if (product.getRequiresActivation().contains("False")){
-                                holder.tv_status.setText("Add");
+                                holder.tv_status_mul.setText("Add");
                                 // holder.count_product_number.setVisibility(View.GONE);
-                                holder.remove_layout.setVisibility(View.GONE);
+                                holder.remove_layout_mul.setVisibility(View.GONE);
                             }
                         }
                     }else if (product.getClickCount()==0){
-                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
-                        holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
+                        holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
+                        holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
                         if (product.getRequiresActivation().contains("True")){
-                            holder.tv_status.setText("Activate");
+                            holder.tv_status_mul.setText("Activate");
                             // holder.count_product_number.setVisibility(View.GONE);
-                            holder.remove_layout.setVisibility(View.GONE);
+                            holder.remove_layout_mul.setVisibility(View.GONE);
                         }else if (product.getRequiresActivation().contains("False")){
                             // holder.count_product_number.setVisibility(View.GONE);
-                            holder.remove_layout.setVisibility(View.GONE);
-                            holder.tv_status.setText("Add");
+                            holder.remove_layout_mul.setVisibility(View.GONE);
+                            holder.tv_status_mul.setText("Add");
                         }
 
                     }
@@ -1283,39 +1304,39 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     if (product.getMinAmount()>0){
                         Log.i("ifanshu", String.valueOf(product.getMinAmount()));
                         if (product.getClickCount()>0){
-                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                            holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
-                            holder.tv_status.setText("Activated");
+                            holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                            holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                            holder.tv_status_mul.setText("Activated");
                             // holder.count_product_number.setVisibility(View.GONE);
-                            holder.remove_layout.setVisibility(View.GONE);
+                            holder.remove_layout_mul.setVisibility(View.GONE);
                         }else {
-                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
-                            holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
-                            holder.tv_status.setText("Activate");
+                            holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
+                            holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
+                            holder.tv_status_mul.setText("Activate");
                             //  holder.count_product_number.setVisibility(View.GONE);
-                            holder.remove_layout.setVisibility(View.GONE);
+                            holder.remove_layout_mul.setVisibility(View.GONE);
                         }
                     }else {
                         Log.i("elseanshu", String.valueOf(product.getMinAmount()));
                         if (product.getClickCount()>0){
-                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                            holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
-                            holder.tv_status.setText("Activated");
+                            holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                            holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                            holder.tv_status_mul.setText("Activated");
                             //  holder.count_product_number.setVisibility(View.GONE);
-                            holder.remove_layout.setVisibility(View.GONE);
+                            holder.remove_layout_mul.setVisibility(View.GONE);
                         }else {
-                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
-                            holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
-                            holder.tv_status.setText("Activate");
+                            holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
+                            holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
+                            holder.tv_status_mul.setText("Activate");
                             //  holder.count_product_number.setVisibility(View.GONE);
-                            holder.remove_layout.setVisibility(View.GONE);
+                            holder.remove_layout_mul.setVisibility(View.GONE);
                         }
                        /* if (product.getClickCount()>0){
                             if (product.getListCount()>0){
-                                holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                                holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                                holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                                holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
                                 if (product.getRequiresActivation().contains("True")){
-                                    holder.tv_status.setText(mContext.getString(R.string.activated));
+                                    holder.tv_status_mul.setText(mContext.getString(R.string.activated));
                                     holder.count_product_number.setVisibility(View.VISIBLE);
                                     holder.remove_layout.setVisibility(View.VISIBLE);
                                     holder.tv_quantity.setText(product.getQuantity());
@@ -1326,8 +1347,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                                     holder.remove_layout.setVisibility(View.VISIBLE);
                                 }
                             }else {
-                                holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
-                                holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
+                                holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
+                                holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
                                 holder.count_product_number.setVisibility(View.GONE);
                                 holder.remove_layout.setVisibility(View.GONE);
 
@@ -1342,8 +1363,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                                 }
                             }
                         }else if (product.getClickCount()==0){
-                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
-                            holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
+                            holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
+                            holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
                             if (product.getRequiresActivation().contains("True")){
                                 holder.tv_status.setText(mContext.getString(R.string.activate));
                                 holder.count_product_number.setVisibility(View.GONE);
@@ -1406,18 +1427,18 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
 
                     if (product.getListCount()>0){
-                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                        holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
-                        holder.tv_status.setText("Added");
+                        holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                        holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                        holder.tv_status_mul.setText("Added");
                         //  holder.count_product_number.setVisibility(View.VISIBLE);
-                        holder.remove_layout.setVisibility(View.VISIBLE);
+                        holder.remove_layout_mul.setVisibility(View.VISIBLE);
                         //  holder.tv_quantity.setText(product.getQuantity());
                     }else if (product.getListCount()==0){
-                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
-                        holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
-                        holder.tv_status.setText("Add");
+                        holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
+                        holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
+                        holder.tv_status_mul.setText("Add");
                         //  holder.count_product_number.setVisibility(View.GONE);
-                        holder.remove_layout.setVisibility(View.GONE);
+                        holder.remove_layout_mul.setVisibility(View.GONE);
 
                     }
 
@@ -1454,6 +1475,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         .into(holder.imv_item);
             }*/
         }
+        ///////////////////////
 
         holder.remove_layout.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1473,13 +1495,346 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             public void onResponse(String  response) {
                                 Log.i("success", String.valueOf(response));
                                 holder.remove_layout.setVisibility(View.GONE);
-                            //    holder.count_product_number.setVisibility(View.GONE);
+                                //    holder.count_product_number.setVisibility(View.GONE);
                                 //product.setClickCount(0);
                                 product.setListCount(0);
                                 product.setQuantity("0");
                                 holder.tv_status.setText("Add");
                                 holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
                                 holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
+                                // holder.tv_quantity.setText("1");
+                                //product.setQuantity(String.valueOf((Integer.parseInt(product.getQuantity())+1)));
+                                //holder.tv_quantity.setText(product.getQuantity());
+                                //serverResp.setText("String Response : "+ response.toString());
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("fail", String.valueOf(error));
+                        // serverResp.setText("Error getting response");
+                    }
+                }){
+
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/json; charset=utf-8";
+                    }
+
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+
+                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                        params.put("Content-Type", "application/json ;charset=utf-8");
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (50000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    mQueue.add(jsonObjectRequest);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        });
+
+        holder.circular_layout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (product.getClickCount()>0){
+                    Log.i("if click", String.valueOf(product.getClickCount()));
+                    holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                    holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                    if (product.getPrimaryOfferTypeId()==1){
+                        holder.tv_status.setText("Added");
+                        //   holder.count_product_number.setVisibility(View.VISIBLE);
+                        holder.remove_layout.setVisibility(View.VISIBLE);
+
+                    }else if (product.getRequiresActivation().contains("True")){
+                        holder.tv_status.setText(mContext.getString(R.string.activated));
+                        //   holder.count_product_number.setVisibility(View.VISIBLE);
+                        holder.remove_layout.setVisibility(View.VISIBLE);
+
+                    }else {
+                        holder.tv_status.setText("Added");
+                        //   holder.count_product_number.setVisibility(View.VISIBLE);
+                        holder.remove_layout.setVisibility(View.VISIBLE);
+
+                    }
+
+                    RequestQueue mQueue;
+                    mQueue=FarewayApplication.getmInstance(mContext).getmRequestQueue();
+                    try {
+
+                        StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST,Constant.WEB_URL + Constant.ACTIVATE,
+                                new Response.Listener<String>(){
+                                    @Override
+                                    public void onResponse(String response) {
+                                        Log.i("Fareway text", response.toString());
+                                        if (product.getPrimaryOfferTypeId()==3){
+                                            product.setClickCount(1);
+                                            product.setListCount(1);
+                                            product.setQuantity("1");
+                                            activate.SetProductActivate(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
+                                        }else if (product.getPrimaryOfferTypeId()==2){
+                                            product.setClickCount(1);
+                                            product.setQuantity("1");
+                                            if (product.getRequiresActivation().contains("False")){
+                                                product.setListCount(1);
+                                            }else {
+                                                product.setListCount(1);
+                                            }
+                                            activate.SetProductActivate(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),2);
+                                        }else if (product.getPrimaryOfferTypeId()==1){
+                                            product.setListCount(1);
+                                            product.setQuantity("1");
+                                            activate.SetProductActivate(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
+                                        }
+                                    }
+                                }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.i("Volley error resp", "error----" + error.getMessage());
+                                error.printStackTrace();
+
+                                if (error.networkResponse == null) {
+                                    if (error.getClass().equals(TimeoutError.class)) {
+                                    }
+                                }
+                            }
+                        })
+                        {
+                            @Override
+                            public String getBodyContentType() {
+                                return "application/x-www-form-urlencoded";
+                            }
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String, String> params = new HashMap<String, String>();
+                                params.put("UPCCode", product.getUPC());
+                                params.put("CategoryID", String.valueOf(product.getCategoryID()));
+                                params.put("SalePrice", product.getFinalPrice());
+                                params.put("PrimaryOfferTypeId", String.valueOf(product.getPrimaryOfferTypeId()));
+                                params.put("OfferDetailId", String.valueOf(product.getOfferDetailId()));
+                                params.put("PersonalCircularID", String.valueOf(product.getPersonalCircularID()));
+                                params.put("ExpirationDate", product.getValidityEndDate());
+                                params.put("ClientID", "1");
+                                params.put("PackagingSize", product.getPackagingSize());
+                                params.put("DisplayPrice", product.getDisplayPrice());
+                                params.put("PageID", String.valueOf(product.getPageID()));
+                                params.put("Description", product.getDescription());
+                                params.put("CouponID", String.valueOf(product.getCouponID()));
+                                params.put("MemberID", String.valueOf(product.getMemberID()));
+                                params.put("DeviceId", "1");
+                                params.put("ClickType", "1");
+                                params.put("iPositionID", product.getTileNumber());
+                                params.put("OPMOfferID", String.valueOf(product.getPricingMasterID()));
+                                params.put("AdPrice", product.getAdPrice());
+                                params.put("RegPrice", product.getRegularPrice());
+                                params.put("Savings", product.getSavings());
+                                return params;
+                            }
+
+                            @Override
+                            public Map<String, String> getHeaders() {
+                                Map<String, String> params = new HashMap<String, String>();
+                                params.put("Content-Type", "application/x-www-form-urlencoded");
+
+                                return params;
+                            }
+                        };
+                        RetryPolicy policy = new DefaultRetryPolicy
+                                (50000,
+                                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                        jsonObjectRequest.setRetryPolicy(policy);
+                        try {
+                            mQueue.add(jsonObjectRequest);
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+
+                    } catch (Exception e) {
+
+                        e.printStackTrace();
+
+
+                    }
+                }else if (product.getClickCount()==0){
+                    Log.i("else click", String.valueOf(product.getClickCount()));
+                    holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                    holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+
+                    if (product.getPrimaryOfferTypeId()==1){
+                        holder.tv_status.setText("Added");
+                        //   holder.count_product_number.setVisibility(View.VISIBLE);
+                        holder.remove_layout.setVisibility(View.VISIBLE);
+                    }else if (product.getRequiresActivation().contains("True")){
+                        if (product.getPrimaryOfferTypeId()==2){
+                            holder.tv_status.setText("Activated");
+                            //       holder.count_product_number.setVisibility(View.GONE);
+                            holder.remove_layout.setVisibility(View.GONE);
+                        }else {
+                            holder.tv_status.setText(mContext.getString(R.string.activated));
+                            //       holder.count_product_number.setVisibility(View.VISIBLE);
+                            holder.remove_layout.setVisibility(View.VISIBLE);
+                        }
+
+                    }else {
+                        holder.tv_status.setText("Added");
+                        //     holder.count_product_number.setVisibility(View.VISIBLE);
+                        holder.remove_layout.setVisibility(View.VISIBLE);
+                    }
+
+
+                    RequestQueue mQueue;
+                    mQueue=FarewayApplication.getmInstance(mContext).getmRequestQueue();
+
+                    try {
+
+                        StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST,Constant.WEB_URL + Constant.ACTIVATE,
+                                new Response.Listener<String>(){
+                                    @Override
+                                    public void onResponse(String response) {
+                                        Log.i("Fareway text", response.toString());
+                                        if (product.getPrimaryOfferTypeId()==3){
+                                            product.setClickCount(1);
+                                            product.setListCount(1);
+                                            product.setQuantity("1");
+                                            //  holder.tv_quantity.setText("1");
+                                            activate.SetProductActivate(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
+                                        }else if (product.getPrimaryOfferTypeId()==2){
+                                            product.setClickCount(1);
+                                            activate.SetProductActivate(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),2);
+                                        }else if (product.getPrimaryOfferTypeId()==1){
+                                            //  holder.tv_quantity.setText("1");
+                                            product.setListCount(1);
+                                            product.setQuantity("1");
+                                            activate.SetProductActivate(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
+                                        }
+
+
+                                    }
+                                }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.i("Volley error resp", "error----" + error.getMessage());
+                                error.printStackTrace();
+
+                                if (error.networkResponse == null) {
+
+                                    if (error.getClass().equals(TimeoutError.class)) {
+                                    }
+                                }
+                            }
+                        })
+                        {
+
+                            @Override
+                            public String getBodyContentType() {
+                                return "application/x-www-form-urlencoded";
+                            }
+
+                            @Override
+                            protected Map<String, String> getParams() throws AuthFailureError {
+                                Map<String, String> params = new HashMap<String, String>();
+                                params.put("UPCCode", product.getUPC());
+                                params.put("CategoryID", String.valueOf(product.getCategoryID()));
+                                params.put("SalePrice", product.getFinalPrice());
+                                params.put("PrimaryOfferTypeId", String.valueOf(product.getPrimaryOfferTypeId()));
+                                params.put("OfferDetailId", String.valueOf(product.getOfferDetailId()));
+                                params.put("PersonalCircularID", String.valueOf(product.getPersonalCircularID()));
+                                params.put("ExpirationDate", product.getValidityEndDate());
+                                params.put("ClientID", "1");
+                                params.put("PackagingSize", product.getPackagingSize());
+                                params.put("DisplayPrice", product.getDisplayPrice());
+                                params.put("PageID", String.valueOf(product.getPageID()));
+                                params.put("Description", product.getDescription());
+                                params.put("CouponID", String.valueOf(product.getCouponID()));
+                                params.put("MemberID", String.valueOf(product.getMemberID()));
+                                params.put("DeviceId", "1");
+                                if (product.getPrimaryOfferTypeId()==2){
+                                    params.put("ClickType", "1");
+                                }else {
+                                    params.put("ClickType", "1");
+                                }
+                                params.put("iPositionID", product.getTileNumber());
+                                params.put("OPMOfferID", String.valueOf(product.getPricingMasterID()));
+                                params.put("AdPrice", product.getAdPrice());
+                                params.put("RegPrice", product.getRegularPrice());
+                                params.put("Savings", product.getSavings());
+
+                                return params;
+                            }
+
+                            @Override
+                            public Map<String, String> getHeaders() {
+                                Map<String, String> params = new HashMap<String, String>();
+                                params.put("Content-Type", "application/x-www-form-urlencoded");
+
+                                return params;
+                            }
+                        };
+                        RetryPolicy policy = new DefaultRetryPolicy
+                                (50000,
+                                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                        jsonObjectRequest.setRetryPolicy(policy);
+                        try {
+                            mQueue.add(jsonObjectRequest);
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
+
+                    } catch (Exception e) {
+
+                        e.printStackTrace();
+
+
+                    }
+
+                }
+
+            }
+        });
+
+        ///////////////////////
+
+        holder.remove_layout_mul.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                Log.i("remove","remove");
+
+                RequestQueue mQueue;
+                mQueue=FarewayApplication.getmInstance(mContext).getmRequestQueue();
+
+
+
+                String url = Constant.WEB_URL+Constant.REMOVE+product.getUPC()+"&"+"MemberId="+appUtil.getPrefrence("MemberId");
+                StringRequest  jsonObjectRequest = new StringRequest (Request.Method.DELETE, url,
+                        new Response.Listener<String >() {
+                            @Override
+                            public void onResponse(String  response) {
+                                Log.i("success", String.valueOf(response));
+                                holder.remove_layout_mul.setVisibility(View.GONE);
+                            //    holder.count_product_number.setVisibility(View.GONE);
+                                //product.setClickCount(0);
+                                product.setListCount(0);
+                                product.setQuantity("0");
+                                holder.tv_status_mul.setText("Add");
+                                holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
+                                holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
                                // holder.tv_quantity.setText("1");
                                 //product.setQuantity(String.valueOf((Integer.parseInt(product.getQuantity())+1)));
                                 //holder.tv_quantity.setText(product.getQuantity());
@@ -1704,27 +2059,27 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             }
         });*/
 
-        holder.circular_layout.setOnClickListener(new View.OnClickListener() {
+        holder.circular_layout_mul.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (product.getClickCount()>0){
                     Log.i("if click", String.valueOf(product.getClickCount()));
-                    holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                    holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                    holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                    holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
                     if (product.getPrimaryOfferTypeId()==1){
-                        holder.tv_status.setText("Added");
+                        holder.tv_status_mul.setText("Added");
                      //   holder.count_product_number.setVisibility(View.VISIBLE);
-                        holder.remove_layout.setVisibility(View.VISIBLE);
+                        holder.remove_layout_mul.setVisibility(View.VISIBLE);
 
                     }else if (product.getRequiresActivation().contains("True")){
-                        holder.tv_status.setText(mContext.getString(R.string.activated));
+                        holder.tv_status_mul.setText(mContext.getString(R.string.activated));
                      //   holder.count_product_number.setVisibility(View.VISIBLE);
-                        holder.remove_layout.setVisibility(View.VISIBLE);
+                        holder.remove_layout_mul.setVisibility(View.VISIBLE);
 
                     }else {
-                        holder.tv_status.setText("Added");
+                        holder.tv_status_mul.setText("Added");
                      //   holder.count_product_number.setVisibility(View.VISIBLE);
-                        holder.remove_layout.setVisibility(View.VISIBLE);
+                        holder.remove_layout_mul.setVisibility(View.VISIBLE);
 
                     }
 
@@ -1830,28 +2185,28 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }
                 }else if (product.getClickCount()==0){
                     Log.i("else click", String.valueOf(product.getClickCount()));
-                    holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                    holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                    holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                    holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
 
                     if (product.getPrimaryOfferTypeId()==1){
-                        holder.tv_status.setText("Added");
+                        holder.tv_status_mul.setText("Added");
                      //   holder.count_product_number.setVisibility(View.VISIBLE);
-                        holder.remove_layout.setVisibility(View.VISIBLE);
+                        holder.remove_layout_mul.setVisibility(View.VISIBLE);
                     }else if (product.getRequiresActivation().contains("True")){
                         if (product.getPrimaryOfferTypeId()==2){
-                            holder.tv_status.setText("Activated");
+                            holder.tv_status_mul.setText("Activated");
                      //       holder.count_product_number.setVisibility(View.GONE);
-                            holder.remove_layout.setVisibility(View.GONE);
+                            holder.remove_layout_mul.setVisibility(View.GONE);
                         }else {
-                            holder.tv_status.setText(mContext.getString(R.string.activated));
+                            holder.tv_status_mul.setText(mContext.getString(R.string.activated));
                      //       holder.count_product_number.setVisibility(View.VISIBLE);
-                            holder.remove_layout.setVisibility(View.VISIBLE);
+                            holder.remove_layout_mul.setVisibility(View.VISIBLE);
                         }
 
                     }else {
-                        holder.tv_status.setText("Added");
+                        holder.tv_status_mul.setText("Added");
                    //     holder.count_product_number.setVisibility(View.VISIBLE);
-                        holder.remove_layout.setVisibility(View.VISIBLE);
+                        holder.remove_layout_mul.setVisibility(View.VISIBLE);
                     }
 
 
@@ -1971,7 +2326,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
  }
                  /*   Log.i("else click", String.valueOf(product.getClickCount()));
                     holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                    holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                    holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
                     if (product.getPrimaryOfferTypeId()==1){
                         holder.tv_status.setText("Added");
                         holder.count_product_number.setVisibility(View.VISIBLE);

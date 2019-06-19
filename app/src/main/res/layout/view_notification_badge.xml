@@ -6,15 +6,17 @@
 
     <TextView
         android:id="@+id/notification_badge"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="@dimen/_16sdp"
+        android:layout_height="@dimen/_16sdp"
         android:layout_gravity="bottom|center_horizontal"
         android:layout_marginBottom="30dp"
         android:layout_marginLeft="20dp"
-        android:layout_marginStart="20dp"
+        android:layout_marginStart="10dp"
         android:background="@drawable/notification_badge"
         android:padding="3dp"
         android:textColor="@color/white"
         android:textSize="10sp"
-        tools:text="9+" />
+        android:textAlignment="center"
+        android:gravity="center"
+        tools:text="" />
 </FrameLayout>
