@@ -693,7 +693,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     try {
                         DecimalFormat dF = new DecimalFormat("00.00");
                         Number num = dF.parse(product.getSavings());
-                        holder.tv_saving.setText("SAVE $ " + new DecimalFormat("##.##").format(num));
+                        holder.tv_saving.setText("SAVE $" + new DecimalFormat("##.##").format(num));
 
                     } catch (Exception e) {
 
