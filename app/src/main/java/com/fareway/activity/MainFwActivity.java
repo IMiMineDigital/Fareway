@@ -271,7 +271,7 @@ public class MainFwActivity extends AppCompatActivity
         View badge = LayoutInflater.from(this)
                 .inflate(R.layout.view_notification_badge, bottomNavigationMenuView, false);
         tv = badge.findViewById(R.id.notification_badge);
-        tv.setText("10");
+        tv.setText("0");
         itemView.addView(badge);
 
     }
@@ -283,7 +283,7 @@ public class MainFwActivity extends AppCompatActivity
         liner_all_Varieties_activate=findViewById(R.id.liner_all_Varieties_activate);
         all_Varieties_activate = findViewById(R.id.all_Varieties_activate);
         imv_logo=findViewById(R.id.imv_logo);
-        header_title = findViewById(R.id.header_title);
+       // header_title = findViewById(R.id.header_title);
         shopping_list_header = findViewById(R.id.shopping_list_header);
         tv_number_item = findViewById(R.id.tv_number_item);
 
@@ -352,12 +352,12 @@ public class MainFwActivity extends AppCompatActivity
         {
            // navigation.getMenu().findItem(R.id.moreCoupons).setTitle("More Savings");
             Log.i("navif", String.valueOf(x));
-            header_title.setText("My Personal Ad");
+        //    header_title.setText("My Personal Ad");
         }
         else  if(comeFrom.equalsIgnoreCase("moreOffer"))
         {
            // navigation.getMenu().findItem(R.id.moreCoupons).setTitle("Personal Ad");
-            header_title.setText("More Savings");
+          //  header_title.setText("More Savings");
             Log.i("navelse", String.valueOf(x));
         }
 
@@ -469,7 +469,7 @@ public class MainFwActivity extends AppCompatActivity
                     fetchMoreCoupon();
                     x=1;
                     navigation.getMenu().findItem(R.id.moreCoupons).setTitle("Personal Ad");
-                    header_title.setText("More Savings");
+                   // header_title.setText("More Savings");
                     Log.i("ifbottom", String.valueOf(x)+comeFrom);
 
                 } else if(x==1) {
@@ -478,7 +478,7 @@ public class MainFwActivity extends AppCompatActivity
                     x=0;
                     tmp=0;
                     navigation.getMenu().findItem(R.id.moreCoupons).setTitle("More Saving");
-                    header_title.setText("My Personal Ad");
+                   // header_title.setText("My Personal Ad");
                     fetchProduct();
                     Log.i("elsebottom", String.valueOf(x)+comeFrom);
                 }
@@ -507,7 +507,7 @@ public class MainFwActivity extends AppCompatActivity
                 return true;
             }else if(i == R.id.ShoppingList){
                 rv_shopping_list_items.setVisibility(View.VISIBLE);
-                header_title.setVisibility(View.INVISIBLE);
+               // header_title.setVisibility(View.INVISIBLE);
                 shopping_list_header.setVisibility(View.VISIBLE);
                 navigation.setVisibility(View.GONE);
                 DetaileToolbar.setVisibility(View.VISIBLE);
@@ -520,7 +520,7 @@ public class MainFwActivity extends AppCompatActivity
                     @Override
                     public void onClick(View v) {
                         shopping_list_header.setVisibility(View.GONE);
-                        header_title.setVisibility(View.VISIBLE);
+                      //  header_title.setVisibility(View.VISIBLE);
                         navigation.setVisibility(View.VISIBLE);
                         rv_shopping_list_items.setVisibility(View.GONE);
                         //scrollView.setVisibility(View.GONE);
@@ -1523,7 +1523,7 @@ public class MainFwActivity extends AppCompatActivity
         TextView tv_deal_type_detaile = (TextView) findViewById(R.id.tv_deal_type_detaile);
         TextView tv_coupon_detail = (TextView) findViewById(R.id.tv_coupon_detail);
         TextView tv_varieties_detail = (TextView) findViewById(R.id.tv_varieties_detail);
-        tv_varieties_detail.setText(product.getRelatedItemCount()+" verieties");
+        tv_varieties_detail.setText(product.getRelatedItemCount()+" Varieties");
         //detail verite click lisner
         tv_varieties_detail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1564,7 +1564,7 @@ public class MainFwActivity extends AppCompatActivity
                 navigation.setVisibility(View.GONE);
 
                 participateToolbar.setVisibility(View.VISIBLE);
-                header_title.setVisibility(View.GONE);
+               // header_title.setVisibility(View.GONE);
                 participateToolbar.setTitle("Participating Items");
                 rv_items_verite.setVisibility(View.VISIBLE);
 
@@ -1596,7 +1596,7 @@ public class MainFwActivity extends AppCompatActivity
                             toolbar.setVisibility(View.VISIBLE);
                             navigation.setVisibility(View.VISIBLE);
                             group_count_text.setVisibility(View.GONE);
-                            header_title.setVisibility(View.VISIBLE);
+                         //   header_title.setVisibility(View.VISIBLE);
                         }else {
                             rv_items_group.setVisibility(View.GONE);
                             rv_items_verite.setVisibility(View.GONE);
@@ -1605,7 +1605,7 @@ public class MainFwActivity extends AppCompatActivity
                             toolbar.setVisibility(View.VISIBLE);
                             navigation.setVisibility(View.VISIBLE);
                             group_count_text.setVisibility(View.GONE);
-                            header_title.setVisibility(View.VISIBLE);
+                         //   header_title.setVisibility(View.VISIBLE);
                         }
 
 
@@ -1834,11 +1834,11 @@ public class MainFwActivity extends AppCompatActivity
             String chars = capitalize(product.getDescription());
             tv_detail_detail.setText(chars+" "+product.getPackagingSize());
 
-            tv_reg_price_detail.setText("$ "+product.getRegularPrice());
+            tv_reg_price_detail.setText("$"+product.getRegularPrice());
             try {
                 DecimalFormat dF = new DecimalFormat("0.00");
                 Number num = dF.parse(product.getSavings());
-                tv_save_detail.setText("$ " + new DecimalFormat("##.##").format(num));
+                tv_save_detail.setText("$" + new DecimalFormat("##.##").format(num));
 
             } catch (Exception e) {
 
@@ -1849,8 +1849,8 @@ public class MainFwActivity extends AppCompatActivity
             tv_deal_type_detaile.setText(product.getOfferTypeTagName());
 
             ImageView bindImage = (ImageView)findViewById(R.id.imv_item_detaile);
-            if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
-                String largeImagePath = "http://fwstaging.immdemo.net/webapiaccessclient/images/GEnoimage.jpg";
+            if (product.getLargeImagePath().contains("https://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+                String largeImagePath = "https://fwstaging.immdemo.net/webapiaccessclient/images/GEnoimage.jpg";
                 DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(bindImage);
                 downloadTask.execute(largeImagePath);
             }else {
@@ -1909,7 +1909,7 @@ public class MainFwActivity extends AppCompatActivity
 
                 DecimalFormat dF = new DecimalFormat("0.00");
                 Number num = dF.parse(product.getCouponDiscount());
-                tv_coupon_detail.setText("$ " + new DecimalFormat("##.##").format(num));
+                tv_coupon_detail.setText("$" + new DecimalFormat("##.##").format(num));
 
 
             } catch (Exception e) {
@@ -1970,11 +1970,11 @@ public class MainFwActivity extends AppCompatActivity
             String chars = capitalize(product.getDescription());
             tv_detail_detail.setText(chars+" "+product.getPackagingSize());
 
-            tv_reg_price_detail.setText("$ "+product.getRegularPrice());
+            tv_reg_price_detail.setText("$"+product.getRegularPrice());
             try {
                 DecimalFormat dF = new DecimalFormat("0.00");
                 Number num = dF.parse(product.getSavings());
-                tv_save_detail.setText("$ " + new DecimalFormat("##.##").format(num));
+                tv_save_detail.setText("$" + new DecimalFormat("##.##").format(num));
 
             } catch (Exception e) {
 
@@ -1992,8 +1992,8 @@ public class MainFwActivity extends AppCompatActivity
             tv_deal_type_detaile.setText(product.getOfferTypeTagName());
 
             ImageView bindImage = (ImageView)findViewById(R.id.imv_item_detaile);
-            if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
-                String largeImagePath = "http://fwstaging.immdemo.net/webapiaccessclient/images/GEnoimage.jpg";
+            if (product.getLargeImagePath().contains("https://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+                String largeImagePath = "https://fwstaging.immdemo.net/webapiaccessclient/images/GEnoimage.jpg";
                 DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(bindImage);
                 downloadTask.execute(largeImagePath);
             }else {
@@ -2042,11 +2042,11 @@ public class MainFwActivity extends AppCompatActivity
             String chars = capitalize(product.getDescription());
             tv_detail_detail.setText(chars+" "+product.getPackagingSize());
 
-            tv_reg_price_detail.setText("$ "+product.getRegularPrice());
+            tv_reg_price_detail.setText("$"+product.getRegularPrice());
             try {
                 DecimalFormat dF = new DecimalFormat("0.00");
                 Number num = dF.parse(product.getSavings());
-                tv_save_detail.setText("$ " + new DecimalFormat("##.##").format(num));
+                tv_save_detail.setText("$" + new DecimalFormat("##.##").format(num));
 
             } catch (Exception e) {
 
@@ -2057,8 +2057,8 @@ public class MainFwActivity extends AppCompatActivity
             tv_deal_type_detaile.setText(product.getOfferTypeTagName());
 
             ImageView bindImage = (ImageView)findViewById(R.id.imv_item_detaile);
-            if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
-                String largeImagePath = "http://fwstaging.immdemo.net/webapiaccessclient/images/GEnoimage.jpg";
+            if (product.getLargeImagePath().contains("https://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+                String largeImagePath = "https://fwstaging.immdemo.net/webapiaccessclient/images/GEnoimage.jpg";
                 DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(bindImage);
                 downloadTask.execute(largeImagePath);
             }else {
@@ -2429,7 +2429,7 @@ public class MainFwActivity extends AppCompatActivity
         navigation.setVisibility(View.GONE);
 
         participateToolbar.setVisibility(View.VISIBLE);
-        header_title.setVisibility(View.GONE);
+      //  header_title.setVisibility(View.GONE);
         participateToolbar.setTitle("Participating Items");
         rv_items_verite.setVisibility(View.VISIBLE);
 
@@ -2461,7 +2461,7 @@ public class MainFwActivity extends AppCompatActivity
                     toolbar.setVisibility(View.VISIBLE);
                     navigation.setVisibility(View.VISIBLE);
                     group_count_text.setVisibility(View.GONE);
-                    header_title.setVisibility(View.VISIBLE);
+                  //  header_title.setVisibility(View.VISIBLE);
                 }else {
                     rv_items_group.setVisibility(View.GONE);
                     rv_items_verite.setVisibility(View.GONE);
@@ -2470,7 +2470,7 @@ public class MainFwActivity extends AppCompatActivity
                     toolbar.setVisibility(View.VISIBLE);
                     navigation.setVisibility(View.VISIBLE);
                     group_count_text.setVisibility(View.GONE);
-                    header_title.setVisibility(View.VISIBLE);
+                  //  header_title.setVisibility(View.VISIBLE);
                 }
 
 
@@ -2486,6 +2486,7 @@ public class MainFwActivity extends AppCompatActivity
                         new Response.Listener<String>(){
                             @Override
                             public void onResponse(String response) {
+                                Log.i("anshuman:",response);
 
                                 if (!response.equals("[]")) {
                                     try {
@@ -2510,7 +2511,7 @@ public class MainFwActivity extends AppCompatActivity
                                 }
                                 else{
                                     progressDialog.dismiss();
-                                    alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.incorrect_credentials),
+                                    alertDialog=userAlertDialog.createPositiveAlert("Participating Items (0)Activated",
                                             getString(R.string.ok),getString(R.string.alert));
                                     alertDialog.show();
                                 }

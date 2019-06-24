@@ -175,7 +175,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             holder.tv_detail.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
             holder.tv_deal_type.setTextSize(TypedValue.COMPLEX_UNIT_SP, 19);
             holder.tv_remove.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
-            holder.tv_status.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+            holder.tv_status.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 
 
 
@@ -183,13 +183,95 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             if (product.getInCircular()==0){
                 Log.i("ifincircular", String.valueOf(product.getInCircular()));
                 if (product.getPrimaryOfferTypeId() == 3) {
+                    holder.tv_coupon_flag.setText("With MyFareway");
+                    holder.limit.setText("");
                     holder.tv_unit.setText(product.getPackagingSize());
                     holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.mehrune));
                     holder.tv_deal_type.setText(product.getOfferTypeTagName());
-
                     String chars = capitalize(product.getDescription());
                     holder.tv_detail.setText(chars);
+                    // old display price
+                    String displayPrice=product.getDisplayPrice().toString();
+                    if(product.getDisplayPrice().toString().split("\\.").length>1)
+                        displayPrice= product.getDisplayPrice().split("\\.")[0]+"<sup>"+ product.getDisplayPrice().split("\\.")[1]+"<sup>";
+                    Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
+                    holder.tv_price.setText(result);
 
+                    holder.liner_save.setVisibility(View.VISIBLE);
+                    holder.tv_saving.setVisibility(TextView.VISIBLE);
+                    holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.white));
+                    holder.liner_save.setBackground(mContext.getResources().getDrawable(R.drawable.red_strip));
+
+                    try {
+                        DecimalFormat dF = new DecimalFormat("00.00");
+                        Number num = dF.parse(product.getSavings());
+                        holder.tv_saving.setText("SAVE $" + new DecimalFormat("##.##").format(num));
+
+                    } catch (Exception e) {
+
+                    }
+                    if (product.getHasRelatedItems()==1){
+                        if (product.getRelatedItemCount()>1){
+                            holder.tv_varieties.setVisibility(View.VISIBLE);
+                            holder.tv_varieties.setText(product.getRelatedItemCount()+" Varieties");
+                        }else {
+                            holder.tv_varieties.setVisibility(View.GONE);
+                        }
+                    }else if (product.getHasRelatedItems()==0){
+                        holder.tv_varieties.setVisibility(View.INVISIBLE);
+                    }
+                    if (product.getClickCount()>0){
+                        if (product.getListCount()>0){
+                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                            holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                            if (product.getRequiresActivation().contains("True")){
+                                holder.tv_status.setText("Added");
+                                // holder.count_product_number.setVisibility(View.VISIBLE);
+                                holder.remove_layout.setVisibility(View.VISIBLE);
+                                // holder.tv_quantity.setText(product.getQuantity());
+                            }else if(product.getRequiresActivation().contains("False")){
+                                holder.tv_status.setText("Added");
+                                // holder.count_product_number.setVisibility(View.VISIBLE);
+                                holder.remove_layout.setVisibility(View.VISIBLE);
+                            }
+                        }else {
+                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
+                            holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
+                            if (product.getRequiresActivation().contains("True")){
+                                if (product.getClickCount()>0){
+                                    holder.tv_status.setText("Add");
+                                    // holder.count_product_number.setVisibility(View.GONE);
+                                    holder.remove_layout.setVisibility(View.GONE);
+                                }else {
+                                    holder.tv_status.setText("Add");
+                                    // holder.count_product_number.setVisibility(View.GONE);
+                                    holder.remove_layout.setVisibility(View.GONE);
+                                }
+                            }else if (product.getRequiresActivation().contains("False")){
+                                holder.tv_status.setText("Add");
+                                // holder.count_product_number.setVisibility(View.GONE);
+                                holder.remove_layout.setVisibility(View.GONE);
+                            }
+                        }
+                    }else if (product.getClickCount()==0){
+                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
+                        holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
+                        if (product.getRequiresActivation().contains("True")){
+                            holder.tv_status.setText("Activate");
+                            // holder.count_product_number.setVisibility(View.GONE);
+                            holder.remove_layout.setVisibility(View.GONE);
+                        }else if (product.getRequiresActivation().contains("False")){
+                            // holder.count_product_number.setVisibility(View.GONE);
+                            holder.remove_layout.setVisibility(View.GONE);
+                            holder.tv_status.setText("Add");
+                        }
+
+                    }
+                  /*  holder.tv_unit.setText(product.getPackagingSize());
+                    holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.mehrune));
+                    holder.tv_deal_type.setText(product.getOfferTypeTagName());
+                    String chars = capitalize(product.getDescription());
+                    holder.tv_detail.setText(chars);
                     Spanned result = Html.fromHtml(product.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
                     holder.tv_price.setText(result);
                     holder.tv_saving.setVisibility(TextView.VISIBLE);
@@ -203,7 +285,6 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     } catch (Exception e) {
 
                     }
-
                     if (product.getHasRelatedItems()==1){
                         if (product.getRelatedItemCount()>1){
                             holder.tv_varieties.setVisibility(View.VISIBLE);
@@ -251,21 +332,186 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             holder.tv_status.setText("Add\nTo anshu");
                         }
 
-                    }
+                    }*/
 
                 } else if (product.getPrimaryOfferTypeId() == 2) {
+                    holder.tv_coupon_flag.setText("With Coupon");
+                    holder.liner_save.setVisibility(View.GONE);
+                    holder.tv_unit.setText(product.getPackagingSize());
+                    holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.green));
+                    holder.tv_deal_type.setText(product.getOfferTypeTagName());
+                    String headerContent = "";
+                    if (product.getMinAmount()>0){
+                        headerContent = "* WITH $"+product.getMinAmount()+" PURCHASE"+"\nLimit "+product.getLimitPerTransection();
+                    }else if (product.getRequiredQty()>1){
+                        headerContent = "* MUST BUY " + product.getRequiredQty()+"\nLimit "+product.getLimitPerTransection();
+                    }
+                    if(product.getLimitPerTransection()>0)
+                    {
+                        if(headerContent != "")
+                        {
+                            if (product.getLimitPerTransection()>1){
+                                headerContent = headerContent + "\nLimit : " + product.getLimitPerTransection();
+                            }
+                        }
+                        else
+                        {
+                            if (product.getLimitPerTransection()>1){
+                                headerContent = "Limit " + String.valueOf(product.getLimitPerTransection());
+                            }
+                        }
+                        if (product.getRewardType().equalsIgnoreCase("3")&&product.getPrimaryOfferTypeId()==2)
+                        {
+                            String displayPrice=product.getDisplayPrice().toString();
+                            if(product.getDisplayPrice().toString().split("\\.").length>1)
+                                displayPrice= product.getDisplayPrice().split("\\.")[0]+"<sup>"+ product.getDisplayPrice().split("\\.")[1]+"<sup>";
+
+                            Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>")+"*");
+                            Log.i("anshu", String.valueOf(result));
+                            holder.tv_price.setText(result);
+
+                        }else if(product.getRewardType().equalsIgnoreCase("2")&&product.getPrimaryOfferTypeId()==2){
+                            DecimalFormat dF = new DecimalFormat("00.00");
+                            try {
+                                Number rewardValue = dF.parse(product.getRewardValue());
+                                Spanned result = Html.fromHtml(new DecimalFormat("##.##").format(rewardValue)+"% OFF"+"<sup><small> *</small></sup>");
+                                if (product.getOfferDefinitionId()==3){
+                                    holder.tv_price.setText("FREE");
+                                }else {
+                                    Log.i("test", String.valueOf(product.getOfferDefinitionId()));
+                                    holder.tv_price.setText(result);
+                                }
+
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                        }else {
+                            String displayPrice=product.getDisplayPrice().toString();
+                            if(product.getDisplayPrice().toString().split("\\.").length>1)
+                                displayPrice= product.getDisplayPrice().split("\\.")[0]+"<sup>"+ product.getDisplayPrice().split("\\.")[1]+"<sup>";
+                            Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>")+"*");
+                            holder.tv_price.setText(result);
+                        }
+                    }
+                    holder.limit.setText(headerContent);
+
+                    if (product.getOfferDefinitionId()==3 || product.getOfferDefinitionId()==2 || product.getOfferDefinitionId()==1 || product.getOfferDefinitionId()==4){
+                        String chars = capitalize(product.getDescription());
+                        holder.tv_detail.setText(chars);
+                        if (product.getSavings().equalsIgnoreCase("0.0000")){
+                            holder.liner_save.setVisibility(View.GONE);
+                        }else {
+                            holder.liner_save.setVisibility(View.VISIBLE);
+                        }
+                    }else {
+                        String chars = capitalize("*"+product.getDescription());
+                        holder.tv_detail.setText(chars);
+                        if (product.getSavings().equalsIgnoreCase("0.0000")){
+                            holder.liner_save.setVisibility(View.GONE);
+                        }else {
+                            holder.liner_save.setVisibility(View.VISIBLE);
+                        }
+                    }
+
+
+                    try {
+                        if (product.getOfferDefinitionId()==4){
+                            DecimalFormat dF = new DecimalFormat("00.00");
+                            Number reward_value = dF.parse(product.getRewardValue());
+                            holder.liner_save.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                            holder.tv_price.setText("Buy "+product.getRequiredQty());
+
+                            if (product.getRewardType().equalsIgnoreCase("1")){
+                                holder.tv_saving.setText("Get "+product.getRewardQty()+" $"+new DecimalFormat("##.##").format(reward_value)+" Off *");
+                                holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.red));
+                                holder.tv_price.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
+                                holder.tv_saving.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
+                                holder.tv_saving.setTypeface(holder.tv_saving.getTypeface(), Typeface.BOLD);
+                            }else {
+                                holder.tv_saving.setText("Get "+product.getRewardQty()+" "+new DecimalFormat("##.##").format(reward_value)+" Off *");
+                                holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.black));
+                            }
+
+
+                        }else if (product.getOfferDefinitionId()==1){
+                            DecimalFormat dF = new DecimalFormat("00.00");
+                            Number adPrice = dF.parse(product.getAdPrice());
+                            Number couponDiscount = dF.parse(product.getCouponDiscount());
+                            holder.tv_saving.setText("Ad Price " + new DecimalFormat("##.##").format(adPrice)+"\nDigital Coupon $"+couponDiscount+" Off");
+                            holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.black));
+                            holder.liner_save.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                        }else if (product.getOfferDefinitionId()==3){
+                            DecimalFormat dF = new DecimalFormat("00.00");
+                            Number adPrice = dF.parse(product.getAdPrice());
+                            Number couponDiscount = dF.parse(product.getCouponDiscount());
+                            holder.tv_saving.setText("Ad Price " + new DecimalFormat("##.##").format(adPrice)+"\nDigital Coupon $"+couponDiscount+" Off");
+                            holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.black));
+                            holder.liner_save.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                        }else if (product.getOfferDefinitionId()==2){
+                            DecimalFormat dF = new DecimalFormat("00.00");
+                            Number regularPrice = dF.parse(product.getRegularPrice());
+                            Number savings = dF.parse(product.getSavings());
+                            holder.tv_saving.setText("Ad Price $" + new DecimalFormat("##.##").format(regularPrice)+"\nSAVINGS $"+savings+" ON "+product.getRequiredQty());
+                            holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.black));
+                            holder.liner_save.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                        }else if (product.getOfferDefinitionId()==5) {
+                            //coupon image hai
+                            DecimalFormat dF = new DecimalFormat("00.00");
+                            Number savings = dF.parse(product.getSavings());
+                            holder.tv_saving.setText("");
+                            holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.white));
+                            holder.liner_save.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                            holder.tv_detail.setText("* "+product.getoCouponShortDescription());
+                        }
+                    } catch (Exception e) {
+
+                    }
+                    if (product.getHasRelatedItems()==1){
+                        if (product.getRelatedItemCount()>1){
+                            holder.tv_varieties.setVisibility(View.VISIBLE);
+                            holder.tv_varieties.setText("Participate Item");
+                        }else {
+                            holder.tv_varieties.setVisibility(View.GONE);
+                        }
+                    }else if (product.getHasRelatedItems()==0){
+                        holder.tv_varieties.setVisibility(View.INVISIBLE);
+                    }
+                    if (product.getMinAmount()>0){
+                        if (product.getClickCount()>0){
+                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                            holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                            holder.tv_status.setText("Activated");
+                            holder.remove_layout.setVisibility(View.GONE);
+                        }else {
+                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
+                            holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
+                            holder.tv_status.setText("Activate");
+                            holder.remove_layout.setVisibility(View.GONE);
+                        }
+                    }else {
+                        Log.i("elseanshu", String.valueOf(product.getMinAmount()));
+                        if (product.getClickCount()>0){
+                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                            holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                            holder.tv_status.setText("Activated");
+                            holder.remove_layout.setVisibility(View.GONE);
+                        }else {
+                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
+                            holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
+                            holder.tv_status.setText("Activate");
+                            holder.remove_layout.setVisibility(View.GONE);
+                        }
+                    }
+                    /*
                     holder.liner_save.setVisibility(View.GONE);
                     holder.tv_unit.setText(product.getPackagingSize());
                     holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.mehrune));
                     holder.tv_deal_type.setText(product.getOfferTypeTagName());
-
                     String chars = capitalize(product.getDescription());
                     holder.tv_detail.setText(chars);
-
                     Spanned result = Html.fromHtml(product.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
                     holder.tv_price.setText(result);
                     holder.tv_saving.setVisibility(TextView.INVISIBLE);
-
                     if (product.getLimitPerTransection()>0){
                         holder.limit.setText("LIMIT "+product.getLimitPerTransection());
                         if (product.getRequiredQty()>1){
@@ -274,7 +520,6 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }else if (product.getRequiredQty()>1){
                         holder.limit.setText("MUST BUY "+product.getRequiredQty());
                     }
-
                     if (product.getHasRelatedItems()==1){
                         if (product.getRelatedItemCount()>1){
                             holder.tv_varieties.setVisibility(View.VISIBLE);
@@ -285,11 +530,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }else if (product.getHasRelatedItems()==0){
                         holder.tv_varieties.setVisibility(View.INVISIBLE);
                     }
-
                     if (product.getClickCount()>0){
-
                         if (product.getListCount()>0){
-
                             holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
                             holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
                             if (product.getRequiresActivation().contains("True")){
@@ -333,26 +575,29 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             holder.tv_status.setText("Add\nTo List");
                         }
 
-                    }
+                    }*/
 
                 }else if (product.getPrimaryOfferTypeId() == 1) {
+                    holder.liner_save.setVisibility(View.VISIBLE);
+                    holder.tv_saving.setVisibility(TextView.VISIBLE);
+                    holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.white));
+                    holder.liner_save.setBackground(mContext.getResources().getDrawable(R.drawable.red_strip));
+                    holder.tv_coupon_flag.setText("");
                     holder.limit.setText("");
                     holder.tv_unit.setText(product.getPackagingSize());
                     holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.blue));
                     holder.tv_deal_type.setText(product.getOfferTypeTagName());
-
                     String chars = capitalize(product.getDescription());
                     holder.tv_detail.setText(chars);
-
-                    Spanned result = Html.fromHtml(product.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
+                    String displayPrice=product.getDisplayPrice().toString();
+                    if(product.getDisplayPrice().toString().split("\\.").length>1)
+                        displayPrice= product.getDisplayPrice().split("\\.")[0]+"<sup>"+ product.getDisplayPrice().split("\\.")[1]+"<sup>";
+                    Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
                     holder.tv_price.setText(result);
-
-                    holder.tv_saving.setVisibility(TextView.VISIBLE);
-                    holder.liner_save.setVisibility(View.VISIBLE);
                     try {
                         DecimalFormat dF = new DecimalFormat("0.00");
                         Number num = dF.parse(product.getSavings());
-                        holder.tv_saving.setText("SAVE $ " + new DecimalFormat("##.##").format(num));
+                        holder.tv_saving.setText("SAVE $" + new DecimalFormat("##.##").format(num));
 
                     } catch (Exception e) {
 
@@ -374,15 +619,55 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
                         holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
                         holder.tv_status.setText("Added");
+                        holder.remove_layout.setVisibility(View.VISIBLE);
+                    }else if (product.getListCount()==0){
+                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
+                        holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
+                        holder.tv_status.setText("Add");
+                        holder.remove_layout.setVisibility(View.GONE);
+
+                    }
+                    /*holder.limit.setText("");
+                    holder.tv_unit.setText(product.getPackagingSize());
+                    holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.blue));
+                    holder.tv_deal_type.setText(product.getOfferTypeTagName());
+                    String chars = capitalize(product.getDescription());
+                    holder.tv_detail.setText(chars);
+                    Spanned result = Html.fromHtml(product.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
+                    holder.tv_price.setText(result);
+                    holder.tv_saving.setVisibility(TextView.VISIBLE);
+                    holder.liner_save.setVisibility(View.VISIBLE);
+                    try {
+                        DecimalFormat dF = new DecimalFormat("0.00");
+                        Number num = dF.parse(product.getSavings());
+                        holder.tv_saving.setText("SAVE $ " + new DecimalFormat("##.##").format(num));
+                    } catch (Exception e) {
+
+                    }
+                    if (product.getHasRelatedItems()==1){
+                        if (product.getRelatedItemCount()>1){
+                            holder.tv_varieties.setVisibility(View.VISIBLE);
+                            holder.tv_varieties.setText(product.getRelatedItemCount()+" varieties");
+                        }else {
+                            holder.tv_varieties.setVisibility(View.GONE);
+                        }
+                    }else if (product.getHasRelatedItems()==0){
+                        holder.tv_varieties.setVisibility(View.INVISIBLE);
+                    }
+                    if (product.getListCount()>0){
+                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                        holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                        holder.tv_status.setText("Added");
                         holder.count_product_number.setVisibility(View.VISIBLE);
                         holder.remove_layout.setVisibility(View.VISIBLE);
                     }else if (product.getListCount()==0){
                         holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
                         holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
                         holder.tv_status.setText("Add\nTo List");
-                    }
+                    }*/
                 }
-            }else {
+            }
+            else {
                 Log.i("elseincircular", String.valueOf(product.getInCircular()));
                 if (product.getPrimaryOfferTypeId() == 3) {
 
@@ -416,7 +701,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     if (product.getHasRelatedItems()==1){
                         if (product.getRelatedItemCount()>1){
                             holder.tv_varieties.setVisibility(View.VISIBLE);
-                            holder.tv_varieties.setText(product.getRelatedItemCount()+" Varieties");
+                            Spanned varietiesUnderline = Html.fromHtml("<u>"+product.getRelatedItemCount()+" Varieties"+"</u>");
+                            holder.tv_varieties.setText(varietiesUnderline);
                         }else {
                             holder.tv_varieties.setVisibility(View.GONE);
                         }
@@ -594,7 +880,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             DecimalFormat dF = new DecimalFormat("00.00");
                             Number regularPrice = dF.parse(product.getRegularPrice());
                             Number savings = dF.parse(product.getSavings());
-                            holder.tv_saving.setText("Ad Price $ " + new DecimalFormat("##.##").format(regularPrice)+"\nSAVINGS $"+savings+" ON "+product.getRequiredQty());
+                            holder.tv_saving.setText("Ad Price $" + new DecimalFormat("##.##").format(regularPrice)+"\nSAVINGS $"+savings+" ON "+product.getRequiredQty());
                             holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.black));
                             holder.liner_save.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                         }else if (product.getOfferDefinitionId()==5) {
@@ -632,7 +918,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     if (product.getHasRelatedItems()==1){
                         if (product.getRelatedItemCount()>1){
                             holder.tv_varieties.setVisibility(View.VISIBLE);
-                            holder.tv_varieties.setText("Participate Item");
+                            Spanned varietiesUnderline = Html.fromHtml("<u>Participate Item</u>");
+                            holder.tv_varieties.setText(varietiesUnderline);
                         }else {
                             holder.tv_varieties.setVisibility(View.GONE);
                         }
@@ -746,7 +1033,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     try {
                         DecimalFormat dF = new DecimalFormat("0.00");
                         Number num = dF.parse(product.getSavings());
-                        holder.tv_saving.setText("SAVE $ " + new DecimalFormat("##.##").format(num));
+                        holder.tv_saving.setText("SAVE $" + new DecimalFormat("##.##").format(num));
 
                     } catch (Exception e) {
 
@@ -755,7 +1042,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     if (product.getHasRelatedItems()==1){
                         if (product.getRelatedItemCount()>1){
                             holder.tv_varieties.setVisibility(View.VISIBLE);
-                            holder.tv_varieties.setText(product.getRelatedItemCount()+" varieties");
+                            Spanned varietiesUnderline = Html.fromHtml("<u>"+product.getRelatedItemCount()+" Varieties"+"</u>");
+                            holder.tv_varieties.setText(varietiesUnderline);
                         }else {
                             holder.tv_varieties.setVisibility(View.GONE);
                         }
@@ -783,9 +1071,9 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 }
             }
             if (product.getOfferDefinitionId()==5){
-                if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+                if (product.getLargeImagePath().contains("https://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
                     Glide.with(mContext)
-                            .load("http://platform.immdemo.net/web/images/GEnoimage.jpg")
+                            .load("https://platform.immdemo.net/web/images/GEnoimage.jpg")
                             .into(holder.imv_item);
                 }else {
                     Glide.with(mContext)
@@ -793,9 +1081,9 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             .into(holder.imv_item);
                 }
             }else {
-                if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+                if (product.getLargeImagePath().contains("https://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
                     Glide.with(mContext)
-                            .load("http://platform.immdemo.net/web/images/GEnoimage.jpg")
+                            .load("https://platform.immdemo.net/web/images/GEnoimage.jpg")
                             .into(holder.imv_item);
                 }else {
                     Glide.with(mContext)
@@ -845,13 +1133,96 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             if (product.getInCircular()==0){
                 Log.i("ifincircular", String.valueOf(product.getInCircular()));
                 if (product.getPrimaryOfferTypeId() == 3) {
+                    holder.tv_coupon_flag.setText("With MyFareway");
+                    holder.limit.setText("");
                     holder.tv_unit.setText(product.getPackagingSize());
                     holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.mehrune));
                     holder.tv_deal_type.setText(product.getOfferTypeTagName());
-
                     String chars = capitalize(product.getDescription());
                     holder.tv_detail.setText(chars);
+                    // old display price
+                    String displayPrice=product.getDisplayPrice().toString();
+                    if(product.getDisplayPrice().toString().split("\\.").length>1)
+                        displayPrice= product.getDisplayPrice().split("\\.")[0]+"<sup>"+ product.getDisplayPrice().split("\\.")[1]+"<sup>";
+                    Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
+                    holder.tv_price.setText(result);
 
+                    holder.liner_save.setVisibility(View.VISIBLE);
+                    holder.tv_saving.setVisibility(TextView.VISIBLE);
+                    holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.white));
+                    holder.liner_save.setBackground(mContext.getResources().getDrawable(R.drawable.red_strip));
+
+                    try {
+                        DecimalFormat dF = new DecimalFormat("00.00");
+                        Number num = dF.parse(product.getSavings());
+                        holder.tv_saving.setText("SAVE $" + new DecimalFormat("##.##").format(num));
+
+                    } catch (Exception e) {
+
+                    }
+                    if (product.getHasRelatedItems()==1){
+                        if (product.getRelatedItemCount()>1){
+                            holder.tv_varieties.setVisibility(View.VISIBLE);
+                            Spanned varietiesUnderline = Html.fromHtml("<u>"+product.getRelatedItemCount()+" Varieties"+"</u>");
+                            holder.tv_varieties.setText(varietiesUnderline);
+                        }else {
+                            holder.tv_varieties.setVisibility(View.GONE);
+                        }
+                    }else if (product.getHasRelatedItems()==0){
+                        holder.tv_varieties.setVisibility(View.INVISIBLE);
+                    }
+                    if (product.getClickCount()>0){
+                        if (product.getListCount()>0){
+                            holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                            holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                            if (product.getRequiresActivation().contains("True")){
+                                holder.tv_status_mul.setText("Added");
+                                // holder.count_product_number.setVisibility(View.VISIBLE);
+                                holder.remove_layout_mul.setVisibility(View.VISIBLE);
+                                // holder.tv_quantity.setText(product.getQuantity());
+                            }else if(product.getRequiresActivation().contains("False")){
+                                holder.tv_status_mul.setText("Added");
+                                // holder.count_product_number.setVisibility(View.VISIBLE);
+                                holder.remove_layout_mul.setVisibility(View.VISIBLE);
+                            }
+                        }else {
+                            holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
+                            holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
+                            if (product.getRequiresActivation().contains("True")){
+                                if (product.getClickCount()>0){
+                                    holder.tv_status_mul.setText("Add");
+                                    // holder.count_product_number.setVisibility(View.GONE);
+                                    holder.remove_layout_mul.setVisibility(View.GONE);
+                                }else {
+                                    holder.tv_status_mul.setText("Add");
+                                    // holder.count_product_number.setVisibility(View.GONE);
+                                    holder.remove_layout_mul.setVisibility(View.GONE);
+                                }
+                            }else if (product.getRequiresActivation().contains("False")){
+                                holder.tv_status_mul.setText("Add");
+                                // holder.count_product_number.setVisibility(View.GONE);
+                                holder.remove_layout_mul.setVisibility(View.GONE);
+                            }
+                        }
+                    }else if (product.getClickCount()==0){
+                        holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
+                        holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
+                        if (product.getRequiresActivation().contains("True")){
+                            holder.tv_status_mul.setText("Activate");
+                            // holder.count_product_number.setVisibility(View.GONE);
+                            holder.remove_layout_mul.setVisibility(View.GONE);
+                        }else if (product.getRequiresActivation().contains("False")){
+                            // holder.count_product_number.setVisibility(View.GONE);
+                            holder.remove_layout_mul.setVisibility(View.GONE);
+                            holder.tv_status_mul.setText("Add");
+                        }
+
+                    }
+                   /* holder.tv_unit.setText(product.getPackagingSize());
+                    holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.mehrune));
+                    holder.tv_deal_type.setText(product.getOfferTypeTagName());
+                    String chars = capitalize(product.getDescription());
+                    holder.tv_detail.setText(chars);
                     Spanned result = Html.fromHtml(product.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
                     holder.tv_price.setText(result);
                     holder.tv_saving.setVisibility(TextView.VISIBLE);
@@ -865,7 +1236,6 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     } catch (Exception e) {
 
                     }
-
                     if (product.getHasRelatedItems()==1){
                         if (product.getRelatedItemCount()>1){
                             holder.tv_varieties.setVisibility(View.VISIBLE);
@@ -913,21 +1283,184 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             holder.tv_status_mul.setText("Add\nTo anshu");
                         }
 
-                    }
+                    }*/
 
                 } else if (product.getPrimaryOfferTypeId() == 2) {
+                    holder.tv_coupon_flag.setText("With Coupon");
                     holder.liner_save.setVisibility(View.GONE);
+                    holder.tv_unit.setText(product.getPackagingSize());
+                    holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.green));
+                    holder.tv_deal_type.setText(product.getOfferTypeTagName());
+                    String headerContent = "";
+                    if (product.getMinAmount()>0){
+                        headerContent = "* WITH $"+product.getMinAmount()+" PURCHASE"+"\nLimit "+product.getLimitPerTransection();
+                    }else if (product.getRequiredQty()>1){
+                        headerContent = "* MUST BUY " + product.getRequiredQty()+"\nLimit "+product.getLimitPerTransection();
+                    }
+                    if(product.getLimitPerTransection()>0)
+                    {
+                        if(headerContent != "")
+                        {
+                            if (product.getLimitPerTransection()>1){
+                                headerContent = headerContent + "\nLimit : " + product.getLimitPerTransection();
+                            }
+                        }
+                        else
+                        {
+                            if (product.getLimitPerTransection()>1){
+                                headerContent = "Limit " + String.valueOf(product.getLimitPerTransection());
+                            }
+                        }
+                        if (product.getRewardType().equalsIgnoreCase("3")&&product.getPrimaryOfferTypeId()==2)
+                        {
+                            String displayPrice=product.getDisplayPrice().toString();
+                            if(product.getDisplayPrice().toString().split("\\.").length>1)
+                                displayPrice= product.getDisplayPrice().split("\\.")[0]+"<sup>"+ product.getDisplayPrice().split("\\.")[1]+"<sup>";
+
+                            Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>")+"*");
+                            Log.i("anshu", String.valueOf(result));
+                            holder.tv_price.setText(result);
+
+                        }else if(product.getRewardType().equalsIgnoreCase("2")&&product.getPrimaryOfferTypeId()==2){
+                            DecimalFormat dF = new DecimalFormat("00.00");
+                            try {
+                                Number rewardValue = dF.parse(product.getRewardValue());
+                                Spanned result = Html.fromHtml(new DecimalFormat("##.##").format(rewardValue)+"% OFF"+"<sup><small> *</small></sup>");
+                                if (product.getOfferDefinitionId()==3){
+                                    holder.tv_price.setText("FREE");
+                                }else {
+                                    Log.i("test", String.valueOf(product.getOfferDefinitionId()));
+                                    holder.tv_price.setText(result);
+                                }
+                            } catch (ParseException e) {
+                                e.printStackTrace();
+                            }
+                        }else {
+                            String displayPrice=product.getDisplayPrice().toString();
+                            if(product.getDisplayPrice().toString().split("\\.").length>1)
+                                displayPrice= product.getDisplayPrice().split("\\.")[0]+"<sup>"+ product.getDisplayPrice().split("\\.")[1]+"<sup>";
+                            Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>")+"*");
+                            holder.tv_price.setText(result);
+                        }
+                    }
+                    holder.limit.setText(headerContent);
+                    if (product.getOfferDefinitionId()==3 || product.getOfferDefinitionId()==2 || product.getOfferDefinitionId()==1 || product.getOfferDefinitionId()==4){
+                        String chars = capitalize(product.getDescription());
+                        holder.tv_detail.setText(chars);
+                        if (product.getSavings().equalsIgnoreCase("0.0000")){
+                            holder.liner_save.setVisibility(View.GONE);
+                        }else {
+                            holder.liner_save.setVisibility(View.VISIBLE);
+                        }
+                    }else {
+                        String chars = capitalize("*"+product.getDescription());
+                        holder.tv_detail.setText(chars);
+                        if (product.getSavings().equalsIgnoreCase("0.0000")){
+                            holder.liner_save.setVisibility(View.GONE);
+                        }else {
+                            holder.liner_save.setVisibility(View.VISIBLE);
+                        }
+                    }
+
+
+                    try {
+                        if (product.getOfferDefinitionId()==4){
+                            DecimalFormat dF = new DecimalFormat("00.00");
+                            Number reward_value = dF.parse(product.getRewardValue());
+                            holder.liner_save.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                            holder.tv_price.setText("Buy "+product.getRequiredQty());
+                            if (product.getRewardType().equalsIgnoreCase("1")){
+                                holder.tv_saving.setText("Get "+product.getRewardQty()+" $"+new DecimalFormat("##.##").format(reward_value)+" Off *");
+                                holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.red));
+                                holder.tv_price.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
+                                holder.tv_saving.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
+                                holder.tv_saving.setTypeface(holder.tv_saving.getTypeface(), Typeface.BOLD);
+                            }else {
+                                holder.tv_saving.setText("Get "+product.getRewardQty()+" "+new DecimalFormat("##.##").format(reward_value)+" Off *");
+                                holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.black));
+                            }
+
+
+                        }else if (product.getOfferDefinitionId()==1){
+                            DecimalFormat dF = new DecimalFormat("00.00");
+                            Number adPrice = dF.parse(product.getAdPrice());
+                            Number couponDiscount = dF.parse(product.getCouponDiscount());
+                            holder.tv_saving.setText("Ad Price " + new DecimalFormat("##.##").format(adPrice)+"\nDigital Coupon $"+couponDiscount+" Off");
+                            holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.black));
+                            holder.liner_save.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                        }else if (product.getOfferDefinitionId()==3){
+                            DecimalFormat dF = new DecimalFormat("00.00");
+                            Number adPrice = dF.parse(product.getAdPrice());
+                            Number couponDiscount = dF.parse(product.getCouponDiscount());
+                            holder.tv_saving.setText("Ad Price " + new DecimalFormat("##.##").format(adPrice)+"\nDigital Coupon $"+couponDiscount+" Off");
+                            holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.black));
+                            holder.liner_save.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                        }else if (product.getOfferDefinitionId()==2){
+                            DecimalFormat dF = new DecimalFormat("00.00");
+                            Number regularPrice = dF.parse(product.getRegularPrice());
+                            Number savings = dF.parse(product.getSavings());
+                            holder.tv_saving.setText("Ad Price $" + new DecimalFormat("##.##").format(regularPrice)+"\nSAVINGS $"+savings+" ON "+product.getRequiredQty());
+                            holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.black));
+                            holder.liner_save.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                        }else if (product.getOfferDefinitionId()==5) {
+                            //coupon image hai
+                            DecimalFormat dF = new DecimalFormat("00.00");
+                            Number savings = dF.parse(product.getSavings());
+                            holder.tv_saving.setText("");
+                            holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.white));
+                            holder.liner_save.setBackgroundColor(mContext.getResources().getColor(R.color.white));
+                            holder.tv_detail.setText("* "+product.getoCouponShortDescription());
+                        }
+                    } catch (Exception e) {
+
+                    }
+                    if (product.getHasRelatedItems()==1){
+                        if (product.getRelatedItemCount()>1){
+                            holder.tv_varieties.setVisibility(View.VISIBLE);
+                            Spanned varietiesUnderline = Html.fromHtml("<u>Participate Item</u>");
+                            holder.tv_varieties.setText(varietiesUnderline);
+                        }else {
+                            holder.tv_varieties.setVisibility(View.GONE);
+                        }
+                    }else if (product.getHasRelatedItems()==0){
+                        holder.tv_varieties.setVisibility(View.INVISIBLE);
+                    }
+                    if (product.getMinAmount()>0){
+                        Log.i("ifanshu", String.valueOf(product.getMinAmount()));
+                        if (product.getClickCount()>0){
+                            holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                            holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                            holder.tv_status_mul.setText("Activated");
+                            holder.remove_layout_mul.setVisibility(View.GONE);
+                        }else {
+                            holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
+                            holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
+                            holder.tv_status_mul.setText("Activate");
+                            holder.remove_layout_mul.setVisibility(View.GONE);
+                        }
+                    }else {
+                        Log.i("elseanshu", String.valueOf(product.getMinAmount()));
+                        if (product.getClickCount()>0){
+                            holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                            holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                            holder.tv_status_mul.setText("Activated");
+                            holder.remove_layout_mul.setVisibility(View.GONE);
+                        }else {
+                            holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
+                            holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
+                            holder.tv_status_mul.setText("Activate");
+                            holder.remove_layout_mul.setVisibility(View.GONE);
+                        }
+                    }
+                   /* holder.liner_save.setVisibility(View.GONE);
                     holder.tv_unit.setText(product.getPackagingSize());
                     holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.mehrune));
                     holder.tv_deal_type.setText(product.getOfferTypeTagName());
-
                     String chars = capitalize(product.getDescription());
                     holder.tv_detail.setText(chars);
-
                     Spanned result = Html.fromHtml(product.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
                     holder.tv_price.setText(result);
                     holder.tv_saving.setVisibility(TextView.INVISIBLE);
-
                     if (product.getLimitPerTransection()>0){
                         holder.limit.setText("LIMIT "+product.getLimitPerTransection());
                         if (product.getRequiredQty()>1){
@@ -947,11 +1480,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }else if (product.getHasRelatedItems()==0){
                         holder.tv_varieties.setVisibility(View.INVISIBLE);
                     }
-
                     if (product.getClickCount()>0){
-
                         if (product.getListCount()>0){
-
                             holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
                             holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
                             if (product.getRequiresActivation().contains("True")){
@@ -973,7 +1503,6 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                                 if (product.getClickCount()>0){
                                     holder.tv_status_mul.setText("Add\nTo List");
                                 }else {
-
                                     holder.tv_status_mul.setText(mContext.getString(R.string.activate));
                                     holder.count_product_number.setVisibility(View.GONE);
                                     holder.remove_layout_mul.setVisibility(View.GONE);
@@ -982,8 +1511,6 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                                 holder.tv_status_mul.setText("Add\nTo List");
                             }
                         }
-
-
                     }else if (product.getClickCount()==0){
                         holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
                         holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
@@ -995,31 +1522,73 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             holder.tv_status_mul.setText("Add\nTo List");
                         }
 
-                    }
+                    }*/
 
                 }else if (product.getPrimaryOfferTypeId() == 1) {
+                    holder.liner_save.setVisibility(View.VISIBLE);
+                    holder.tv_saving.setVisibility(TextView.VISIBLE);
+                    holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.white));
+                    holder.liner_save.setBackground(mContext.getResources().getDrawable(R.drawable.red_strip));
+                    holder.tv_coupon_flag.setText("");
                     holder.limit.setText("");
                     holder.tv_unit.setText(product.getPackagingSize());
                     holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.blue));
                     holder.tv_deal_type.setText(product.getOfferTypeTagName());
-
                     String chars = capitalize(product.getDescription());
                     holder.tv_detail.setText(chars);
+                    String displayPrice=product.getDisplayPrice().toString();
+                    if(product.getDisplayPrice().toString().split("\\.").length>1)
+                        displayPrice= product.getDisplayPrice().split("\\.")[0]+"<sup>"+ product.getDisplayPrice().split("\\.")[1]+"<sup>";
+                    Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
+                    holder.tv_price.setText(result);
+                    try {
+                        DecimalFormat dF = new DecimalFormat("0.00");
+                        Number num = dF.parse(product.getSavings());
+                        holder.tv_saving.setText("SAVE $" + new DecimalFormat("##.##").format(num));
+                    } catch (Exception e) {
 
+                    }
+                    if (product.getHasRelatedItems()==1){
+                        if (product.getRelatedItemCount()>1){
+                            holder.tv_varieties.setVisibility(View.VISIBLE);
+                            Spanned varietiesUnderline = Html.fromHtml("<u>"+product.getRelatedItemCount()+" Varieties"+"</u>");
+                            holder.tv_varieties.setText(varietiesUnderline);
+                        }else {
+                            holder.tv_varieties.setVisibility(View.GONE);
+                        }
+                    }else if (product.getHasRelatedItems()==0){
+                        holder.tv_varieties.setVisibility(View.INVISIBLE);
+                    }
+                    if (product.getListCount()>0){
+                        holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                        holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                        holder.tv_status_mul.setText("Added");
+                        holder.remove_layout_mul.setVisibility(View.VISIBLE);
+                    }else if (product.getListCount()==0){
+                        holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
+                        holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
+                        holder.tv_status_mul.setText("Add");
+                        holder.remove_layout_mul.setVisibility(View.GONE);
+
+                    }
+                }
+                    /* holder.limit.setText("");
+                    holder.tv_unit.setText(product.getPackagingSize());
+                    holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.blue));
+                    holder.tv_deal_type.setText(product.getOfferTypeTagName());
+                    String chars = capitalize(product.getDescription());
+                    holder.tv_detail.setText(chars);
                     Spanned result = Html.fromHtml(product.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
                     holder.tv_price.setText(result);
-
                     holder.tv_saving.setVisibility(TextView.VISIBLE);
                     holder.liner_save.setVisibility(View.VISIBLE);
                     try {
                         DecimalFormat dF = new DecimalFormat("0.00");
                         Number num = dF.parse(product.getSavings());
                         holder.tv_saving.setText("SAVE $ " + new DecimalFormat("##.##").format(num));
-
                     } catch (Exception e) {
 
                     }
-
                     if (product.getHasRelatedItems()==1){
                         if (product.getRelatedItemCount()>1){
                             holder.tv_varieties.setVisibility(View.VISIBLE);
@@ -1030,8 +1599,6 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }else if (product.getHasRelatedItems()==0){
                         holder.tv_varieties.setVisibility(View.INVISIBLE);
                     }
-
-
                     if (product.getListCount()>0){
                         holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
                         holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
@@ -1043,7 +1610,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
                         holder.tv_status_mul.setText("Add\nTo List");
                     }
-                }
+                }*/
             }else {
                 Log.i("elseincircular", String.valueOf(product.getInCircular()));
                 if (product.getPrimaryOfferTypeId() == 3) {
@@ -1070,7 +1637,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     try {
                         DecimalFormat dF = new DecimalFormat("00.00");
                         Number num = dF.parse(product.getSavings());
-                        holder.tv_saving.setText("SAVE $ " + new DecimalFormat("##.##").format(num));
+                        holder.tv_saving.setText("SAVE $" + new DecimalFormat("##.##").format(num));
 
                     } catch (Exception e) {
 
@@ -1078,7 +1645,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     if (product.getHasRelatedItems()==1){
                         if (product.getRelatedItemCount()>1){
                             holder.tv_varieties.setVisibility(View.VISIBLE);
-                            holder.tv_varieties.setText(product.getRelatedItemCount()+" Varieties");
+                            Spanned varietiesUnderline = Html.fromHtml("<u>"+product.getRelatedItemCount()+" Varieties"+"</u>");
+                            holder.tv_varieties.setText(varietiesUnderline);
                         }else {
                             holder.tv_varieties.setVisibility(View.GONE);
                         }
@@ -1256,7 +1824,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             DecimalFormat dF = new DecimalFormat("00.00");
                             Number regularPrice = dF.parse(product.getRegularPrice());
                             Number savings = dF.parse(product.getSavings());
-                            holder.tv_saving.setText("Ad Price $ " + new DecimalFormat("##.##").format(regularPrice)+"\nSAVINGS $"+savings+" ON "+product.getRequiredQty());
+                            holder.tv_saving.setText("Ad Price $" + new DecimalFormat("##.##").format(regularPrice)+"\nSAVINGS $"+savings+" ON "+product.getRequiredQty());
                             holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.black));
                             holder.liner_save.setBackgroundColor(mContext.getResources().getColor(R.color.white));
                         }else if (product.getOfferDefinitionId()==5) {
@@ -1294,7 +1862,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     if (product.getHasRelatedItems()==1){
                         if (product.getRelatedItemCount()>1){
                             holder.tv_varieties.setVisibility(View.VISIBLE);
-                            holder.tv_varieties.setText("Participate Item");
+                            Spanned varietiesUnderline = Html.fromHtml("<u>Participate Item</u>");
+                            holder.tv_varieties.setText(varietiesUnderline);
                         }else {
                             holder.tv_varieties.setVisibility(View.GONE);
                         }
@@ -1408,7 +1977,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     try {
                         DecimalFormat dF = new DecimalFormat("0.00");
                         Number num = dF.parse(product.getSavings());
-                        holder.tv_saving.setText("SAVE $ " + new DecimalFormat("##.##").format(num));
+                        holder.tv_saving.setText("SAVE $" + new DecimalFormat("##.##").format(num));
 
                     } catch (Exception e) {
 
@@ -1417,7 +1986,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     if (product.getHasRelatedItems()==1){
                         if (product.getRelatedItemCount()>1){
                             holder.tv_varieties.setVisibility(View.VISIBLE);
-                            holder.tv_varieties.setText(product.getRelatedItemCount()+" varieties");
+                            Spanned varietiesUnderline = Html.fromHtml("<u>"+product.getRelatedItemCount()+" Varieties"+"</u>");
+                            holder.tv_varieties.setText(varietiesUnderline);
                         }else {
                             holder.tv_varieties.setVisibility(View.GONE);
                         }
@@ -1445,9 +2015,9 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 }
             }
             if (product.getOfferDefinitionId()==5){
-                if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+                if (product.getLargeImagePath().contains("https://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
                     Glide.with(mContext)
-                            .load("http://platform.immdemo.net/web/images/GEnoimage.jpg")
+                            .load("https://platform.immdemo.net/web/images/GEnoimage.jpg")
                             .into(holder.imv_item);
                 }else {
                     Glide.with(mContext)
@@ -1455,9 +2025,9 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             .into(holder.imv_item);
                 }
             }else {
-                if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+                if (product.getLargeImagePath().contains("https://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
                     Glide.with(mContext)
-                            .load("http://platform.immdemo.net/web/images/GEnoimage.jpg")
+                            .load("https://platform.immdemo.net/web/images/GEnoimage.jpg")
                             .into(holder.imv_item);
                 }else {
                     Glide.with(mContext)
