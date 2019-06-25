@@ -111,7 +111,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             holder.tv_purchase_amount.setVisibility(View.VISIBLE);
             holder.liner_coupon_description.setVisibility(View.GONE);
             holder.liner_personal_description.setVisibility(View.VISIBLE);
-            holder.header_line_view.setBackgroundColor(mContext.getResources().getColor(R.color.mehrune));
+            //holder.header_line_view.setBackgroundColor(mContext.getResources().getColor(R.color.mehrune));
             holder.tv_header_title.setBackgroundColor(mContext.getResources().getColor(R.color.mehrune));
             holder.tv_header_title.setText("Personal Deal");
         }else if (shopping.getPrimaryOfferTypeId() == 2){
@@ -121,7 +121,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             holder.liner_coupon_description.setVisibility(View.VISIBLE);
             holder.liner_personal_description.setVisibility(View.GONE);
             holder.tv_coupon_description.setText(shopping.getCouponDescription());
-            holder.header_line_view.setBackgroundColor(mContext.getResources().getColor(R.color.green));
+            //holder.header_line_view.setBackgroundColor(mContext.getResources().getColor(R.color.green));
             holder.tv_header_title.setBackgroundColor(mContext.getResources().getColor(R.color.green));
             holder.tv_header_title.setText("Digital Coupon");
         }else if (shopping.getPrimaryOfferTypeId() == 1){
@@ -130,7 +130,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             holder.tv_purchase_amount.setVisibility(View.VISIBLE);
             holder.liner_coupon_description.setVisibility(View.GONE);
             holder.liner_personal_description.setVisibility(View.VISIBLE);
-            holder.header_line_view.setBackgroundColor(mContext.getResources().getColor(R.color.blue));
+            //holder.header_line_view.setBackgroundColor(mContext.getResources().getColor(R.color.blue));
             holder.tv_header_title.setBackgroundColor(mContext.getResources().getColor(R.color.blue));
             holder.tv_header_title.setText("Sale Item");
         }

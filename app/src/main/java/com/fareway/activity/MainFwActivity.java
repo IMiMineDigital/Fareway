@@ -100,9 +100,11 @@ import org.json.JSONObject;
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -682,7 +684,7 @@ public class MainFwActivity extends AppCompatActivity
 
     @SuppressWarnings("StatementWithEmptyBody")
 
-    public void searchLoad(String s) {
+    public void searchLoad(final String s) {
         if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
             try {
                 progressDialog = new ProgressDialog(activity);
@@ -693,6 +695,7 @@ public class MainFwActivity extends AppCompatActivity
                             @Override
                             public void onResponse(String response) {
                                 Log.i("Fareway response Main", response.toString());
+                                //Log.i("serach",Constant.WEB_URL+Constant.SEARCH+"MemberId="+appUtil.getPrefrence("MemberId")+"&Plateform=2&StoreId="+appUtil.getPrefrence("StoreId")+"&SearchText="+s);
                                 progressDialog.dismiss();
 
                                 if (!response.equals("[]")) {
@@ -1523,7 +1526,7 @@ public class MainFwActivity extends AppCompatActivity
         TextView tv_deal_type_detaile = (TextView) findViewById(R.id.tv_deal_type_detaile);
         TextView tv_coupon_detail = (TextView) findViewById(R.id.tv_coupon_detail);
         TextView tv_varieties_detail = (TextView) findViewById(R.id.tv_varieties_detail);
-        tv_varieties_detail.setText(product.getRelatedItemCount()+" Varieties");
+       // tv_varieties_detail.setText(product.getRelatedItemCount()+" Varieties");
         //detail verite click lisner
         tv_varieties_detail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -1845,7 +1848,27 @@ public class MainFwActivity extends AppCompatActivity
             }
 
             tv_upc_detail.setText(product.getUPC());
-            tv_valid_detail.setText(product.getValidityEndDate());
+            //tv_valid_detail.setText(product.getValidityEndDate());
+
+            String saveDate = product.getValidityEndDate();
+            if (saveDate.length()==0){
+               // getTokenkey();
+            }else {
+                SimpleDateFormat spf = new SimpleDateFormat("dd/MM/yy");
+                Date newDate = null;
+                try {
+                    newDate = spf.parse(saveDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                String c = "dd/MM";
+                spf = new SimpleDateFormat(c);
+                saveDate = spf.format(newDate);
+                System.out.println(saveDate);
+                tv_valid_detail.setText(saveDate);
+
+            }
+
             tv_deal_type_detaile.setText(product.getOfferTypeTagName());
 
             ImageView bindImage = (ImageView)findViewById(R.id.imv_item_detaile);
@@ -1857,6 +1880,17 @@ public class MainFwActivity extends AppCompatActivity
                 String largeImagePath = product.getLargeImagePath();
                 DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(bindImage);
                 downloadTask.execute(largeImagePath);
+            }
+            if (product.getHasRelatedItems()==1){
+                if (product.getRelatedItemCount()>1){
+                    tv_varieties_detail.setVisibility(View.VISIBLE);
+                    Spanned varietiesUnderline = Html.fromHtml("<u>"+product.getRelatedItemCount()+" Varieties"+"</u>");
+                    tv_varieties_detail.setText(varietiesUnderline);
+                }else {
+                    tv_varieties_detail.setVisibility(View.GONE);
+                }
+            }else if (product.getHasRelatedItems()==0){
+                tv_varieties_detail.setVisibility(View.INVISIBLE);
             }
 
 
@@ -1905,6 +1939,18 @@ public class MainFwActivity extends AppCompatActivity
 
             }
             tv_varieties_detail.setText(product.getRelatedItemCount()+" varieties");
+
+            if (product.getHasRelatedItems()==1){
+                if (product.getRelatedItemCount()>1){
+                    tv_varieties_detail.setVisibility(View.VISIBLE);
+                    Spanned varietiesUnderline = Html.fromHtml("<u>Participated Item</u>");
+                    tv_varieties_detail.setText(varietiesUnderline);
+                }else {
+                    tv_varieties_detail.setVisibility(View.GONE);
+                }
+            }else if (product.getHasRelatedItems()==0){
+                tv_varieties_detail.setVisibility(View.INVISIBLE);
+            }
             try {
 
                 DecimalFormat dF = new DecimalFormat("0.00");
@@ -1988,7 +2034,25 @@ public class MainFwActivity extends AppCompatActivity
             }else {
                 tv_package_detail.setText(product.getPackagingSize());
             } */
-            tv_valid_detail.setText(product.getValidityEndDate());
+            //tv_valid_detail.setText(product.getValidityEndDate());
+            String saveDate = product.getValidityEndDate();
+            if (saveDate.length()==0){
+                // getTokenkey();
+            }else {
+                SimpleDateFormat spf = new SimpleDateFormat("dd/MM/yy");
+                Date newDate = null;
+                try {
+                    newDate = spf.parse(saveDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                String c = "dd/MM";
+                spf = new SimpleDateFormat(c);
+                saveDate = spf.format(newDate);
+                System.out.println(saveDate);
+                tv_valid_detail.setText(saveDate);
+
+            }
             tv_deal_type_detaile.setText(product.getOfferTypeTagName());
 
             ImageView bindImage = (ImageView)findViewById(R.id.imv_item_detaile);
@@ -2053,7 +2117,25 @@ public class MainFwActivity extends AppCompatActivity
             }
 
             tv_upc_detail.setText(product.getUPC());
-            tv_valid_detail.setText(product.getValidityEndDate());
+            //tv_valid_detail.setText(product.getValidityEndDate());
+            String saveDate = product.getValidityEndDate();
+            if (saveDate.length()==0){
+                // getTokenkey();
+            }else {
+                SimpleDateFormat spf = new SimpleDateFormat("dd/MM/yy");
+                Date newDate = null;
+                try {
+                    newDate = spf.parse(saveDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                String c = "dd/MM";
+                spf = new SimpleDateFormat(c);
+                saveDate = spf.format(newDate);
+                System.out.println(saveDate);
+                tv_valid_detail.setText(saveDate);
+
+            }
             tv_deal_type_detaile.setText(product.getOfferTypeTagName());
 
             ImageView bindImage = (ImageView)findViewById(R.id.imv_item_detaile);
@@ -2065,6 +2147,17 @@ public class MainFwActivity extends AppCompatActivity
                 String largeImagePath = product.getLargeImagePath();
                 DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(bindImage);
                 downloadTask.execute(largeImagePath);
+            }
+            if (product.getHasRelatedItems()==1){
+                if (product.getRelatedItemCount()>1){
+                    tv_varieties_detail.setVisibility(View.VISIBLE);
+                    Spanned varietiesUnderline = Html.fromHtml("<u>"+product.getRelatedItemCount()+" Varieties"+"</u>");
+                    tv_varieties_detail.setText(varietiesUnderline);
+                }else {
+                    tv_varieties_detail.setVisibility(View.GONE);
+                }
+            }else if (product.getHasRelatedItems()==0){
+                tv_varieties_detail.setVisibility(View.INVISIBLE);
             }
         }
 

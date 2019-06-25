@@ -251,8 +251,8 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
 
                         //params.put("UserName", et_email.getText().toString());
                         //params.put("password", et_pwd.getText().toString());
-                        params.put("UserName", appUtil.getPrefrence("Email"));
-                        params.put("password", appUtil.getPrefrence("Password"));
+                        params.put("UserName", appUtil.getPrefrence("fw@immdemo.net"));
+                        params.put("password", appUtil.getPrefrence("123456"));
                         //test
                         params.put("Device", "5");
                         return params;
