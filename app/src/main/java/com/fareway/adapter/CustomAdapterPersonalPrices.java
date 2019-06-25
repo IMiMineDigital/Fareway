@@ -174,7 +174,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             holder.tv_saving.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
             holder.tv_detail.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
             holder.tv_deal_type.setTextSize(TypedValue.COMPLEX_UNIT_SP, 19);
-            holder.tv_remove.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
+            holder.tv_remove.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
             holder.tv_status.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
 
 

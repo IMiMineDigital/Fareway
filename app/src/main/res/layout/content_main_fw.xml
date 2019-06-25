@@ -590,7 +590,7 @@
                                 android:layout_height="wrap_content"
                                 android:text="Remove"
                                 android:layout_marginTop="@dimen/_18sdp"
-                                android:textSize="18sp"
+                                android:textSize="14sp"
                                 android:textColor="@color/white"/>
                             <View
                                 android:layout_marginTop="@dimen/_1sdp"
