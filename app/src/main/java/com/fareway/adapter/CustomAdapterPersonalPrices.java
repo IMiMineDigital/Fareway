@@ -1071,7 +1071,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 }
             }
             if (product.getOfferDefinitionId()==5){
-                if (product.getLargeImagePath().contains("https://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+                if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
                     Glide.with(mContext)
                             .load("https://platform.immdemo.net/web/images/GEnoimage.jpg")
                             .into(holder.imv_item);
@@ -1081,7 +1081,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             .into(holder.imv_item);
                 }
             }else {
-                if (product.getLargeImagePath().contains("https://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+                if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
                     Glide.with(mContext)
                             .load("https://platform.immdemo.net/web/images/GEnoimage.jpg")
                             .into(holder.imv_item);
@@ -2015,7 +2015,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 }
             }
             if (product.getOfferDefinitionId()==5){
-                if (product.getLargeImagePath().contains("https://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+                if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
                     Glide.with(mContext)
                             .load("https://platform.immdemo.net/web/images/GEnoimage.jpg")
                             .into(holder.imv_item);
@@ -2025,7 +2025,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             .into(holder.imv_item);
                 }
             }else {
-                if (product.getLargeImagePath().contains("https://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+                if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
                     Glide.with(mContext)
                             .load("https://platform.immdemo.net/web/images/GEnoimage.jpg")
                             .into(holder.imv_item);

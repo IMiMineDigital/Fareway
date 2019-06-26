@@ -247,12 +247,13 @@
                 </LinearLayout> -->
 
                 <TextView
+                    android:layout_marginTop="-5dp"
                     android:id="@+id/tv_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:layout_weight="1"
-                    android:fontFamily="@font/open_sans_bold"
+                    android:textStyle="bold"
                     android:gravity="right"
                     android:maxLines="1"
                     android:text="$1.13"
@@ -290,14 +291,13 @@
                     android:gravity="right|center">
 
                     <TextView
-                        android:gravity="right"
                         android:id="@+id/tv_saving"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_marginRight="@dimen/_10sdp"
                         android:fontFamily="@font/roboto_condensed_regular"
                         android:maxLines="2"
-                        android:text="SAVE $"
+                        android:text="SAVE $1.00"
                         android:textColor="@color/white"
                         android:visibility="visible" />
 

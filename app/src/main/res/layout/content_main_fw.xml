@@ -78,7 +78,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
-        android:scrollbars="vertical" />
+        android:scrollbars="vertical"
+        android:paddingBottom="@dimen/_40sdp"/>
 
     <LinearLayout
         android:background="@color/white"
