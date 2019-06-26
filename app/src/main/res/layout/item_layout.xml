@@ -112,8 +112,8 @@
 
                     <ImageView
                         android:id="@+id/imv_status"
-                        android:layout_width="@dimen/_22sdp"
-                        android:layout_height="@dimen/_22sdp"
+                        android:layout_width="@dimen/_18sdp"
+                        android:layout_height="@dimen/_18sdp"
                         android:src="@drawable/tick" />
 
                 </LinearLayout>
@@ -179,8 +179,8 @@
 
                     <ImageView
                         android:id="@+id/imv_status_mul"
-                        android:layout_width="@dimen/_18sdp"
-                        android:layout_height="@dimen/_18sdp"
+                        android:layout_width="@dimen/_14sdp"
+                        android:layout_height="@dimen/_14sdp"
                         android:src="@drawable/tick" />
 
                 </LinearLayout>

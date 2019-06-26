@@ -140,7 +140,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 try {
                     DecimalFormat dF = new DecimalFormat("0.00");
                     Number num = dF.parse(relatedItem.getSavings());
-                    holder.tv_saving.setText("SAVE $ " + new DecimalFormat("##.##").format(num));
+                    holder.tv_saving.setText("SAVE $" + new DecimalFormat("##.##").format(num));
                 } catch (Exception e) {
 
                 }
@@ -192,7 +192,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 try {
                     DecimalFormat dF = new DecimalFormat("0.00");
                     Number num = dF.parse(relatedItem.getSavings());
-                    holder.tv_saving.setText("SAVE $ " + new DecimalFormat("##.##").format(num));
+                    holder.tv_saving.setText("SAVE $" + new DecimalFormat("##.##").format(num));
                 } catch (Exception e) {
 
                 }
@@ -234,7 +234,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 try {
                     DecimalFormat dF = new DecimalFormat("0.00");
                     Number num = dF.parse(relatedItem.getSavings());
-                    holder.tv_saving.setText("SAVE $ " + new DecimalFormat("##.##").format(num));
+                    holder.tv_saving.setText("SAVE $" + new DecimalFormat("##.##").format(num));
                 } catch (Exception e) {
 
                 }
@@ -259,7 +259,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
 
             if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
                 Glide.with(mContext)
-                        .load("http://fwstaging.immdemo.net/webapiaccessclient/images/GEnoimage.jpg")
+                        .load("https://fwstaging.immdemo.net/webapiaccessclient/images/GEnoimage.jpg")
                         .into(holder.imv_item);
             }else {
                 Glide.with(mContext)
@@ -419,7 +419,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 }
             }
 
-            if (relatedItem.getLargeImagePath().contains("https://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+            if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
                 Glide.with(mContext)
                         .load("https://fwstaging.immdemo.net/webapiaccessclient/images/GEnoimage.jpg")
                         .into(holder.imv_item);
