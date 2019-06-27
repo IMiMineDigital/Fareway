@@ -59,6 +59,9 @@ public class Product {
     private int OfferDefinitionId;
     private String CouponImageURl;
     private String oCouponShortDescription;
+    private String BadgeId;
+    private String Isbadged;
+    private String BadgeFileName;
 
 
 
@@ -520,6 +523,30 @@ public class Product {
 
     public void setoCouponShortDescription(String oCouponShortDescription) {
         this.oCouponShortDescription = oCouponShortDescription;
+    }
+
+    public String getBadgeId() {
+        return BadgeId;
+    }
+
+    public void setBadgeId(String badgeId) {
+        BadgeId = badgeId;
+    }
+
+    public String getIsbadged() {
+        return Isbadged;
+    }
+
+    public void setIsbadged(String isbadged) {
+        Isbadged = isbadged;
+    }
+
+    public String getBadgeFileName() {
+        return BadgeFileName;
+    }
+
+    public void setBadgeFileName(String badgeFileName) {
+        BadgeFileName = badgeFileName;
     }
 }
 
