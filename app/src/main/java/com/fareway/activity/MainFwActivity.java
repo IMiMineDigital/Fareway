@@ -1932,8 +1932,8 @@ public class MainFwActivity extends AppCompatActivity
                 table_package_view.setVisibility(View.GONE);
                 table_save.setVisibility(View.GONE);
                 table_save_view.setVisibility(View.GONE);
-                table_upc.setVisibility(View.GONE);
-                table_upc_view.setVisibility(View.GONE);
+                table_upc.setVisibility(View.VISIBLE);
+                table_upc_view.setVisibility(View.VISIBLE);
                 table_varieties.setVisibility(View.GONE);
                 table_varieties_view.setVisibility(View.GONE);
 
@@ -2006,9 +2006,18 @@ public class MainFwActivity extends AppCompatActivity
             if(product.getDisplayPrice().toString().split("\\.").length>1)
                 displayPrice= product.getDisplayPrice().split("\\.")[0]+"<sup>"+ product.getDisplayPrice().split("\\.")[1]+"<sup>";
 
-            Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>")+"*");
+            Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
             Log.i("anshu", String.valueOf(result));
-            tv_price_detaile.setText(result);
+            if (product.getRewardType().equalsIgnoreCase("2") && product.getOfferDefinitionId()==4){
+                tv_price_detaile.setText("Buy "+product.getRequiredQty()+"\n"+"Get "+product.getRewardQty()+" "+result+"*");
+            }else if (product.getRewardType().equalsIgnoreCase("3") || product.getOfferDefinitionId()==4 || product.getOfferDefinitionId()==1){
+                tv_price_detaile.setText(result);
+            }else {
+                tv_price_detaile.setText(result+"*");
+                table_upc.setVisibility(View.GONE);
+                table_upc_view.setVisibility(View.GONE);
+            }
+
 
            /* Spanned result = Html.fromHtml(product.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
             tv_price_detaile.setText(result);*/

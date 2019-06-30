@@ -37,12 +37,13 @@
             android:orientation="vertical">
 
             <TextView
-                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:fontFamily="@font/roboto"
                 android:textColor="@color/red"
-                android:textAlignment="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text=""
+                android:text="Exp"
                 android:lines="2"
                 android:id="@+id/limit"/>
 
@@ -166,29 +167,31 @@
                 </LinearLayout>
 
                 <LinearLayout
-                    android:visibility="invisible"
                     android:id="@+id/circular_layout_mul"
                     android:layout_width="@dimen/_50sdp"
                     android:layout_height="@dimen/_50sdp"
                     android:layout_alignParentTop="true"
                     android:layout_alignParentEnd="true"
                     android:layout_alignParentRight="true"
-                    android:layout_marginRight="@dimen/_10sdp"
+                    android:layout_marginTop="0dp"
+                    android:layout_marginEnd="14dp"
+                    android:layout_marginRight="14dp"
                     android:background="@drawable/circular_mehrune_bg"
                     android:gravity="center"
-                    android:orientation="vertical">
+                    android:orientation="vertical"
+                    android:visibility="invisible">
 
                     <TextView
 
-                        android:fontFamily="@font/roboto"
-                        android:textSize="14sp"
-                        android:maxLines="2"
                         android:id="@+id/tv_status_mul"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:fontFamily="@font/roboto"
                         android:gravity="center"
+                        android:maxLines="2"
                         android:text="Added"
                         android:textColor="@color/white"
+                        android:textSize="14sp"
                         android:textStyle="bold" />
 
                     <ImageView
@@ -305,6 +308,7 @@
                     android:gravity="right|center">
 
                     <TextView
+                        android:gravity="right"
                         android:id="@+id/tv_saving"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"

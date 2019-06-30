@@ -35,7 +35,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView tv_status,tv_status_mul, tv_price, tv_unit, tv_saving,tv_deal_type,tv_detail,tv_varieties,tv_coupon_flag;
         private ImageView imv_item, imv_info, imv_more, imv_status,imv_status_mul;
-        private LinearLayout circular_layout,circular_layout_mul, bottomLayout,remove_layout,remove_layout_mul;
+        private LinearLayout circular_layout,circular_layout_mul, bottomLayout,remove_layout,remove_layout_mul,liner_save;
         private CardView card_view;
         private RelativeLayout imv_layout;
         //private Button all_Varieties_activate;
@@ -68,6 +68,8 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
            // count_product_number = (LinearLayout)view.findViewById(R.id.count_product_number);
             remove_layout = (LinearLayout)view.findViewById(R.id.remove_layout);
             remove_layout_mul = (LinearLayout)view.findViewById(R.id.remove_layout_mul);
+            liner_save = (LinearLayout)view.findViewById(R.id.liner_save);
+
 
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -129,7 +131,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
             holder.tv_coupon_flag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
             holder.tv_price.setTextSize(TypedValue.COMPLEX_UNIT_SP, 38);
             holder.tv_unit.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
-            holder.tv_saving.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            holder.tv_saving.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
             holder.tv_detail.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
             holder.tv_deal_type.setTextSize(TypedValue.COMPLEX_UNIT_SP, 19);
             //holder.tv_remove.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
@@ -137,6 +139,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
 
             holder.tv_unit.setText(relatedItem.getPackagingSize());
             if (relatedItem.getPrimaryOfferTypeId() == 3) {
+                holder.liner_save.setVisibility(View.VISIBLE);
                 holder.tv_coupon_flag.setText("With MyFareway");
                 holder.tv_deal_type.setText(relatedItem.getOfferTypeTagName());
 
@@ -188,7 +191,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
 
             }
             else if (relatedItem.getPrimaryOfferTypeId() == 2) {
-               // holder.liner_save.setVisibility(View.GONE);
+                holder.liner_save.setVisibility(View.GONE);
                 holder.tv_coupon_flag.setText("With Coupon");
                 holder.tv_deal_type.setText(relatedItem.getOfferTypeTagName());
 
@@ -231,6 +234,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                     holder.remove_layout.setVisibility(View.GONE);
                 }
             }else if (relatedItem.getPrimaryOfferTypeId() == 1) {
+                holder.liner_save.setVisibility(View.VISIBLE);
                 holder.tv_coupon_flag.setText("");
                 holder.tv_deal_type.setText(relatedItem.getOfferTypeTagName());
 
