@@ -104,6 +104,8 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Collections;
+import java.util.Comparator;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -267,7 +269,7 @@ public class MainFwActivity extends AppCompatActivity
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
         BottomNavigationMenuView bottomNavigationMenuView =
                 (BottomNavigationMenuView) bottomNavigationView.getChildAt(0);
-        View v = bottomNavigationMenuView.getChildAt(3);
+        View v = bottomNavigationMenuView.getChildAt(1);
         BottomNavigationItemView itemView = (BottomNavigationItemView) v;
 
         View badge = LayoutInflater.from(this)
@@ -1114,6 +1116,18 @@ public class MainFwActivity extends AppCompatActivity
                     }.getType());
                     categoryList.clear();
                     categoryList.addAll(items1);
+
+
+
+                    Collections.sort(categoryList, new Comparator<Category>() {
+
+                        @Override
+                        public int compare(Category o1, Category o2) {
+                            return o1.getCategoryName().compareTo(o2.getCategoryName());
+                        }
+
+                    });
+
                     customAdapterFilter.notifyDataSetChanged();
                     rv_category.setAdapter(customAdapterFilter);
                 } catch (JSONException e) {
@@ -1854,14 +1868,14 @@ public class MainFwActivity extends AppCompatActivity
             if (saveDate.length()==0){
                // getTokenkey();
             }else {
-                SimpleDateFormat spf = new SimpleDateFormat("dd/MM/yy");
+                SimpleDateFormat spf = new SimpleDateFormat("MM/dd/yy");
                 Date newDate = null;
                 try {
                     newDate = spf.parse(saveDate);
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                String c = "dd/MM";
+                String c = "MM/dd";
                 spf = new SimpleDateFormat(c);
                 saveDate = spf.format(newDate);
                 System.out.println(saveDate);

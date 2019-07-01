@@ -16,20 +16,23 @@
         android:id="@+id/moreCoupons"
         android:icon="@drawable/morecoupon"
         android:title="Coupons" /> -->
+    <item
+        android:id="@+id/ShoppingList"
+        android:icon="@drawable/ic_view_list_black_24dp"
+        android:title="My List" />
+
+
+    <item
+        android:id="@+id/filter"
+        android:icon="@drawable/filter"
+        android:title="Filter" />
+
 
     <item
         android:id="@+id/savings"
         android:icon="@drawable/saveactive"
         android:title="Savings" />
 
-    <item
-        android:id="@+id/filter"
-        android:icon="@drawable/filter"
-        android:title="Filter" />
-    <item
-        android:id="@+id/ShoppingList"
-        android:icon="@drawable/ic_view_list_black_24dp"
-        android:title="My List" />
     <item
         android:id="@+id/ShopperID"
         android:icon="@drawable/shopperideye"

@@ -9,6 +9,7 @@ import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -483,14 +484,14 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     if (saveDate.length()==0){
                         // getTokenkey();
                     }else {
-                        SimpleDateFormat spf = new SimpleDateFormat("dd/MM/yy");
+                        SimpleDateFormat spf = new SimpleDateFormat("MM/dd/yy");
                         Date newDate = null;
                         try {
                             newDate = spf.parse(saveDate);
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                        String c = "dd/MM";
+                        String c = "MM/dd";
                         spf = new SimpleDateFormat(c);
                         saveDate = spf.format(newDate);
                         System.out.println(saveDate);
@@ -499,7 +500,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }
                     String headerContent = "";
                     headerContent = "Exp "+saveDate;
-                    holder.limit.setText(headerContent);
+                    holder.limit.setText("\n"+headerContent);
                     holder.coupon_badge.setVisibility(View.GONE);
                     holder.tv_coupon_flag.setText("With MyFareway");
                     holder.tv_unit.setText(product.getPackagingSize());
@@ -591,14 +592,14 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     if (saveDate.length()==0){
                         // getTokenkey();
                     }else {
-                        SimpleDateFormat spf = new SimpleDateFormat("dd/MM/yy");
+                        SimpleDateFormat spf = new SimpleDateFormat("MM/dd/yy");
                         Date newDate = null;
                         try {
                             newDate = spf.parse(saveDate);
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                        String c = "dd/MM";
+                        String c = "MM/dd";
                         spf = new SimpleDateFormat(c);
                         saveDate = spf.format(newDate);
                         System.out.println(saveDate);
@@ -623,12 +624,12 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.green));
                     holder.tv_deal_type.setText(product.getOfferTypeTagName());
                     String headerContent = "";
-                    headerContent = "Limit " + String.valueOf(product.getLimitPerTransection()+product.getLimitPerTransection()+" | Exp "+saveDate);
+                    headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection()+product.getLimitPerTransection()+", Exp "+saveDate);
                     holder.limit.setText(headerContent);
                     if (product.getMinAmount()>0){
-                        headerContent = "* WITH $"+product.getMinAmount()+" PURCHASE"+"\nLimit "+product.getLimitPerTransection();
+                        headerContent = "* WITH $"+product.getMinAmount()+" PURCHASE"+"\nLimit "+product.getLimitPerTransection()+", Exp "+saveDate;
                     }else if (product.getRequiredQty()>1){
-                        headerContent = "* MUST BUY " + product.getRequiredQty()+"\nLimit "+product.getLimitPerTransection()+" | Exp "+saveDate;
+                        headerContent = "* MUST BUY " + product.getRequiredQty()+"\nLimit "+product.getLimitPerTransection()+", Exp "+saveDate;
                     }
                     if(product.getLimitPerTransection()>0)
                     {
@@ -641,7 +642,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         else
                         {
                             if (product.getLimitPerTransection()>1){
-                                headerContent = "Limit " + String.valueOf(product.getLimitPerTransection()+product.getLimitPerTransection()+" | Exp "+saveDate);
+                                headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection()+product.getLimitPerTransection()+", Exp "+saveDate);
                             }
                         }
                         if (product.getRewardType().equalsIgnoreCase("3")&&product.getPrimaryOfferTypeId()==2)
@@ -832,14 +833,14 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     if (saveDate.length()==0){
                         // getTokenkey();
                     }else {
-                        SimpleDateFormat spf = new SimpleDateFormat("dd/MM/yy");
+                        SimpleDateFormat spf = new SimpleDateFormat("MM/dd/yy");
                         Date newDate = null;
                         try {
                             newDate = spf.parse(saveDate);
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                        String c = "dd/MM";
+                        String c = "MM/dd";
                         spf = new SimpleDateFormat(c);
                         saveDate = spf.format(newDate);
                         System.out.println(saveDate);
@@ -847,7 +848,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
                     }
                     String headerContent = "";
-                    headerContent = "Exp "+saveDate;
+                    headerContent = "\nExp "+saveDate;
                     holder.limit.setText(headerContent);
 
                     holder.coupon_badge.setVisibility(View.GONE);
@@ -1273,14 +1274,14 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     if (saveDate.length()==0){
                         // getTokenkey();
                     }else {
-                        SimpleDateFormat spf = new SimpleDateFormat("dd/MM/yy");
+                        SimpleDateFormat spf = new SimpleDateFormat("MM/dd/yy");
                         Date newDate = null;
                         try {
                             newDate = spf.parse(saveDate);
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                        String c = "dd/MM";
+                        String c = "MM/dd";
                         spf = new SimpleDateFormat(c);
                         saveDate = spf.format(newDate);
                         System.out.println(saveDate);
@@ -1288,7 +1289,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
                     }
                     String headerContent = "";
-                    headerContent = "Exp "+saveDate;
+                    headerContent = "\nExp "+saveDate;
                     holder.limit.setText(headerContent);
 
                     holder.coupon_badge.setVisibility(View.GONE);
@@ -1382,14 +1383,14 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     if (saveDate.length()==0){
                         // getTokenkey();
                     }else {
-                        SimpleDateFormat spf = new SimpleDateFormat("dd/MM/yy");
+                        SimpleDateFormat spf = new SimpleDateFormat("MM/dd/yy");
                         Date newDate = null;
                         try {
                             newDate = spf.parse(saveDate);
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                        String c = "dd/MM";
+                        String c = "MM/dd";
                         spf = new SimpleDateFormat(c);
                         saveDate = spf.format(newDate);
                         System.out.println(saveDate);
@@ -1414,25 +1415,25 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.green));
                     holder.tv_deal_type.setText(product.getOfferTypeTagName());
                     String headerContent = "";
-                    headerContent = "Limit " + String.valueOf(product.getLimitPerTransection()+" | Exp "+saveDate);
+                    headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection()+", Exp "+saveDate);
                     holder.limit.setText(headerContent);
                     if (product.getMinAmount()>0){
                         headerContent = "* WITH $"+product.getMinAmount()+" PURCHASE"+"\nLimit "+product.getLimitPerTransection();
                     }else if (product.getRequiredQty()>1){
-                        headerContent = "* MUST BUY " + product.getRequiredQty()+"\nLimit "+product.getLimitPerTransection()+" | Exp "+saveDate;
+                        headerContent = "* MUST BUY " + product.getRequiredQty()+"\nLimit "+product.getLimitPerTransection()+", Exp "+saveDate;
                     }
                     if(product.getLimitPerTransection()>0)
                     {
                         if(headerContent != "")
                         {
                             if (product.getLimitPerTransection()>1){
-                                headerContent = headerContent + "\nLimit : " + product.getLimitPerTransection()+" | Exp "+saveDate;
+                                headerContent = headerContent + "\nLimit : " + product.getLimitPerTransection()+", Exp "+saveDate;
                             }
                         }
                         else
                         {
                             if (product.getLimitPerTransection()>1){
-                                headerContent = "Limit " + String.valueOf(product.getLimitPerTransection()+" | Exp "+saveDate);
+                                headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection()+", Exp "+saveDate);
                             }
                         }
                         if (product.getRewardType().equalsIgnoreCase("3")&&product.getPrimaryOfferTypeId()==2)
@@ -1468,7 +1469,23 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             holder.tv_price.setText(result);
                         }
                     }
+                    holder.coupon_badge.setVisibility(View.VISIBLE);
+                    holder.limit.setGravity(Gravity.CENTER);
                     holder.limit.setText(headerContent);
+                    if (product.getIsbadged().equalsIgnoreCase("True")){
+                        Glide.with(mContext)
+                                .load(product.getBadgeFileName())
+                                .into(holder.coupon_badge);
+                        headerContent = "Limit " + String.valueOf(product.getLimitPerTransection()+", Exp "+saveDate);
+                        holder.limit.setText(headerContent);
+                        holder.limit.setGravity(Gravity.RIGHT);
+
+                    }else {
+                        Glide.with(mContext)
+                                .load("")
+                                .into(holder.coupon_badge);
+                    }
+
 
                     if (product.getOfferDefinitionId()==3 || product.getOfferDefinitionId()==2 || product.getOfferDefinitionId()==1 || product.getOfferDefinitionId()==4){
                         String chars = capitalize(product.getDescription());
@@ -1623,14 +1640,14 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     if (saveDate.length()==0){
                         // getTokenkey();
                     }else {
-                        SimpleDateFormat spf = new SimpleDateFormat("dd/MM/yy");
+                        SimpleDateFormat spf = new SimpleDateFormat("MM/dd/yy");
                         Date newDate = null;
                         try {
                             newDate = spf.parse(saveDate);
                         } catch (ParseException e) {
                             e.printStackTrace();
                         }
-                        String c = "dd/MM";
+                        String c = "MM/dd";
                         spf = new SimpleDateFormat(c);
                         saveDate = spf.format(newDate);
                         System.out.println(saveDate);
@@ -1638,7 +1655,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
                     }
                     String headerContent = "";
-                    headerContent = "Exp "+saveDate;
+                    headerContent = "\nExp "+saveDate;
                     holder.limit.setText(headerContent);
 
                     holder.coupon_badge.setVisibility(View.GONE);

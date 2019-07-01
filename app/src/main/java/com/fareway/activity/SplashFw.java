@@ -53,6 +53,7 @@ public class SplashFw extends AppCompatActivity {
         //getSupportActionBar().hide();
 
         String saveDate = appUtil.getPrefrence(".expires");
+        Log.i("saveDate",saveDate);
         if (saveDate.length()==0){
             getTokenkey();
         }else {
@@ -63,19 +64,23 @@ public class SplashFw extends AppCompatActivity {
             } catch (ParseException e) {
                 e.printStackTrace();
             }
+            //String c= "dd MMM yyyy HH:mm:ss";
             String c= "dd MMM yyyy";
             spf= new SimpleDateFormat(c);
             saveDate = spf.format(newDate);
-            System.out.println(saveDate);
+            System.out.println("saveDate "+saveDate);
 
             Calendar c2 = Calendar.getInstance();
+            //SimpleDateFormat dateformat2 = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
             SimpleDateFormat dateformat2 = new SimpleDateFormat("dd MMM yyyy");
             String currentDate = dateformat2.format(c2.getTime());
-            System.out.println(currentDate);
+            System.out.println("currentDate "+currentDate);
             appUtil.setPrefrence("comeFrom","mpp");
 
             if(appUtil.getPrefrence("isLogin").equalsIgnoreCase("yes")){
-                if (saveDate.equalsIgnoreCase(currentDate)){
+
+                if (currentDate.compareTo(saveDate)>0){
+                    Log.i("mihir","anshuman");
                     Intent i=new Intent(activity, MainFwActivity.class);
                     //i.putExtra("comeFrom","mpp");
                     if (appUtil.getPrefrence("comeFrom").equalsIgnoreCase("mpp")){

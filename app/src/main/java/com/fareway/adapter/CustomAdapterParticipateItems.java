@@ -21,6 +21,9 @@ import com.fareway.activity.MainFwActivity;
 import com.fareway.model.RelatedItem;
 
 import java.text.DecimalFormat;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
@@ -33,7 +36,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
     private CustomAdapterParticipateItemsListener listener2;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView tv_status,tv_status_mul, tv_price, tv_unit, tv_saving,tv_deal_type,tv_detail,tv_varieties,tv_coupon_flag;
+        private TextView limit,tv_status,tv_status_mul, tv_price, tv_unit, tv_saving,tv_deal_type,tv_detail,tv_varieties,tv_coupon_flag;
         private ImageView imv_item, imv_info, imv_more, imv_status,imv_status_mul;
         private LinearLayout circular_layout,circular_layout_mul, bottomLayout,remove_layout,remove_layout_mul,liner_save;
         private CardView card_view;
@@ -69,6 +72,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
             remove_layout = (LinearLayout)view.findViewById(R.id.remove_layout);
             remove_layout_mul = (LinearLayout)view.findViewById(R.id.remove_layout_mul);
             liner_save = (LinearLayout)view.findViewById(R.id.liner_save);
+            limit = view.findViewById(R.id.limit);
 
 
             view.setOnClickListener(new View.OnClickListener() {
@@ -136,9 +140,31 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
             holder.tv_deal_type.setTextSize(TypedValue.COMPLEX_UNIT_SP, 19);
             //holder.tv_remove.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
             holder.tv_status.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            holder.limit.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
 
             holder.tv_unit.setText(relatedItem.getPackagingSize());
             if (relatedItem.getPrimaryOfferTypeId() == 3) {
+                String saveDate = relatedItem.getValidityEndDate();
+                if (saveDate.length()==0){
+                    // getTokenkey();
+                }else {
+                    SimpleDateFormat spf = new SimpleDateFormat("MM/dd/yy");
+                    Date newDate = null;
+                    try {
+                        newDate = spf.parse(saveDate);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    String c = "MM/dd";
+                    spf = new SimpleDateFormat(c);
+                    saveDate = spf.format(newDate);
+                    System.out.println(saveDate);
+
+
+                }
+                String headerContent = "";
+                headerContent = "Exp "+saveDate;
+                holder.limit.setText("\n"+headerContent);
                 holder.liner_save.setVisibility(View.VISIBLE);
                 holder.tv_coupon_flag.setText("With MyFareway");
                 holder.tv_deal_type.setText(relatedItem.getOfferTypeTagName());
@@ -191,6 +217,27 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
 
             }
             else if (relatedItem.getPrimaryOfferTypeId() == 2) {
+                String saveDate = relatedItem.getValidityEndDate();
+                if (saveDate.length()==0){
+                    // getTokenkey();
+                }else {
+                    SimpleDateFormat spf = new SimpleDateFormat("MM/dd/yy");
+                    Date newDate = null;
+                    try {
+                        newDate = spf.parse(saveDate);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    String c = "MM/dd";
+                    spf = new SimpleDateFormat(c);
+                    saveDate = spf.format(newDate);
+                    System.out.println(saveDate);
+
+
+                }
+                String headerContent = "";
+                headerContent = "Exp "+saveDate;
+                holder.limit.setText("\n"+headerContent);
                 holder.liner_save.setVisibility(View.GONE);
                 holder.tv_coupon_flag.setText("With Coupon");
                 holder.tv_deal_type.setText(relatedItem.getOfferTypeTagName());
@@ -234,6 +281,27 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                     holder.remove_layout.setVisibility(View.GONE);
                 }
             }else if (relatedItem.getPrimaryOfferTypeId() == 1) {
+                String saveDate = relatedItem.getValidityEndDate();
+                if (saveDate.length()==0){
+                    // getTokenkey();
+                }else {
+                    SimpleDateFormat spf = new SimpleDateFormat("MM/dd/yy");
+                    Date newDate = null;
+                    try {
+                        newDate = spf.parse(saveDate);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    String c = "MM/dd";
+                    spf = new SimpleDateFormat(c);
+                    saveDate = spf.format(newDate);
+                    System.out.println(saveDate);
+
+
+                }
+                String headerContent = "";
+                headerContent = "Exp "+saveDate;
+                holder.limit.setText("\n"+headerContent);
                 holder.liner_save.setVisibility(View.VISIBLE);
                 holder.tv_coupon_flag.setText("");
                 holder.tv_deal_type.setText(relatedItem.getOfferTypeTagName());
@@ -299,6 +367,27 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
 
             holder.tv_unit.setText(relatedItem.getPackagingSize());
             if (relatedItem.getPrimaryOfferTypeId() == 3) {
+                String saveDate = relatedItem.getValidityEndDate();
+                if (saveDate.length()==0){
+                    // getTokenkey();
+                }else {
+                    SimpleDateFormat spf = new SimpleDateFormat("MM/dd/yy");
+                    Date newDate = null;
+                    try {
+                        newDate = spf.parse(saveDate);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    String c = "MM/dd";
+                    spf = new SimpleDateFormat(c);
+                    saveDate = spf.format(newDate);
+                    System.out.println(saveDate);
+
+
+                }
+                String headerContent = "";
+                headerContent = "Exp "+saveDate;
+                holder.limit.setText("\n"+headerContent);
                 holder.tv_coupon_flag.setText("With MyFareway");
                 holder.tv_deal_type.setText(relatedItem.getOfferTypeTagName());
 
@@ -350,6 +439,27 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
 
             }
             else if (relatedItem.getPrimaryOfferTypeId() == 2) {
+                String saveDate = relatedItem.getValidityEndDate();
+                if (saveDate.length()==0){
+                    // getTokenkey();
+                }else {
+                    SimpleDateFormat spf = new SimpleDateFormat("MM/dd/yy");
+                    Date newDate = null;
+                    try {
+                        newDate = spf.parse(saveDate);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    String c = "MM/dd";
+                    spf = new SimpleDateFormat(c);
+                    saveDate = spf.format(newDate);
+                    System.out.println(saveDate);
+
+
+                }
+                String headerContent = "";
+                headerContent = "Exp "+saveDate;
+                holder.limit.setText("\n"+headerContent);
                 // holder.liner_save.setVisibility(View.GONE);
                 holder.tv_coupon_flag.setText("With Coupon");
                 holder.tv_deal_type.setText(relatedItem.getOfferTypeTagName());
@@ -393,6 +503,27 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                     holder.remove_layout_mul.setVisibility(View.GONE);
                 }
             }else if (relatedItem.getPrimaryOfferTypeId() == 1) {
+                String saveDate = relatedItem.getValidityEndDate();
+                if (saveDate.length()==0){
+                    // getTokenkey();
+                }else {
+                    SimpleDateFormat spf = new SimpleDateFormat("MM/dd/yy");
+                    Date newDate = null;
+                    try {
+                        newDate = spf.parse(saveDate);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    String c = "MM/dd";
+                    spf = new SimpleDateFormat(c);
+                    saveDate = spf.format(newDate);
+                    System.out.println(saveDate);
+
+
+                }
+                String headerContent = "";
+                headerContent = "Exp "+saveDate;
+                holder.limit.setText("\n"+headerContent);
                 holder.tv_coupon_flag.setText("");
                 holder.tv_deal_type.setText(relatedItem.getOfferTypeTagName());
 
