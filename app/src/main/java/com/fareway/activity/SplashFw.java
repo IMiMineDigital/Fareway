@@ -6,6 +6,7 @@ import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
@@ -46,71 +47,83 @@ public class SplashFw extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        activity=SplashFw.this;
-        appUtil=new AppUtilFw(activity);
-        userAlertDialog=new UserAlertDialog(activity);
-        mQueue=FarewayApplication.getmInstance(this).getmRequestQueue();
+        activity = SplashFw.this;
+        appUtil = new AppUtilFw(activity);
+        userAlertDialog = new UserAlertDialog(activity);
+        mQueue = FarewayApplication.getmInstance(this).getmRequestQueue();
         //getSupportActionBar().hide();
 
         String saveDate = appUtil.getPrefrence(".expires");
-        Log.i("saveDate",saveDate);
-        if (saveDate.length()==0){
-            getTokenkey();
-        }else {
-            SimpleDateFormat spf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss");
-            Date newDate= null;
-            try {
-                newDate = spf.parse(saveDate);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            //String c= "dd MMM yyyy HH:mm:ss";
-            String c= "dd MMM yyyy";
-            spf= new SimpleDateFormat(c);
-            saveDate = spf.format(newDate);
-            System.out.println("saveDate "+saveDate);
+        Log.i("saveDate", saveDate);
+        if (saveDate != null) {
+            if (saveDate.length() == 0) {
+                Log.i("start date", saveDate + appUtil.getPrefrence("isLogin").equalsIgnoreCase("yes"));
+                //Toast.makeText(activity, "first time open", Toast.LENGTH_LONG).show();
+                getTokenkey();
+            } else {
+                //Toast.makeText(activity, "second time open" + saveDate+appUtil.getPrefrence("isLogin").equalsIgnoreCase("yes"), Toast.LENGTH_LONG).show();
+                SimpleDateFormat spf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss");
+                Date newDate = null;
+                try {
+                    newDate = spf.parse(saveDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                String c = "dd MMM yyyy HH:mm:ss";
+                //String c= "dd MMM yyyy";
+                spf = new SimpleDateFormat(c);
+                saveDate = spf.format(newDate);
+                System.out.println("saveDate " + saveDate);
 
-            Calendar c2 = Calendar.getInstance();
-            //SimpleDateFormat dateformat2 = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
-            SimpleDateFormat dateformat2 = new SimpleDateFormat("dd MMM yyyy");
-            String currentDate = dateformat2.format(c2.getTime());
-            System.out.println("currentDate "+currentDate);
-            appUtil.setPrefrence("comeFrom","mpp");
+                Calendar c2 = Calendar.getInstance();
+                SimpleDateFormat dateformat2 = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
+                //SimpleDateFormat dateformat2 = new SimpleDateFormat("dd MMM yyyy");
+                String currentDate = dateformat2.format(c2.getTime());
+                System.out.println("currentDate " + currentDate);
+                appUtil.setPrefrence("comeFrom", "mpp");
 
-            if(appUtil.getPrefrence("isLogin").equalsIgnoreCase("yes")){
+                if (appUtil.getPrefrence("isLogin").equalsIgnoreCase("yes")==true) {
+                    // getTokenkey();
+                    if (currentDate.compareTo(saveDate) < 0) {
+                        Log.i("mihir", "anshuman");
+                        Intent i = new Intent(activity, MainFwActivity.class);
 
-                if (currentDate.compareTo(saveDate)>0){
-                    Log.i("mihir","anshuman");
-                    Intent i=new Intent(activity, MainFwActivity.class);
-                    //i.putExtra("comeFrom","mpp");
-                    if (appUtil.getPrefrence("comeFrom").equalsIgnoreCase("mpp")){
-                        i.putExtra("comeFrom","mpp");
-                    }else if (appUtil.getPrefrence("comeFrom").equalsIgnoreCase("moreOffer")){
-                        i.putExtra("comeFrom","moreOffer");
+                        if (appUtil.getPrefrence("comeFrom").equalsIgnoreCase("mpp")) {
+                            i.putExtra("comeFrom", "mpp");
+                        } else if (appUtil.getPrefrence("comeFrom").equalsIgnoreCase("moreOffer")) {
+                            i.putExtra("comeFrom", "moreOffer");
+                        }
+
+                        startActivity(i);
+                        finish();
+
+                    } else {
+                        getTokenkey();
                     }
 
-                    startActivity(i);
-                    finish();
-                }else {
-                    getTokenkey();
-                }
+                } else {
 
+                    if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+                        getTokenkey();
+                    } else {
+                        alertDialog = userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                                getString(R.string.ok), getString(R.string.alert));
+                        alertDialog.show();
+                    }
+
+
+                }
             }
-            else{
+        } else {
 
-                if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
-                    getTokenkey();
-                }
-                else {
-                    alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
-                            getString(R.string.ok),getString(R.string.alert));
-                    alertDialog.show();
-                }
-
-
+            if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+                getTokenkey();
+            } else {
+                alertDialog = userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                        getString(R.string.ok), getString(R.string.alert));
+                alertDialog.show();
             }
         }
-
     }
 
     private void getTokenkey() {

@@ -419,7 +419,7 @@ public class MainFwActivity extends AppCompatActivity
 
         rv_items_verite = (RecyclerView) findViewById(R.id.rv_items_verite);
         relatedItemsList = new ArrayList<>();
-        customAdapterParticipateItems = new CustomAdapterParticipateItems(this, relatedItemsList,this,this);
+        customAdapterParticipateItems = new CustomAdapterParticipateItems(this, relatedItemsList,this,this,this,this,this);
        // RecyclerView.LayoutManager mLayoutManager4 = new GridLayoutManager(activity, 1);
        // rv_items_verite.setLayoutManager(mLayoutManager4);
         rv_items_verite.setAdapter(customAdapterParticipateItems);
@@ -963,11 +963,8 @@ public class MainFwActivity extends AppCompatActivity
     }
 
     public static String reLoadApi() {
-      //  if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
-            try {
-                //progressDialog = new ProgressDialog(activity);
-                //progressDialog.setMessage("Processing");
-                //progressDialog.show();
+         try {
+
                 StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET,Constant.WEB_URL + Constant.PRODUCTLIST+"?memberid="+appUtil2.getPrefrence("MemberId")+"&Plateform=2",
                         new Response.Listener<String>(){
                             @Override
@@ -1004,12 +1001,11 @@ public class MainFwActivity extends AppCompatActivity
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> params = new HashMap<String, String>();
-                        // params.put("UserName", et_email.getText().toString().trim());
-                        // params.put("password", et_pwd.getText().toString().trim());
+
                         params.put("Device", "5");
                         return params;
                     }
-                    //this is the part, that adds the header to the request
+
                     @Override
                     public Map<String, String> getHeaders() {
                         Map<String, String> params = new HashMap<String, String>();
@@ -2482,6 +2478,7 @@ public class MainFwActivity extends AppCompatActivity
                                 public Map<String, String> getHeaders() {
                                     Map<String, String> params = new HashMap<String, String>();
                                     params.put("Content-Type", "application/x-www-form-urlencoded");
+                                    params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
                                     return params;
                                 }
                             };
@@ -2968,6 +2965,7 @@ public class MainFwActivity extends AppCompatActivity
     public void  SetProductActivate(int PrimaryOfferTypeID,int CouponID,String UPC,String RequireActivation,int ActivateType)
     {
 
+
         Log.i("Primaryoffertypeid", String.valueOf(PrimaryOfferTypeID));
         Log.i("couponid", String.valueOf(CouponID));
         Log.i("UPC",UPC);
@@ -3216,6 +3214,192 @@ public class MainFwActivity extends AppCompatActivity
                     for (int j = 0; j < jsonParam.length(); j++) {
                         if (jsonParam.getJSONObject(j).getString("UPC").contains(UPC)) {
                             jsonParam.getJSONObject(j).put("ListCount", 1);
+                            jsonParam.getJSONObject(j).put("ClickCount", 1);
+                            Log.i("testttt", String.valueOf(jsonParam.getJSONObject(j).getString("UPC").contains(UPC)));
+                        }else {
+                            jsonParam.getJSONObject(j).put("ClickCount", 1);
+                            Log.i("elsetestttt", String.valueOf(jsonParam.getJSONObject(j).getString("UPC").contains(UPC)));
+
+                        }
+                        Log.i("test", String.valueOf(jsonParam.getJSONObject(j)));
+                    }
+
+                    fetchVeritesProduct();
+                }
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    public void  SetProductRemoveDetaile(int PrimaryOfferTypeID,int CouponID,String UPC,String RequireActivation,int ActivateType,String quantity)
+    {
+
+
+        Log.i("primary ", String.valueOf(PrimaryOfferTypeID));
+        Log.i("morecoupan ", String.valueOf(x));
+        if (x==0){
+            try {
+
+                for (int i = 0; i < message.length(); i++) {
+
+                    if(PrimaryOfferTypeID ==1)
+                    {
+
+                        if (message.getJSONObject(i).getString("UPC").contains(UPC)) {
+                            message.getJSONObject(i).put("ListCount", 0);
+                            message.getJSONObject(i).put("ClickCount", 1);
+
+                        }
+
+                    }
+                    else
+                    {
+                        if (message.getJSONObject(i).getString("UPC").contains(UPC)) {
+                            message.getJSONObject(i).put("ClickCount", 1);
+                            message.getJSONObject(i).put("ListCount", 0);
+                            message.getJSONObject(i).put("Quantity", quantity);
+
+                        }else {
+                            if (message.getJSONObject(i).getInt("CouponID") == CouponID) {
+                                message.getJSONObject(i).put("ClickCount", 1);
+                                message.getJSONObject(i).put("Quantity", quantity);
+
+
+                            }
+                        }
+
+                    }
+                }
+                fetchProduct();
+                if (jsonParam == null) {
+                    Log.i("testtttt", String.valueOf(jsonParam));
+                    //no students
+                }else {
+                    for (int j = 0; j < jsonParam.length(); j++) {
+                        if (jsonParam.getJSONObject(j).getString("UPC").contains(UPC)) {
+                            jsonParam.getJSONObject(j).put("ListCount", 0);
+                            jsonParam.getJSONObject(j).put("ClickCount", 1);
+                            jsonParam.getJSONObject(j).put("Quantity", quantity);
+
+                            Log.i("testttt", String.valueOf(jsonParam.getJSONObject(j).getString("UPC").contains(UPC)));
+                        }else {
+                            //  jsonParam.getJSONObject(j).put("ListCount", 0);
+                            jsonParam.getJSONObject(j).put("ClickCount", 1);
+                            Log.i("elsetestttt", String.valueOf(jsonParam.getJSONObject(j).getString("UPC").contains(UPC)));
+
+                        }
+                        Log.i("test", String.valueOf(jsonParam.getJSONObject(j)));
+                    }
+                    // jsonParam.getJSONObject(i).put("ClickCount", 1);
+                    // jsonParam.getJSONObject(i).put("ListCount", 1);
+                    fetchVeritesProduct();
+                }
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }else if (x==1){
+            Log.i("test", String.valueOf(x));
+            try {
+
+                for (int i = 0; i < message2.length(); i++) {
+
+                    if(PrimaryOfferTypeID ==1)
+                    {
+
+                        if (message2.getJSONObject(i).getString("UPC").contains(UPC)) {
+                            message2.getJSONObject(i).put("ListCount", 0);
+                            message2.getJSONObject(i).put("ClickCount", 1);
+                            //message.getJSONObject(i).put("ClickCount", 1);
+                            //onProductSelected(message.getJSONObject(i))
+                            // Log.i("primaryinner ", String.valueOf(PrimaryOfferTypeID));
+                        }
+
+                    }
+                    else
+                    {
+                        if (message2.getJSONObject(i).getString("UPC").contains(UPC)) {
+                            message2.getJSONObject(i).put("ClickCount", 1);
+                            message2.getJSONObject(i).put("ListCount", 0);
+
+                            //jsonParam.getJSONObject(i).put("ListCount", 1);
+                        }else {
+                            if (message2.getJSONObject(i).getInt("CouponID") == CouponID) {
+                                message2.getJSONObject(i).put("ClickCount", 1);
+
+
+                            }
+                        }
+
+                    }
+                }
+                fetchMoreCoupon();
+                if (jsonParam == null) {
+                    Log.i("testtttt", String.valueOf(jsonParam));
+                    //no students
+                }else {
+                    for (int j = 0; j < jsonParam.length(); j++) {
+                        if (jsonParam.getJSONObject(j).getString("UPC").contains(UPC)) {
+                            jsonParam.getJSONObject(j).put("ListCount", 0);
+                            jsonParam.getJSONObject(j).put("ClickCount", 1);
+
+                            Log.i("testttt", String.valueOf(jsonParam.getJSONObject(j).getString("UPC").contains(UPC)));
+                        }else {
+                            //  jsonParam.getJSONObject(j).put("ListCount", 0);
+                            jsonParam.getJSONObject(j).put("ClickCount", 1);
+                            Log.i("elsetestttt", String.valueOf(jsonParam.getJSONObject(j).getString("UPC").contains(UPC)));
+
+                        }
+                        Log.i("test", String.valueOf(jsonParam.getJSONObject(j)));
+                    }
+                    // jsonParam.getJSONObject(i).put("ClickCount", 1);
+                    // jsonParam.getJSONObject(i).put("ListCount", 1);
+                    fetchVeritesProduct();
+                }
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }else if (x==3){
+            try {
+
+                for (int i = 0; i < message3.length(); i++) {
+
+                    if(PrimaryOfferTypeID ==1)
+                    {
+
+                        if (message3.getJSONObject(i).getString("UPC").contains(UPC)) {
+                            message3.getJSONObject(i).put("ListCount", 0);
+                            message3.getJSONObject(i).put("ClickCount", 1);
+                        }
+
+                    }
+                    else
+                    {
+                        if (message3.getJSONObject(i).getString("UPC").contains(UPC)) {
+                            message3.getJSONObject(i).put("ClickCount", 1);
+                            message3.getJSONObject(i).put("ListCount", 0);
+
+                        }else {
+                            if (message3.getJSONObject(i).getInt("CouponID") == CouponID) {
+                                message3.getJSONObject(i).put("ClickCount", 1);
+                            }
+                        }
+
+                    }
+                }
+                searchProduct();
+                if (jsonParam == null) {
+                    Log.i("testtttt", String.valueOf(jsonParam));
+                    //no students
+                }else {
+                    for (int j = 0; j < jsonParam.length(); j++) {
+                        if (jsonParam.getJSONObject(j).getString("UPC").contains(UPC)) {
+                            jsonParam.getJSONObject(j).put("ListCount", 0);
                             jsonParam.getJSONObject(j).put("ClickCount", 1);
                             Log.i("testttt", String.valueOf(jsonParam.getJSONObject(j).getString("UPC").contains(UPC)));
                         }else {
@@ -3890,6 +4074,7 @@ public class MainFwActivity extends AppCompatActivity
                                 public Map<String, String> getHeaders() {
                                     Map<String, String> params = new HashMap<String, String>();
                                     params.put("Content-Type", "application/x-www-form-urlencoded");
+                                    params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
                                     return params;
                                 }
                             };
@@ -3985,6 +4170,7 @@ public class MainFwActivity extends AppCompatActivity
                     public Map<String, String> getHeaders() {
                         Map<String, String> params = new HashMap<String, String>();
                         params.put("Content-Type", "application/x-www-form-urlencoded");
+                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
                         return params;
                     }
                 };
@@ -4012,6 +4198,245 @@ public class MainFwActivity extends AppCompatActivity
         }
 
 
+    }
+
+    @Override
+    public void onRelatedItemSelected3(final RelatedItem relatedItem) {
+        Log.i("remove","remove");
+
+        String url = Constant.WEB_URL+Constant.REMOVE+relatedItem.getUPC()+"&"+"MemberId="+appUtil.getPrefrence("MemberId");
+        StringRequest  jsonObjectRequest = new StringRequest (Request.Method.DELETE, url,
+                new Response.Listener<String >() {
+                    @Override
+                    public void onResponse(String  response) {
+                        Log.i("success", String.valueOf(response));
+                        if (relatedItem.getPrimaryOfferTypeId()==3|| relatedItem.getPrimaryOfferTypeId()==2 ){
+                            relatedItem.setClickCount(0);
+                            relatedItem.setListCount(0);
+                            relatedItem.setQuantity("1");
+                            SetProductRemoveDetaile(relatedItem.getPrimaryOfferTypeId(),relatedItem.getCouponID(),relatedItem.getUPC(),relatedItem.getRequiresActivation(),1,String.valueOf((Integer.parseInt(relatedItem.getQuantity())+0)));
+                            groupcount=1;
+                            //onProductVeritiesSelected(productrelated2);
+                            veritiesGroupDetail(relatedItem.getCouponID());
+                        }else if (relatedItem.getPrimaryOfferTypeId()==1){
+                            SetProductRemoveDetaile(relatedItem.getPrimaryOfferTypeId(),relatedItem.getCouponID(),relatedItem.getUPC(),relatedItem.getRequiresActivation(),1,"5");
+                        }
+
+                        //    holder.count_product_number.setVisibility(View.GONE);
+                        //product.setClickCount(0);
+                        //product.setListCount(0);
+                        //product.setQuantity("0");
+                        //holder.tv_status.setText("Add");
+                        //holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
+                        //holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
+                        // holder.tv_quantity.setText("1");
+                        //product.setQuantity(String.valueOf((Integer.parseInt(product.getQuantity())+1)));
+                        //holder.tv_quantity.setText(product.getQuantity());
+                        //serverResp.setText("String Response : "+ response.toString());
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("fail", String.valueOf(error));
+                // serverResp.setText("Error getting response");
+            }
+        }){
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                params.put("Content-Type", "application/json ;charset=utf-8");
+                return params;
+            }
+        };
+        RetryPolicy policy = new DefaultRetryPolicy
+                (50000,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        jsonObjectRequest.setRetryPolicy(policy);
+        try {
+            mQueue.add(jsonObjectRequest);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onRelatedItemSelected4(final RelatedItem relatedItem) {
+        Log.i("remove","remove");
+
+        String url = Constant.WEB_URL+Constant.REMOVE+relatedItem.getUPC()+"&"+"MemberId="+appUtil.getPrefrence("MemberId");
+        StringRequest  jsonObjectRequest = new StringRequest (Request.Method.DELETE, url,
+                new Response.Listener<String >() {
+                    @Override
+                    public void onResponse(String  response) {
+                        Log.i("success", String.valueOf(response));
+                        if (relatedItem.getPrimaryOfferTypeId()==3|| relatedItem.getPrimaryOfferTypeId()==2 ){
+                            relatedItem.setClickCount(0);
+                            relatedItem.setListCount(0);
+                            relatedItem.setQuantity("1");
+                            SetProductRemoveDetaile(relatedItem.getPrimaryOfferTypeId(),relatedItem.getCouponID(),relatedItem.getUPC(),relatedItem.getRequiresActivation(),1,String.valueOf((Integer.parseInt(relatedItem.getQuantity())+0)));
+                            groupcount=1;
+                            //onProductVeritiesSelected(productrelated2);
+                            veritiesGroupDetail(relatedItem.getCouponID());
+                        }else if (relatedItem.getPrimaryOfferTypeId()==1){
+                            SetProductRemoveDetaile(relatedItem.getPrimaryOfferTypeId(),relatedItem.getCouponID(),relatedItem.getUPC(),relatedItem.getRequiresActivation(),1,"5");
+                        }
+
+                        //    holder.count_product_number.setVisibility(View.GONE);
+                        //product.setClickCount(0);
+                        //product.setListCount(0);
+                        //product.setQuantity("0");
+                        //holder.tv_status.setText("Add");
+                        //holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
+                        //holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
+                        // holder.tv_quantity.setText("1");
+                        //product.setQuantity(String.valueOf((Integer.parseInt(product.getQuantity())+1)));
+                        //holder.tv_quantity.setText(product.getQuantity());
+                        //serverResp.setText("String Response : "+ response.toString());
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("fail", String.valueOf(error));
+                // serverResp.setText("Error getting response");
+            }
+        }){
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                params.put("Content-Type", "application/json ;charset=utf-8");
+                return params;
+            }
+        };
+        RetryPolicy policy = new DefaultRetryPolicy
+                (50000,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        jsonObjectRequest.setRetryPolicy(policy);
+        try {
+            mQueue.add(jsonObjectRequest);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onRelatedItemSelected5(final RelatedItem relatedItem) {
+        if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+            try {
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST,Constant.WEB_URL + Constant.ACTIVATE,
+                        new Response.Listener<String>(){
+                            @Override
+                            public void onResponse(String response) {
+                                if (relatedItem.getPrimaryOfferTypeId()==3|| relatedItem.getPrimaryOfferTypeId()==2 ){
+                                    relatedItem.setClickCount(1);
+                                    relatedItem.setListCount(1);
+                                    relatedItem.setQuantity("1");
+                                    SetProductActivateDetaile(relatedItem.getPrimaryOfferTypeId(),relatedItem.getCouponID(),relatedItem.getUPC(),relatedItem.getRequiresActivation(),1,String.valueOf((Integer.parseInt(relatedItem.getQuantity())+0)));
+                                    groupcount=1;
+                                    //onProductVeritiesSelected(productrelated2);
+                                    veritiesGroupDetail(relatedItem.getCouponID());
+                                }else if (relatedItem.getPrimaryOfferTypeId()==1){
+                                    SetProductActivateDetaile(relatedItem.getPrimaryOfferTypeId(),relatedItem.getCouponID(),relatedItem.getUPC(),relatedItem.getRequiresActivation(),1,"5");
+                                }
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Volley error resp", "error----" + error.getMessage());
+                        error.printStackTrace();
+                        //  progressDialog.dismiss();
+                        Toast.makeText(activity, "error", Toast.LENGTH_LONG).show();
+                    }
+                })
+                {
+
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/x-www-form-urlencoded";
+                    }
+
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("UPCCode", relatedItem.getUPC());
+                        params.put("CategoryID", String.valueOf(relatedItem.getCategoryID()));
+                        params.put("SalePrice", relatedItem.getFinalPrice());
+                        params.put("PrimaryOfferTypeId", String.valueOf(relatedItem.getPrimaryOfferTypeId()));
+                        params.put("OfferDetailId", String.valueOf(relatedItem.getOfferDetailId()));
+                        params.put("PersonalCircularID", String.valueOf(relatedItem.getPersonalCircularID()));
+                        params.put("ExpirationDate", relatedItem.getValidityEndDate());
+                        params.put("ClientID", "1");
+                        params.put("PackagingSize", relatedItem.getPackagingSize());
+                        params.put("DisplayPrice", relatedItem.getDisplayPrice());
+                        params.put("PageID", String.valueOf(relatedItem.getPageID()));
+                        params.put("Description", relatedItem.getDescription());
+                        params.put("CouponID", String.valueOf(relatedItem.getCouponID()));
+                        params.put("MemberID", String.valueOf(relatedItem.getMemberID()));
+                        params.put("DeviceId", "1");
+
+                        params.put("ClickType", "1");
+                        params.put("iPositionID", relatedItem.getTileNumber());
+                        params.put("OPMOfferID", relatedItem.getPricingMasterID());
+                        params.put("AdPrice", relatedItem.getAdPrice());
+                        params.put("RegPrice", relatedItem.getRegularPrice());
+                        params.put("Savings", relatedItem.getSavings());
+
+                        return params;
+                    }
+
+                    //this is the part, that adds the header to the request
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/x-www-form-urlencoded");
+                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (50000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    mQueue.add(jsonObjectRequest);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        } else {
+            alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                    getString(R.string.ok),getString(R.string.alert));
+            alertDialog.show();
+        }
     }
 
     private void fetchVeritesProduct(){

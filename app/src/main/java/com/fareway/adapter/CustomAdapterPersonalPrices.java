@@ -1795,7 +1795,6 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     @Override
                     public Map<String, String> getHeaders() {
                         Map<String, String> params = new HashMap<String, String>();
-
                         params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
                         params.put("Content-Type", "application/json ;charset=utf-8");
                         return params;
@@ -1917,7 +1916,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             public Map<String, String> getHeaders() {
                                 Map<String, String> params = new HashMap<String, String>();
                                 params.put("Content-Type", "application/x-www-form-urlencoded");
-
+                                params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
                                 return params;
                             }
                         };
@@ -2051,7 +2050,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             public Map<String, String> getHeaders() {
                                 Map<String, String> params = new HashMap<String, String>();
                                 params.put("Content-Type", "application/x-www-form-urlencoded");
-
+                                params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
                                 return params;
                             }
                         };
@@ -2128,7 +2127,6 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     @Override
                     public Map<String, String> getHeaders() {
                         Map<String, String> params = new HashMap<String, String>();
-
                         params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
                         params.put("Content-Type", "application/json ;charset=utf-8");
                         return params;
@@ -2432,7 +2430,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             public Map<String, String> getHeaders() {
                                 Map<String, String> params = new HashMap<String, String>();
                                 params.put("Content-Type", "application/x-www-form-urlencoded");
-
+                                params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
                                 return params;
                             }
                         };
@@ -2573,7 +2571,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             public Map<String, String> getHeaders() {
                                 Map<String, String> params = new HashMap<String, String>();
                                 params.put("Content-Type", "application/x-www-form-urlencoded");
-
+                                params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
                                 return params;
                             }
                         };

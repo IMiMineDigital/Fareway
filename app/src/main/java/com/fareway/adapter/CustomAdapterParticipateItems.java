@@ -34,6 +34,9 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
     private List<RelatedItem> relatedItemsList;
     private CustomAdapterParticipateItemsListener listener;
     private CustomAdapterParticipateItemsListener listener2;
+    private CustomAdapterParticipateItemsListener listener3;
+    private CustomAdapterParticipateItemsListener listener4;
+    private CustomAdapterParticipateItemsListener listener5;
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView limit,tv_status,tv_status_mul, tv_price, tv_unit, tv_saving,tv_deal_type,tv_detail,tv_varieties,tv_coupon_flag;
@@ -90,14 +93,33 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                     tv_status.setText("Added");
                 }
             });
+            circular_layout_mul.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener5.onRelatedItemSelected5(relatedItemsList.get(getAdapterPosition()));
+                    circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                    imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                    tv_status_mul.setText("Added");
+                }
+            });
             remove_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     remove_layout.setVisibility(View.GONE);
-                    //listener2.onRelatedItemSelected2(relatedItemsList.get(getAdapterPosition()));
+                    listener3.onRelatedItemSelected3(relatedItemsList.get(getAdapterPosition()));
                     circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
                     imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
                     tv_status.setText("Add");
+                }
+            });
+            remove_layout_mul.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    remove_layout_mul.setVisibility(View.GONE);
+                    listener4.onRelatedItemSelected4(relatedItemsList.get(getAdapterPosition()));
+                    circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
+                    imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
+                    tv_status_mul.setText("Add");
                 }
             });
 
@@ -106,11 +128,15 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
 
 
     public CustomAdapterParticipateItems(Context mContext, List<RelatedItem> ProductList,CustomAdapterParticipateItemsListener listener,
-                                         CustomAdapterParticipateItemsListener listener2) {
+                                         CustomAdapterParticipateItemsListener listener2,CustomAdapterParticipateItemsListener listener3,
+                                         CustomAdapterParticipateItemsListener listener4,CustomAdapterParticipateItemsListener listener5) {
         this.mContext = mContext;
         this.relatedItemsList = ProductList;
         this.listener = listener;
         this.listener2 = listener2;
+        this.listener3 = listener3;
+        this.listener4 = listener4;
+        this.listener5 = listener5;
     }
 
     @Override
@@ -583,6 +609,9 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
     public interface CustomAdapterParticipateItemsListener {
         void onRelatedItemSelected(RelatedItem relatedItem);
         void onRelatedItemSelected2(RelatedItem relatedItem);
+        void onRelatedItemSelected3(RelatedItem relatedItem);
+        void onRelatedItemSelected4(RelatedItem relatedItem);
+        void onRelatedItemSelected5(RelatedItem relatedItem);
     }
 
     private String capitalize(String capString){
