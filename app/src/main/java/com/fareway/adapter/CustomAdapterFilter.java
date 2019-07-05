@@ -2,6 +2,7 @@ package com.fareway.adapter;
 
 import android.content.Context;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -19,6 +20,7 @@ public class CustomAdapterFilter extends RecyclerView.Adapter<CustomAdapterFilte
 
     private Context mContext;
     private List<Category> categoryList;
+    public MainFwActivity activate = new MainFwActivity();
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView tv_type;
@@ -55,7 +57,9 @@ public class CustomAdapterFilter extends RecyclerView.Adapter<CustomAdapterFilte
         holder.rowLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //  Log.i("click",categoryList.get(position));
+                Log.i("click", category.getCategoryName());
+                //activate.OtherCoupon=0;
+                //activate.OtherCouponmulti=0;
                 MainFwActivity.getDate(category.getCategoryID());
             }
         });

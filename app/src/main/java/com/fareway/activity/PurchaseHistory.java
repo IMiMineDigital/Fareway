@@ -269,9 +269,10 @@ public class PurchaseHistory extends AppCompatActivity implements PurchaseHistor
                                     appUtil.setPrefrence(".issued", jsonParam.getString(".issued"));
                                     appUtil.setPrefrence(".expires", jsonParam.getString(".expires"));
                                     //  progressDialog.dismiss();
-                                    Intent i = new Intent(activity, LoginFw.class);
+                                    /*Intent i = new Intent(activity, LoginFw.class);
                                     startActivity(i);
-                                    finish();
+                                    finish();*/
+                                    purchaseHistoryLoad();
                                 } catch (Throwable e) {
                                     //  progressDialog.dismiss();
                                     Log.i("Excep", "error----" + e.getMessage());

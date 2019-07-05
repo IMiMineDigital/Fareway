@@ -20,7 +20,7 @@ public class Constant {
     public static final String REMOVE="ShoopingList/ShoppingListItemByupc?upccode=";
     public static final String SHOPPINGLISTSINGAL="ShoopingList/ShoppingListById?ShoppingListItemID=";
     public static final String ShoppingList="ShoopingList/ShoppingListByvTYC?";
-    public static final String SHOPPINGLISTALL = "ShoopingList/ShoppingListByTYC?shoppinglistid=0";
+    public static final String SHOPPINGLISTALL = "ShoopingList/ShoppingListByTYC?shoppinglistid=";
     public static final String PURCHASEHISTORY = "Account/PurchaseHistory?MemberId=";
     public static final String PURCHASEDETAILHISTORY = "Account/PurchaseHistoryDetails?PurchaseId=";
 

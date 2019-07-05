@@ -417,6 +417,7 @@
     </LinearLayout>
 
     <android.support.v7.widget.RecyclerView
+        android:layout_marginBottom="@dimen/_40sdp"
         android:layout_below="@+id/shopping_list_header"
         android:background="@color/white"
         android:visibility="invisible"

@@ -2,6 +2,7 @@ package com.fareway.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
@@ -47,6 +48,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
@@ -144,10 +146,13 @@ public class MainFwActivity extends AppCompatActivity
     private SearchView searchView;
     private LinearLayout rowLayout,rowLayout0,rowLayout1,rowLayout2,rowLayout3;
     public static int tmp=0;
+    public int OtherCoupon=0;
+    public int OtherCouponmulti=0;
     public static JSONArray message;
-    public static JSONArray message2;
+    public static JSONArray morecouponlist;
     public static JSONArray message3;
     public static JSONArray shopping;
+    public static JSONArray shoppingId;
     private static RecyclerView rv_category,rv_shopping_list_items;
     private ArrayList<Category> categoryList;
     private ArrayList<Shopping> shoppingArrayList;
@@ -265,7 +270,7 @@ public class MainFwActivity extends AppCompatActivity
         });
     }
 
-    private void addBadgeView() {
+    public void addBadgeView() {
         BottomNavigationView bottomNavigationView = (BottomNavigationView) findViewById(R.id.navigation);
         BottomNavigationMenuView bottomNavigationMenuView =
                 (BottomNavigationMenuView) bottomNavigationView.getChildAt(0);
@@ -275,6 +280,7 @@ public class MainFwActivity extends AppCompatActivity
         View badge = LayoutInflater.from(this)
                 .inflate(R.layout.view_notification_badge, bottomNavigationMenuView, false);
         tv = badge.findViewById(R.id.notification_badge);
+
         tv.setText("0");
         itemView.addView(badge);
 
@@ -284,6 +290,7 @@ public class MainFwActivity extends AppCompatActivity
     private void linkUIElements()
 
     {
+        imv_all_delete = findViewById(R.id.imv_all_delete);
         liner_all_Varieties_activate=findViewById(R.id.liner_all_Varieties_activate);
         all_Varieties_activate = findViewById(R.id.all_Varieties_activate);
         imv_logo=findViewById(R.id.imv_logo);
@@ -452,9 +459,7 @@ public class MainFwActivity extends AppCompatActivity
         }
 
         messageLoad();
-
-
-        //moreCouponLoad();
+        // moreCouponLoad();
         addBadgeView();
     }
 
@@ -510,33 +515,65 @@ public class MainFwActivity extends AppCompatActivity
                 popupMenu.show();
                 return true;
             }else if(i == R.id.ShoppingList){
-                rv_shopping_list_items.setVisibility(View.VISIBLE);
-               // header_title.setVisibility(View.INVISIBLE);
-                shopping_list_header.setVisibility(View.VISIBLE);
-                navigation.setVisibility(View.GONE);
-                DetaileToolbar.setVisibility(View.VISIBLE);
-                rv_items.setVisibility(View.GONE);
-                toolbar.setVisibility(View.GONE);
-                shoppingListLoad();
-                //startActivity(new Intent(MainFwActivity.this,ShoppingFw.class));
-                DetaileToolbar.setTitle("Shopping List");
-                DetaileToolbar.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        shopping_list_header.setVisibility(View.GONE);
-                      //  header_title.setVisibility(View.VISIBLE);
-                        navigation.setVisibility(View.VISIBLE);
-                        rv_shopping_list_items.setVisibility(View.GONE);
-                        //scrollView.setVisibility(View.GONE);
-                        DetaileToolbar.setVisibility(View.GONE);
-                        rv_items.setVisibility(View.VISIBLE);
-                        toolbar.setVisibility(View.VISIBLE);
-                    }
-                });
+                if (x==0) {
+                    tv.setVisibility(View.GONE);
+                    x=1;
+                    navigation.getMenu().findItem(R.id.ShoppingList).setTitle("Personal Ad");
+                    navigation.getMenu().findItem(R.id.ShoppingList).setIcon(R.drawable.account);
+                    Log.i("ifbottom", String.valueOf(x)+comeFrom);
+
+                    rv_shopping_list_items.setVisibility(View.VISIBLE);
+                    shopping_list_header.setVisibility(View.VISIBLE);
+                    navigation.setVisibility(View.VISIBLE);
+                    DetaileToolbar.setVisibility(View.VISIBLE);
+                    rv_items.setVisibility(View.GONE);
+                    toolbar.setVisibility(View.GONE);
+                    shoppingListLoad();
+
+                    imv_all_delete.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            Log.i("remove","All");
+                            ViewRemoveAllDialog alert = new ViewRemoveAllDialog();
+                            alert.showDialog(activity, "Do you want to delete all the items from the shopping list?");
+                        }
+                    });
+
+                    DetaileToolbar.setTitle("Shopping List");
+                    DetaileToolbar.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            x=0;
+                            navigation.getMenu().findItem(R.id.ShoppingList).setTitle("Shopping List");
+                            tv.setVisibility(View.VISIBLE);
+                            shopping_list_header.setVisibility(View.GONE);
+                            navigation.setVisibility(View.VISIBLE);
+                            rv_shopping_list_items.setVisibility(View.GONE);
+                            DetaileToolbar.setVisibility(View.GONE);
+                            rv_items.setVisibility(View.VISIBLE);
+                            toolbar.setVisibility(View.VISIBLE);
+                        }
+                    });
+
+                } else if(x==1) {
+                    tv.setVisibility(View.VISIBLE);
+                    comeFrom="mpp";
+                    x=0;
+                    tmp=0;
+                    navigation.getMenu().findItem(R.id.ShoppingList).setTitle("Shopping List");
+                    navigation.getMenu().findItem(R.id.ShoppingList).setIcon(R.drawable.ic_view_list_black_24dp);
+                    fetchProduct();
+                    Log.i("elsebottom", String.valueOf(x)+comeFrom);
+                    rv_shopping_list_items.setVisibility(View.GONE);
+                    shopping_list_header.setVisibility(View.GONE);
+                    navigation.setVisibility(View.VISIBLE);
+                    toolbar.setVisibility(View.VISIBLE);
+                    rv_items.setVisibility(View.VISIBLE);
+                    DetaileToolbar.setVisibility(View.GONE);
+                }
+
             }else if(i == R.id.ShopperID){
-               /* Intent i1=new Intent(activity,ShopperId.class);
-                startActivity(i1);
-                return true;*/
+
                 PopupMenu popupMenu = null;
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
                     popupMenu = new PopupMenu(MainFwActivity.this, navigation, Gravity.END);
@@ -575,14 +612,90 @@ public class MainFwActivity extends AppCompatActivity
             // TODO Auto-generated method stub
             int i2 = item.getItemId();
             if (i2 == R.id.filter_by_categories) {
+                DetaileToolbar.setVisibility(View.GONE);
+                shopping_list_header.setVisibility(View.GONE);
+                rv_shopping_list_items.setVisibility(View.GONE);
+
+                navigation.setVisibility(View.VISIBLE);
+                toolbar.setVisibility(View.VISIBLE);
+                tv.setVisibility(View.VISIBLE);
+                x=0;
+                navigation.getMenu().findItem(R.id.ShoppingList).setTitle("Shopping List");
+                navigation.getMenu().findItem(R.id.ShoppingList).setIcon(R.drawable.ic_view_list_black_24dp);
+
                 rv_items.setVisibility(View.INVISIBLE);
                 rowLayout.setVisibility(View.GONE);
                 rv_category.setVisibility(View.VISIBLE);
+                //OtherCoupon=0;
+                //OtherCouponmulti=0;
 
                 return true;
             } else if (i2 == R.id.filter_by_all_offer) {
-                if (x==1){
+                DetaileToolbar.setVisibility(View.GONE);
+                shopping_list_header.setVisibility(View.GONE);
+                rv_shopping_list_items.setVisibility(View.GONE);
 
+                navigation.setVisibility(View.VISIBLE);
+                toolbar.setVisibility(View.VISIBLE);
+                tv.setVisibility(View.VISIBLE);
+                x=0;
+                navigation.getMenu().findItem(R.id.ShoppingList).setTitle("Shopping List");
+                navigation.getMenu().findItem(R.id.ShoppingList).setIcon(R.drawable.ic_view_list_black_24dp);
+
+                if (x==1){
+                    rowLayout.setVisibility(View.VISIBLE);
+                    rv_items.setVisibility(View.INVISIBLE);
+                    rv_category.setVisibility(View.INVISIBLE);
+                    //liner_category_Layout.setVisibility(View.GONE);
+                    rowLayout0.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // applySearch("");
+                            //onfilter(0);
+                            tmp=0;
+                            //  messageLoad();
+                            fetchProduct();
+                            rv_category.setVisibility(View.GONE);
+                            rowLayout.setVisibility(View.GONE);
+                            rv_items.setVisibility(View.VISIBLE);
+                        }
+                    });
+                    rowLayout1.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //applySearch("My Personal Deal");
+                            tmp=3;
+                            //fetchProductList(3);
+                            fetchProduct();
+                            rv_category.setVisibility(View.GONE);
+                            rowLayout.setVisibility(View.GONE);
+                            rv_items.setVisibility(View.VISIBLE);
+                        }
+                    });
+                    rowLayout2.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            // applySearch("My Personal Coupon");
+                            tmp=2;
+                            // fetchProductList(2);
+                            fetchProduct();
+                            rv_category.setVisibility(View.GONE);
+                            rowLayout.setVisibility(View.GONE);
+                            rv_items.setVisibility(View.VISIBLE);
+                        }
+                    });
+                    rowLayout3.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //applySearch("My Sale Item");
+                            tmp=1;
+                            // fetchProductList(1);
+                            fetchProduct();
+                            rv_category.setVisibility(View.GONE);
+                            rowLayout.setVisibility(View.GONE);
+                            rv_items.setVisibility(View.VISIBLE);
+                        }
+                    });
                 }
                 else {
                     rowLayout.setVisibility(View.VISIBLE);
@@ -799,7 +912,7 @@ public class MainFwActivity extends AppCompatActivity
                         new Response.Listener<String>(){
                             @Override
                             public void onResponse(String response) {
-                                Log.i("Fareway Api Data", response.toString());
+                                Log.i("Fareway Personal Deal", response.toString());
 
                                 try {
                                     JSONObject root = new JSONObject(response);
@@ -812,9 +925,12 @@ public class MainFwActivity extends AppCompatActivity
                                            // moreCouponLoad();
                                             x=1;
                                         }else {
+                                            CircularmoreCouponLoad();
                                             //moreCouponLoad();
-                                            fetchProduct();
+                                           // fetchProduct();
+
                                             shoppingListLoad();
+                                            shoppingListIdLoad();
                                             //shoppingListLoad();
                                         }
 
@@ -1089,6 +1205,7 @@ public class MainFwActivity extends AppCompatActivity
 
                 }
                 // Log.i("meat seafood", String.valueOf(category_count));
+              //  Log.i("rrrrrrrrrrr", String.valueOf(morecouponlist));
                 List<Product> items = new Gson().fromJson(message.toString(), new TypeToken<List<Product>>() {
                 }.getType());
                 // adding product to product list
@@ -1325,25 +1442,118 @@ public class MainFwActivity extends AppCompatActivity
         }
     }
 
-    private void moreCouponLoad() {
+    private void CircularmoreCouponLoad() {
         if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
             try {
-                progressDialog = new ProgressDialog(activity);
-                progressDialog.setMessage("Processing");
-                progressDialog.show();
+                //progressDialog = new ProgressDialog(activity);
+                //progressDialog.setMessage("Processing");
+                //progressDialog.show();
                 StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET,Constant.WEB_URL + Constant.MORECOUPON+"?MemberId="+appUtil.getPrefrence("MemberId")+"&Plateform=2&CircularType=0",
                         new Response.Listener<String>(){
                             @Override
                             public void onResponse(String response) {
-                                Log.i("Fareway response Main", response.toString());
+                                Log.i("Digital coupon response", response.toString());
 
                                 try {
                                     JSONObject root = new JSONObject(response);
                                     root.getString("errorcode");
                                     Log.i("errorcode", root.getString("errorcode"));
                                     if (root.getString("errorcode").equals("0")){
-                                        progressDialog.dismiss();
-                                        message2= root.getJSONArray("message");
+                                        // progressDialog.dismiss();
+                                       if(message!=null)
+                                       {
+                                         String s1=  root.getJSONArray("message").toString();
+                                           String s2=  message.toString();
+                                           String s3="";
+                                           s1=s1.substring(s1.indexOf("[")+1, s1.lastIndexOf("]"));
+                                           s2=s2.substring(s2.indexOf("[")+1, s2.lastIndexOf("]"));
+                                           s3="["+s2+","+s1+"]";
+                                           message=null;
+                                           JSONArray jsonArray = new JSONArray(s3);
+                                           message=jsonArray;
+                                           fetchProduct();
+                                       }
+
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Volley error resp", "error----" + error.getMessage());
+                        error.printStackTrace();
+                        // progressDialog.dismiss();
+                    }
+                })
+                {
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/x-www-form-urlencoded";
+                    }
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        // params.put("UserName", et_email.getText().toString().trim());
+                        // params.put("password", et_pwd.getText().toString().trim());
+                        //params.put("Device", "5");
+                        return params;
+                    }
+                    //this is the part, that adds the header to the request
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/x-www-form-urlencoded");
+                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (50000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    // FarewayApplication.getInstance().addToRequestQueue(jsonObjectRequest);
+                    mQueue.add(jsonObjectRequest);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                // progressDialog.dismiss();
+//                displayAlert();
+            }
+        } else {
+            alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                    getString(R.string.ok),getString(R.string.alert));
+            alertDialog.show();
+//            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void moreCouponLoad() {
+        if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+            try {
+               //progressDialog = new ProgressDialog(activity);
+                //progressDialog.setMessage("Processing");
+                //progressDialog.show();
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET,Constant.WEB_URL + Constant.MORECOUPON+"?MemberId="+appUtil.getPrefrence("MemberId")+"&Plateform=2&CircularType=0",
+                        new Response.Listener<String>(){
+                            @Override
+                            public void onResponse(String response) {
+                                Log.i("Digital coupon response", response.toString());
+
+                                try {
+                                    JSONObject root = new JSONObject(response);
+                                    root.getString("errorcode");
+                                    Log.i("errorcode", root.getString("errorcode"));
+                                    if (root.getString("errorcode").equals("0")){
+                                       // progressDialog.dismiss();
+                                        morecouponlist= root.getJSONArray("message");
                                         if (comeFrom.equalsIgnoreCase("moreOffer")){
                                             fetchMoreCoupon();
                                         }
@@ -1358,7 +1568,7 @@ public class MainFwActivity extends AppCompatActivity
                     public void onErrorResponse(VolleyError error) {
                         Log.i("Volley error resp", "error----" + error.getMessage());
                         error.printStackTrace();
-                        progressDialog.dismiss();
+                       // progressDialog.dismiss();
                     }
                 })
                 {
@@ -1398,7 +1608,7 @@ public class MainFwActivity extends AppCompatActivity
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                progressDialog.dismiss();
+               // progressDialog.dismiss();
 //                displayAlert();
             }
         } else {
@@ -1410,7 +1620,7 @@ public class MainFwActivity extends AppCompatActivity
     }
 
     private void fetchMoreCoupon(){
-        if (message2.length() == 0) {
+        if (morecouponlist.length() == 0) {
             //no students
         } else {
             String strCategory="";
@@ -1420,27 +1630,27 @@ public class MainFwActivity extends AppCompatActivity
             int subcat=0;
             tmp=2;
             if (tmp==0){
-                for (int i = 0; i < message2.length(); i++) {
+                for (int i = 0; i < morecouponlist.length(); i++) {
                     category_count = category_count + 1;
                     try {
-                        if(Categoryid !=message2.getJSONObject(i).getInt("CategoryID")) {
-                            if (!strCategoryCheck.contains("#" + message2.getJSONObject(i).getInt("CategoryID") + "#")) {
-                                strCategoryCheck += "#" + message2.getJSONObject(i).getInt("CategoryID") + "#" + ",";
+                        if(Categoryid !=morecouponlist.getJSONObject(i).getInt("CategoryID")) {
+                            if (!strCategoryCheck.contains("#" + morecouponlist.getJSONObject(i).getInt("CategoryID") + "#")) {
+                                strCategoryCheck += "#" + morecouponlist.getJSONObject(i).getInt("CategoryID") + "#" + ",";
                                 subcat = 0;
-                                for (int q = 0; q < message2.length(); q++) {
-                                    if (message2.getJSONObject(q).getInt("CategoryID") == message2.getJSONObject(i).getInt("CategoryID") && message2.getJSONObject(q).getInt("PrimaryOfferTypeId") == message2.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
+                                for (int q = 0; q < morecouponlist.length(); q++) {
+                                    if (morecouponlist.getJSONObject(q).getInt("CategoryID") == morecouponlist.getJSONObject(i).getInt("CategoryID") && morecouponlist.getJSONObject(q).getInt("PrimaryOfferTypeId") == morecouponlist.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
                                         subcat = subcat + 1;
                                     }
                                 }
-                                Categoryid = message2.getJSONObject(i).getInt("CategoryID");
-                                strCategory += (strCategory == "" ? "{" + "\"CategoryID\":" + message2.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message2.getJSONObject(i).getString("CategoryName") + " (" + subcat + ")\"}" : "," + "{" + "\"CategoryID\":" + message2.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message2.getJSONObject(i).getString("CategoryName") + " (" + subcat + ")\"}");
+                                Categoryid = morecouponlist.getJSONObject(i).getInt("CategoryID");
+                                strCategory += (strCategory == "" ? "{" + "\"CategoryID\":" + morecouponlist.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + morecouponlist.getJSONObject(i).getString("CategoryName") + " (" + subcat + ")\"}" : "," + "{" + "\"CategoryID\":" + morecouponlist.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + morecouponlist.getJSONObject(i).getString("CategoryName") + " (" + subcat + ")\"}");
                             }
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-                List<Product> items = new Gson().fromJson(message2.toString(), new TypeToken<List<Product>>() {
+                List<Product> items = new Gson().fromJson(morecouponlist.toString(), new TypeToken<List<Product>>() {
                 }.getType());
                 // adding product to product list
                 productList.clear();
@@ -1449,27 +1659,27 @@ public class MainFwActivity extends AppCompatActivity
                 customAdapterPersonalPrices.notifyDataSetChanged();
             }else {
                 String categorydata="";
-                for (int i = 0; i < message2.length(); i++) {
+                for (int i = 0; i < morecouponlist.length(); i++) {
                    // Log.i("test", String.valueOf(tmp));
                     try {
-                        if (tmp == message2.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
-                            JSONObject finalObject = message2.getJSONObject(i);
+                        if (tmp == morecouponlist.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
+                            JSONObject finalObject = morecouponlist.getJSONObject(i);
                             //Log.i("test", String.valueOf(finalObject));
                             categorydata +=(categorydata==""? String.valueOf(finalObject):","+String.valueOf(finalObject));
                             category_count = category_count + 1;
-                            if(Categoryid !=message2.getJSONObject(i).getInt("CategoryID")) {
-                                if (!strCategoryCheck.contains("#" + message2.getJSONObject(i).getInt("CategoryID") + "#")) {
-                                    strCategoryCheck += "#" + message2.getJSONObject(i).getInt("CategoryID") + "#" + ",";
+                            if(Categoryid !=morecouponlist.getJSONObject(i).getInt("CategoryID")) {
+                                if (!strCategoryCheck.contains("#" + morecouponlist.getJSONObject(i).getInt("CategoryID") + "#")) {
+                                    strCategoryCheck += "#" + morecouponlist.getJSONObject(i).getInt("CategoryID") + "#" + ",";
                                     subcat = 0;
-                                    for (int q = 0; q < message2.length(); q++) {
-                                        if (tmp == message2.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
-                                            if (message2.getJSONObject(q).getInt("CategoryID") == message2.getJSONObject(i).getInt("CategoryID") && message2.getJSONObject(q).getInt("PrimaryOfferTypeId") == message2.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
+                                    for (int q = 0; q < morecouponlist.length(); q++) {
+                                        if (tmp == morecouponlist.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
+                                            if (morecouponlist.getJSONObject(q).getInt("CategoryID") == morecouponlist.getJSONObject(i).getInt("CategoryID") && morecouponlist.getJSONObject(q).getInt("PrimaryOfferTypeId") == morecouponlist.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
                                                 subcat = subcat + 1;
                                             }
                                         }
                                     }
-                                    Categoryid = message2.getJSONObject(i).getInt("CategoryID");
-                                    strCategory += (strCategory == "" ? "{" + "\"CategoryID\":" + message2.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message2.getJSONObject(i).getString("CategoryName") + " (" + subcat + ")\"}" : "," + "{" + "\"CategoryID\":" + message2.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message2.getJSONObject(i).getString("CategoryName") + " (" + subcat + ")\"}");
+                                    Categoryid = morecouponlist.getJSONObject(i).getInt("CategoryID");
+                                    strCategory += (strCategory == "" ? "{" + "\"CategoryID\":" + morecouponlist.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + morecouponlist.getJSONObject(i).getString("CategoryName") + " (" + subcat + ")\"}" : "," + "{" + "\"CategoryID\":" + morecouponlist.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + morecouponlist.getJSONObject(i).getString("CategoryName") + " (" + subcat + ")\"}");
                                 }
                             }
                         }
@@ -2713,6 +2923,9 @@ public class MainFwActivity extends AppCompatActivity
     }
 
     public static String getDate(int s){
+         //MainFwActivity activate = new MainFwActivity();
+        //activate.OtherCouponmulti=0;
+        //activate.OtherCoupon=0;
         getCategoryViceData(s);
         rv_category.setVisibility(View.GONE);
         rv_items.setVisibility(View.VISIBLE);
@@ -2779,39 +2992,39 @@ public class MainFwActivity extends AppCompatActivity
                     customAdapterPersonalPrices.notifyDataSetChanged();
                 }else if (x==1){
                     String test1="";
-                    for (int i = 0; i < message2.length(); i++) {
+                    for (int i = 0; i < morecouponlist.length(); i++) {
                         try {
-                            if (s==message2.getJSONObject(i).getInt("CategoryID")) {
-                                JSONObject finalObject = message2.getJSONObject(i);
+                            if (s==morecouponlist.getJSONObject(i).getInt("CategoryID")) {
+                                JSONObject finalObject = morecouponlist.getJSONObject(i);
                                 test1 +=(test1==""? String.valueOf(finalObject):","+String.valueOf(finalObject));
                                 category_count = category_count + 1;
-                                if(Categoryid !=message2.getJSONObject(i).getInt("CategoryID"))
+                                if(Categoryid !=morecouponlist.getJSONObject(i).getInt("CategoryID"))
                                 {    subcat=0;
-                                    for (int q = 0; q < message2.length(); q++) {
-                                        if (tmp == message2.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
-                                            if (message2.getJSONObject(q).getInt("CategoryID") == message2.getJSONObject(i).getInt("CategoryID") && message2.getJSONObject(q).getInt("PrimaryOfferTypeId") == message2.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
+                                    for (int q = 0; q < morecouponlist.length(); q++) {
+                                        if (tmp == morecouponlist.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
+                                            if (morecouponlist.getJSONObject(q).getInt("CategoryID") == morecouponlist.getJSONObject(i).getInt("CategoryID") && morecouponlist.getJSONObject(q).getInt("PrimaryOfferTypeId") == morecouponlist.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
                                                 subcat = subcat + 1;
                                             }
                                         }
                                     }
-                                    Categoryid=message2.getJSONObject(i).getInt("CategoryID");
-                                    strCategory +=(strCategory==""? "{" +"\"CategoryID\":"+message2.getJSONObject(i).getInt("CategoryID")+","+"\"CategoryName\":\""+message2.getJSONObject(i).getString("CategoryName")+" ("+subcat+")\"}":","+"{" +"\"CategoryID\":"+message2.getJSONObject(i).getInt("CategoryID")+","+"\"CategoryName\":\""+message2.getJSONObject(i).getString("CategoryName")+" ("+subcat+")\"}");
+                                    Categoryid=morecouponlist.getJSONObject(i).getInt("CategoryID");
+                                    strCategory +=(strCategory==""? "{" +"\"CategoryID\":"+morecouponlist.getJSONObject(i).getInt("CategoryID")+","+"\"CategoryName\":\""+morecouponlist.getJSONObject(i).getString("CategoryName")+" ("+subcat+")\"}":","+"{" +"\"CategoryID\":"+morecouponlist.getJSONObject(i).getInt("CategoryID")+","+"\"CategoryName\":\""+morecouponlist.getJSONObject(i).getString("CategoryName")+" ("+subcat+")\"}");
                                 }
                             }else if (s==0){
-                                JSONObject finalObject = message2.getJSONObject(i);
+                                JSONObject finalObject = morecouponlist.getJSONObject(i);
                                 test1 +=(test1==""? String.valueOf(finalObject):","+String.valueOf(finalObject));
                                 category_count = category_count + 1;
-                                if(Categoryid !=message2.getJSONObject(i).getInt("CategoryID"))
+                                if(Categoryid !=morecouponlist.getJSONObject(i).getInt("CategoryID"))
                                 {    subcat=0;
-                                    for (int q = 0; q < message2.length(); q++) {
-                                        if (tmp == message2.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
-                                            if (message2.getJSONObject(q).getInt("CategoryID") == message2.getJSONObject(i).getInt("CategoryID") && message2.getJSONObject(q).getInt("PrimaryOfferTypeId") == message2.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
+                                    for (int q = 0; q < morecouponlist.length(); q++) {
+                                        if (tmp == morecouponlist.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
+                                            if (morecouponlist.getJSONObject(q).getInt("CategoryID") == morecouponlist.getJSONObject(i).getInt("CategoryID") && morecouponlist.getJSONObject(q).getInt("PrimaryOfferTypeId") == morecouponlist.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
                                                 subcat = subcat + 1;
                                             }
                                         }
                                     }
-                                    Categoryid=message2.getJSONObject(i).getInt("CategoryID");
-                                    strCategory +=(strCategory==""? "{" +"\"CategoryID\":"+message2.getJSONObject(i).getInt("CategoryID")+","+"\"CategoryName\":\""+message2.getJSONObject(i).getString("CategoryName")+" ("+subcat+")\"}":","+"{" +"\"CategoryID\":"+message2.getJSONObject(i).getInt("CategoryID")+","+"\"CategoryName\":\""+message2.getJSONObject(i).getString("CategoryName")+" ("+subcat+")\"}");
+                                    Categoryid=morecouponlist.getJSONObject(i).getInt("CategoryID");
+                                    strCategory +=(strCategory==""? "{" +"\"CategoryID\":"+morecouponlist.getJSONObject(i).getInt("CategoryID")+","+"\"CategoryName\":\""+morecouponlist.getJSONObject(i).getString("CategoryName")+" ("+subcat+")\"}":","+"{" +"\"CategoryID\":"+morecouponlist.getJSONObject(i).getInt("CategoryID")+","+"\"CategoryName\":\""+morecouponlist.getJSONObject(i).getString("CategoryName")+" ("+subcat+")\"}");
                                 }
                             }
                         } catch (JSONException e) {
@@ -2830,39 +3043,39 @@ public class MainFwActivity extends AppCompatActivity
             }else {
                 if (x==1){
                     String test1="";
-                    for (int i = 0; i < message2.length(); i++) {
+                    for (int i = 0; i < morecouponlist.length(); i++) {
                         try {
-                            if (tmp == message2.getJSONObject(i).getInt("PrimaryOfferTypeId") && s==message2.getJSONObject(i).getInt("CategoryID")) {
-                                JSONObject finalObject = message2.getJSONObject(i);
+                            if (tmp == morecouponlist.getJSONObject(i).getInt("PrimaryOfferTypeId") && s==morecouponlist.getJSONObject(i).getInt("CategoryID")) {
+                                JSONObject finalObject = morecouponlist.getJSONObject(i);
                                 test1 +=(test1==""? String.valueOf(finalObject):","+String.valueOf(finalObject));
                                 category_count = category_count + 1;
-                                if(Categoryid !=message2.getJSONObject(i).getInt("CategoryID"))
+                                if(Categoryid !=morecouponlist.getJSONObject(i).getInt("CategoryID"))
                                 {    subcat=0;
-                                    for (int q = 0; q < message2.length(); q++) {
-                                        if (tmp == message2.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
-                                            if (message2.getJSONObject(q).getInt("CategoryID") == message2.getJSONObject(i).getInt("CategoryID") && message2.getJSONObject(q).getInt("PrimaryOfferTypeId") == message2.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
+                                    for (int q = 0; q < morecouponlist.length(); q++) {
+                                        if (tmp == morecouponlist.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
+                                            if (morecouponlist.getJSONObject(q).getInt("CategoryID") == morecouponlist.getJSONObject(i).getInt("CategoryID") && morecouponlist.getJSONObject(q).getInt("PrimaryOfferTypeId") == morecouponlist.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
                                                 subcat = subcat + 1;
                                             }
                                         }
                                     }
-                                    Categoryid=message2.getJSONObject(i).getInt("CategoryID");
-                                    strCategory +=(strCategory==""? "{" +"\"CategoryID\":"+message2.getJSONObject(i).getInt("CategoryID")+","+"\"CategoryName\":\""+message2.getJSONObject(i).getString("CategoryName")+" ("+subcat+")\"}":","+"{" +"\"CategoryID\":"+message2.getJSONObject(i).getInt("CategoryID")+","+"\"CategoryName\":\""+message2.getJSONObject(i).getString("CategoryName")+" ("+subcat+")\"}");
+                                    Categoryid=morecouponlist.getJSONObject(i).getInt("CategoryID");
+                                    strCategory +=(strCategory==""? "{" +"\"CategoryID\":"+morecouponlist.getJSONObject(i).getInt("CategoryID")+","+"\"CategoryName\":\""+morecouponlist.getJSONObject(i).getString("CategoryName")+" ("+subcat+")\"}":","+"{" +"\"CategoryID\":"+morecouponlist.getJSONObject(i).getInt("CategoryID")+","+"\"CategoryName\":\""+morecouponlist.getJSONObject(i).getString("CategoryName")+" ("+subcat+")\"}");
                                 }
-                            }else if (tmp == message2.getJSONObject(i).getInt("PrimaryOfferTypeId") && s==0){
-                                JSONObject finalObject = message2.getJSONObject(i);
+                            }else if (tmp == morecouponlist.getJSONObject(i).getInt("PrimaryOfferTypeId") && s==0){
+                                JSONObject finalObject = morecouponlist.getJSONObject(i);
                                 test1 +=(test1==""? String.valueOf(finalObject):","+String.valueOf(finalObject));
                                 category_count = category_count + 1;
-                                if(Categoryid !=message2.getJSONObject(i).getInt("CategoryID"))
+                                if(Categoryid !=morecouponlist.getJSONObject(i).getInt("CategoryID"))
                                 {    subcat=0;
-                                    for (int q = 0; q < message2.length(); q++) {
-                                        if (tmp == message2.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
-                                            if (message2.getJSONObject(q).getInt("CategoryID") == message2.getJSONObject(i).getInt("CategoryID") && message2.getJSONObject(q).getInt("PrimaryOfferTypeId") == message2.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
+                                    for (int q = 0; q < morecouponlist.length(); q++) {
+                                        if (tmp == morecouponlist.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
+                                            if (morecouponlist.getJSONObject(q).getInt("CategoryID") == morecouponlist.getJSONObject(i).getInt("CategoryID") && morecouponlist.getJSONObject(q).getInt("PrimaryOfferTypeId") == morecouponlist.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
                                                 subcat = subcat + 1;
                                             }
                                         }
                                     }
-                                    Categoryid=message2.getJSONObject(i).getInt("CategoryID");
-                                    strCategory +=(strCategory==""? "{" +"\"CategoryID\":"+message2.getJSONObject(i).getInt("CategoryID")+","+"\"CategoryName\":\""+message2.getJSONObject(i).getString("CategoryName")+" ("+subcat+")\"}":","+"{" +"\"CategoryID\":"+message2.getJSONObject(i).getInt("CategoryID")+","+"\"CategoryName\":\""+message2.getJSONObject(i).getString("CategoryName")+" ("+subcat+")\"}");
+                                    Categoryid=morecouponlist.getJSONObject(i).getInt("CategoryID");
+                                    strCategory +=(strCategory==""? "{" +"\"CategoryID\":"+morecouponlist.getJSONObject(i).getInt("CategoryID")+","+"\"CategoryName\":\""+morecouponlist.getJSONObject(i).getString("CategoryName")+" ("+subcat+")\"}":","+"{" +"\"CategoryID\":"+morecouponlist.getJSONObject(i).getInt("CategoryID")+","+"\"CategoryName\":\""+morecouponlist.getJSONObject(i).getString("CategoryName")+" ("+subcat+")\"}");
                                 }
                             }
                         } catch (JSONException e) {
@@ -2962,6 +3175,7 @@ public class MainFwActivity extends AppCompatActivity
         }
     }
 
+
     public void  SetProductActivate(int PrimaryOfferTypeID,int CouponID,String UPC,String RequireActivation,int ActivateType)
     {
 
@@ -3006,27 +3220,27 @@ public class MainFwActivity extends AppCompatActivity
            }
        }else if (x==1){
            try {
-               for (int i = 0; i < message2.length(); i++) {
+               for (int i = 0; i < morecouponlist.length(); i++) {
 
                    if(PrimaryOfferTypeID == 1)
                    {
-                       Log.i("apiupc",message2.getJSONObject(i).getString("UPC"));
-                       if (message2.getJSONObject(i).getString("UPC") == UPC) {
+                       Log.i("apiupc",morecouponlist.getJSONObject(i).getString("UPC"));
+                       if (morecouponlist.getJSONObject(i).getString("UPC") == UPC) {
                            Log.i("upc",UPC);
-                           message2.getJSONObject(i).put("ListCount", 1);
-                           message2.getJSONObject(i).put("ClickCount", 1);
+                           morecouponlist.getJSONObject(i).put("ListCount", 1);
+                           morecouponlist.getJSONObject(i).put("ClickCount", 1);
                        }
                    }
                    else
                    {
-                       if (message2.getJSONObject(i).getInt("CouponID") == CouponID) {
+                       if (morecouponlist.getJSONObject(i).getInt("CouponID") == CouponID) {
                            if (RequireActivation=="True" && PrimaryOfferTypeID==2 && ActivateType==2)
                            {
-                               message2.getJSONObject(i).put("ClickCount", 1);
+                               morecouponlist.getJSONObject(i).put("ClickCount", 1);
                            }
                            else {
-                               message2.getJSONObject(i).put("ListCount", 1);
-                               message2.getJSONObject(i).put("ClickCount", 1);
+                               morecouponlist.getJSONObject(i).put("ListCount", 1);
+                               morecouponlist.getJSONObject(i).put("ClickCount", 1);
                                Log.i("testjhj", String.valueOf(PrimaryOfferTypeID));
                                Log.i("testhah", String.valueOf(CouponID));
                                Log.i("test",UPC);
@@ -3119,14 +3333,14 @@ public class MainFwActivity extends AppCompatActivity
             Log.i("test", String.valueOf(x));
             try {
 
-                for (int i = 0; i < message2.length(); i++) {
+                for (int i = 0; i < morecouponlist.length(); i++) {
 
                     if(PrimaryOfferTypeID ==1)
                     {
 
-                        if (message2.getJSONObject(i).getString("UPC").contains(UPC)) {
-                            message2.getJSONObject(i).put("ListCount", 1);
-                            message2.getJSONObject(i).put("ClickCount", 1);
+                        if (morecouponlist.getJSONObject(i).getString("UPC").contains(UPC)) {
+                            morecouponlist.getJSONObject(i).put("ListCount", 1);
+                            morecouponlist.getJSONObject(i).put("ClickCount", 1);
                             //message.getJSONObject(i).put("ClickCount", 1);
                             //onProductSelected(message.getJSONObject(i))
                             // Log.i("primaryinner ", String.valueOf(PrimaryOfferTypeID));
@@ -3135,14 +3349,14 @@ public class MainFwActivity extends AppCompatActivity
                     }
                     else
                     {
-                        if (message2.getJSONObject(i).getString("UPC").contains(UPC)) {
-                            message2.getJSONObject(i).put("ClickCount", 1);
-                            message2.getJSONObject(i).put("ListCount", 1);
+                        if (morecouponlist.getJSONObject(i).getString("UPC").contains(UPC)) {
+                            morecouponlist.getJSONObject(i).put("ClickCount", 1);
+                            morecouponlist.getJSONObject(i).put("ListCount", 1);
 
                             //jsonParam.getJSONObject(i).put("ListCount", 1);
                         }else {
-                            if (message2.getJSONObject(i).getInt("CouponID") == CouponID) {
-                                message2.getJSONObject(i).put("ClickCount", 1);
+                            if (morecouponlist.getJSONObject(i).getInt("CouponID") == CouponID) {
+                                morecouponlist.getJSONObject(i).put("ClickCount", 1);
 
 
                             }
@@ -3305,14 +3519,14 @@ public class MainFwActivity extends AppCompatActivity
             Log.i("test", String.valueOf(x));
             try {
 
-                for (int i = 0; i < message2.length(); i++) {
+                for (int i = 0; i < morecouponlist.length(); i++) {
 
                     if(PrimaryOfferTypeID ==1)
                     {
 
-                        if (message2.getJSONObject(i).getString("UPC").contains(UPC)) {
-                            message2.getJSONObject(i).put("ListCount", 0);
-                            message2.getJSONObject(i).put("ClickCount", 1);
+                        if (morecouponlist.getJSONObject(i).getString("UPC").contains(UPC)) {
+                            morecouponlist.getJSONObject(i).put("ListCount", 0);
+                            morecouponlist.getJSONObject(i).put("ClickCount", 1);
                             //message.getJSONObject(i).put("ClickCount", 1);
                             //onProductSelected(message.getJSONObject(i))
                             // Log.i("primaryinner ", String.valueOf(PrimaryOfferTypeID));
@@ -3321,14 +3535,14 @@ public class MainFwActivity extends AppCompatActivity
                     }
                     else
                     {
-                        if (message2.getJSONObject(i).getString("UPC").contains(UPC)) {
-                            message2.getJSONObject(i).put("ClickCount", 1);
-                            message2.getJSONObject(i).put("ListCount", 0);
+                        if (morecouponlist.getJSONObject(i).getString("UPC").contains(UPC)) {
+                            morecouponlist.getJSONObject(i).put("ClickCount", 1);
+                            morecouponlist.getJSONObject(i).put("ListCount", 0);
 
                             //jsonParam.getJSONObject(i).put("ListCount", 1);
                         }else {
-                            if (message2.getJSONObject(i).getInt("CouponID") == CouponID) {
-                                message2.getJSONObject(i).put("ClickCount", 1);
+                            if (morecouponlist.getJSONObject(i).getInt("CouponID") == CouponID) {
+                                morecouponlist.getJSONObject(i).put("ClickCount", 1);
 
 
                             }
@@ -3482,14 +3696,14 @@ public class MainFwActivity extends AppCompatActivity
             Log.i("test", String.valueOf(x));
             try {
 
-                for (int i = 0; i < message2.length(); i++) {
+                for (int i = 0; i < morecouponlist.length(); i++) {
 
                     if(PrimaryOfferTypeID ==1)
                     {
 
-                        if (message2.getJSONObject(i).getString("UPC").contains(UPC)) {
-                            message2.getJSONObject(i).put("ListCount", 1);
-                            message2.getJSONObject(i).put("ClickCount", 1);
+                        if (morecouponlist.getJSONObject(i).getString("UPC").contains(UPC)) {
+                            morecouponlist.getJSONObject(i).put("ListCount", 1);
+                            morecouponlist.getJSONObject(i).put("ClickCount", 1);
                             //message.getJSONObject(i).put("ClickCount", 1);
                             //onProductSelected(message.getJSONObject(i))
                             // Log.i("primaryinner ", String.valueOf(PrimaryOfferTypeID));
@@ -3498,14 +3712,14 @@ public class MainFwActivity extends AppCompatActivity
                     }
                     else
                     {
-                        if (message2.getJSONObject(i).getString("UPC").contains(UPC)) {
-                            message2.getJSONObject(i).put("ClickCount", 1);
-                            message2.getJSONObject(i).put("ListCount", 1);
+                        if (morecouponlist.getJSONObject(i).getString("UPC").contains(UPC)) {
+                            morecouponlist.getJSONObject(i).put("ClickCount", 1);
+                            morecouponlist.getJSONObject(i).put("ListCount", 1);
 
                             //jsonParam.getJSONObject(i).put("ListCount", 1);
                         }else {
-                            if (message2.getJSONObject(i).getInt("CouponID") == CouponID) {
-                                message2.getJSONObject(i).put("ClickCount", 1);
+                            if (morecouponlist.getJSONObject(i).getInt("CouponID") == CouponID) {
+                                morecouponlist.getJSONObject(i).put("ClickCount", 1);
 
 
                             }
@@ -3655,29 +3869,29 @@ public class MainFwActivity extends AppCompatActivity
 
         }else if (x==1){
             try {
-                for (int i = 0; i < message2.length(); i++) {
+                for (int i = 0; i < morecouponlist.length(); i++) {
 
                     if(PrimaryOfferTypeID ==1)
                     {
-                        if (message2.getJSONObject(i).getString("UPC").contains(UPC)) {
-                            message2.getJSONObject(i).put("ListCount", 1);
-                            message2.getJSONObject(i).put("ClickCount", 1);
+                        if (morecouponlist.getJSONObject(i).getString("UPC").contains(UPC)) {
+                            morecouponlist.getJSONObject(i).put("ListCount", 1);
+                            morecouponlist.getJSONObject(i).put("ClickCount", 1);
                         }
                     }else {
-                        if (message2.getJSONObject(i).getInt("CouponID") == CouponID) {
+                        if (morecouponlist.getJSONObject(i).getInt("CouponID") == CouponID) {
                             if (RequireActivation.contains("True") && PrimaryOfferTypeID==2 && ActivateType==2)
                             {
-                                message2.getJSONObject(i).put("ClickCount", 1);
+                                morecouponlist.getJSONObject(i).put("ClickCount", 1);
                             } else {
                                 if (RequireActivation.contains("True") && PrimaryOfferTypeID==2 && ActivateType==1)
                                 {
-                                    message2.getJSONObject(i).put("ClickCount", 1);
-                                    message2.getJSONObject(i).put("ListCount", 1);
+                                    morecouponlist.getJSONObject(i).put("ClickCount", 1);
+                                    morecouponlist.getJSONObject(i).put("ListCount", 1);
                                 } else if (PrimaryOfferTypeID==2 && ActivateType==1) {
 
                                 } else {
-                                    message2.getJSONObject(i).put("ListCount", 1);
-                                    message2.getJSONObject(i).put("ClickCount", 1);
+                                    morecouponlist.getJSONObject(i).put("ListCount", 1);
+                                    morecouponlist.getJSONObject(i).put("ClickCount", 1);
                                 }
                                 Log.i("test", String.valueOf(PrimaryOfferTypeID));
                                 Log.i("test", String.valueOf(CouponID));
@@ -3999,6 +4213,58 @@ public class MainFwActivity extends AppCompatActivity
                 downloadTask.execute(largeImagePath);
             }
         }
+        remove_layout_detail.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("remove","remove");
+                String url = Constant.WEB_URL+Constant.REMOVE+relatedItem.getUPC()+"&"+"MemberId="+appUtil.getPrefrence("MemberId");
+                StringRequest  jsonObjectRequest = new StringRequest (Request.Method.DELETE, url,
+                        new Response.Listener<String >() {
+                            @Override
+                            public void onResponse(String  response) {
+                                Log.i("success", String.valueOf(response));
+                                remove_layout_detail.setVisibility(View.GONE);
+                                //    count_product_number_detail.setVisibility(View.GONE);
+                                relatedItem.setClickCount(1);
+                                tv_status_detaile.setText("Add");
+                                circular_layout_detaile.setBackground(getResources().getDrawable(R.drawable.circular_red_bg));
+                                imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.addwhite));
+                                //remove quantity
+                                SetRemoveActivateDetail(relatedItem.getPrimaryOfferTypeId(),relatedItem.getCouponID(),relatedItem.getUPC(),relatedItem.getRequiresActivation(),1);
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("fail", String.valueOf(error));
+                    }
+                }){
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/json; charset=utf-8";
+                    }
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                        params.put("Content-Type", "application/json ;charset=utf-8");
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (50000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    mQueue.add(jsonObjectRequest);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        });
 
         circular_layout_detaile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -4015,6 +4281,7 @@ public class MainFwActivity extends AppCompatActivity
                                         @Override
                                         public void onResponse(String response) {
                                             Log.i("Fareway response Main", response.toString());
+                                            remove_layout_detail.setVisibility(View.VISIBLE);
                                             circular_layout_detaile.setBackground(getResources().getDrawable(R.drawable.circular_mehrune_bg));
                                             imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.tick));
                                             tv_status_detaile.setText("Added");
@@ -4612,7 +4879,7 @@ public class MainFwActivity extends AppCompatActivity
         return capMatcher.appendTail(capBuffer).toString();
     }
 
-    private void shoppingListLoad() {
+    public void shoppingListLoad() {
         if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
             try {
                 progressDialog = new ProgressDialog(activity);
@@ -4717,6 +4984,125 @@ public class MainFwActivity extends AppCompatActivity
             } catch (Exception e) {
                 e.printStackTrace();
                 progressDialog.dismiss();
+//                displayAlert();
+            }
+        } else {
+            alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                    getString(R.string.ok),getString(R.string.alert));
+            alertDialog.show();
+            //Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void shoppingListIdLoad() {
+        if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+            try {
+                //progressDialog = new ProgressDialog(activity);
+                //progressDialog.setMessage("Processing");
+                //progressDialog.show();
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET,Constant.WEB_URL + "ShoppingList/List?"+"MemberId="+appUtil.getPrefrence("MemberId")+"&CategoryID=1",
+                        new Response.Listener<String>(){
+                            @Override
+                            public void onResponse(String response) {
+                                Log.i("ShoppingListId", response.toString());
+
+                                try {
+                                    JSONObject root = new JSONObject(response);
+                                    root.getString("errorcode");
+                                    Log.i("errorcode", root.getString("errorcode"));
+                                    Log.i("message", root.getString("message"));
+
+
+                                    JSONObject root2 = new JSONObject(root.getString("message"));
+                                    if (root.getString("errorcode").equals("0")){
+                                        //progressDialog.dismiss();
+                                        Log.i("anshuman","test");
+
+                                        try
+                                        {
+                                            shoppingId= root2.getJSONArray("ListName");
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            shoppingId = null;
+                                        }
+
+                                        if (shoppingId==null ){
+                                            Log.i("anshuman","test");
+                                        /*    shoppingArrayList.clear();
+                                            shoppingListAdapter.notifyDataSetChanged();
+                                            tv_number_item.setText(String.valueOf(0));
+                                            tv.setText(String.valueOf(0));*/
+
+                                        }else {
+                                          Log.i("shoppingId", String.valueOf(shoppingId));
+
+                                            for (int i = 0; i < shoppingId.length(); i++) {
+                                                JSONObject jsonParam= shoppingId.getJSONObject(i);
+                                                appUtil.setPrefrence("ShoppingListId", jsonParam.getString("ShoppingListId"));
+                                                Log.i("ShoppingListId",appUtil.getPrefrence("ShoppingListId"));
+
+                                            }
+                                           /*   tv_number_item.setText(String.valueOf(shopping.length()));
+                                            tv.setText(String.valueOf(shopping.length()));
+
+                                            shoppingArrayList.clear();
+                                            List<Shopping> items = new Gson().fromJson(shopping.toString(), new TypeToken<List<Shopping>>() {
+                                            }.getType());
+                                            shoppingArrayList.addAll(items);
+                                            shoppingListAdapter.notifyDataSetChanged();*/
+                                        }
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Volley error resp", "error----" + error.getMessage());
+                        error.printStackTrace();
+                       // progressDialog.dismiss();
+                    }
+                })
+                {
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/x-www-form-urlencoded";
+                    }
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        // params.put("UserName", et_email.getText().toString().trim());
+                        // params.put("password", et_pwd.getText().toString().trim());
+                        //params.put("Device", "5");
+                        return params;
+                    }
+                    //this is the part, that adds the header to the request
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        //params.put("Content-Type", "application/x-www-form-urlencoded");
+                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (50000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    // FarewayApplication.getInstance().addToRequestQueue(jsonObjectRequest);
+                    mQueue.add(jsonObjectRequest);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+              //  progressDialog.dismiss();
 //                displayAlert();
             }
         } else {
@@ -4941,6 +5327,76 @@ public class MainFwActivity extends AppCompatActivity
         }
 
 
+    }
+
+    public class ViewRemoveAllDialog {
+
+        public void showDialog(Activity activity, String msg){
+            final Dialog dialog = new Dialog(activity);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(false);
+            dialog.setContentView(R.layout.all_remove_dialog);
+
+            TextView text = (TextView) dialog.findViewById(R.id.dialog_info);
+            text.setText(msg);
+
+            Button dialogButton = (Button) dialog.findViewById(R.id.dialog_ok);
+            dialogButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String url = Constant.WEB_URL+"ShoopingList/ShoppingListByTYC?shoppinglistid="+appUtil.getPrefrence("ShoppingListId")+"&MemberId="+appUtil.getPrefrence("MemberId");
+                    StringRequest  jsonObjectRequest = new StringRequest (Request.Method.DELETE, url,
+                            new Response.Listener<String >() {
+                                @Override
+                                public void onResponse(String  response) {
+                                    Log.i("success", String.valueOf(response));
+                                    shoppingListLoad();
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.i("fail", String.valueOf(error));
+                            messageLoad();
+                        }
+                    }){
+                        @Override
+                        public String getBodyContentType() {
+                            return "application/json; charset=utf-8";
+                        }
+                        @Override
+                        public Map<String, String> getHeaders() {
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                            return params;
+                        }
+                    };
+                    RetryPolicy policy = new DefaultRetryPolicy
+                            (50000,
+                                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                    jsonObjectRequest.setRetryPolicy(policy);
+                    try {
+                        mQueue.add(jsonObjectRequest);
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                    dialog.dismiss();
+                }
+            });
+
+            Button dialogButtonCancel = (Button) dialog.findViewById(R.id.dialog_cancel);
+            dialogButtonCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+
+            dialog.show();
+
+        }
     }
 
 

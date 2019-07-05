@@ -56,7 +56,7 @@ public class SavingFw extends AppCompatActivity {
         mQueue=FarewayApplication.getmInstance(this).getmRequestQueue();
         appUtil=new AppUtilFw(activity);
         comeFrom=getIntent().getStringExtra("comeFrom");
-        getSupportActionBar().setTitle("Savings");
+        getSupportActionBar().setTitle("MyFareway Savings");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         tv_pty =findViewById(R.id.tv_pty);

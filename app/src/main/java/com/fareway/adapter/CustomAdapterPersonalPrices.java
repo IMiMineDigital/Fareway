@@ -1,7 +1,9 @@
 package com.fareway.adapter;
 
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.Typeface;
+import android.support.v4.app.NotificationCompatSideChannelService;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -67,9 +69,11 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
     public MainFwActivity varites = new MainFwActivity();
     public static AppUtilFw appUtil;
 
-    public class MyViewHolder extends RecyclerView.ViewHolder {
+    public class MyViewHolder extends RecyclerView.ViewHolder
+    {
+
         private TextView tv_status,tv_status_mul,tv_remove,tv_remove_mul,tv_price,tv_unit,tv_saving,tv_detail,tv_deal_type,
-                tv_coupon_flag,tv_varieties,limit,must,add_plus,add_minus;
+                tv_coupon_flag,tv_varieties,limit,must,add_plus,add_minus,additional_offers;
         public ImageView imv_item, imv_info,imv_status,imv_status_mul,coupon_badge;
         private LinearLayout circular_layout,circular_layout_mul,bottomLayout,liner_save,count_product_number,remove_layout,
                 remove_layout_mul;
@@ -90,6 +94,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             tv_detail = (TextView) view.findViewById(R.id.tv_detail);
             tv_deal_type = (TextView) view.findViewById(R.id.tv_deal_type);
             tv_coupon_flag=(TextView)view.findViewById(R.id.tv_coupon_flag);
+            additional_offers=(TextView)view.findViewById(R.id.additional_offers);
+
           /* tv_quantity = (TextView) view.findViewById(R.id.tv_quantity);
             add_plus = (TextView) view.findViewById(R.id.add_plus);
             add_minus = (TextView) view.findViewById(R.id.add_minus); */
@@ -141,6 +147,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
     @Override
     public MyViewHolder onCreateViewHolder(ViewGroup parent, int viewType) {
+
         View itemView = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.item_layout, parent, false);
 
@@ -149,6 +156,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
+
         final Product product = productListFiltered.get(position);
         if(MainFwActivity.singleView) {
             holder.circular_layout_mul.setVisibility(View.INVISIBLE);
@@ -391,7 +399,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     if (product.getHasRelatedItems()==1){
                         if (product.getRelatedItemCount()>1){
                             holder.tv_varieties.setVisibility(View.VISIBLE);
-                            holder.tv_varieties.setText("Participate Item");
+                            holder.tv_varieties.setText("Participating Items");
                         }else {
                             holder.tv_varieties.setVisibility(View.GONE);
                         }
@@ -477,9 +485,30 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }
                 }
             }
+
             else {
+                if (product.getTileNumber().equalsIgnoreCase("999")) {
+                    Log.i("offercoupn", String.valueOf(activate.OtherCoupon)+"hhjj");
+                    if (activate.OtherCoupon == 0) {
+                        holder.additional_offers.setVisibility(View.VISIBLE);
+                        holder.additional_offers.setText("Additional Offers");
+                        activate.OtherCoupon=product.getCouponID();
+                    }
+                    else if (activate.OtherCoupon==product.getCouponID())
+                    {
+                        holder.additional_offers.setVisibility(View.VISIBLE);
+                        holder.additional_offers.setText("Additional Offers");
+                    }
+                    else
+                    {
+                        holder.additional_offers.setVisibility(View.GONE);
+                    }
+                }else {
+                    holder.additional_offers.setVisibility(View.GONE);
+                }
                 Log.i("elseincircular", String.valueOf(product.getInCircular()));
                 if (product.getPrimaryOfferTypeId() == 3) {
+                    holder.limit.setGravity(Gravity.CENTER);
                     String saveDate = product.getValidityEndDate();
                     if (saveDate.length()==0){
                         // getTokenkey();
@@ -678,7 +707,22 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             holder.tv_price.setText(result);
                         }
                     }
+                    holder.coupon_badge.setVisibility(View.VISIBLE);
+                    holder.limit.setGravity(Gravity.CENTER);
                     holder.limit.setText(headerContent);
+                    if (product.getIsbadged().equalsIgnoreCase("True")){
+                        Glide.with(mContext)
+                                .load(product.getBadgeFileName())
+                                .into(holder.coupon_badge);
+                        headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection()+", Exp "+saveDate);
+                        holder.limit.setText(headerContent);
+                        holder.limit.setGravity(Gravity.CENTER);
+
+                    }else {
+                        Glide.with(mContext)
+                                .load("")
+                                .into(holder.coupon_badge);
+                    }
 
                     if (product.getOfferDefinitionId()==3 || product.getOfferDefinitionId()==2 || product.getOfferDefinitionId()==1 || product.getOfferDefinitionId()==4){
                         String chars = capitalize(product.getDescription());
@@ -787,7 +831,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     if (product.getHasRelatedItems()==1){
                         if (product.getRelatedItemCount()>1){
                             holder.tv_varieties.setVisibility(View.VISIBLE);
-                            Spanned varietiesUnderline = Html.fromHtml("<u>Participate Item</u>");
+                            Spanned varietiesUnderline = Html.fromHtml("<u>Participating Items</u>");
                             holder.tv_varieties.setText(varietiesUnderline);
                         }else {
                             holder.tv_varieties.setVisibility(View.GONE);
@@ -830,6 +874,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
                 }else if (product.getPrimaryOfferTypeId() == 1) {
                     String saveDate = product.getValidityEndDate();
+                    holder.limit.setGravity(Gravity.CENTER);
                     if (saveDate.length()==0){
                         // getTokenkey();
                     }else {
@@ -915,6 +960,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
                 }
             }
+
             if (product.getOfferDefinitionId()==5){
                 if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
                     Glide.with(mContext)
@@ -938,7 +984,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             }
 
 
-        }else {
+        }
+        else {
 
             holder.circular_layout.setVisibility(View.INVISIBLE);
             holder.remove_layout.setVisibility(View.INVISIBLE);
@@ -1181,7 +1228,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     if (product.getHasRelatedItems()==1){
                         if (product.getRelatedItemCount()>1){
                             holder.tv_varieties.setVisibility(View.VISIBLE);
-                            holder.tv_varieties.setText("Participate Item");
+                            holder.tv_varieties.setText("Participating Items");
                         }else {
                             holder.tv_varieties.setVisibility(View.GONE);
                         }
@@ -1268,8 +1315,38 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 }
             }
             else {
+                if (product.getTileNumber().equalsIgnoreCase("999")) {
+                    if (activate.OtherCoupon == 0) {
+                        holder.additional_offers.setVisibility(View.VISIBLE);
+                        holder.additional_offers.setText("Additional Offers");
+                        activate.OtherCoupon=product.getCouponID();
+                    }
+                    else if (activate.OtherCoupon==product.getCouponID())
+                    {
+                        holder.additional_offers.setVisibility(View.VISIBLE);
+                        holder.additional_offers.setText("Additional Offers");
+                    }
+                    else
+                    {
+                        if (activate.OtherCouponmulti == 0) {
+                            holder.additional_offers.setVisibility(View.VISIBLE);
+                            holder.additional_offers.setText(" ");
+                            activate.OtherCouponmulti=product.getCouponID();
+                        }
+                        else if (activate.OtherCouponmulti==product.getCouponID())
+                        {
+                            holder.additional_offers.setVisibility(View.VISIBLE);
+                            holder.additional_offers.setText(" ");
+                        }
+                        else
+                        holder.additional_offers.setVisibility(View.GONE);
+                    }
+                }else {
+                    holder.additional_offers.setVisibility(View.GONE);
+                }
                 Log.i("elseincircular", String.valueOf(product.getInCircular()));
                 if (product.getPrimaryOfferTypeId() == 3) {
+                    holder.limit.setGravity(Gravity.CENTER);
                     String saveDate = product.getValidityEndDate();
                     if (saveDate.length()==0){
                         // getTokenkey();
@@ -1476,7 +1553,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         Glide.with(mContext)
                                 .load(product.getBadgeFileName())
                                 .into(holder.coupon_badge);
-                        headerContent = "Limit " + String.valueOf(product.getLimitPerTransection()+", Exp "+saveDate);
+                        headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection()+", Exp "+saveDate);
                         holder.limit.setText(headerContent);
                         holder.limit.setGravity(Gravity.RIGHT);
 
@@ -1594,7 +1671,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     if (product.getHasRelatedItems()==1){
                         if (product.getRelatedItemCount()>1){
                             holder.tv_varieties.setVisibility(View.VISIBLE);
-                            Spanned varietiesUnderline = Html.fromHtml("<u>Participate Item</u>");
+                            Spanned varietiesUnderline = Html.fromHtml("<u>Participating Items</u>");
                             holder.tv_varieties.setText(varietiesUnderline);
                         }else {
                             holder.tv_varieties.setVisibility(View.GONE);
@@ -1636,6 +1713,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }
 
                 }else if (product.getPrimaryOfferTypeId() == 1) {
+                    holder.limit.setGravity(Gravity.CENTER);
                     String saveDate = product.getValidityEndDate();
                     if (saveDate.length()==0){
                         // getTokenkey();
