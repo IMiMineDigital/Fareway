@@ -70,6 +70,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
@@ -124,7 +125,7 @@ public class MainFwActivity extends AppCompatActivity
     private DrawerLayout drawer;
     private Toolbar toolbar;private Toolbar DetaileToolbar;private Toolbar participateToolbar;
     //private NavigationView navigationView;
-    private TextView mTextMessage,tv_uname,tv_filter_by_category,tv_filter_by_offer,tv_type,tv_number_item;
+    private TextView mTextMessage,tv_uname,tv_filter_by_category,tv_filter_by_offer,tv_type,tv_number_item,add_item;
     private ImageView imv_view_list,imv_all_delete,imv_logo;
     private static RecyclerView rv_items,rv_items_verite,rv_items_group;
     private static CustomAdapterParticipateItems customAdapterParticipateItems;
@@ -281,7 +282,7 @@ public class MainFwActivity extends AppCompatActivity
                 .inflate(R.layout.view_notification_badge, bottomNavigationMenuView, false);
         tv = badge.findViewById(R.id.notification_badge);
 
-        tv.setText("0");
+        tv.setText(String.valueOf(0));
         itemView.addView(badge);
 
     }
@@ -290,6 +291,15 @@ public class MainFwActivity extends AppCompatActivity
     private void linkUIElements()
 
     {
+        add_item=findViewById(R.id.add_item);
+        add_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Log.i("anshuman","Singh");
+                withEditText();
+
+            }
+        });
         imv_all_delete = findViewById(R.id.imv_all_delete);
         liner_all_Varieties_activate=findViewById(R.id.liner_all_Varieties_activate);
         all_Varieties_activate = findViewById(R.id.all_Varieties_activate);
@@ -432,7 +442,7 @@ public class MainFwActivity extends AppCompatActivity
         rv_items_verite.setAdapter(customAdapterParticipateItems);
 
         rv_items = (RecyclerView) findViewById(R.id.rv_items);
-        customAdapterPersonalPrices = new CustomAdapterPersonalPrices(this, productList,this,this);
+        customAdapterPersonalPrices = new CustomAdapterPersonalPrices(this, productList,this,this,this,this,this,this);
       //  RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(activity, 1);
       //  rv_items.setLayoutManager(mLayoutManager);
         rv_items.setAdapter(customAdapterPersonalPrices);
@@ -539,12 +549,12 @@ public class MainFwActivity extends AppCompatActivity
                         }
                     });
 
-                    DetaileToolbar.setTitle("Shopping List");
+                    DetaileToolbar.setTitle("My List");
                     DetaileToolbar.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             x=0;
-                            navigation.getMenu().findItem(R.id.ShoppingList).setTitle("Shopping List");
+                            navigation.getMenu().findItem(R.id.ShoppingList).setTitle("My List");
                             tv.setVisibility(View.VISIBLE);
                             shopping_list_header.setVisibility(View.GONE);
                             navigation.setVisibility(View.VISIBLE);
@@ -560,7 +570,7 @@ public class MainFwActivity extends AppCompatActivity
                     comeFrom="mpp";
                     x=0;
                     tmp=0;
-                    navigation.getMenu().findItem(R.id.ShoppingList).setTitle("Shopping List");
+                    navigation.getMenu().findItem(R.id.ShoppingList).setTitle("My List");
                     navigation.getMenu().findItem(R.id.ShoppingList).setIcon(R.drawable.ic_view_list_black_24dp);
                     fetchProduct();
                     Log.i("elsebottom", String.valueOf(x)+comeFrom);
@@ -620,7 +630,7 @@ public class MainFwActivity extends AppCompatActivity
                 toolbar.setVisibility(View.VISIBLE);
                 tv.setVisibility(View.VISIBLE);
                 x=0;
-                navigation.getMenu().findItem(R.id.ShoppingList).setTitle("Shopping List");
+                navigation.getMenu().findItem(R.id.ShoppingList).setTitle("My List");
                 navigation.getMenu().findItem(R.id.ShoppingList).setIcon(R.drawable.ic_view_list_black_24dp);
 
                 rv_items.setVisibility(View.INVISIBLE);
@@ -639,7 +649,7 @@ public class MainFwActivity extends AppCompatActivity
                 toolbar.setVisibility(View.VISIBLE);
                 tv.setVisibility(View.VISIBLE);
                 x=0;
-                navigation.getMenu().findItem(R.id.ShoppingList).setTitle("Shopping List");
+                navigation.getMenu().findItem(R.id.ShoppingList).setTitle("My List");
                 navigation.getMenu().findItem(R.id.ShoppingList).setIcon(R.drawable.ic_view_list_black_24dp);
 
                 if (x==1){
@@ -2183,6 +2193,7 @@ public class MainFwActivity extends AppCompatActivity
             }
             tv_package_detail.setText(product.getPackagingSize());
             if (product.getRequiresActivation().contains("False")){
+                Log.i("rajesh", String.valueOf(product.getListCount())+product.getRequiresActivation().contains("False"));
                 if (product.getListCount()>0){
                     circular_layout_detaile.setBackground(getResources().getDrawable(R.drawable.circular_mehrune_bg));
                     imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.tick));
@@ -2197,6 +2208,7 @@ public class MainFwActivity extends AppCompatActivity
                     remove_layout_detail.setVisibility(View.GONE);
                 }
             }else {
+                Log.i("rajeshelse", String.valueOf(product.getListCount())+product.getRequiresActivation().contains("False"));
                 if (product.getClickCount()==0){
                     circular_layout_detaile.setBackground(getResources().getDrawable(R.drawable.circular_red_bg));
                     imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.addwhite));
@@ -2400,6 +2412,7 @@ public class MainFwActivity extends AppCompatActivity
                             @Override
                             public void onResponse(String  response) {
                                 Log.i("success", String.valueOf(response));
+                                fetchShoppingListLoad();
                                 remove_layout_detail.setVisibility(View.GONE);
                             //    count_product_number_detail.setVisibility(View.GONE);
                                 product.setClickCount(1);
@@ -2621,6 +2634,7 @@ public class MainFwActivity extends AppCompatActivity
                                         @Override
                                         public void onResponse(String response) {
                                             Log.i("Fareway response Main", response.toString());
+                                            fetchShoppingListLoad();
                                             if (product.getPrimaryOfferTypeId()==2){
                                                 circular_layout_detaile.setBackground(getResources().getDrawable(R.drawable.circular_mehrune_bg));
                                                 imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.tick));
@@ -2917,6 +2931,540 @@ public class MainFwActivity extends AppCompatActivity
     }
 
     @Override
+    public void onProductActivate(final Product product) {
+
+        if (product.getClickCount()>0){
+
+
+           // RequestQueue mQueue;
+            //mQueue=FarewayApplication.getmInstance(mContext).getmRequestQueue();
+            try {
+
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST,Constant.WEB_URL + Constant.ACTIVATE,
+                        new Response.Listener<String>(){
+                            @Override
+                            public void onResponse(String response) {
+                                fetchShoppingListLoad();
+                                Log.i("Activate api Response", response.toString());
+                                if (product.getPrimaryOfferTypeId()==3){
+                                    product.setClickCount(1);
+                                    product.setListCount(1);
+                                    product.setQuantity("1");
+                                    SetProductActivate(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
+                                }else if (product.getPrimaryOfferTypeId()==2){
+                                    product.setClickCount(1);
+                                    product.setQuantity("1");
+                                    if (product.getRequiresActivation().contains("False")){
+                                        product.setListCount(1);
+                                    }else {
+                                        product.setListCount(1);
+                                    }
+                                    SetProductActivate(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),2);
+                                }else if (product.getPrimaryOfferTypeId()==1){
+                                    product.setListCount(1);
+                                    product.setQuantity("1");
+                                    SetProductActivate(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
+                                }
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Volley error resp", "error----" + error.getMessage());
+                        error.printStackTrace();
+
+                        if (error.networkResponse == null) {
+                            if (error.getClass().equals(TimeoutError.class)) {
+                            }
+                        }
+                    }
+                })
+                {
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/x-www-form-urlencoded";
+                    }
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("UPCCode", product.getUPC());
+                        params.put("CategoryID", String.valueOf(product.getCategoryID()));
+                        params.put("SalePrice", product.getFinalPrice());
+                        params.put("PrimaryOfferTypeId", String.valueOf(product.getPrimaryOfferTypeId()));
+                        params.put("OfferDetailId", String.valueOf(product.getOfferDetailId()));
+                        params.put("PersonalCircularID", String.valueOf(product.getPersonalCircularID()));
+                        params.put("ExpirationDate", product.getValidityEndDate());
+                        params.put("ClientID", "1");
+                        params.put("PackagingSize", product.getPackagingSize());
+                        params.put("DisplayPrice", product.getDisplayPrice());
+                        params.put("PageID", String.valueOf(product.getPageID()));
+                        params.put("Description", product.getDescription());
+                        params.put("CouponID", String.valueOf(product.getCouponID()));
+                        params.put("MemberID", String.valueOf(product.getMemberID()));
+                        params.put("DeviceId", "1");
+                        params.put("ClickType", "1");
+                        params.put("iPositionID", product.getTileNumber());
+                        params.put("OPMOfferID", String.valueOf(product.getPricingMasterID()));
+                        params.put("AdPrice", product.getAdPrice());
+                        params.put("RegPrice", product.getRegularPrice());
+                        params.put("Savings", product.getSavings());
+                        return params;
+                    }
+
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/x-www-form-urlencoded");
+                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (50000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    mQueue.add(jsonObjectRequest);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+
+
+            }
+        }else if (product.getClickCount()==0){
+
+            try {
+
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST,Constant.WEB_URL + Constant.ACTIVATE,
+                        new Response.Listener<String>(){
+                            @Override
+                            public void onResponse(String response) {
+                                Log.i("Fareway text", response.toString());
+                                fetchShoppingListLoad();
+                                if (product.getPrimaryOfferTypeId()==3){
+                                    product.setClickCount(1);
+                                    product.setListCount(1);
+                                    product.setQuantity("1");
+
+                                    SetProductActivate(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
+                                }else if (product.getPrimaryOfferTypeId()==2){
+                                    product.setClickCount(1);
+                                    product.setListCount(1);
+                                    SetProductActivate(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),2);
+                                }else if (product.getPrimaryOfferTypeId()==1){
+
+                                    product.setListCount(1);
+                                    product.setQuantity("1");
+                                    SetProductActivate(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
+                                }
+
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Volley error resp", "error----" + error.getMessage());
+                        error.printStackTrace();
+
+                        if (error.networkResponse == null) {
+
+                            if (error.getClass().equals(TimeoutError.class)) {
+                            }
+                        }
+                    }
+                })
+                {
+
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/x-www-form-urlencoded";
+                    }
+
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("UPCCode", product.getUPC());
+                        params.put("CategoryID", String.valueOf(product.getCategoryID()));
+                        params.put("SalePrice", product.getFinalPrice());
+                        params.put("PrimaryOfferTypeId", String.valueOf(product.getPrimaryOfferTypeId()));
+                        params.put("OfferDetailId", String.valueOf(product.getOfferDetailId()));
+                        params.put("PersonalCircularID", String.valueOf(product.getPersonalCircularID()));
+                        params.put("ExpirationDate", product.getValidityEndDate());
+                        params.put("ClientID", "1");
+                        params.put("PackagingSize", product.getPackagingSize());
+                        params.put("DisplayPrice", product.getDisplayPrice());
+                        params.put("PageID", String.valueOf(product.getPageID()));
+                        params.put("Description", product.getDescription());
+                        params.put("CouponID", String.valueOf(product.getCouponID()));
+                        params.put("MemberID", String.valueOf(product.getMemberID()));
+                        params.put("DeviceId", "1");
+                        if (product.getPrimaryOfferTypeId()==2){
+                            params.put("ClickType", "1");
+                        }else {
+                            params.put("ClickType", "1");
+                        }
+                        params.put("iPositionID", product.getTileNumber());
+                        params.put("OPMOfferID", String.valueOf(product.getPricingMasterID()));
+                        params.put("AdPrice", product.getAdPrice());
+                        params.put("RegPrice", product.getRegularPrice());
+                        params.put("Savings", product.getSavings());
+
+                        return params;
+                    }
+
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/x-www-form-urlencoded");
+                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (50000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    mQueue.add(jsonObjectRequest);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+
+
+            }
+
+        }
+    }
+
+    @Override
+    public void onProductMultiActivate(final Product product) {
+
+        if (product.getClickCount()>0){
+
+            try {
+
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST,Constant.WEB_URL + Constant.ACTIVATE,
+                        new Response.Listener<String>(){
+                            @Override
+                            public void onResponse(String response) {
+                                Log.i("Fareway text", response.toString());
+                                fetchShoppingListLoad();
+                                if (product.getPrimaryOfferTypeId()==3){
+                                    product.setClickCount(1);
+                                    product.setListCount(1);
+                                    product.setQuantity("1");
+                                    SetProductActivate(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
+                                }else if (product.getPrimaryOfferTypeId()==2){
+                                    product.setClickCount(1);
+                                    product.setQuantity("1");
+                                    if (product.getRequiresActivation().contains("False")){
+                                        product.setListCount(1);
+                                    }else {
+                                        product.setListCount(1);
+                                    }
+                                    SetProductActivate(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),2);
+                                }else if (product.getPrimaryOfferTypeId()==1){
+                                    product.setListCount(1);
+                                    product.setQuantity("1");
+                                    SetProductActivate(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Volley error resp", "error----" + error.getMessage());
+                        error.printStackTrace();
+
+                        if (error.networkResponse == null) {
+                            if (error.getClass().equals(TimeoutError.class)) {
+                            }
+                        }
+                    }
+                })
+                {
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/x-www-form-urlencoded";
+                    }
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("UPCCode", product.getUPC());
+                        params.put("CategoryID", String.valueOf(product.getCategoryID()));
+                        params.put("SalePrice", product.getFinalPrice());
+                        params.put("PrimaryOfferTypeId", String.valueOf(product.getPrimaryOfferTypeId()));
+                        params.put("OfferDetailId", String.valueOf(product.getOfferDetailId()));
+                        params.put("PersonalCircularID", String.valueOf(product.getPersonalCircularID()));
+                        params.put("ExpirationDate", product.getValidityEndDate());
+                        params.put("ClientID", "1");
+                        params.put("PackagingSize", product.getPackagingSize());
+                        params.put("DisplayPrice", product.getDisplayPrice());
+                        params.put("PageID", String.valueOf(product.getPageID()));
+                        params.put("Description", product.getDescription());
+                        params.put("CouponID", String.valueOf(product.getCouponID()));
+                        params.put("MemberID", String.valueOf(product.getMemberID()));
+                        params.put("DeviceId", "1");
+                        params.put("ClickType", "1");
+                        params.put("iPositionID", product.getTileNumber());
+                        params.put("OPMOfferID", String.valueOf(product.getPricingMasterID()));
+                        params.put("AdPrice", product.getAdPrice());
+                        params.put("RegPrice", product.getRegularPrice());
+                        params.put("Savings", product.getSavings());
+                        return params;
+                    }
+
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/x-www-form-urlencoded");
+                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (50000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    mQueue.add(jsonObjectRequest);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+
+
+            }
+        }
+        else if (product.getClickCount()==0){
+
+
+            try {
+
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST,Constant.WEB_URL + Constant.ACTIVATE,
+                        new Response.Listener<String>(){
+                            @Override
+                            public void onResponse(String response) {
+                                Log.i("Fareway text", response.toString());
+                                fetchShoppingListLoad();
+                                if (product.getPrimaryOfferTypeId()==3){
+                                    product.setClickCount(1);
+                                    product.setListCount(1);
+                                    product.setQuantity("1");
+
+                                    SetProductActivate(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
+                                }else if (product.getPrimaryOfferTypeId()==2){
+                                    product.setClickCount(1);
+                                    product.setListCount(1);
+
+                                    SetProductActivate(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),2);
+                                }else if (product.getPrimaryOfferTypeId()==1){
+
+                                    product.setListCount(1);
+                                    product.setQuantity("1");
+                                    SetProductActivate(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
+                                }
+
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Volley error resp", "error----" + error.getMessage());
+                        error.printStackTrace();
+
+                        if (error.networkResponse == null) {
+
+                            if (error.getClass().equals(TimeoutError.class)) {
+                            }
+                        }
+                    }
+                })
+                {
+
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/x-www-form-urlencoded";
+                    }
+
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("UPCCode", product.getUPC());
+                        params.put("CategoryID", String.valueOf(product.getCategoryID()));
+                        params.put("SalePrice", product.getFinalPrice());
+                        params.put("PrimaryOfferTypeId", String.valueOf(product.getPrimaryOfferTypeId()));
+                        params.put("OfferDetailId", String.valueOf(product.getOfferDetailId()));
+                        params.put("PersonalCircularID", String.valueOf(product.getPersonalCircularID()));
+                        params.put("ExpirationDate", product.getValidityEndDate());
+                        params.put("ClientID", "1");
+                        params.put("PackagingSize", product.getPackagingSize());
+                        params.put("DisplayPrice", product.getDisplayPrice());
+                        params.put("PageID", String.valueOf(product.getPageID()));
+                        params.put("Description", product.getDescription());
+                        params.put("CouponID", String.valueOf(product.getCouponID()));
+                        params.put("MemberID", String.valueOf(product.getMemberID()));
+                        params.put("DeviceId", "1");
+                        if (product.getPrimaryOfferTypeId()==2){
+                            params.put("ClickType", "1");
+                        }else {
+                            params.put("ClickType", "1");
+                        }
+                        params.put("iPositionID", product.getTileNumber());
+                        params.put("OPMOfferID", String.valueOf(product.getPricingMasterID()));
+                        params.put("AdPrice", product.getAdPrice());
+                        params.put("RegPrice", product.getRegularPrice());
+                        params.put("Savings", product.getSavings());
+
+                        return params;
+                    }
+
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/x-www-form-urlencoded");
+                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (50000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    mQueue.add(jsonObjectRequest);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+
+
+            }
+
+        }
+    }
+
+    @Override
+    public void onProductRemove(final Product product) {
+        Log.i("remove","remove");
+        String url = Constant.WEB_URL+Constant.REMOVE+product.getUPC()+"&"+"MemberId="+appUtil.getPrefrence("MemberId");
+        StringRequest  jsonObjectRequest = new StringRequest (Request.Method.DELETE, url,
+                new Response.Listener<String >() {
+                    @Override
+                    public void onResponse(String  response) {
+                        Log.i("success remove", String.valueOf(response));
+                        product.setListCount(0);
+                        product.setQuantity("0");
+                        fetchShoppingListLoad();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("fail", String.valueOf(error));
+            }
+        }){
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                params.put("Content-Type", "application/json ;charset=utf-8");
+                return params;
+            }
+        };
+        RetryPolicy policy = new DefaultRetryPolicy
+                (50000,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        jsonObjectRequest.setRetryPolicy(policy);
+        try {
+            mQueue.add(jsonObjectRequest);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onProductMultiRemove(final Product product) {
+        Log.i("remove","remove");
+        String url = Constant.WEB_URL+Constant.REMOVE+product.getUPC()+"&"+"MemberId="+appUtil.getPrefrence("MemberId");
+        StringRequest  jsonObjectRequest = new StringRequest (Request.Method.DELETE, url,
+                new Response.Listener<String >() {
+                    @Override
+                    public void onResponse(String  response) {
+                        Log.i("success", String.valueOf(response));
+                        product.setListCount(0);
+                        product.setQuantity("0");
+                        fetchShoppingListLoad();
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("fail", String.valueOf(error));
+
+            }
+        }){
+
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                params.put("Content-Type", "application/json ;charset=utf-8");
+                return params;
+            }
+        };
+        RetryPolicy policy = new DefaultRetryPolicy
+                (50000,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        jsonObjectRequest.setRetryPolicy(policy);
+        try {
+            mQueue.add(jsonObjectRequest);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
     public void onGroupItemSelected(final Group groupItem) {
         Log.i("Select Group ==",groupItem.getGroupname());
         fetchVeritesProduct2(groupItem.getGroupname());
@@ -3178,9 +3726,10 @@ public class MainFwActivity extends AppCompatActivity
 
     public void  SetProductActivate(int PrimaryOfferTypeID,int CouponID,String UPC,String RequireActivation,int ActivateType)
     {
+      //  addBadgeView();
 
 
-        Log.i("Primaryoffertypeid", String.valueOf(PrimaryOfferTypeID));
+        Log.i("AnshuPrimaryoffertypeid", String.valueOf(PrimaryOfferTypeID));
         Log.i("couponid", String.valueOf(CouponID));
         Log.i("UPC",UPC);
        if (x==0){
@@ -3207,7 +3756,7 @@ public class MainFwActivity extends AppCompatActivity
                            else {
                                //message.getJSONObject(i).put("ListCount", 1);
                                message.getJSONObject(i).put("ClickCount", 1);
-                               Log.i("Primaryoffertypeid", String.valueOf(PrimaryOfferTypeID));
+                               Log.i("SinghPrimaryoffertypeid", String.valueOf(PrimaryOfferTypeID));
                                Log.i("couponid", String.valueOf(CouponID));
                                Log.i("UPC",UPC);
                            }
@@ -3645,7 +4194,7 @@ public class MainFwActivity extends AppCompatActivity
                     if(PrimaryOfferTypeID ==1)
                     {
                         if (message.getJSONObject(i).getString("UPC").contains(UPC)) {
-                            message.getJSONObject(i).put("ListCount", 1);
+                            message.getJSONObject(i).put("ListCount", 0);
                             message.getJSONObject(i).put("ClickCount", 1);
                         }
                     }
@@ -3671,7 +4220,7 @@ public class MainFwActivity extends AppCompatActivity
                 }else {
                     for (int j = 0; j < jsonParam.length(); j++) {
                         if (jsonParam.getJSONObject(j).getString("UPC").contains(UPC)) {
-                            jsonParam.getJSONObject(j).put("ListCount", 1);
+                            jsonParam.getJSONObject(j).put("ListCount", 0);
                             jsonParam.getJSONObject(j).put("ClickCount", 1);
 
                             Log.i("testttt", String.valueOf(jsonParam.getJSONObject(j).getString("UPC").contains(UPC)));
@@ -4223,6 +4772,7 @@ public class MainFwActivity extends AppCompatActivity
                             @Override
                             public void onResponse(String  response) {
                                 Log.i("success", String.valueOf(response));
+                                fetchShoppingListLoad();
                                 remove_layout_detail.setVisibility(View.GONE);
                                 //    count_product_number_detail.setVisibility(View.GONE);
                                 relatedItem.setClickCount(1);
@@ -4281,6 +4831,7 @@ public class MainFwActivity extends AppCompatActivity
                                         @Override
                                         public void onResponse(String response) {
                                             Log.i("Fareway response Main", response.toString());
+                                            fetchShoppingListLoad();
                                             remove_layout_detail.setVisibility(View.VISIBLE);
                                             circular_layout_detaile.setBackground(getResources().getDrawable(R.drawable.circular_mehrune_bg));
                                             imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.tick));
@@ -4374,6 +4925,7 @@ public class MainFwActivity extends AppCompatActivity
                         new Response.Listener<String>(){
                             @Override
                             public void onResponse(String response) {
+                                fetchShoppingListLoad();
                                 if (relatedItem.getPrimaryOfferTypeId()==3|| relatedItem.getPrimaryOfferTypeId()==2 ){
                                     relatedItem.setClickCount(1);
                                     relatedItem.setListCount(1);
@@ -4477,6 +5029,7 @@ public class MainFwActivity extends AppCompatActivity
                     @Override
                     public void onResponse(String  response) {
                         Log.i("success", String.valueOf(response));
+                        fetchShoppingListLoad();
                         if (relatedItem.getPrimaryOfferTypeId()==3|| relatedItem.getPrimaryOfferTypeId()==2 ){
                             relatedItem.setClickCount(0);
                             relatedItem.setListCount(0);
@@ -4547,6 +5100,7 @@ public class MainFwActivity extends AppCompatActivity
                     @Override
                     public void onResponse(String  response) {
                         Log.i("success", String.valueOf(response));
+                        fetchShoppingListLoad();
                         if (relatedItem.getPrimaryOfferTypeId()==3|| relatedItem.getPrimaryOfferTypeId()==2 ){
                             relatedItem.setClickCount(0);
                             relatedItem.setListCount(0);
@@ -4615,6 +5169,7 @@ public class MainFwActivity extends AppCompatActivity
                         new Response.Listener<String>(){
                             @Override
                             public void onResponse(String response) {
+                                fetchShoppingListLoad();
                                 if (relatedItem.getPrimaryOfferTypeId()==3|| relatedItem.getPrimaryOfferTypeId()==2 ){
                                     relatedItem.setClickCount(1);
                                     relatedItem.setListCount(1);
@@ -5113,12 +5668,12 @@ public class MainFwActivity extends AppCompatActivity
         }
     }
 
-    private void fetchShoppingListLoad() {
-     /*   if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+    public void fetchShoppingListLoad() {
+        if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
             try {
-                progressDialog = new ProgressDialog(activity);
-                progressDialog.setMessage("Processing");
-                progressDialog.show();
+                //progressDialog = new ProgressDialog(activity);
+                //progressDialog.setMessage("Processing");
+                //progressDialog.show();
                 StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET,Constant.WEB_URL + Constant.ShoppingList+"MemberId="+appUtil.getPrefrence("MemberId")+"&CategoryID=1",
                         new Response.Listener<String>(){
                             @Override
@@ -5131,21 +5686,42 @@ public class MainFwActivity extends AppCompatActivity
                                     Log.i("errorcode", root.getString("errorcode"));
                                     Log.i("message", root.getString("message"));
 
+
                                     JSONObject root2 = new JSONObject(root.getString("message"));
                                     if (root.getString("errorcode").equals("0")){
-                                        progressDialog.dismiss();
-                                        shopping= root2.getJSONArray("ShoppingListItems");
-                                        Log.i("shopping", String.valueOf(shopping));
+                                        //progressDialog.dismiss();
+                                        Log.i("anshuman","test");
 
-                                        for (int i = 0; i < shopping.length(); i++) {
+                                        try
+                                        {
+                                            shopping= root2.getJSONArray("ShoppingListItems");
                                         }
-                                        tv_number_item.setText(String.valueOf(shopping.length()));
+                                        catch (Exception ex)
+                                        {
+                                            shopping = null;
+                                        }
 
-                                        shoppingArrayList.clear();
-                                        List<Shopping> items = new Gson().fromJson(shopping.toString(), new TypeToken<List<Shopping>>() {
-                                        }.getType());
-                                        shoppingArrayList.addAll(items);
-                                        shoppingListAdapter.notifyDataSetChanged();
+                                        if (shopping==null ){
+                                            Log.i("anshuman","test");
+                                            shoppingArrayList.clear();
+                                            shoppingListAdapter.notifyDataSetChanged();
+                                            tv_number_item.setText(String.valueOf(0));
+                                            tv.setText(String.valueOf(0));
+
+                                        }else {
+                                            Log.i("shopping", String.valueOf(shopping));
+
+                                            for (int i = 0; i < shopping.length(); i++) {
+                                            }
+                                            tv_number_item.setText(String.valueOf(shopping.length()));
+                                            tv.setText(String.valueOf(shopping.length()));
+
+                                            shoppingArrayList.clear();
+                                            List<Shopping> items = new Gson().fromJson(shopping.toString(), new TypeToken<List<Shopping>>() {
+                                            }.getType());
+                                            shoppingArrayList.addAll(items);
+                                            shoppingListAdapter.notifyDataSetChanged();
+                                        }
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -5156,7 +5732,7 @@ public class MainFwActivity extends AppCompatActivity
                     public void onErrorResponse(VolleyError error) {
                         Log.i("Volley error resp", "error----" + error.getMessage());
                         error.printStackTrace();
-                        progressDialog.dismiss();
+                        //progressDialog.dismiss();
                     }
                 })
                 {
@@ -5167,12 +5743,16 @@ public class MainFwActivity extends AppCompatActivity
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> params = new HashMap<String, String>();
+                        // params.put("UserName", et_email.getText().toString().trim());
+                        // params.put("password", et_pwd.getText().toString().trim());
+                        //params.put("Device", "5");
                         return params;
                     }
-
+                    //this is the part, that adds the header to the request
                     @Override
                     public Map<String, String> getHeaders() {
                         Map<String, String> params = new HashMap<String, String>();
+                        //params.put("Content-Type", "application/x-www-form-urlencoded");
                         params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
                         return params;
                     }
@@ -5183,6 +5763,7 @@ public class MainFwActivity extends AppCompatActivity
                                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
                 jsonObjectRequest.setRetryPolicy(policy);
                 try {
+                    // FarewayApplication.getInstance().addToRequestQueue(jsonObjectRequest);
                     mQueue.add(jsonObjectRequest);
                 }
                 catch (Exception e)
@@ -5191,37 +5772,17 @@ public class MainFwActivity extends AppCompatActivity
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                progressDialog.dismiss();
-
+                //progressDialog.dismiss();
+//                displayAlert();
             }
         } else {
             alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
                     getString(R.string.ok),getString(R.string.alert));
             alertDialog.show();
-
-        }*/
-
-        ////////////////////////////////
-
-
-        if (shopping.length() == 0) {
-
-        } else {
-
-            for (int i = 0; i < shopping.length(); i++) {
-
-            }
-            tv_number_item.setText(String.valueOf(shopping.length()));
-
-                List<Shopping> items = new Gson().fromJson(shopping.toString(), new TypeToken<List<Shopping>>() {
-                }.getType());
-                // adding product to product list
-                shoppingArrayList.clear();
-                shoppingArrayList.addAll(items);
-                // refreshing recycler view
-                shoppingListAdapter.notifyDataSetChanged();
+            //Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
         }
     }
+
 
     private void enableSwipeToDeleteAndUndo() {
         SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(this) {
@@ -5266,7 +5827,7 @@ public class MainFwActivity extends AppCompatActivity
             try {
                 if (message.getJSONObject(i).getString("UPC").contains(shopping.getDisplayUPC().replace("UPC: ",""))) {
                     message.getJSONObject(i).put("ListCount", 0);
-                    message.getJSONObject(i).put("ClickCount", 0);
+                    message.getJSONObject(i).put("ClickCount", 1);
 
                 }
             } catch (JSONException e) {
@@ -5398,6 +5959,159 @@ public class MainFwActivity extends AppCompatActivity
 
         }
     }
+
+
+    public void withEditText() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Add Multiple Items");
+
+        final EditText input = new EditText(activity);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        input.setLayoutParams(lp);
+        builder.setView(input);
+        builder.setPositiveButton("Add My Items", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+               // Toast.makeText(getApplicationContext(), "Text entered is " + input.getText().toString(), Toast.LENGTH_SHORT).show();
+                addShoppingItem(input.getText().toString());
+            }
+        });
+        builder.show();
+    }
+
+    private void addShoppingItem(final String itemName) {
+        if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+            try {
+                 progressDialog = new ProgressDialog(activity);
+                 progressDialog.setMessage("Processing");
+                 progressDialog.show();
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST,Constant.WEB_URL + Constant.ADDSHOPPINGITEM,
+                        new Response.Listener<String>(){
+                            @Override
+                            public void onResponse(String response) {
+                                Log.i("Fareway", response.toString());
+                                progressDialog.dismiss();
+                                fetchShoppingListLoad();
+                               /* try {
+                                    JSONObject root = new JSONObject(response);
+                                    root.getString("errorcode");
+                                    Log.i("errorcode", root.getString("errorcode"));
+                                    if (root.getString("errorcode").equals("0")){
+
+                                        JSONArray message= root.getJSONArray("message");
+                                        for(int i=0;i<message.length();i++)
+                                        {
+                                            JSONObject jsonParam= message.getJSONObject(i);
+                                            appUtil.setPrefrence("GeoStatus", jsonParam.getString("GeoStatus"));
+                                            appUtil.setPrefrence("ZipCode", jsonParam.getString("ZipCode"));
+                                            appUtil.setPrefrence("StoreId", jsonParam.getString("StoreId"));
+                                            appUtil.setPrefrence("UserAccessToken", jsonParam.getString("UserAccessToken"));
+                                            appUtil.setPrefrence("SecretQuestionID", jsonParam.getString("SecretQuestionID"));
+                                            appUtil.setPrefrence("ErrorMessage", jsonParam.getString("ErrorMessage"));
+                                            appUtil.setPrefrence("MemberId", jsonParam.getString("MemberId"));
+                                            appUtil.setPrefrence("IsEmployee", jsonParam.getString("IsEmployee"));
+                                            appUtil.setPrefrence("FName", jsonParam.getString("FName"));
+                                            appUtil.setPrefrence("LName", jsonParam.getString("LName"));
+                                            appUtil.setPrefrence("LoyaltyCard", jsonParam.getString("LoyaltyCard"));
+                                            appUtil.setPrefrence("ActivaStatus", jsonParam.getString("ActivaStatus"));
+                                            appUtil.setPrefrence("ShopperID", jsonParam.getString("ShopperID"));
+                                        }
+
+                                        appUtil.setPrefrence("isLogin", "yes");
+                                        Intent i = new Intent(activity, MainFwActivity.class);
+                                        i.putExtra("comeFrom","mpp");
+
+                                        startActivity(i);
+                                        finish();
+                                    }else if (root.getString("errorcode").equals("200")){
+                                        // finish();
+                                        Toast.makeText(activity, root.getString("message"), Toast.LENGTH_LONG).show();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }*/
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Volley error resp", "error----" + error.getMessage());
+                        error.printStackTrace();
+                        progressDialog.dismiss();
+                        if (error.networkResponse == null) {
+                                  progressDialog.dismiss();
+                            if (error.getClass().equals(TimeoutError.class)) {
+//                                Toast.makeText(activity, "Time out error", Toast.LENGTH_LONG).show();
+                                alertDialog=userAlertDialog.createPositiveAlert("Time out error",
+                                        getString(R.string.ok),"Fail");
+                                alertDialog.show();
+
+                            }
+                        }
+                    }
+                })
+                {
+
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/x-www-form-urlencoded";
+                    }
+
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+
+
+                        params.put("MyOwnItem", itemName);
+                        params.put("MemberId", appUtil.getPrefrence("MemberId"));
+                        //params.put("UserName", appUtil.getPrefrence("Email"));
+                        //params.put("password", appUtil.getPrefrence("Password"));
+                        //test
+                        params.put("Device", "5");
+                        return params;
+                    }
+
+                    //this is the part, that adds the header to the request
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/x-www-form-urlencoded");
+                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (50000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    // FarewayApplication.getInstance().addToRequestQueue(jsonObjectRequest);
+                    mQueue.add(jsonObjectRequest);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+                progressDialog.dismiss();
+//                displayAlert();
+            }
+
+        } else {
+            alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                    getString(R.string.ok),getString(R.string.alert));
+            alertDialog.show();
+//            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
+        }
+    }
+
 
 
 }

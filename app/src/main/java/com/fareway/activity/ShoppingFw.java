@@ -332,9 +332,9 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
     private void getTokenkey() {
         if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
             try {
-                // progressDialog = new ProgressDialog(activity);
-                //  progressDialog.setMessage("Processing");
-                //  progressDialog.show();
+                 progressDialog = new ProgressDialog(activity);
+                 progressDialog.setMessage("Processing");
+                 progressDialog.show();
                 StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST,Constant.WEB_URL + Constant.GET_TOKEN,
                         new Response.Listener<String>(){
                             @Override
@@ -348,9 +348,10 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                                     appUtil.setPrefrence(".issued", jsonParam.getString(".issued"));
                                     appUtil.setPrefrence(".expires", jsonParam.getString(".expires"));
                                     //  progressDialog.dismiss();
-                                    Intent i = new Intent(activity, LoginFw.class);
-                                    startActivity(i);
-                                    finish();
+                                  //  Intent i = new Intent(activity, LoginFw.class);
+                                  //  startActivity(i);
+                                 //   finish();
+                                    shoppingListLoad();
                                 } catch (Throwable e) {
                                     //  progressDialog.dismiss();
                                     Log.i("Excep", "error----" + e.getMessage());

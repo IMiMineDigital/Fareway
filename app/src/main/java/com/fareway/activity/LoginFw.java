@@ -61,6 +61,7 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
         //getSupportActionBar().hide();
         activity=LoginFw.this;
         appUtil=new AppUtilFw(activity);
+        getSupportActionBar().hide();
         userAlertDialog=new UserAlertDialog(activity);
         mQueue=FarewayApplication.getmInstance(this).getmRequestQueue();
         linkUIElements();

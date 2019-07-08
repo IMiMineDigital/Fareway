@@ -65,6 +65,10 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
     private List<Product> productListFiltered;
     private CustomAdapterPersonalPricesListener listener;
     private CustomAdapterPersonalPricesListener listener2;
+    private CustomAdapterPersonalPricesListener activateListener;
+    private CustomAdapterPersonalPricesListener activateMultiListener;
+    private CustomAdapterPersonalPricesListener removeListener;
+    private CustomAdapterPersonalPricesListener removeMultiListener;
     public MainFwActivity activate = new MainFwActivity();
     public MainFwActivity varites = new MainFwActivity();
     public static AppUtilFw appUtil;
@@ -125,6 +129,47 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 }
             });
 
+            circular_layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                   // activateListener.onProductActivate(productListFiltered.get(getAdapterPosition()));
+                   // circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                  //  imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                 /*   tv_status.setText("Added");
+                    remove_layout.setVisibility(View.VISIBLE);*/
+                }
+            });
+            remove_layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    removeListener.onProductRemove(productListFiltered.get(getAdapterPosition()));
+                    remove_layout.setVisibility(View.GONE);
+                    tv_status.setText("Add");
+                    circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
+                    imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
+                }
+            });
+            circular_layout_mul.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                  /*  activateMultiListener.onProductMultiActivate(productListFiltered.get(getAdapterPosition()));
+                    circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                    imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                    tv_status_mul.setText("Added");
+                    remove_layout_mul.setVisibility(View.VISIBLE);*/
+                }
+            });
+            remove_layout_mul.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    removeMultiListener.onProductMultiRemove(productListFiltered.get(getAdapterPosition()));
+                    remove_layout_mul.setVisibility(View.GONE);
+                    tv_status_mul.setText("Add");
+                    circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
+                    imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
+                }
+            });
+
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
@@ -136,10 +181,17 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
     }
 
     public CustomAdapterPersonalPrices(Context mContext, List<Product> ProductList, CustomAdapterPersonalPricesListener listener,
-                                       CustomAdapterPersonalPricesListener listener2) {
+                                       CustomAdapterPersonalPricesListener listener2, CustomAdapterPersonalPricesListener activateListener,
+                                       CustomAdapterPersonalPricesListener activateMultiListener,  CustomAdapterPersonalPricesListener removeListener,
+                                       CustomAdapterPersonalPricesListener removeMultiListener) {
         this.mContext = mContext;
         this.listener = listener;
         this.listener2 = listener2;
+        this.activateListener = activateListener;
+        this.activateMultiListener = activateMultiListener;
+        this.removeListener = removeListener;
+        this.removeMultiListener = removeMultiListener;
+
         this.productList = ProductList;
         this.productListFiltered = productList;
         appUtil=new AppUtilFw(mContext);
@@ -159,6 +211,31 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
         final Product product = productListFiltered.get(position);
         if(MainFwActivity.singleView) {
+            holder.circular_layout.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (product.getPrimaryOfferTypeId()==3){
+                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                        holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                        holder.tv_status.setText("Added");
+                        holder.remove_layout.setVisibility(View.VISIBLE);
+                        activateListener.onProductActivate(productListFiltered.get(position));
+                    }else if (product.getPrimaryOfferTypeId()==2){
+                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                        holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                        holder.tv_status.setText("Activated");
+                        holder.remove_layout.setVisibility(View.GONE);
+                        activateListener.onProductActivate(productListFiltered.get(position));
+                    }else   if (product.getPrimaryOfferTypeId()==1){
+                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                        holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                        holder.tv_status.setText("Added");
+                        holder.remove_layout.setVisibility(View.VISIBLE);
+                        activateListener.onProductActivate(productListFiltered.get(position));
+                    }
+
+                }
+            });
             holder.circular_layout_mul.setVisibility(View.INVISIBLE);
             holder.remove_layout_mul.setVisibility(View.INVISIBLE);
 
@@ -986,6 +1063,31 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
         }
         else {
+            holder.circular_layout_mul.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if (product.getPrimaryOfferTypeId()==3){
+                        holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                        holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                        holder.tv_status_mul.setText("Added");
+                        holder.remove_layout_mul.setVisibility(View.VISIBLE);
+                        activateMultiListener.onProductMultiActivate(productListFiltered.get(position));
+                    }else if (product.getPrimaryOfferTypeId()==2){
+                        holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                        holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                        holder.tv_status_mul.setText("Activated");
+                        holder.remove_layout.setVisibility(View.GONE);
+                        activateMultiListener.onProductMultiActivate(productListFiltered.get(position));
+                    }else   if (product.getPrimaryOfferTypeId()==1){
+                        holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                        holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                        holder.tv_status_mul.setText("Added");
+                        holder.remove_layout_mul.setVisibility(View.VISIBLE);
+                        activateMultiListener.onProductMultiActivate(productListFiltered.get(position));
+                    }
+
+                }
+            });
 
             holder.circular_layout.setVisibility(View.INVISIBLE);
             holder.remove_layout.setVisibility(View.INVISIBLE);
@@ -1826,18 +1928,13 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
         }
         ///////////////////////
-
+/*
         holder.remove_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
                 Log.i("remove","remove");
-
                 RequestQueue mQueue;
                 mQueue=FarewayApplication.getmInstance(mContext).getmRequestQueue();
-
-
-
                 String url = Constant.WEB_URL+Constant.REMOVE+product.getUPC()+"&"+"MemberId="+appUtil.getPrefrence("MemberId");
                 StringRequest  jsonObjectRequest = new StringRequest (Request.Method.DELETE, url,
                         new Response.Listener<String >() {
@@ -1845,23 +1942,18 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             public void onResponse(String  response) {
                                 Log.i("success", String.valueOf(response));
                                 holder.remove_layout.setVisibility(View.GONE);
-                                //    holder.count_product_number.setVisibility(View.GONE);
-                                //product.setClickCount(0);
                                 product.setListCount(0);
                                 product.setQuantity("0");
                                 holder.tv_status.setText("Add");
                                 holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
                                 holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
-                                // holder.tv_quantity.setText("1");
-                                //product.setQuantity(String.valueOf((Integer.parseInt(product.getQuantity())+1)));
-                                //holder.tv_quantity.setText(product.getQuantity());
-                                //serverResp.setText("String Response : "+ response.toString());
+
                             }
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.i("fail", String.valueOf(error));
-                        // serverResp.setText("Error getting response");
+
                     }
                 }){
 
@@ -1891,9 +1983,9 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     e.printStackTrace();
                 }
             }
-        });
+        });*/
 
-        holder.circular_layout.setOnClickListener(new View.OnClickListener() {
+      /*  holder.circular_layout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (product.getClickCount()>0){
@@ -1902,17 +1994,17 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
                     if (product.getPrimaryOfferTypeId()==1){
                         holder.tv_status.setText("Added");
-                        //   holder.count_product_number.setVisibility(View.VISIBLE);
+
                         holder.remove_layout.setVisibility(View.VISIBLE);
 
                     }else if (product.getRequiresActivation().contains("True")){
                         holder.tv_status.setText(mContext.getString(R.string.activated));
-                        //   holder.count_product_number.setVisibility(View.VISIBLE);
+
                         holder.remove_layout.setVisibility(View.VISIBLE);
 
                     }else {
                         holder.tv_status.setText("Added");
-                        //   holder.count_product_number.setVisibility(View.VISIBLE);
+
                         holder.remove_layout.setVisibility(View.VISIBLE);
 
                     }
@@ -1945,6 +2037,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                                             product.setQuantity("1");
                                             activate.SetProductActivate(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
                                         }
+
                                     }
                                 }, new Response.ErrorListener() {
                             @Override
@@ -2024,22 +2117,22 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
                     if (product.getPrimaryOfferTypeId()==1){
                         holder.tv_status.setText("Added");
-                        //   holder.count_product_number.setVisibility(View.VISIBLE);
+
                         holder.remove_layout.setVisibility(View.VISIBLE);
                     }else if (product.getRequiresActivation().contains("True")){
                         if (product.getPrimaryOfferTypeId()==2){
                             holder.tv_status.setText("Activated");
-                            //       holder.count_product_number.setVisibility(View.GONE);
+
                             holder.remove_layout.setVisibility(View.GONE);
                         }else {
                             holder.tv_status.setText(mContext.getString(R.string.activated));
-                            //       holder.count_product_number.setVisibility(View.VISIBLE);
+
                             holder.remove_layout.setVisibility(View.VISIBLE);
                         }
 
                     }else {
                         holder.tv_status.setText("Added");
-                        //     holder.count_product_number.setVisibility(View.VISIBLE);
+
                         holder.remove_layout.setVisibility(View.VISIBLE);
                     }
 
@@ -2058,13 +2151,13 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                                             product.setClickCount(1);
                                             product.setListCount(1);
                                             product.setQuantity("1");
-                                            //  holder.tv_quantity.setText("1");
+
                                             activate.SetProductActivate(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
                                         }else if (product.getPrimaryOfferTypeId()==2){
                                             product.setClickCount(1);
                                             activate.SetProductActivate(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),2);
                                         }else if (product.getPrimaryOfferTypeId()==1){
-                                            //  holder.tv_quantity.setText("1");
+
                                             product.setListCount(1);
                                             product.setQuantity("1");
                                             activate.SetProductActivate(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
@@ -2155,11 +2248,11 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 }
 
             }
-        });
+        });*/
 
         ///////////////////////
 
-        holder.remove_layout_mul.setOnClickListener(new View.OnClickListener() {
+      /*  holder.remove_layout_mul.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
@@ -2177,23 +2270,19 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             public void onResponse(String  response) {
                                 Log.i("success", String.valueOf(response));
                                 holder.remove_layout_mul.setVisibility(View.GONE);
-                            //    holder.count_product_number.setVisibility(View.GONE);
-                                //product.setClickCount(0);
+
                                 product.setListCount(0);
                                 product.setQuantity("0");
                                 holder.tv_status_mul.setText("Add");
                                 holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
                                 holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
-                               // holder.tv_quantity.setText("1");
-                                //product.setQuantity(String.valueOf((Integer.parseInt(product.getQuantity())+1)));
-                                //holder.tv_quantity.setText(product.getQuantity());
-                                //serverResp.setText("String Response : "+ response.toString());
+
                             }
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.i("fail", String.valueOf(error));
-                        // serverResp.setText("Error getting response");
+
                     }
                 }){
 
@@ -2223,7 +2312,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     e.printStackTrace();
                 }
             }
-        });
+        });*/
 /*
         holder.add_plus.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -2407,26 +2496,27 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             }
         });*/
 
-        holder.circular_layout_mul.setOnClickListener(new View.OnClickListener() {
+       /* holder.circular_layout_mul.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (product.getClickCount()>0){
                     Log.i("if click", String.valueOf(product.getClickCount()));
                     holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
                     holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
                     if (product.getPrimaryOfferTypeId()==1){
                         holder.tv_status_mul.setText("Added");
-                     //   holder.count_product_number.setVisibility(View.VISIBLE);
+
                         holder.remove_layout_mul.setVisibility(View.VISIBLE);
 
                     }else if (product.getRequiresActivation().contains("True")){
                         holder.tv_status_mul.setText(mContext.getString(R.string.activated));
-                     //   holder.count_product_number.setVisibility(View.VISIBLE);
+
                         holder.remove_layout_mul.setVisibility(View.VISIBLE);
 
                     }else {
                         holder.tv_status_mul.setText("Added");
-                     //   holder.count_product_number.setVisibility(View.VISIBLE);
+
                         holder.remove_layout_mul.setVisibility(View.VISIBLE);
 
                     }
@@ -2531,29 +2621,30 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
 
                     }
-                }else if (product.getClickCount()==0){
+                }
+                else if (product.getClickCount()==0){
                     Log.i("else click", String.valueOf(product.getClickCount()));
                     holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
                     holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
 
                     if (product.getPrimaryOfferTypeId()==1){
                         holder.tv_status_mul.setText("Added");
-                     //   holder.count_product_number.setVisibility(View.VISIBLE);
+
                         holder.remove_layout_mul.setVisibility(View.VISIBLE);
                     }else if (product.getRequiresActivation().contains("True")){
                         if (product.getPrimaryOfferTypeId()==2){
                             holder.tv_status_mul.setText("Activated");
-                     //       holder.count_product_number.setVisibility(View.GONE);
+
                             holder.remove_layout_mul.setVisibility(View.GONE);
                         }else {
                             holder.tv_status_mul.setText(mContext.getString(R.string.activated));
-                     //       holder.count_product_number.setVisibility(View.VISIBLE);
+
                             holder.remove_layout_mul.setVisibility(View.VISIBLE);
                         }
 
                     }else {
                         holder.tv_status_mul.setText("Added");
-                   //     holder.count_product_number.setVisibility(View.VISIBLE);
+
                         holder.remove_layout_mul.setVisibility(View.VISIBLE);
                     }
 
@@ -2572,20 +2663,14 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                                             product.setClickCount(1);
                                             product.setListCount(1);
                                             product.setQuantity("1");
-                                          //  holder.tv_quantity.setText("1");
+
                                            activate.SetProductActivate(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
                                         }else if (product.getPrimaryOfferTypeId()==2){
                                             product.setClickCount(1);
-                                            //product.setQuantity("1");
-                                            //holder.tv_quantity.setText("1");
-                                           /* if (product.getRequiresActivation().contains("False")){
-                                                product.setListCount(1);
-                                            }else {
-                                                product.setListCount(1);
-                                            } */
+
                                             activate.SetProductActivate(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),2);
                                         }else if (product.getPrimaryOfferTypeId()==1){
-                                          //  holder.tv_quantity.setText("1");
+
                                             product.setListCount(1);
                                             product.setQuantity("1");
                                             activate.SetProductActivate(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
@@ -2671,136 +2756,12 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         e.printStackTrace();
 
 
- }
-                 /*   Log.i("else click", String.valueOf(product.getClickCount()));
-                    holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                    holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
-                    if (product.getPrimaryOfferTypeId()==1){
-                        holder.tv_status.setText("Added");
-                        holder.count_product_number.setVisibility(View.VISIBLE);
-                    }else if (product.getRequiresActivation().contains("True")){
-                        holder.tv_status.setText(mContext.getString(R.string.activated));
-                    }else {
-                        holder.tv_status.setText("Added");
-                        holder.count_product_number.setVisibility(View.VISIBLE);
                     }
-                    holder.remove_layout.setVisibility(View.VISIBLE);
 
-                    RequestQueue mQueue;
-                    mQueue=FarewayApplication.getmInstance(mContext).getmRequestQueue();
-
-                    try {
-
-                        StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST,Constant.WEB_URL + Constant.ACTIVATE,
-                                new Response.Listener<String>(){
-                                    @Override
-                                    public void onResponse(String response) {
-
-                                        Log.i("Fareway text", response.toString());
-
-                                        if (product.getPrimaryOfferTypeId()==3){
-                                            product.setClickCount(1);
-                                            product.setListCount(1);
-                                            activate.SetProductActivate(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
-                                        }else if (product.getPrimaryOfferTypeId()==2){
-                                            product.setClickCount(1);
-                                            if (product.getRequiresActivation().contains("False")){
-                                                product.setListCount(1);
-                                            }else {
-                                                product.setListCount(1);
-                                            }
-                                            activate.SetProductActivate(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),2);
-                                              }else if (product.getPrimaryOfferTypeId()==1){
-                                            product.setListCount(1);
-                                            activate.SetProductActivate(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
-                                        }
-
-
-                                    }
-                                }, new Response.ErrorListener() {
-                            @Override
-                            public void onErrorResponse(VolleyError error) {
-                                Log.i("Volley error resp", "error----" + error.getMessage());
-                                error.printStackTrace();
-
-                                if (error.networkResponse == null) {
-
-                                    if (error.getClass().equals(TimeoutError.class)) {
-
-
-                                    }
-                                }
-                            }
-                        })
-                        {
-
-                            @Override
-                            public String getBodyContentType() {
-                                return "application/x-www-form-urlencoded";
-                            }
-
-                            @Override
-                            protected Map<String, String> getParams() throws AuthFailureError {
-                                Map<String, String> params = new HashMap<String, String>();
-                                params.put("UPCCode", product.getUPC());
-                                params.put("CategoryID", String.valueOf(product.getCategoryID()));
-                                params.put("SalePrice", product.getFinalPrice());
-                                params.put("PrimaryOfferTypeId", String.valueOf(product.getPrimaryOfferTypeId()));
-                                params.put("OfferDetailId", String.valueOf(product.getOfferDetailId()));
-                                params.put("PersonalCircularID", String.valueOf(product.getPersonalCircularID()));
-                                params.put("ExpirationDate", product.getValidityEndDate());
-                                params.put("ClientID", "1");
-                                params.put("PackagingSize", product.getPackagingSize());
-                                params.put("DisplayPrice", product.getDisplayPrice());
-                                params.put("PageID", String.valueOf(product.getPageID()));
-                                params.put("Description", product.getDescription());
-                                params.put("CouponID", String.valueOf(product.getCouponID()));
-                                params.put("MemberID", String.valueOf(product.getMemberID()));
-                                params.put("DeviceId", "1");
-                                if (product.getPrimaryOfferTypeId()==2){
-                                    params.put("ClickType", "1");
-                                }else {
-                                    params.put("ClickType", "1");
-                                }
-                                params.put("iPositionID", product.getTileNumber());
-                                params.put("OPMOfferID", String.valueOf(product.getPricingMasterID()));
-                                params.put("AdPrice", product.getAdPrice());
-                                params.put("RegPrice", product.getRegularPrice());
-                                params.put("Savings", product.getSavings());
-                                return params;
-                            }
-
-                            @Override
-                            public Map<String, String> getHeaders() {
-                                Map<String, String> params = new HashMap<String, String>();
-                                params.put("Content-Type", "application/x-www-form-urlencoded");
-
-                                return params;
-                            }
-                        };
-                        RetryPolicy policy = new DefaultRetryPolicy
-                                (50000,
-                                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-                        jsonObjectRequest.setRetryPolicy(policy);
-                        try {
-                            mQueue.add(jsonObjectRequest);
-
-                        }
-                        catch (Exception e)
-                        {
-                            e.printStackTrace();
-                        }
-
-                    } catch (Exception e) {
-
-                        e.printStackTrace();
-
-                    }*/
                 }
 
             }
-        });
+        });*/
 
 
     }
@@ -2858,6 +2819,10 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
     public interface CustomAdapterPersonalPricesListener {
         void onProductSelected(Product product);
         void onProductVeritiesSelected(Product product);
+        void onProductActivate(Product product);
+        void onProductMultiActivate(Product product);
+        void onProductRemove(Product product);
+        void onProductMultiRemove(Product product);
     }
 
     private String capitalize(String capString){

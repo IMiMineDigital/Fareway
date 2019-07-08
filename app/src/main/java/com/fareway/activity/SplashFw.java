@@ -51,6 +51,7 @@ public class SplashFw extends AppCompatActivity {
         appUtil = new AppUtilFw(activity);
         userAlertDialog = new UserAlertDialog(activity);
         mQueue = FarewayApplication.getmInstance(this).getmRequestQueue();
+        getSupportActionBar().hide();
         //getSupportActionBar().hide();
 
         String saveDate = appUtil.getPrefrence(".expires");
