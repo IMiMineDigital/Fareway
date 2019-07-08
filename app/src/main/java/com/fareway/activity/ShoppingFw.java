@@ -347,7 +347,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                                     appUtil.setPrefrence("expires_in", jsonParam.getString("expires_in"));
                                     appUtil.setPrefrence(".issued", jsonParam.getString(".issued"));
                                     appUtil.setPrefrence(".expires", jsonParam.getString(".expires"));
-                                    //  progressDialog.dismiss();
+                                    progressDialog.dismiss();
                                   //  Intent i = new Intent(activity, LoginFw.class);
                                   //  startActivity(i);
                                  //   finish();
@@ -363,7 +363,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                     public void onErrorResponse(VolleyError error) {
                         Log.i("Volley error resp", "error----" + error.getMessage());
                         error.printStackTrace();
-                        // progressDialog.dismiss();
+                         progressDialog.dismiss();
                         if (error.networkResponse == null) {
                             //  progressDialog.dismiss();
                             if (error.getClass().equals(TimeoutError.class)) {
@@ -420,7 +420,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
             } catch (Exception e) {
 
                 e.printStackTrace();
-                //  progressDialog.dismiss();
+                  progressDialog.dismiss();
 //                displayAlert();
             }
 
