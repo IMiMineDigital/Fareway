@@ -83,56 +83,64 @@ public class PurchaseHistory extends AppCompatActivity implements PurchaseHistor
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
         String saveDate = appUtil.getPrefrence(".expires");
-        if (saveDate.length()==0){
-            getTokenkey();
-        }else {
-            SimpleDateFormat spf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss");
-            Date newDate= null;
-            try {
-                newDate = spf.parse(saveDate);
-            } catch (ParseException e) {
-                e.printStackTrace();
-            }
-            String c= "dd MMM yyyy";
-            spf= new SimpleDateFormat(c);
-            saveDate = spf.format(newDate);
-            System.out.println(saveDate);
+        Log.i("saveDate", saveDate);
+        if (saveDate != null) {
+            if (saveDate.length() == 0) {
+                Log.i("start date", saveDate + appUtil.getPrefrence("isLogin").equalsIgnoreCase("yes"));
+                //Toast.makeText(activity, "first time open", Toast.LENGTH_LONG).show();
+                getTokenkey();
+            } else {
+                //Toast.makeText(activity, "second time open" + saveDate+appUtil.getPrefrence("isLogin").equalsIgnoreCase("yes"), Toast.LENGTH_LONG).show();
+                SimpleDateFormat spf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss");
+                Date newDate = null;
+                try {
+                    newDate = spf.parse(saveDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                String c = "dd MMM yyyy HH:mm:ss";
+                //String c= "dd MMM yyyy";
+                spf = new SimpleDateFormat(c);
+                saveDate = spf.format(newDate);
+                System.out.println("saveDate " + saveDate);
 
-            Calendar c2 = Calendar.getInstance();
-            SimpleDateFormat dateformat2 = new SimpleDateFormat("dd MMM yyyy");
-            String currentDate = dateformat2.format(c2.getTime());
-            System.out.println(currentDate);
-            appUtil.setPrefrence("comeFrom","mpp");
+                Calendar c2 = Calendar.getInstance();
+                SimpleDateFormat dateformat2 = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
+                //SimpleDateFormat dateformat2 = new SimpleDateFormat("dd MMM yyyy");
+                String currentDate = dateformat2.format(c2.getTime());
+                System.out.println("currentDate " + currentDate);
+                appUtil.setPrefrence("comeFrom", "mpp");
 
-            if(appUtil.getPrefrence("isLogin").equalsIgnoreCase("yes")){
-                if (saveDate.equalsIgnoreCase(currentDate)){
-                   /* Intent i=new Intent(activity, MainFwActivity.class);
-                    if (appUtil.getPrefrence("comeFrom").equalsIgnoreCase("mpp")){
-                        i.putExtra("comeFrom","mpp");
-                    }else if (appUtil.getPrefrence("comeFrom").equalsIgnoreCase("moreOffer")){
-                        i.putExtra("comeFrom","moreOffer");
+                if (appUtil.getPrefrence("isLogin").equalsIgnoreCase("yes")==true) {
+                    // getTokenkey();
+                    if (currentDate.compareTo(saveDate) < 0) {
+                        purchaseHistoryLoad();
+
+                    } else {
+                        getTokenkey();
                     }
 
-                    startActivity(i);
-                    finish();*/
-                    purchaseHistoryLoad();
-                }else {
-                    getTokenkey();
-                }
+                } else {
 
+                    if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+                        getTokenkey();
+                    } else {
+                        alertDialog = userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                                getString(R.string.ok), getString(R.string.alert));
+                        alertDialog.show();
+                    }
+
+
+                }
             }
-            else{
+        } else {
 
-                if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
-                    getTokenkey();
-                }
-                else {
-                    alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
-                            getString(R.string.ok),getString(R.string.alert));
-                    alertDialog.show();
-                }
-
-
+            if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+                getTokenkey();
+            } else {
+                alertDialog = userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                        getString(R.string.ok), getString(R.string.alert));
+                alertDialog.show();
             }
         }
 

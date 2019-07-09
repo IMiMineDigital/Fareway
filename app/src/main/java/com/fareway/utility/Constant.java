@@ -24,6 +24,8 @@ public class Constant {
     public static final String PURCHASEHISTORY = "Account/PurchaseHistory?MemberId=";
     public static final String PURCHASEDETAILHISTORY = "Account/PurchaseHistoryDetails?PurchaseId=";
     public static final String ADDSHOPPINGITEM = "ShoopingList/List/MyOwnItem";
+    public static final String REMOVESHOPPINGOWMITEM = "ShoopingList/AllownItems?Memberid=";
+
 
 
 

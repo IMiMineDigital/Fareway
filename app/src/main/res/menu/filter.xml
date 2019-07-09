@@ -9,7 +9,7 @@
     <item
         android:id="@+id/filter_by_all_offer"
         android:orderInCategory="100"
-        android:title="All offer"
+        android:title="All offers"
         app:showAsAction="never" />
     <!--   <item
           android:id="@+id/filter_by_personal_deal"

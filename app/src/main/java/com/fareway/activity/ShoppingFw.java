@@ -2,13 +2,21 @@ package com.fareway.activity;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.View;
+import android.view.Window;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.android.volley.AuthFailureError;
@@ -59,6 +67,8 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
     private static RecyclerView rv_shopping_list_items;
     private TextView tv_number_item;
     TextView tv;
+    private ImageView imv_all_delete;
+    private TextView add_item;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -81,69 +91,98 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
         rv_shopping_list_items.setLayoutManager(mLayoutManagerShoppingList);
         rv_shopping_list_items.setAdapter(shoppingListAdapter);
 
-        String saveDate = appUtil.getPrefrence(".expires");
-        if (saveDate.length()==0){
-            getTokenkey();
-        }else {
-            SimpleDateFormat spf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss");
-            Date newDate= null;
-            try {
-                newDate = spf.parse(saveDate);
-            } catch (ParseException e) {
-                e.printStackTrace();
+        imv_all_delete = findViewById(R.id.imv_all_delete);
+
+        imv_all_delete.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("remove","All");
+                ViewRemoveAllDialog alert = new ViewRemoveAllDialog();
+                alert.showDialog(activity, "Do you want to delete all the items from the shopping list?");
             }
-            String c= "dd MMM yyyy";
-            spf= new SimpleDateFormat(c);
-            saveDate = spf.format(newDate);
-            System.out.println(saveDate);
+        });
 
-            Calendar c2 = Calendar.getInstance();
-            SimpleDateFormat dateformat2 = new SimpleDateFormat("dd MMM yyyy");
-            String currentDate = dateformat2.format(c2.getTime());
-            System.out.println(currentDate);
-            appUtil.setPrefrence("comeFrom","mpp");
+        add_item=findViewById(R.id.add_item);
+        add_item.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //Log.i("anshuman","Singh");
+                withEditText();
 
-            if(appUtil.getPrefrence("isLogin").equalsIgnoreCase("yes")){
-                if (saveDate.equalsIgnoreCase(currentDate)){
-                   /* Intent i=new Intent(activity, MainFwActivity.class);
-                    if (appUtil.getPrefrence("comeFrom").equalsIgnoreCase("mpp")){
-                        i.putExtra("comeFrom","mpp");
-                    }else if (appUtil.getPrefrence("comeFrom").equalsIgnoreCase("moreOffer")){
-                        i.putExtra("comeFrom","moreOffer");
+            }
+        });
+
+        String saveDate = appUtil.getPrefrence(".expires");
+        Log.i("saveDate", saveDate);
+        if (saveDate != null) {
+            if (saveDate.length() == 0) {
+                Log.i("start date", saveDate + appUtil.getPrefrence("isLogin").equalsIgnoreCase("yes"));
+                //Toast.makeText(activity, "first time open", Toast.LENGTH_LONG).show();
+                getTokenkey();
+            } else {
+                //Toast.makeText(activity, "second time open" + saveDate+appUtil.getPrefrence("isLogin").equalsIgnoreCase("yes"), Toast.LENGTH_LONG).show();
+                SimpleDateFormat spf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss");
+                Date newDate = null;
+                try {
+                    newDate = spf.parse(saveDate);
+                } catch (ParseException e) {
+                    e.printStackTrace();
+                }
+                String c = "dd MMM yyyy HH:mm:ss";
+                //String c= "dd MMM yyyy";
+                spf = new SimpleDateFormat(c);
+                saveDate = spf.format(newDate);
+                System.out.println("saveDate " + saveDate);
+
+                Calendar c2 = Calendar.getInstance();
+                SimpleDateFormat dateformat2 = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
+                //SimpleDateFormat dateformat2 = new SimpleDateFormat("dd MMM yyyy");
+                String currentDate = dateformat2.format(c2.getTime());
+                System.out.println("currentDate " + currentDate);
+                appUtil.setPrefrence("comeFrom", "mpp");
+
+                if (appUtil.getPrefrence("isLogin").equalsIgnoreCase("yes")==true) {
+                    // getTokenkey();
+                    if (currentDate.compareTo(saveDate) < 0) {
+                      shoppingListLoad();
+
+                    } else {
+                        getTokenkey();
                     }
 
-                    startActivity(i);
-                    finish();*/
-                    shoppingListLoad();
-                }else {
-                    getTokenkey();
-                }
+                } else {
 
+                    if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+                        getTokenkey();
+                    } else {
+                        alertDialog = userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                                getString(R.string.ok), getString(R.string.alert));
+                        alertDialog.show();
+                    }
+
+
+                }
             }
-            else{
+        } else {
 
-                if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
-                    getTokenkey();
-                }
-                else {
-                    alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
-                            getString(R.string.ok),getString(R.string.alert));
-                    alertDialog.show();
-                }
-
-
+            if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+                getTokenkey();
+            } else {
+                alertDialog = userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                        getString(R.string.ok), getString(R.string.alert));
+                alertDialog.show();
             }
         }
 
     }
 
-    private void shoppingListLoad() {
+    public void shoppingListLoad() {
         if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
             try {
                 progressDialog = new ProgressDialog(activity);
                 progressDialog.setMessage("Processing");
                 progressDialog.show();
-                StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET, Constant.WEB_URL + Constant.ShoppingList+"MemberId="+appUtil.getPrefrence("MemberId")+"&CategoryID=1",
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET,Constant.WEB_URL + Constant.ShoppingList+"MemberId="+appUtil.getPrefrence("MemberId")+"&CategoryID=1",
                         new Response.Listener<String>(){
                             @Override
                             public void onResponse(String response) {
@@ -254,26 +293,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
 
     @Override
     public void onShoppingItemSelected(Shopping shopping) {
-        Log.i("test",shopping.getDisplayUPC().replace("UPC: ",""));
 
-      /*  for (int i = 0; i < message.length(); i++) {
-
-
-            try {
-                if (message.getJSONObject(i).getString("UPC").contains(shopping.getDisplayUPC().replace("UPC: ",""))) {
-                    message.getJSONObject(i).put("ListCount", 0);
-                    message.getJSONObject(i).put("ClickCount", 0);
-
-                }
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-
-        }*/
-       // fetchProduct();
-        //shoppingListLoad();
-
-        Log.i("remove","remove");
         String url = Constant.WEB_URL+Constant.SHOPPINGLISTSINGAL+shopping.getShoppingListItemID()+"&MemberId="+appUtil.getPrefrence("MemberId");
         StringRequest  jsonObjectRequest = new StringRequest (Request.Method.DELETE, url,
                 new Response.Listener<String >() {
@@ -281,14 +301,6 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                     public void onResponse(String  response) {
                         Log.i("success", String.valueOf(response));
                         shoppingListLoad();
-                        // remove_layout_detail.setVisibility(View.GONE);
-                        //    count_product_number_detail.setVisibility(View.GONE);
-                        // product.setClickCount(1);
-                        // tv_status_detaile.setText("Add");
-                        // circular_layout_detaile.setBackground(getResources().getDrawable(R.drawable.circular_red_bg));
-                        //  imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.addwhite));
-                        //remove quantity
-                        //  SetRemoveActivateDetail(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
 
                     }
                 }, new Response.ErrorListener() {
@@ -321,7 +333,10 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
         {
             e.printStackTrace();
         }
+
+
     }
+
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -429,6 +444,236 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                     getString(R.string.ok),getString(R.string.alert));
             alertDialog.show();
 //            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public class ViewRemoveAllDialog {
+
+        public void showDialog(Activity activity, String msg){
+            final Dialog dialog = new Dialog(activity);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(false);
+            dialog.setContentView(R.layout.all_remove_dialog);
+
+            TextView text = (TextView) dialog.findViewById(R.id.dialog_info);
+            text.setText(msg);
+
+            Button dialogButton = (Button) dialog.findViewById(R.id.dialog_ok);
+            dialogButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String url = Constant.WEB_URL+"ShoopingList/ShoppingListByTYC?shoppinglistid="+appUtil.getPrefrence("ShoppingListId")+"&MemberId="+appUtil.getPrefrence("MemberId");
+                    StringRequest  jsonObjectRequest = new StringRequest (Request.Method.DELETE, url,
+                            new Response.Listener<String >() {
+                                @Override
+                                public void onResponse(String  response) {
+                                    Log.i("ViewRemoveAllDialog", String.valueOf(response));
+                                    //shoppingListLoad();
+                                    //removeOwnItem();
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.i("fail", String.valueOf(error));
+                            // messageLoad();
+                            removeOwnItem();
+                        }
+                    }){
+                        @Override
+                        public String getBodyContentType() {
+                            return "application/json; charset=utf-8";
+                        }
+                        @Override
+                        public Map<String, String> getHeaders() {
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                            return params;
+                        }
+                    };
+                    RetryPolicy policy = new DefaultRetryPolicy
+                            (50000,
+                                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                    jsonObjectRequest.setRetryPolicy(policy);
+                    try {
+                        mQueue.add(jsonObjectRequest);
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
+                    dialog.dismiss();
+                }
+            });
+
+            Button dialogButtonCancel = (Button) dialog.findViewById(R.id.dialog_cancel);
+            dialogButtonCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog.dismiss();
+                }
+            });
+
+            dialog.show();
+
+        }
+    }
+
+    public void removeOwnItem(){
+        String url = Constant.WEB_URL+Constant.REMOVESHOPPINGOWMITEM+appUtil.getPrefrence("MemberId");
+        StringRequest  jsonObjectRequest = new StringRequest (Request.Method.DELETE, url,
+                new Response.Listener<String >() {
+                    @Override
+                    public void onResponse(String  response) {
+                        Log.i("removeOwnItemsuccess", String.valueOf(response));
+                        shoppingListLoad();
+                        //messageLoad();
+                        //removeOwnItem();
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("fail", String.valueOf(error));
+                //messageLoad();
+            }
+        }){
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                return params;
+            }
+        };
+        RetryPolicy policy = new DefaultRetryPolicy
+                (50000,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        jsonObjectRequest.setRetryPolicy(policy);
+        try {
+            mQueue.add(jsonObjectRequest);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        //dialog.dismiss();
+
+    }
+
+    public void withEditText() {
+
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
+        builder.setTitle("Add Multiple Items");
+
+        final EditText input = new EditText(activity);
+        LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
+                LinearLayout.LayoutParams.MATCH_PARENT,
+                LinearLayout.LayoutParams.MATCH_PARENT);
+        input.setLayoutParams(lp);
+        builder.setView(input);
+        builder.setPositiveButton("Add My Items", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+                // Toast.makeText(getApplicationContext(), "Text entered is " + input.getText().toString(), Toast.LENGTH_SHORT).show();
+                addShoppingItem(input.getText().toString());
+            }
+        });
+        builder.show();
+    }
+
+    private void addShoppingItem(final String itemName) {
+        if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+            try {
+                progressDialog = new ProgressDialog(activity);
+                progressDialog.setMessage("Processing");
+                progressDialog.show();
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST,Constant.WEB_URL + Constant.ADDSHOPPINGITEM,
+                        new Response.Listener<String>(){
+                            @Override
+                            public void onResponse(String response) {
+                                Log.i("Fareway", response.toString());
+                                progressDialog.dismiss();
+                                shoppingListLoad();
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Volley error resp", "error----" + error.getMessage());
+                        error.printStackTrace();
+                        progressDialog.dismiss();
+                        if (error.networkResponse == null) {
+                            progressDialog.dismiss();
+                            if (error.getClass().equals(TimeoutError.class)) {
+//                                Toast.makeText(activity, "Time out error", Toast.LENGTH_LONG).show();
+                                alertDialog=userAlertDialog.createPositiveAlert("Time out error",
+                                        getString(R.string.ok),"Fail");
+                                alertDialog.show();
+
+                            }
+                        }
+                    }
+                })
+                {
+
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/x-www-form-urlencoded";
+                    }
+
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+
+
+                        params.put("MyOwnItem", itemName);
+                        params.put("MemberId", appUtil.getPrefrence("MemberId"));
+                        //params.put("UserName", appUtil.getPrefrence("Email"));
+                        //params.put("password", appUtil.getPrefrence("Password"));
+                        //test
+                        params.put("Device", "5");
+                        return params;
+                    }
+
+                    //this is the part, that adds the header to the request
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/x-www-form-urlencoded");
+                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (50000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    // FarewayApplication.getInstance().addToRequestQueue(jsonObjectRequest);
+                    mQueue.add(jsonObjectRequest);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+                progressDialog.dismiss();
+//                displayAlert();
+            }
+
+        } else {
+            alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                    getString(R.string.ok),getString(R.string.alert));
+            alertDialog.show();
+
         }
     }
 }

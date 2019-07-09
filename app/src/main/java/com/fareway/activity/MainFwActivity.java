@@ -525,6 +525,7 @@ public class MainFwActivity extends AppCompatActivity
                 popupMenu.show();
                 return true;
             }else if(i == R.id.ShoppingList){
+                //startActivity(new Intent(MainFwActivity.this,ShoppingFw.class));
                 if (x==0) {
                     tv.setVisibility(View.GONE);
                     x=1;
@@ -3046,7 +3047,7 @@ public class MainFwActivity extends AppCompatActivity
                         new Response.Listener<String>(){
                             @Override
                             public void onResponse(String response) {
-                                Log.i("Fareway text", response.toString());
+                                Log.i("Fareway clickcount", response.toString());
                                 fetchShoppingListLoad();
                                 if (product.getPrimaryOfferTypeId()==3){
                                     product.setClickCount(1);
@@ -3738,9 +3739,9 @@ public class MainFwActivity extends AppCompatActivity
 
                    if(PrimaryOfferTypeID == 1)
                    {
-                       //Log.i("apiupc",message.getJSONObject(i).getString("UPC"));
-                       if (message.getJSONObject(i).getString("UPC") == UPC) {
-                           Log.i("upc",UPC);
+                       Log.i("apiupc",message.getJSONObject(i).getString("UPC"));
+                       if (message.getJSONObject(i).getString("UPC").equalsIgnoreCase(UPC)) {
+                           Log.i("upcprimaery",UPC);
                            message.getJSONObject(i).put("ListCount", 1);
                            message.getJSONObject(i).put("ClickCount", 1);
                        }
@@ -3754,7 +3755,7 @@ public class MainFwActivity extends AppCompatActivity
                                message.getJSONObject(i).put("ClickCount", 1);
                            }
                            else {
-                               //message.getJSONObject(i).put("ListCount", 1);
+                               message.getJSONObject(i).put("ListCount", 1);
                                message.getJSONObject(i).put("ClickCount", 1);
                                Log.i("SinghPrimaryoffertypeid", String.valueOf(PrimaryOfferTypeID));
                                Log.i("couponid", String.valueOf(CouponID));
@@ -5783,7 +5784,6 @@ public class MainFwActivity extends AppCompatActivity
         }
     }
 
-
     private void enableSwipeToDeleteAndUndo() {
         SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(this) {
             @Override
@@ -5910,14 +5910,16 @@ public class MainFwActivity extends AppCompatActivity
                             new Response.Listener<String >() {
                                 @Override
                                 public void onResponse(String  response) {
-                                    Log.i("success", String.valueOf(response));
-                                    shoppingListLoad();
+                                    Log.i("ViewRemoveAllDialog", String.valueOf(response));
+                                    //shoppingListLoad();
+                                    //removeOwnItem();
                                 }
                             }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             Log.i("fail", String.valueOf(error));
-                            messageLoad();
+                           // messageLoad();
+                            removeOwnItem();
                         }
                     }){
                         @Override
@@ -5960,7 +5962,6 @@ public class MainFwActivity extends AppCompatActivity
         }
     }
 
-
     public void withEditText() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -5995,45 +5996,6 @@ public class MainFwActivity extends AppCompatActivity
                                 Log.i("Fareway", response.toString());
                                 progressDialog.dismiss();
                                 fetchShoppingListLoad();
-                               /* try {
-                                    JSONObject root = new JSONObject(response);
-                                    root.getString("errorcode");
-                                    Log.i("errorcode", root.getString("errorcode"));
-                                    if (root.getString("errorcode").equals("0")){
-
-                                        JSONArray message= root.getJSONArray("message");
-                                        for(int i=0;i<message.length();i++)
-                                        {
-                                            JSONObject jsonParam= message.getJSONObject(i);
-                                            appUtil.setPrefrence("GeoStatus", jsonParam.getString("GeoStatus"));
-                                            appUtil.setPrefrence("ZipCode", jsonParam.getString("ZipCode"));
-                                            appUtil.setPrefrence("StoreId", jsonParam.getString("StoreId"));
-                                            appUtil.setPrefrence("UserAccessToken", jsonParam.getString("UserAccessToken"));
-                                            appUtil.setPrefrence("SecretQuestionID", jsonParam.getString("SecretQuestionID"));
-                                            appUtil.setPrefrence("ErrorMessage", jsonParam.getString("ErrorMessage"));
-                                            appUtil.setPrefrence("MemberId", jsonParam.getString("MemberId"));
-                                            appUtil.setPrefrence("IsEmployee", jsonParam.getString("IsEmployee"));
-                                            appUtil.setPrefrence("FName", jsonParam.getString("FName"));
-                                            appUtil.setPrefrence("LName", jsonParam.getString("LName"));
-                                            appUtil.setPrefrence("LoyaltyCard", jsonParam.getString("LoyaltyCard"));
-                                            appUtil.setPrefrence("ActivaStatus", jsonParam.getString("ActivaStatus"));
-                                            appUtil.setPrefrence("ShopperID", jsonParam.getString("ShopperID"));
-                                        }
-
-                                        appUtil.setPrefrence("isLogin", "yes");
-                                        Intent i = new Intent(activity, MainFwActivity.class);
-                                        i.putExtra("comeFrom","mpp");
-
-                                        startActivity(i);
-                                        finish();
-                                    }else if (root.getString("errorcode").equals("200")){
-                                        // finish();
-                                        Toast.makeText(activity, root.getString("message"), Toast.LENGTH_LONG).show();
-                                    }
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-                                }*/
-
                             }
                         }, new Response.ErrorListener() {
                     @Override
@@ -6110,6 +6072,52 @@ public class MainFwActivity extends AppCompatActivity
             alertDialog.show();
 //            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
         }
+    }
+
+    public void removeOwnItem(){
+        String url = Constant.WEB_URL+Constant.REMOVESHOPPINGOWMITEM+appUtil.getPrefrence("MemberId");
+        StringRequest  jsonObjectRequest = new StringRequest (Request.Method.DELETE, url,
+                new Response.Listener<String >() {
+                    @Override
+                    public void onResponse(String  response) {
+                        Log.i("removeOwnItemsuccess", String.valueOf(response));
+                        fetchShoppingListLoad();
+                        messageLoad();
+                        //removeOwnItem();
+                    }
+                }, new Response.ErrorListener() {
+
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.i("fail", String.valueOf(error));
+                messageLoad();
+            }
+        }){
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                return params;
+            }
+        };
+        RetryPolicy policy = new DefaultRetryPolicy
+                (50000,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        jsonObjectRequest.setRetryPolicy(policy);
+        try {
+            mQueue.add(jsonObjectRequest);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+        //dialog.dismiss();
+
     }
 
 
