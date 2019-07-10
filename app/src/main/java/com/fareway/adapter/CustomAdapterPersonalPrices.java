@@ -953,7 +953,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     String saveDate = product.getValidityEndDate();
                     holder.limit.setGravity(Gravity.CENTER);
                     if (saveDate.length()==0){
-                        // getTokenkey();
+
                     }else {
                         SimpleDateFormat spf = new SimpleDateFormat("MM/dd/yy");
                         Date newDate = null;
@@ -1041,7 +1041,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             if (product.getOfferDefinitionId()==5){
                 if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
                     Glide.with(mContext)
-                            .load("https://platform.immdemo.net/web/images/GEnoimage.jpg")
+                            .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
                             .into(holder.imv_item);
                 }else {
                     Glide.with(mContext)
@@ -1051,7 +1051,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             }else {
                 if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
                     Glide.with(mContext)
-                            .load("https://platform.immdemo.net/web/images/GEnoimage.jpg")
+                            .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
                             .into(holder.imv_item);
                 }else {
                     Glide.with(mContext)

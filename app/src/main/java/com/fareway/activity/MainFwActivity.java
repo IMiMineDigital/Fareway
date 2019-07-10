@@ -1766,6 +1766,24 @@ public class MainFwActivity extends AppCompatActivity
         TextView tv_varieties_detail = (TextView) findViewById(R.id.tv_varieties_detail);
        // tv_varieties_detail.setText(product.getRelatedItemCount()+" Varieties");
         //detail verite click lisner
+
+        String saveDate = product.getValidityEndDate();
+        if (saveDate.length()==0){
+
+        }else {
+            SimpleDateFormat spf = new SimpleDateFormat("MM/dd/yy");
+            Date newDate = null;
+            try {
+                newDate = spf.parse(saveDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            String c = "MM/dd";
+            spf = new SimpleDateFormat(c);
+            saveDate = spf.format(newDate);
+            tv_valid_detail.setText(saveDate);
+            System.out.println(saveDate);
+        }
         tv_varieties_detail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -2108,41 +2126,7 @@ public class MainFwActivity extends AppCompatActivity
             }
 
             tv_upc_detail.setText(product.getUPC());
-            //tv_valid_detail.setText(product.getValidityEndDate());
-
-            String saveDate = product.getValidityEndDate();
-            if (saveDate.length()==0){
-               // getTokenkey();
-            }else {
-                SimpleDateFormat spf = new SimpleDateFormat("MM/dd/yy");
-                Date newDate = null;
-                try {
-                    newDate = spf.parse(saveDate);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                String c = "MM/dd";
-                spf = new SimpleDateFormat(c);
-                saveDate = spf.format(newDate);
-                System.out.println(saveDate);
-                tv_valid_detail.setText(saveDate);
-
-            }
-
             tv_deal_type_detaile.setText(product.getOfferTypeTagName());
-
-            ImageView bindImage = (ImageView)findViewById(R.id.imv_item_detaile);
-           /* if (product.getLargeImagePath().contains("https://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
-                String largeImagePath = "https://fwstaging.immdemo.net/webapiaccessclient/images/GEnoimage.jpg";
-                DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(bindImage);
-                downloadTask.execute(largeImagePath);
-            }else {
-                String largeImagePath = product.getLargeImagePath();
-                DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(bindImage);
-                downloadTask.execute(largeImagePath);
-            }*/
-
-
             if (product.getHasRelatedItems()==1){
                 if (product.getRelatedItemCount()>1){
                     tv_varieties_detail.setVisibility(View.VISIBLE);
@@ -2308,36 +2292,9 @@ public class MainFwActivity extends AppCompatActivity
                 tv_package_detail.setText(product.getPackagingSize());
             } */
             //tv_valid_detail.setText(product.getValidityEndDate());
-            String saveDate = product.getValidityEndDate();
-            if (saveDate.length()==0){
-                // getTokenkey();
-            }else {
-                SimpleDateFormat spf = new SimpleDateFormat("dd/MM/yy");
-                Date newDate = null;
-                try {
-                    newDate = spf.parse(saveDate);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                String c = "dd/MM";
-                spf = new SimpleDateFormat(c);
-                saveDate = spf.format(newDate);
-                System.out.println(saveDate);
-                tv_valid_detail.setText(saveDate);
 
-            }
             tv_deal_type_detaile.setText(product.getOfferTypeTagName());
 
-            ImageView bindImage = (ImageView)findViewById(R.id.imv_item_detaile);
-           /* if (product.getLargeImagePath().contains("https://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
-                String largeImagePath = "https://fwstaging.immdemo.net/webapiaccessclient/images/GEnoimage.jpg";
-                DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(bindImage);
-                downloadTask.execute(largeImagePath);
-            }else {
-                String largeImagePath = product.getLargeImagePath();
-                DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(bindImage);
-                downloadTask.execute(largeImagePath);
-            }*/
         }else if(product.getPrimaryOfferTypeId()==1){
             table_limit.setVisibility(View.GONE);
             table_limit_view.setVisibility(View.GONE);
@@ -2390,37 +2347,9 @@ public class MainFwActivity extends AppCompatActivity
             }
 
             tv_upc_detail.setText(product.getUPC());
-            //tv_valid_detail.setText(product.getValidityEndDate());
-            String saveDate = product.getValidityEndDate();
-            if (saveDate.length()==0){
-                // getTokenkey();
-            }else {
-                SimpleDateFormat spf = new SimpleDateFormat("dd/MM/yy");
-                Date newDate = null;
-                try {
-                    newDate = spf.parse(saveDate);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                String c = "dd/MM";
-                spf = new SimpleDateFormat(c);
-                saveDate = spf.format(newDate);
-                System.out.println(saveDate);
-                tv_valid_detail.setText(saveDate);
 
-            }
             tv_deal_type_detaile.setText(product.getOfferTypeTagName());
 
-            ImageView bindImage = (ImageView)findViewById(R.id.imv_item_detaile);
-        /*    if (product.getLargeImagePath().contains("https://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
-                String largeImagePath = "https://fwstaging.immdemo.net/webapiaccessclient/images/GEnoimage.jpg";
-                DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(bindImage);
-                downloadTask.execute(largeImagePath);
-            }else {
-                String largeImagePath = product.getLargeImagePath();
-                DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(bindImage);
-                downloadTask.execute(largeImagePath);
-            }*/
             if (product.getHasRelatedItems()==1){
                 if (product.getRelatedItemCount()>1){
                     tv_varieties_detail.setVisibility(View.VISIBLE);
@@ -4577,7 +4506,7 @@ public class MainFwActivity extends AppCompatActivity
        // final LinearLayout count_product_number_detail= (LinearLayout) findViewById(R.id.count_product_number_detail);
         final LinearLayout remove_layout_detail= (LinearLayout) findViewById(R.id.remove_layout_detail);
 
-        if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+        /*if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
             Glide.with(activity)
                     .load("https://fwstaging.immdemo.net/webapiaccessclient/images/GEnoimage.jpg")
                     .into(imv_item_detaile);
@@ -4585,6 +4514,53 @@ public class MainFwActivity extends AppCompatActivity
             Glide.with(activity)
                     .load(relatedItem.getLargeImagePath())
                     .into(imv_item_detaile);
+        }*/
+        Log.i("image",relatedItem.getLargeImagePath()+"singh");
+        if (relatedItem.getOfferDefinitionId()==5){
+            if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+                Glide.with(activity)
+                        .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
+                        .into(imv_item_detaile);
+            }else if (relatedItem.getLargeImagePath().equalsIgnoreCase("")){
+                Glide.with(activity)
+                        .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
+                        .into(imv_item_detaile);
+            }else {
+                Glide.with(activity)
+                        .load(relatedItem.getCouponImageURl())
+                        .into(imv_item_detaile);
+            }
+        }else {
+            if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+                Glide.with(activity)
+                        .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
+                        .into(imv_item_detaile);
+            }else if (relatedItem.getLargeImagePath().equalsIgnoreCase("")){
+                Glide.with(activity)
+                        .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
+                        .into(imv_item_detaile);
+            }else {
+                Glide.with(activity)
+                        .load(relatedItem.getLargeImagePath())
+                        .into(imv_item_detaile);
+            }
+        }
+        String saveDate = relatedItem.getValidityEndDate();
+        if (saveDate.length()==0){
+
+        }else {
+            SimpleDateFormat spf = new SimpleDateFormat("MM/dd/yy");
+            Date newDate = null;
+            try {
+                newDate = spf.parse(saveDate);
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
+            String c = "MM/dd";
+            spf = new SimpleDateFormat(c);
+            saveDate = spf.format(newDate);
+            tv_valid_detail.setText(saveDate);
+            System.out.println(saveDate);
         }
 
 
@@ -4609,6 +4585,7 @@ public class MainFwActivity extends AppCompatActivity
             }else {
                 tv_package_detail.setText(relatedItem.getPackagingSize());
             }
+
             if (relatedItem.getClickCount()>0) {
                 if (relatedItem.getListCount()>0){
                     circular_layout_detaile.setBackground(getResources().getDrawable(R.drawable.circular_mehrune_bg));
@@ -4653,20 +4630,7 @@ public class MainFwActivity extends AppCompatActivity
 
             }
             tv_upc_detail.setText(relatedItem.getUPC());
-            tv_valid_detail.setText(relatedItem.getValidityEndDate());
             tv_deal_type_detaile.setText(relatedItem.getOfferTypeTagName());
-
-        /*    ImageView bindImage = (ImageView)findViewById(R.id.imv_item_detaile);
-            if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
-                String largeImagePath = "http://fwstaging.immdemo.net/webapiaccessclient/images/GEnoimage.jpg";
-                DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(bindImage);
-                downloadTask.execute(largeImagePath);
-            }else {
-                String largeImagePath = relatedItem.getLargeImagePath();
-                DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(bindImage);
-                downloadTask.execute(largeImagePath);
-            }*/
-
 
         }else if(relatedItem.getPrimaryOfferTypeId()==2){
             table_limit.setVisibility(View.VISIBLE);
@@ -4690,8 +4654,6 @@ public class MainFwActivity extends AppCompatActivity
 
             }
             tv_package_detail.setText(relatedItem.getPackagingSize());
-
-
             if (relatedItem.getClickCount()>0) {
                 if (relatedItem.getListCount()>0){
                     circular_layout_detaile.setBackground(getResources().getDrawable(R.drawable.circular_mehrune_bg));
@@ -4712,7 +4674,7 @@ public class MainFwActivity extends AppCompatActivity
                 tv_status_detaile.setText("Add");
             }
 
-            bottomLayout_detaile.setBackgroundColor(getResources().getColor(R.color.mehrune));
+            bottomLayout_detaile.setBackgroundColor(getResources().getColor(R.color.green));
             Spanned result = Html.fromHtml(relatedItem.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
             tv_price_detaile.setText(result);
 
@@ -4730,19 +4692,8 @@ public class MainFwActivity extends AppCompatActivity
             }
 
             tv_upc_detail.setText(relatedItem.getUPC());
-            tv_valid_detail.setText(relatedItem.getValidityEndDate());
             tv_deal_type_detaile.setText(relatedItem.getOfferTypeTagName());
 
-         /*   ImageView bindImage = (ImageView)findViewById(R.id.imv_item_detaile);
-            if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
-                String largeImagePath = "http://fwstaging.immdemo.net/webapiaccessclient/images/GEnoimage.jpg";
-                DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(bindImage);
-                downloadTask.execute(largeImagePath);
-            }else {
-                String largeImagePath = relatedItem.getLargeImagePath();
-                DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(bindImage);
-                downloadTask.execute(largeImagePath);
-            }*/
         }else if(relatedItem.getPrimaryOfferTypeId()==1){
             table_limit.setVisibility(View.GONE);
             table_limit_view.setVisibility(View.GONE);
@@ -4790,19 +4741,8 @@ public class MainFwActivity extends AppCompatActivity
             }
 
             tv_upc_detail.setText(relatedItem.getUPC());
-            tv_valid_detail.setText(relatedItem.getValidityEndDate());
             tv_deal_type_detaile.setText(relatedItem.getOfferTypeTagName());
 
-            ImageView bindImage = (ImageView)findViewById(R.id.imv_item_detaile);
-            /*if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
-                String largeImagePath = "http://fwstaging.immdemo.net/webapiaccessclient/images/GEnoimage.jpg";
-                DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(bindImage);
-                downloadTask.execute(largeImagePath);
-            }else {
-                String largeImagePath = relatedItem.getLargeImagePath();
-                DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(bindImage);
-                downloadTask.execute(largeImagePath);
-            }*/
         }
         remove_layout_detail.setOnClickListener(new View.OnClickListener() {
             @Override

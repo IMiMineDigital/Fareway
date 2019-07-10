@@ -1024,7 +1024,7 @@
                         android:fontFamily="@font/roboto"
                         android:gravity="center"
                         android:scrollHorizontally="true"
-                        android:text="varieties120"
+                        android:text=""
                         android:textColor="@color/black" />
                 </TableRow>
 

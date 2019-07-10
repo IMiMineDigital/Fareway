@@ -5,6 +5,7 @@ import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
 import android.text.Html;
 import android.text.Spanned;
+import android.util.Log;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -364,7 +365,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 }
             }
 
-            if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+           /* if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
                 Glide.with(mContext)
                         .load("https://platform.immdemo.net/web/images/GEnoimage.jpg")
                         .into(holder.imv_item);
@@ -372,6 +373,36 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 Glide.with(mContext)
                         .load(relatedItem.getLargeImagePath())
                         .into(holder.imv_item);
+            }*/
+            Log.i("image",relatedItem.getLargeImagePath()+"singh");
+            if (relatedItem.getOfferDefinitionId()==5){
+                if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+                    Glide.with(mContext)
+                            .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
+                            .into(holder.imv_item);
+                }else if (relatedItem.getLargeImagePath().equalsIgnoreCase("")){
+                    Glide.with(mContext)
+                            .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
+                            .into(holder.imv_item);
+                }else {
+                    Glide.with(mContext)
+                            .load(relatedItem.getCouponImageURl())
+                            .into(holder.imv_item);
+                }
+            }else {
+                if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+                    Glide.with(mContext)
+                            .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
+                            .into(holder.imv_item);
+                }else if (relatedItem.getLargeImagePath().equalsIgnoreCase("")){
+                    Glide.with(mContext)
+                            .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
+                            .into(holder.imv_item);
+                }else {
+                    Glide.with(mContext)
+                            .load(relatedItem.getLargeImagePath())
+                            .into(holder.imv_item);
+                }
             }
         }else {
 
@@ -585,7 +616,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 }
             }
 
-            if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+            /*if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
                 Glide.with(mContext)
                         .load("https://fwstaging.immdemo.net/webapiaccessclient/images/GEnoimage.jpg")
                         .into(holder.imv_item);
@@ -593,6 +624,36 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 Glide.with(mContext)
                         .load(relatedItem.getLargeImagePath())
                         .into(holder.imv_item);
+            }*/
+            Log.i("image",relatedItem.getLargeImagePath()+"singh");
+            if (relatedItem.getOfferDefinitionId()==5){
+                if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+                    Glide.with(mContext)
+                            .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
+                            .into(holder.imv_item);
+                }else if (relatedItem.getLargeImagePath().equalsIgnoreCase("")){
+                    Glide.with(mContext)
+                            .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
+                            .into(holder.imv_item);
+                }else {
+                    Glide.with(mContext)
+                            .load(relatedItem.getCouponImageURl())
+                            .into(holder.imv_item);
+                }
+            }else {
+                if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+                    Glide.with(mContext)
+                            .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
+                            .into(holder.imv_item);
+                }else if (relatedItem.getLargeImagePath().equalsIgnoreCase("")){
+                    Glide.with(mContext)
+                            .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
+                            .into(holder.imv_item);
+                }else {
+                    Glide.with(mContext)
+                            .load(relatedItem.getLargeImagePath())
+                            .into(holder.imv_item);
+                }
             }
         }
 
