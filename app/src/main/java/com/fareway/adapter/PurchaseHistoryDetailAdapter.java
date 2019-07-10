@@ -102,6 +102,20 @@ public class PurchaseHistoryDetailAdapter extends RecyclerView.Adapter<PurchaseH
                     .into(holder.imv_purchase_item);
         }
 
+        if (purchase.getImage().contains("https://pty.bashas.com/webapiaccessclient/images/noimage-large.png")||purchase.getImage().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+            Glide.with(mContext)
+                    .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
+                    .into(holder.imv_purchase_item);
+        }else if (purchase.getImage().equalsIgnoreCase("")){
+            Glide.with(mContext)
+                    .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
+                    .into(holder.imv_purchase_item);
+        }else {
+            Glide.with(mContext)
+                    .load(purchase.getImage())
+                    .into(holder.imv_purchase_item);
+        }
+
 
     }
     @Override

@@ -148,11 +148,12 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             holder.tv_purchase_amount.setVisibility(View.VISIBLE);
             holder.liner_coupon_description.setVisibility(View.GONE);
             holder.liner_personal_description.setVisibility(View.VISIBLE);
-            if (shopping.getImageURL().contains("https://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+            Log.i("image url",shopping.getImageURL()+"web");
+            if (shopping.getImageURL().contains("https://pty.bashas.com/webapiaccessclient/images/noimage-large.png")||shopping.getImageURL().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
                 Glide.with(mContext)
                         .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
                         .into(holder.imv_shopping_item);
-            }else if (shopping.getImageURL()==""){
+            }else if (shopping.getImageURL().equalsIgnoreCase("")){
                 Glide.with(mContext)
                         .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
                         .into(holder.imv_shopping_item);
