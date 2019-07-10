@@ -100,7 +100,7 @@
                         android:layout_height="wrap_content"
                         android:text="Remove"
                         android:layout_marginTop="@dimen/_18sdp"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:textColor="@color/white"/>
                     <View
                         android:layout_marginTop="@dimen/_1sdp"
@@ -167,7 +167,7 @@
                         android:layout_height="wrap_content"
                         android:text="Remove"
                         android:layout_marginTop="@dimen/_18sdp"
-                        android:textSize="14sp"
+                        android:textSize="12sp"
                         android:textColor="@color/white"/>
                     <View
                         android:layout_marginTop="@dimen/_1sdp"

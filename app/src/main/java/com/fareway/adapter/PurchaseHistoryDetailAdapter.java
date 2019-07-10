@@ -94,7 +94,7 @@ public class PurchaseHistoryDetailAdapter extends RecyclerView.Adapter<PurchaseH
 
         if (purchase.getImage()==""){
             Glide.with(mContext)
-                    .load("http://fwstaging.immdemo.net/webapiaccessclient/images/GEnoimage.jpg")
+                    .load("https://fwstaging.immdemo.net/webapiaccessclient/images/GEnoimage.jpg")
                     .into(holder.imv_purchase_item);
         }else {
             Glide.with(mContext)

@@ -74,6 +74,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
+import com.bumptech.glide.Glide;
 import com.fareway.R;
 import com.fareway.adapter.CustomAdapterFilter;
 import com.fareway.adapter.CustomAdapterParticipateItems;
@@ -142,6 +143,7 @@ public class MainFwActivity extends AppCompatActivity
     public static String comeFrom;
     AppUtilFw appUtil;
     private ProgressDialog progressDialog;
+    private ProgressDialog progressDialog2;
     private AlertDialog alertDialog;
     private UserAlertDialog userAlertDialog;
     private SearchView searchView;
@@ -838,7 +840,12 @@ public class MainFwActivity extends AppCompatActivity
                                     }
                                 }
                                 else{
+                                    //Toast.makeText(activity, "neelam", Toast.LENGTH_SHORT).show();
                                     progressDialog.dismiss();
+                                    ViewErrorAllDialog alert = new ViewErrorAllDialog();
+                                    alert.showDialog(activity, "Sorry, your search for \"[ nothing ]\" did not return any result in your personal Ad.Currently we don't have any deals, coupons, sales price items matching your search.\n" +
+                                            "Our stores still might carry it and if we do its at the right price.");
+
                                     //alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.incorrect_credentials),
                                     //        getString(R.string.ok),getString(R.string.alert));
                                     //alertDialog.show();
@@ -1456,9 +1463,9 @@ public class MainFwActivity extends AppCompatActivity
     private void CircularmoreCouponLoad() {
         if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
             try {
-                //progressDialog = new ProgressDialog(activity);
-                //progressDialog.setMessage("Processing");
-                //progressDialog.show();
+                progressDialog2 = new ProgressDialog(activity);
+                progressDialog2.setMessage("Processing");
+                progressDialog2.show();
                 StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET,Constant.WEB_URL + Constant.MORECOUPON+"?MemberId="+appUtil.getPrefrence("MemberId")+"&Plateform=2&CircularType=0",
                         new Response.Listener<String>(){
                             @Override
@@ -1470,7 +1477,7 @@ public class MainFwActivity extends AppCompatActivity
                                     root.getString("errorcode");
                                     Log.i("errorcode", root.getString("errorcode"));
                                     if (root.getString("errorcode").equals("0")){
-                                        // progressDialog.dismiss();
+                                        progressDialog2.dismiss();
                                        if(message!=null)
                                        {
                                          String s1=  root.getJSONArray("message").toString();
@@ -1495,7 +1502,7 @@ public class MainFwActivity extends AppCompatActivity
                     public void onErrorResponse(VolleyError error) {
                         Log.i("Volley error resp", "error----" + error.getMessage());
                         error.printStackTrace();
-                        // progressDialog.dismiss();
+                        progressDialog2.dismiss();
                     }
                 })
                 {
@@ -1535,7 +1542,7 @@ public class MainFwActivity extends AppCompatActivity
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                // progressDialog.dismiss();
+                progressDialog2.dismiss();
 //                displayAlert();
             }
         } else {
@@ -1990,6 +1997,28 @@ public class MainFwActivity extends AppCompatActivity
         //final LinearLayout count_product_number_detail= (LinearLayout) findViewById(R.id.count_product_number_detail);
         final LinearLayout remove_layout_detail= (LinearLayout) findViewById(R.id.remove_layout_detail);
 
+        if (product.getOfferDefinitionId()==5){
+            if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+                Glide.with(activity)
+                        .load("https://platform.immdemo.net/web/images/GEnoimage.jpg")
+                        .into(imv_item_detaile);
+            }else {
+                Glide.with(activity)
+                        .load(product.getCouponImageURl())
+                        .into(imv_item_detaile);
+            }
+        }else {
+            if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+                Glide.with(activity)
+                        .load("https://platform.immdemo.net/web/images/GEnoimage.jpg")
+                        .into(imv_item_detaile);
+            }else {
+                Glide.with(activity)
+                        .load(product.getLargeImagePath())
+                        .into(imv_item_detaile);
+            }
+        }
+
 
         if (product.getPrimaryOfferTypeId()==3){
           //  tv_quantity_detail.setText(product.getQuantity());
@@ -2103,7 +2132,7 @@ public class MainFwActivity extends AppCompatActivity
             tv_deal_type_detaile.setText(product.getOfferTypeTagName());
 
             ImageView bindImage = (ImageView)findViewById(R.id.imv_item_detaile);
-            if (product.getLargeImagePath().contains("https://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+           /* if (product.getLargeImagePath().contains("https://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
                 String largeImagePath = "https://fwstaging.immdemo.net/webapiaccessclient/images/GEnoimage.jpg";
                 DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(bindImage);
                 downloadTask.execute(largeImagePath);
@@ -2111,7 +2140,9 @@ public class MainFwActivity extends AppCompatActivity
                 String largeImagePath = product.getLargeImagePath();
                 DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(bindImage);
                 downloadTask.execute(largeImagePath);
-            }
+            }*/
+
+
             if (product.getHasRelatedItems()==1){
                 if (product.getRelatedItemCount()>1){
                     tv_varieties_detail.setVisibility(View.VISIBLE);
@@ -2298,7 +2329,7 @@ public class MainFwActivity extends AppCompatActivity
             tv_deal_type_detaile.setText(product.getOfferTypeTagName());
 
             ImageView bindImage = (ImageView)findViewById(R.id.imv_item_detaile);
-            if (product.getLargeImagePath().contains("https://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+           /* if (product.getLargeImagePath().contains("https://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
                 String largeImagePath = "https://fwstaging.immdemo.net/webapiaccessclient/images/GEnoimage.jpg";
                 DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(bindImage);
                 downloadTask.execute(largeImagePath);
@@ -2306,7 +2337,7 @@ public class MainFwActivity extends AppCompatActivity
                 String largeImagePath = product.getLargeImagePath();
                 DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(bindImage);
                 downloadTask.execute(largeImagePath);
-            }
+            }*/
         }else if(product.getPrimaryOfferTypeId()==1){
             table_limit.setVisibility(View.GONE);
             table_limit_view.setVisibility(View.GONE);
@@ -2381,7 +2412,7 @@ public class MainFwActivity extends AppCompatActivity
             tv_deal_type_detaile.setText(product.getOfferTypeTagName());
 
             ImageView bindImage = (ImageView)findViewById(R.id.imv_item_detaile);
-            if (product.getLargeImagePath().contains("https://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+        /*    if (product.getLargeImagePath().contains("https://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
                 String largeImagePath = "https://fwstaging.immdemo.net/webapiaccessclient/images/GEnoimage.jpg";
                 DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(bindImage);
                 downloadTask.execute(largeImagePath);
@@ -2389,7 +2420,7 @@ public class MainFwActivity extends AppCompatActivity
                 String largeImagePath = product.getLargeImagePath();
                 DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(bindImage);
                 downloadTask.execute(largeImagePath);
-            }
+            }*/
             if (product.getHasRelatedItems()==1){
                 if (product.getRelatedItemCount()>1){
                     tv_varieties_detail.setVisibility(View.VISIBLE);
@@ -4546,6 +4577,16 @@ public class MainFwActivity extends AppCompatActivity
        // final LinearLayout count_product_number_detail= (LinearLayout) findViewById(R.id.count_product_number_detail);
         final LinearLayout remove_layout_detail= (LinearLayout) findViewById(R.id.remove_layout_detail);
 
+        if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+            Glide.with(activity)
+                    .load("https://fwstaging.immdemo.net/webapiaccessclient/images/GEnoimage.jpg")
+                    .into(imv_item_detaile);
+        }else {
+            Glide.with(activity)
+                    .load(relatedItem.getLargeImagePath())
+                    .into(imv_item_detaile);
+        }
+
 
         if (relatedItem.getPrimaryOfferTypeId()==3){
             table_limit.setVisibility(View.GONE);
@@ -4615,7 +4656,7 @@ public class MainFwActivity extends AppCompatActivity
             tv_valid_detail.setText(relatedItem.getValidityEndDate());
             tv_deal_type_detaile.setText(relatedItem.getOfferTypeTagName());
 
-            ImageView bindImage = (ImageView)findViewById(R.id.imv_item_detaile);
+        /*    ImageView bindImage = (ImageView)findViewById(R.id.imv_item_detaile);
             if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
                 String largeImagePath = "http://fwstaging.immdemo.net/webapiaccessclient/images/GEnoimage.jpg";
                 DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(bindImage);
@@ -4624,7 +4665,7 @@ public class MainFwActivity extends AppCompatActivity
                 String largeImagePath = relatedItem.getLargeImagePath();
                 DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(bindImage);
                 downloadTask.execute(largeImagePath);
-            }
+            }*/
 
 
         }else if(relatedItem.getPrimaryOfferTypeId()==2){
@@ -4692,7 +4733,7 @@ public class MainFwActivity extends AppCompatActivity
             tv_valid_detail.setText(relatedItem.getValidityEndDate());
             tv_deal_type_detaile.setText(relatedItem.getOfferTypeTagName());
 
-            ImageView bindImage = (ImageView)findViewById(R.id.imv_item_detaile);
+         /*   ImageView bindImage = (ImageView)findViewById(R.id.imv_item_detaile);
             if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
                 String largeImagePath = "http://fwstaging.immdemo.net/webapiaccessclient/images/GEnoimage.jpg";
                 DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(bindImage);
@@ -4701,7 +4742,7 @@ public class MainFwActivity extends AppCompatActivity
                 String largeImagePath = relatedItem.getLargeImagePath();
                 DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(bindImage);
                 downloadTask.execute(largeImagePath);
-            }
+            }*/
         }else if(relatedItem.getPrimaryOfferTypeId()==1){
             table_limit.setVisibility(View.GONE);
             table_limit_view.setVisibility(View.GONE);
@@ -4753,7 +4794,7 @@ public class MainFwActivity extends AppCompatActivity
             tv_deal_type_detaile.setText(relatedItem.getOfferTypeTagName());
 
             ImageView bindImage = (ImageView)findViewById(R.id.imv_item_detaile);
-            if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+            /*if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
                 String largeImagePath = "http://fwstaging.immdemo.net/webapiaccessclient/images/GEnoimage.jpg";
                 DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(bindImage);
                 downloadTask.execute(largeImagePath);
@@ -4761,7 +4802,7 @@ public class MainFwActivity extends AppCompatActivity
                 String largeImagePath = relatedItem.getLargeImagePath();
                 DownloadImageWithURLTask downloadTask = new DownloadImageWithURLTask(bindImage);
                 downloadTask.execute(largeImagePath);
-            }
+            }*/
         }
         remove_layout_detail.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -5438,9 +5479,9 @@ public class MainFwActivity extends AppCompatActivity
     public void shoppingListLoad() {
         if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
             try {
-                progressDialog = new ProgressDialog(activity);
-                progressDialog.setMessage("Processing");
-                progressDialog.show();
+                //progressDialog = new ProgressDialog(activity);
+                //progressDialog.setMessage("Processing");
+                //progressDialog.show();
                 StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET,Constant.WEB_URL + Constant.ShoppingList+"MemberId="+appUtil.getPrefrence("MemberId")+"&CategoryID=1",
                         new Response.Listener<String>(){
                             @Override
@@ -5456,7 +5497,7 @@ public class MainFwActivity extends AppCompatActivity
 
                                     JSONObject root2 = new JSONObject(root.getString("message"));
                                     if (root.getString("errorcode").equals("0")){
-                                        progressDialog.dismiss();
+                                       // progressDialog.dismiss();
                                         Log.i("anshuman","test");
 
                                         try
@@ -5499,7 +5540,7 @@ public class MainFwActivity extends AppCompatActivity
                     public void onErrorResponse(VolleyError error) {
                         Log.i("Volley error resp", "error----" + error.getMessage());
                         error.printStackTrace();
-                        progressDialog.dismiss();
+                      //  progressDialog.dismiss();
                     }
                 })
                 {
@@ -5539,7 +5580,7 @@ public class MainFwActivity extends AppCompatActivity
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                progressDialog.dismiss();
+               // progressDialog.dismiss();
 //                displayAlert();
             }
         } else {
@@ -6118,6 +6159,83 @@ public class MainFwActivity extends AppCompatActivity
         }
         //dialog.dismiss();
 
+    }
+
+    public class ViewErrorAllDialog {
+
+        public void showDialog(Activity activity, String msg){
+            final Dialog dialog = new Dialog(activity);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(false);
+            dialog.setContentView(R.layout.error_dialog);
+            rv_items.setVisibility(View.GONE);
+
+            TextView text = (TextView) dialog.findViewById(R.id.error_dialog_info);
+            text.setText(msg);
+
+            Button dialogButton = (Button) dialog.findViewById(R.id.error_dialog_ok);
+            dialogButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    rv_items.setVisibility(View.VISIBLE);
+                    dialog.dismiss();
+
+                    /*String url = Constant.WEB_URL+"ShoopingList/ShoppingListByTYC?shoppinglistid="+appUtil.getPrefrence("ShoppingListId")+"&MemberId="+appUtil.getPrefrence("MemberId");
+                    StringRequest  jsonObjectRequest = new StringRequest (Request.Method.DELETE, url,
+                            new Response.Listener<String >() {
+                                @Override
+                                public void onResponse(String  response) {
+                                    Log.i("ViewRemoveAllDialog", String.valueOf(response));
+                                    //shoppingListLoad();
+                                    //removeOwnItem();
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.i("fail", String.valueOf(error));
+                            // messageLoad();
+                            removeOwnItem();
+                        }
+                    }){
+                        @Override
+                        public String getBodyContentType() {
+                            return "application/json; charset=utf-8";
+                        }
+                        @Override
+                        public Map<String, String> getHeaders() {
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                            return params;
+                        }
+                    };
+                    RetryPolicy policy = new DefaultRetryPolicy
+                            (50000,
+                                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                    jsonObjectRequest.setRetryPolicy(policy);
+                    try {
+                        mQueue.add(jsonObjectRequest);
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }*/
+
+                }
+            });
+
+            Button dialogButtonCancel = (Button) dialog.findViewById(R.id.error_dialog_cancel);
+            dialogButtonCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    rv_items.setVisibility(View.VISIBLE);
+                    dialog.dismiss();
+                }
+            });
+
+            dialog.show();
+
+        }
     }
 
 

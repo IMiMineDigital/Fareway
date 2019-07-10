@@ -366,7 +366,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
 
             if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
                 Glide.with(mContext)
-                        .load("https://fwstaging.immdemo.net/webapiaccessclient/images/GEnoimage.jpg")
+                        .load("https://platform.immdemo.net/web/images/GEnoimage.jpg")
                         .into(holder.imv_item);
             }else {
                 Glide.with(mContext)
