@@ -4,34 +4,30 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
 import android.graphics.drawable.Drawable;
+import android.net.Uri;
 import android.os.AsyncTask;
-import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.helper.ItemTouchHelper;
-import android.text.Editable;
 import android.text.Html;
 import android.text.Spanned;
-import android.text.TextWatcher;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -39,21 +35,16 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.support.design.widget.NavigationView;
-import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
-import android.support.v7.app.ActionBarDrawerToggle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.view.Window;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
@@ -72,7 +63,6 @@ import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
-import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.bumptech.glide.Glide;
 import com.fareway.R;
@@ -102,12 +92,10 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
@@ -138,7 +126,7 @@ public class MainFwActivity extends AppCompatActivity
     private static CustomAdapterPersonalPrices customAdapterPersonalPrices;
     public static boolean singleView=true;private Activity activity;
     private BottomNavigationView navigation;
-    private RelativeLayout main;
+    private RelativeLayout main,search_message;
     private PopupWindow popupWindow;
     public static String comeFrom;
     AppUtilFw appUtil;
@@ -154,20 +142,23 @@ public class MainFwActivity extends AppCompatActivity
     public static JSONArray message;
     public static JSONArray morecouponlist;
     public static JSONArray message3;
-    public static JSONArray shopping;
     public static JSONArray shoppingId;
     private static RecyclerView rv_category,rv_shopping_list_items;
     private ArrayList<Category> categoryList;
-    private ArrayList<Shopping> shoppingArrayList;
+
+    public static JSONArray shopping;
+    public static JSONArray activatedOffer;
     private CustomAdapterFilter customAdapterFilter;
+    private ArrayList<Shopping> shoppingArrayList;
     private ShoppingListAdapter shoppingListAdapter;
-    public static   int x=0; int y=0;
+
+    public static   int x=0; int y=0; int z=0; int c=0;
     public int a=0; int b=0 ;
     private EditText et_search;
     private RequestQueue mQueue;
     public static RequestQueue mQueue2;
     public static  AppUtilFw appUtil2;
-    ImageView submit_btn,imv_micro_recorder;
+    ImageView submit_btn,imv_micro_recorder,print,email;
     EditText edit_txt;
     ScrollView scrollView;
     TextView group_count_text,header_title;
@@ -176,9 +167,12 @@ public class MainFwActivity extends AppCompatActivity
     Product productrelated2;
     private View notificationBadge;
     private LinearLayout shopping_list_header;
-    TextView tv;
+    TextView tv,shopping_date;
     Button all_Varieties_activate;
-    LinearLayout liner_all_Varieties_activate;
+    LinearLayout liner_all_Varieties_activate,linear_shopping_list_tab,linear_coupon_tab;
+    Button shopping_list_fragment,activated_offer_fragment;
+    TextView btn_return_pd,btn_try_another_search;
+
 
 
     @Override
@@ -195,8 +189,169 @@ public class MainFwActivity extends AppCompatActivity
         comeFrom=getIntent().getStringExtra("comeFrom");
         Log.i("test",comeFrom+" singh");
         linkUIElements();
-        edit_txt = (EditText) findViewById(R.id.search_edit);
+        linear_shopping_list_tab=findViewById(R.id.linear_shopping_list_tab);
+        linear_coupon_tab=findViewById(R.id.linear_coupon_tab);
+        search_message=findViewById(R.id.search_message);
+//        shopping_date=findViewById(R.id.shopping_date);
 
+        shopping_list_fragment=findViewById(R.id.shopping_list_fragment);
+        shopping_list_fragment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               // shoppingListLoad();
+                //fetchShoppingListLoad();
+               // rv_shopping_list_items.setVisibility(View.VISIBLE);
+               // shopping_date.setText("Price");
+                linear_shopping_list_tab.setVisibility(View.VISIBLE);
+                linear_coupon_tab.setVisibility(View.GONE);
+
+                if (z==0){
+                    shopping_list_fragment.setBackground(getResources().getDrawable(R.color.white));
+                    shopping_list_fragment.setTextColor(getResources().getColor(R.color.black));
+                    activated_offer_fragment.setBackground(getResources().getDrawable(R.color.light_grey));
+                    activated_offer_fragment.setTextColor(getResources().getColor(R.color.grey));
+                    z=1;
+                    fetchShopping();
+                }else {
+                    shopping_list_fragment.setBackground(getResources().getDrawable(R.color.white));
+                    shopping_list_fragment.setTextColor(getResources().getColor(R.color.black));
+                    activated_offer_fragment.setBackground(getResources().getDrawable(R.color.light_grey));
+                    activated_offer_fragment.setTextColor(getResources().getColor(R.color.grey));
+                    z=1;
+                }
+
+            }
+        });
+        activated_offer_fragment=findViewById(R.id.activated_offer_fragment);
+        activated_offer_fragment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+               // activatedOffersListIdLoad();
+                //shopping_date.setText("Expiration Date");
+                //fetchActivatedOffer();
+                linear_coupon_tab.setVisibility(View.VISIBLE);
+                linear_shopping_list_tab.setVisibility(View.GONE);
+                if (z==1){
+                    activated_offer_fragment.setBackground(getResources().getDrawable(R.color.white));
+                    activated_offer_fragment.setTextColor(getResources().getColor(R.color.black));
+                    shopping_list_fragment.setBackground(getResources().getDrawable(R.color.light_grey));
+                    shopping_list_fragment.setTextColor(getResources().getColor(R.color.grey));
+                    z=0;
+                    fetchActivatedOffer();
+                }else {
+                    activated_offer_fragment.setBackground(getResources().getDrawable(R.color.white));
+                    activated_offer_fragment.setTextColor(getResources().getColor(R.color.black));
+                    shopping_list_fragment.setBackground(getResources().getDrawable(R.color.light_grey));
+                    shopping_list_fragment.setTextColor(getResources().getColor(R.color.grey));
+                    z=0;
+                    fetchActivatedOffer();
+                }
+               // rv_shopping_list_items.setVisibility(View.GONE);
+            }
+        });
+        email=findViewById(R.id.email);
+        /*email.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                withEditText();
+            }
+        });*/
+        email.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+
+                // get prompts.xml view
+                LayoutInflater li = LayoutInflater.from(activity);
+                View promptsView = li.inflate(R.layout.prompts_send_email, null);
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        activity);
+
+                // set prompts.xml to alertdialog builder
+                alertDialogBuilder.setView(promptsView);
+
+                final EditText userInput = (EditText) promptsView
+                        .findViewById(R.id.editTextDialogUserInput);
+
+                // set dialog message
+                alertDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton("Send",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        // get user input and set it to result
+                                        // edit text
+                                        //result.setText(userInput.getText());
+                                        sendEmailShoppingList(userInput.getText().toString());
+                                        //Log.i("text", String.valueOf(userInput.getText()));
+                                    }
+                                })
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // show it
+                alertDialog.show();
+
+            }
+        });
+        print=findViewById(R.id.print);
+        print.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                //startActivity(new Intent(MainFwActivity.this,ShoppingListPrint.class));
+                /*Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://fwstaging.immdemo.net/web/printshoppinglist.aspx?shopperid="+appUtil.getPrefrence("ShopperID")+"&memberid="+appUtil.getPrefrence("MemberId")));
+                startActivity(browserIntent);*/
+
+                String urlString = "https://fwstaging.immdemo.net/web/printshoppinglist.aspx?shopperid="+appUtil.getPrefrence("ShopperID")+"&memberid="+appUtil.getPrefrence("MemberId");
+                Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse(urlString));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setPackage("com.android.chrome");
+                try {
+                    activity.startActivity(intent);
+                } catch (ActivityNotFoundException ex) {
+                    // Chrome browser presumably not installed and open Kindle Browser
+                    intent.setPackage("com.amazon.cloud9");
+                    activity.startActivity(intent);
+                }
+            }
+        });
+
+        btn_return_pd=findViewById(R.id.btn_return_pd);
+        btn_return_pd.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                search_message.setVisibility(View.GONE);
+                navigation.setVisibility(View.VISIBLE);
+                submit_btn.setImageResource(R.drawable.ic_search_black_24dp);
+                submit_btn.setTag(0);
+                edit_txt.getText().clear();
+                fetchProduct();
+                x=0;
+            }
+        });
+        btn_try_another_search=findViewById(R.id.btn_try_another_search);
+        btn_try_another_search.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                search_message.setVisibility(View.GONE);
+                navigation.setVisibility(View.VISIBLE);
+                submit_btn.setImageResource(R.drawable.ic_search_black_24dp);
+                submit_btn.setTag(0);
+                edit_txt.getText().clear();
+                fetchProduct();
+                x=0;
+            }
+        });
+
+        edit_txt = (EditText) findViewById(R.id.search_edit);
         edit_txt.setOnEditorActionListener(new TextView.OnEditorActionListener() {
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
@@ -240,9 +395,12 @@ public class MainFwActivity extends AppCompatActivity
                             submit_btn.setTag(1);
                             String search=edit_txt.getText().toString();
                             searchLoad(search);
+                            navigation.setVisibility(View.GONE);
                             x=3;
 
                         } else {
+                            search_message.setVisibility(View.GONE);
+                            navigation.setVisibility(View.VISIBLE);
                             submit_btn.setImageResource(R.drawable.ic_search_black_24dp);
                             submit_btn.setTag(0);
                             edit_txt.getText().clear();
@@ -262,10 +420,13 @@ public class MainFwActivity extends AppCompatActivity
                     imv_micro_recorder.setImageResource(R.drawable.ic_clear_black_24dp);
                     imv_micro_recorder.setTag(1);
                     getSpeechInput(v);
+                    navigation.setVisibility(View.GONE);
                 }else {
                     imv_micro_recorder.setImageResource(R.drawable.micro_recorder);
                     imv_micro_recorder.setTag(0);
                     edit_txt.getText().clear();
+                    search_message.setVisibility(View.GONE);
+                    navigation.setVisibility(View.VISIBLE);
                     fetchProduct();
                     x=0;
                 }
@@ -294,11 +455,57 @@ public class MainFwActivity extends AppCompatActivity
 
     {
         add_item=findViewById(R.id.add_item);
-        add_item.setOnClickListener(new View.OnClickListener() {
+       /* add_item.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Log.i("anshuman","Singh");
+
                 withEditText();
+
+            }
+        });*/
+        add_item.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+
+                // get prompts.xml view
+                LayoutInflater li = LayoutInflater.from(activity);
+                View promptsView = li.inflate(R.layout.prompts_add_item, null);
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        activity);
+
+                // set prompts.xml to alertdialog builder
+                alertDialogBuilder.setView(promptsView);
+
+                final EditText userInput = (EditText) promptsView
+                        .findViewById(R.id.editTextDialogUserInput);
+
+                // set dialog message
+                alertDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton("Add My Items",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        // get user input and set it to result
+                                        // edit text
+                                        //result.setText(userInput.getText());
+                                        addShoppingItem(userInput.getText().toString());
+                                        //Log.i("text", String.valueOf(userInput.getText()));
+                                    }
+                                })
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // show it
+                alertDialog.show();
 
             }
         });
@@ -414,6 +621,7 @@ public class MainFwActivity extends AppCompatActivity
                         singleView=true;
                         RecyclerView.LayoutManager mLayoutManager4 = new GridLayoutManager(activity, 1);
                         rv_items_verite.setLayoutManager(mLayoutManager4);
+                        Log.i("test","grid");
                     }
 
                 }
@@ -468,6 +676,7 @@ public class MainFwActivity extends AppCompatActivity
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(activity, 1);
             rv_items.setLayoutManager(mLayoutManager);
             singleView=true;
+            Log.i("test","grid2");
         }
 
         messageLoad();
@@ -523,14 +732,27 @@ public class MainFwActivity extends AppCompatActivity
                 }
                 popupMenu.setOnDismissListener(new OnDismissListener());
                 popupMenu.setOnMenuItemClickListener(new OnMenuItemClickListener());
-                popupMenu.inflate(R.menu.filter);
+                if (x==1){
+                    popupMenu.inflate(R.menu.shopping_filter);
+                }else if (x==0){
+                    popupMenu.inflate(R.menu.filter);
+                }
+
                 popupMenu.show();
                 return true;
             }else if(i == R.id.ShoppingList){
                 //startActivity(new Intent(MainFwActivity.this,ShoppingFw.class));
                 if (x==0) {
+                    linear_shopping_list_tab.setVisibility(View.VISIBLE);
+                    linear_coupon_tab.setVisibility(View.GONE);
+
                     tv.setVisibility(View.GONE);
                     x=1;
+                    z=0;
+                    shopping_list_fragment.setBackground(getResources().getDrawable(R.color.white));
+                    shopping_list_fragment.setTextColor(getResources().getColor(R.color.black));
+                    activated_offer_fragment.setBackground(getResources().getDrawable(R.color.light_grey));
+                    activated_offer_fragment.setTextColor(getResources().getColor(R.color.grey));
                     navigation.getMenu().findItem(R.id.ShoppingList).setTitle("Personal Ad");
                     navigation.getMenu().findItem(R.id.ShoppingList).setIcon(R.drawable.account);
                     Log.i("ifbottom", String.valueOf(x)+comeFrom);
@@ -541,8 +763,7 @@ public class MainFwActivity extends AppCompatActivity
                     DetaileToolbar.setVisibility(View.VISIBLE);
                     rv_items.setVisibility(View.GONE);
                     toolbar.setVisibility(View.GONE);
-                    shoppingListLoad();
-
+                    fetchShopping();
                     imv_all_delete.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -552,12 +773,14 @@ public class MainFwActivity extends AppCompatActivity
                         }
                     });
 
-                    DetaileToolbar.setTitle("My List");
+                    DetaileToolbar.setTitle("MyFareway List");
                     DetaileToolbar.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
                             x=0;
-                            navigation.getMenu().findItem(R.id.ShoppingList).setTitle("My List");
+                            z=0;
+                            navigation.getMenu().findItem(R.id.ShoppingList).setTitle("MyFareway List");
+                            navigation.getMenu().findItem(R.id.ShoppingList).setIcon(R.drawable.ic_view_list_black_24dp);
                             tv.setVisibility(View.VISIBLE);
                             shopping_list_header.setVisibility(View.GONE);
                             navigation.setVisibility(View.VISIBLE);
@@ -572,8 +795,11 @@ public class MainFwActivity extends AppCompatActivity
                     tv.setVisibility(View.VISIBLE);
                     comeFrom="mpp";
                     x=0;
+
                     tmp=0;
-                    navigation.getMenu().findItem(R.id.ShoppingList).setTitle("My List");
+                    shoppingArrayList.clear();
+
+                    navigation.getMenu().findItem(R.id.ShoppingList).setTitle("MyFareway List");
                     navigation.getMenu().findItem(R.id.ShoppingList).setIcon(R.drawable.ic_view_list_black_24dp);
                     fetchProduct();
                     Log.i("elsebottom", String.valueOf(x)+comeFrom);
@@ -624,6 +850,7 @@ public class MainFwActivity extends AppCompatActivity
         public boolean onMenuItemClick(MenuItem item) {
             // TODO Auto-generated method stub
             int i2 = item.getItemId();
+
             if (i2 == R.id.filter_by_categories) {
                 DetaileToolbar.setVisibility(View.GONE);
                 shopping_list_header.setVisibility(View.GONE);
@@ -633,7 +860,7 @@ public class MainFwActivity extends AppCompatActivity
                 toolbar.setVisibility(View.VISIBLE);
                 tv.setVisibility(View.VISIBLE);
                 x=0;
-                navigation.getMenu().findItem(R.id.ShoppingList).setTitle("My List");
+                navigation.getMenu().findItem(R.id.ShoppingList).setTitle("MyFareway List");
                 navigation.getMenu().findItem(R.id.ShoppingList).setIcon(R.drawable.ic_view_list_black_24dp);
 
                 rv_items.setVisibility(View.INVISIBLE);
@@ -652,7 +879,7 @@ public class MainFwActivity extends AppCompatActivity
                 toolbar.setVisibility(View.VISIBLE);
                 tv.setVisibility(View.VISIBLE);
                 x=0;
-                navigation.getMenu().findItem(R.id.ShoppingList).setTitle("My List");
+                navigation.getMenu().findItem(R.id.ShoppingList).setTitle("MyFareway List");
                 navigation.getMenu().findItem(R.id.ShoppingList).setIcon(R.drawable.ic_view_list_black_24dp);
 
                 if (x==1){
@@ -767,6 +994,14 @@ public class MainFwActivity extends AppCompatActivity
                 }
 
 
+                return true;
+            }else if (i2==R.id.filter_by_recent_added){
+                Log.i("filter_by_recent_added","anshuma");
+                fetchShopping();
+                return true;
+            }else if (i2==R.id.filter_by_exp_date){
+                Log.i("filter_by_exp_date","anshuma");
+                filterExpShopping();
                 return true;
             }else if (i2==R.id.by_shopper_id){
                 //Log.i("test","anshuma");
@@ -937,7 +1172,7 @@ public class MainFwActivity extends AppCompatActivity
                                     root.getString("errorcode");
                                     Log.i("errorcode", root.getString("errorcode"));
                                     if (root.getString("errorcode").equals("0")){
-                                        progressDialog.dismiss();
+                                        //progressDialog.dismiss();
                                         message= root.getJSONArray("message");
                                         if (comeFrom.equalsIgnoreCase("moreOffer")){
                                            // moreCouponLoad();
@@ -947,8 +1182,8 @@ public class MainFwActivity extends AppCompatActivity
                                             //moreCouponLoad();
                                            // fetchProduct();
 
-                                            shoppingListLoad();
-                                            shoppingListIdLoad();
+                                            //shoppingListLoad();
+                                            //shoppingListIdLoad();
                                             //shoppingListLoad();
                                         }
 
@@ -963,7 +1198,7 @@ public class MainFwActivity extends AppCompatActivity
                     public void onErrorResponse(VolleyError error) {
                         Log.i("Volley error resp", "error----" + error.getMessage());
                         error.printStackTrace();
-                        progressDialog.dismiss();
+                       // progressDialog.dismiss();
                     }
                 })
                 {
@@ -1003,7 +1238,7 @@ public class MainFwActivity extends AppCompatActivity
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                progressDialog.dismiss();
+               // progressDialog.dismiss();
 //                displayAlert();
             }
         } else {
@@ -1336,22 +1571,148 @@ public class MainFwActivity extends AppCompatActivity
         if (message3.length() == 0) {
             //no students
         } else {
-            String strCategory="";
-            String strCategoryCheck="";
-            int Categoryid=0;
+            Log.i("obj", String.valueOf(message3.length()));
+            if (message3.length() < 5) {
+                search_message.setVisibility(View.VISIBLE);
+                String strCategory = "";
+                String strCategoryCheck = "";
+                int Categoryid = 0;
+                int category_count = 0;
+                int subcat = 0;
+                if (tmp == 0) {
+                    for (int i = 0; i < message3.length(); i++) {
+                        category_count = category_count + 1;
+                        try {
+                            if (Categoryid != message3.getJSONObject(i).getInt("CategoryID")) {
+
+                                if (!strCategoryCheck.contains("#" + message3.getJSONObject(i).getInt("CategoryID") + "#")) {
+                                    strCategoryCheck += "#" + message3.getJSONObject(i).getInt("CategoryID") + "#" + ",";
+                                    subcat = 0;
+                                    for (int q = 0; q < message3.length(); q++) {
+                                        if (message3.getJSONObject(q).getInt("CategoryID") == message3.getJSONObject(i).getInt("CategoryID")) {
+                                            subcat = subcat + 1;
+                                        }
+                                    }
+                                    Categoryid = message3.getJSONObject(i).getInt("CategoryID");
+                                    strCategory += (strCategory == "" ? "{" + "\"CategoryID\":" + message3.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message3.getJSONObject(i).getString("CategoryName") + " (" + subcat + ")\"}" : "," + "{" + "\"CategoryID\":" + message3.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message3.getJSONObject(i).getString("CategoryName") + " (" + subcat + ")\"}");
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    // Log.i("meat seafood", String.valueOf(category_count));
+                    List<Product> items = new Gson().fromJson(message3.toString(), new TypeToken<List<Product>>() {
+                    }.getType());
+                    // adding product to product list
+                    productList.clear();
+                    productList.addAll(items);
+                    // refreshing recycler view
+                    customAdapterPersonalPrices.notifyDataSetChanged();
+
+                    strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category (" + category_count + ")\"}," + strCategory;
+                    //Log.i("text", "["+String.valueOf(strCategory)+"]");
+                    String data = "[" + String.valueOf(strCategory) + "]";
+                    // categoryList.clear();
+                    try {
+                        JSONArray jsonParam = new JSONArray(data.toString());
+                        //Log.i("response", String.valueOf(jsonParam.length()));
+                    /*for (int i=0;i<jsonParam.length();i++) {
+                        Log.i("response", String.valueOf(jsonParam.length()));
+                    }*/
+                        // refreshing recycler view
+                        List<Category> items1 = new Gson().fromJson(data, new TypeToken<List<Category>>() {
+                        }.getType());
+                        categoryList.clear();
+                        categoryList.addAll(items1);
+                        customAdapterFilter.notifyDataSetChanged();
+                        rv_category.setAdapter(customAdapterFilter);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                } else {
+                    String categorydata = "";
+                    for (int i = 0; i < message.length(); i++) {
+                        // Log.i("test", String.valueOf(tmp));
+                        try {
+                            if (tmp == message.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
+                                JSONObject finalObject = message.getJSONObject(i);
+                                // Log.i("test", String.valueOf(finalObject));
+                                categorydata += (categorydata == "" ? String.valueOf(finalObject) : "," + String.valueOf(finalObject));
+                                category_count = category_count + 1;
+                                if (Categoryid != message.getJSONObject(i).getInt("CategoryID")) {
+                                    if (!strCategoryCheck.contains("#" + message.getJSONObject(i).getInt("CategoryID") + "#")) {
+                                        strCategoryCheck += "#" + message.getJSONObject(i).getInt("CategoryID") + "#" + ",";
+                                        subcat = 0;
+                                        for (int q = 0; q < message.length(); q++) {
+                                            if (tmp == message.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
+                                                if (message.getJSONObject(q).getInt("CategoryID") == message.getJSONObject(i).getInt("CategoryID") && message.getJSONObject(q).getInt("PrimaryOfferTypeId") == message.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
+                                                    subcat = subcat + 1;
+                                                }
+                                            }
+                                        }
+                                        Categoryid = message.getJSONObject(i).getInt("CategoryID");
+                                        strCategory += (strCategory == "" ? "{" + "\"CategoryID\":" + message.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message.getJSONObject(i).getString("CategoryName") + " (" + subcat + ")\"}" : "," + "{" + "\"CategoryID\":" + message.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message.getJSONObject(i).getString("CategoryName") + " (" + subcat + ")\"}");
+                                    }
+                                }
+                            }
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    List<Product> items1 = new Gson().fromJson("[" + categorydata.toString() + "]", new TypeToken<List<Product>>() {
+                    }.getType());
+                    // adding product to product list
+                    productList.clear();
+                    productList.addAll(items1);
+                    // Log.i("string", String.valueOf(items1));
+                    // refreshing recycler view
+                    customAdapterPersonalPrices.notifyDataSetChanged();
+
+                    strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category (" + category_count + ")\"}," + strCategory;
+                    // Log.i("text", "["+String.valueOf(strCategory)+"]");
+                    String data = "[" + String.valueOf(strCategory) + "]";
+                    //categoryList.clear();
+                    try {
+                        JSONArray jsonParam = new JSONArray(data.toString());
+                        for (int i = 0; i < jsonParam.length(); i++) {
+                            // Log.i("response", String.valueOf(jsonParam.length()));
+
+                            //categoryList.add(jsonParam.getJSONObject(i));
+                        }
+                        // refreshing recycler view
+                        List<Category> items2 = new Gson().fromJson(data, new TypeToken<List<Category>>() {
+                        }.getType());
+                        categoryList.clear();
+                        categoryList.addAll(items2);
+                        customAdapterFilter.notifyDataSetChanged();
+                        rv_category.setAdapter(customAdapterFilter);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                }
+                //////
+
+
+
+
+            }else {
+            String strCategory = "";
+            String strCategoryCheck = "";
+            int Categoryid = 0;
             int category_count = 0;
-            int subcat=0;
-            if (tmp==0){
+            int subcat = 0;
+            if (tmp == 0) {
                 for (int i = 0; i < message3.length(); i++) {
                     category_count = category_count + 1;
                     try {
-                        if(Categoryid !=message3.getJSONObject(i).getInt("CategoryID")) {
+                        if (Categoryid != message3.getJSONObject(i).getInt("CategoryID")) {
 
                             if (!strCategoryCheck.contains("#" + message3.getJSONObject(i).getInt("CategoryID") + "#")) {
                                 strCategoryCheck += "#" + message3.getJSONObject(i).getInt("CategoryID") + "#" + ",";
                                 subcat = 0;
                                 for (int q = 0; q < message3.length(); q++) {
-                                    if (message3.getJSONObject(q).getInt("CategoryID") == message3.getJSONObject(i).getInt("CategoryID" )) {
+                                    if (message3.getJSONObject(q).getInt("CategoryID") == message3.getJSONObject(i).getInt("CategoryID")) {
                                         subcat = subcat + 1;
                                     }
                                 }
@@ -1372,9 +1733,9 @@ public class MainFwActivity extends AppCompatActivity
                 // refreshing recycler view
                 customAdapterPersonalPrices.notifyDataSetChanged();
 
-                strCategory ="{" +"\"CategoryID\":"+0+","+"\"CategoryName\":"+"\"All Category ("+category_count+")\"}," + strCategory;
+                strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category (" + category_count + ")\"}," + strCategory;
                 //Log.i("text", "["+String.valueOf(strCategory)+"]");
-                String data = "["+String.valueOf(strCategory)+"]";
+                String data = "[" + String.valueOf(strCategory) + "]";
                 // categoryList.clear();
                 try {
                     JSONArray jsonParam = new JSONArray(data.toString());
@@ -1392,23 +1753,20 @@ public class MainFwActivity extends AppCompatActivity
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
-            }
-            else
-            {
-                String categorydata="";
+            } else {
+                String categorydata = "";
                 for (int i = 0; i < message.length(); i++) {
                     // Log.i("test", String.valueOf(tmp));
                     try {
                         if (tmp == message.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
                             JSONObject finalObject = message.getJSONObject(i);
                             // Log.i("test", String.valueOf(finalObject));
-                            categorydata +=(categorydata==""? String.valueOf(finalObject):","+String.valueOf(finalObject));
+                            categorydata += (categorydata == "" ? String.valueOf(finalObject) : "," + String.valueOf(finalObject));
                             category_count = category_count + 1;
-                            if(Categoryid !=message.getJSONObject(i).getInt("CategoryID"))
-                            {
+                            if (Categoryid != message.getJSONObject(i).getInt("CategoryID")) {
                                 if (!strCategoryCheck.contains("#" + message.getJSONObject(i).getInt("CategoryID") + "#")) {
                                     strCategoryCheck += "#" + message.getJSONObject(i).getInt("CategoryID") + "#" + ",";
-                                    subcat=0;
+                                    subcat = 0;
                                     for (int q = 0; q < message.length(); q++) {
                                         if (tmp == message.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
                                             if (message.getJSONObject(q).getInt("CategoryID") == message.getJSONObject(i).getInt("CategoryID") && message.getJSONObject(q).getInt("PrimaryOfferTypeId") == message.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
@@ -1416,8 +1774,8 @@ public class MainFwActivity extends AppCompatActivity
                                             }
                                         }
                                     }
-                                    Categoryid=message.getJSONObject(i).getInt("CategoryID");
-                                    strCategory +=(strCategory==""? "{" +"\"CategoryID\":"+message.getJSONObject(i).getInt("CategoryID")+","+"\"CategoryName\":\""+message.getJSONObject(i).getString("CategoryName")+" ("+subcat+")\"}":","+"{" +"\"CategoryID\":"+message.getJSONObject(i).getInt("CategoryID")+","+"\"CategoryName\":\""+message.getJSONObject(i).getString("CategoryName")+" ("+subcat+")\"}");
+                                    Categoryid = message.getJSONObject(i).getInt("CategoryID");
+                                    strCategory += (strCategory == "" ? "{" + "\"CategoryID\":" + message.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message.getJSONObject(i).getString("CategoryName") + " (" + subcat + ")\"}" : "," + "{" + "\"CategoryID\":" + message.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message.getJSONObject(i).getString("CategoryName") + " (" + subcat + ")\"}");
                                 }
                             }
                         }
@@ -1425,7 +1783,7 @@ public class MainFwActivity extends AppCompatActivity
                         e.printStackTrace();
                     }
                 }
-                List<Product> items1 = new Gson().fromJson("["+categorydata.toString()+"]", new TypeToken<List<Product>>() {
+                List<Product> items1 = new Gson().fromJson("[" + categorydata.toString() + "]", new TypeToken<List<Product>>() {
                 }.getType());
                 // adding product to product list
                 productList.clear();
@@ -1434,13 +1792,13 @@ public class MainFwActivity extends AppCompatActivity
                 // refreshing recycler view
                 customAdapterPersonalPrices.notifyDataSetChanged();
 
-                strCategory ="{" +"\"CategoryID\":"+0+","+"\"CategoryName\":"+"\"All Category ("+category_count+")\"}," + strCategory;
+                strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category (" + category_count + ")\"}," + strCategory;
                 // Log.i("text", "["+String.valueOf(strCategory)+"]");
-                String data = "["+String.valueOf(strCategory)+"]";
+                String data = "[" + String.valueOf(strCategory) + "]";
                 //categoryList.clear();
                 try {
                     JSONArray jsonParam = new JSONArray(data.toString());
-                    for (int i=0;i<jsonParam.length();i++) {
+                    for (int i = 0; i < jsonParam.length(); i++) {
                         // Log.i("response", String.valueOf(jsonParam.length()));
 
                         //categoryList.add(jsonParam.getJSONObject(i));
@@ -1456,6 +1814,7 @@ public class MainFwActivity extends AppCompatActivity
                     e.printStackTrace();
                 }
             }
+        }
 
         }
     }
@@ -1463,9 +1822,9 @@ public class MainFwActivity extends AppCompatActivity
     private void CircularmoreCouponLoad() {
         if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
             try {
-                progressDialog2 = new ProgressDialog(activity);
-                progressDialog2.setMessage("Processing");
-                progressDialog2.show();
+                //progressDialog2 = new ProgressDialog(activity);
+               // progressDialog2.setMessage("Processing");
+                //progressDialog2.show();
                 StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET,Constant.WEB_URL + Constant.MORECOUPON+"?MemberId="+appUtil.getPrefrence("MemberId")+"&Plateform=2&CircularType=0",
                         new Response.Listener<String>(){
                             @Override
@@ -1477,19 +1836,21 @@ public class MainFwActivity extends AppCompatActivity
                                     root.getString("errorcode");
                                     Log.i("errorcode", root.getString("errorcode"));
                                     if (root.getString("errorcode").equals("0")){
-                                        progressDialog2.dismiss();
+                                        progressDialog.dismiss();
                                        if(message!=null)
                                        {
                                          String s1=  root.getJSONArray("message").toString();
                                            String s2=  message.toString();
                                            String s3="";
+                                           String s4="{\"oCouponShortDescription\":\"OSCAR MAYER GRILLED CHICKEN STRIPS\",\"CouponShortDescription\":\"OSCAR MAYER GRILLED CHICKEN STRIPS\",\"CouponLongDescription\":\"\",\"RewardType\":\"3\",\"RewardQty\":\"0\",\"Groupname\":\"\",\"oGroupname\":\"\",\"oDisplayPrice\":\"<sup>$</sup>2.84\",\"rewardGroupname\":\"\",\"Quantity\":1,\"inCircular\":1,\"RequiresActivation\":\"True\",\"IsMidWeek\":0,\"FreeOffer\":0,\"AltTitleBarImage\":\"\",\"LimitPerTransection\":0,\"TileNumber\":\"2\",\"MemberID\":41761,\"UPCRank\":\"0\",\"HasRelatedItems\":1,\"OriginatorID\":0,\"RelevantUPC\":\"4470002288\",\"IsEmployeeOffer\":false,\"BadgeId\":\"0\",\"RedeemLimit\":0,\"RequiredQty\":1,\"CategoryPriority\":1,\"PercentSavings\":\"28.82\",\"FinalPrice\":\"2.8400\",\"AdPrice\":\"0.0000\",\"CouponDiscount\":\"0.0000\",\"PersonalCircularID\":38477,\"LoyaltyCardNumber\":\"5155567152\",\"PersonalCircularItemId\":1029271,\"SectionNumber\":3,\"StoreID\":\"657\",\"RegularPrice\":\"3.99\",\"DisplayPrice\":\"<sup>$</sup>2.84\",\"Savings\":\"1.1500\",\"DateAdded\":\"7/20/2019 2:44:13 AM\",\"ValidityStartDate\":\"7/9/19\",\"BadgeName\":\"\",\"BadgeFileName\":\"\",\"ValidityEndDate\":\"7/24/19\",\"Description\":\"OSCAR MAYER GRILLED CHICKEN STRIPS\",\"PackagingSize\":\"5.5 OZ\",\"PricingMasterID\":0,\"CategoryID\":11,\"UPC\":\"4470002288\",\"CategoryName\":\"Meat & Seafood\",\"SmallImagePath\":\"https://images.immdemo.net/product/wlarge/00044700022887.png\",\"LargeImagePath\":\"https://images.immdemo.net/product/wlarge/00044700022887.png\",\"Isbadged\":\"False\",\"ListCount\":1,\"SpecialInformation\":\"\",\"TileTemplateID\":3,\"MinAmount\":0.0,\"PriceAssociationCode\":\"\",\"PrimaryOfferTypeName\":\"Personal Deals\",\"OfferTypeTagName\":\"My Personal Deal\",\"OfferDefinition\":\"New Price\",\"CPRPromoTypeName\":\"Individual\",\"RelevancyDetail\":\"Pushed\",\"PrimaryOfferTypeId\":420,\"OfferDetailId\":1,\"OfferDefinitionId\":2,\"CPRPromoTypeId\":1,\"RelevancyTypeD\":5,\"CouponID\":7984,\"RelatedItemCount\":2,\"ClickCount\":1,\"PageID\":1,\"BrandId\":1,\"BrandName\":\"Sally Hansen\",\"DietaryId\":0,\"DietaryName\":\"\",\"RewardValue\":\"2.84\",\"CouponImageURl\":\"http://images.immdemo.net/coupon/wlarge/couponImg.jpg\"}";
                                            s1=s1.substring(s1.indexOf("[")+1, s1.lastIndexOf("]"));
                                            s2=s2.substring(s2.indexOf("[")+1, s2.lastIndexOf("]"));
-                                           s3="["+s2+","+s1+"]";
+                                           s3="["+s2+","+s4+","+s1+"]";
                                            message=null;
                                            JSONArray jsonArray = new JSONArray(s3);
                                            message=jsonArray;
                                            fetchProduct();
+                                           shoppingListIdLoad();
                                        }
 
                                     }
@@ -5416,12 +5777,12 @@ public class MainFwActivity extends AppCompatActivity
         return capMatcher.appendTail(capBuffer).toString();
     }
 
-    public void shoppingListLoad() {
+    public void shoppingListTabLoad() {
         if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
             try {
-                //progressDialog = new ProgressDialog(activity);
-                //progressDialog.setMessage("Processing");
-                //progressDialog.show();
+                progressDialog = new ProgressDialog(activity);
+                progressDialog.setMessage("Processing");
+                progressDialog.show();
                 StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET,Constant.WEB_URL + Constant.ShoppingList+"MemberId="+appUtil.getPrefrence("MemberId")+"&CategoryID=1",
                         new Response.Listener<String>(){
                             @Override
@@ -5437,7 +5798,7 @@ public class MainFwActivity extends AppCompatActivity
 
                                     JSONObject root2 = new JSONObject(root.getString("message"));
                                     if (root.getString("errorcode").equals("0")){
-                                       // progressDialog.dismiss();
+                                         progressDialog.dismiss();
                                         Log.i("anshuman","test");
 
                                         try
@@ -5480,7 +5841,7 @@ public class MainFwActivity extends AppCompatActivity
                     public void onErrorResponse(VolleyError error) {
                         Log.i("Volley error resp", "error----" + error.getMessage());
                         error.printStackTrace();
-                      //  progressDialog.dismiss();
+                          progressDialog.dismiss();
                     }
                 })
                 {
@@ -5520,7 +5881,7 @@ public class MainFwActivity extends AppCompatActivity
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-               // progressDialog.dismiss();
+                progressDialog.dismiss();
 //                displayAlert();
             }
         } else {
@@ -5529,6 +5890,39 @@ public class MainFwActivity extends AppCompatActivity
             alertDialog.show();
             //Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private void enableSwipeToDeleteAndUndo() {
+        SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(this) {
+            @Override
+            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
+
+
+                final int position = viewHolder.getAdapterPosition();
+                //final Shopping item = shoppingListAdapter.getData().get(position);
+
+                shoppingListAdapter.removeItem(position);
+
+
+               /* Snackbar snackbar = Snackbar
+                        .make(coordinatorLayout, "Item was removed from the list.", Snackbar.LENGTH_LONG);
+                snackbar.setAction("UNDO", new View.OnClickListener() {
+                    @Override
+                    public void onClick(View view) {
+
+                        shoppingListAdapter.restoreItem(item, position);
+                        recyclerView.scrollToPosition(position);
+                    }
+                });*/
+
+                //snackbar.setActionTextColor(Color.YELLOW);
+                //snackbar.show();
+
+            }
+        };
+
+        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeToDeleteCallback);
+        itemTouchhelper.attachToRecyclerView(rv_shopping_list_items);
     }
 
     private void shoppingListIdLoad() {
@@ -5565,19 +5959,20 @@ public class MainFwActivity extends AppCompatActivity
                                         }
 
                                         if (shoppingId==null ){
-                                            Log.i("anshuman","test");
+                                            Log.i("shoppingId","test");
                                         /*    shoppingArrayList.clear();
                                             shoppingListAdapter.notifyDataSetChanged();
                                             tv_number_item.setText(String.valueOf(0));
                                             tv.setText(String.valueOf(0));*/
 
                                         }else {
-                                          Log.i("shoppingId", String.valueOf(shoppingId));
+                                            Log.i("shoppingId", String.valueOf(shoppingId));
 
                                             for (int i = 0; i < shoppingId.length(); i++) {
                                                 JSONObject jsonParam= shoppingId.getJSONObject(i);
                                                 appUtil.setPrefrence("ShoppingListId", jsonParam.getString("ShoppingListId"));
                                                 Log.i("ShoppingListId",appUtil.getPrefrence("ShoppingListId"));
+                                                shoppingListLoad();
 
                                             }
                                            /*   tv_number_item.setText(String.valueOf(shopping.length()));
@@ -5599,7 +5994,7 @@ public class MainFwActivity extends AppCompatActivity
                     public void onErrorResponse(VolleyError error) {
                         Log.i("Volley error resp", "error----" + error.getMessage());
                         error.printStackTrace();
-                       // progressDialog.dismiss();
+                        // progressDialog.dismiss();
                     }
                 })
                 {
@@ -5639,7 +6034,124 @@ public class MainFwActivity extends AppCompatActivity
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-              //  progressDialog.dismiss();
+                //  progressDialog.dismiss();
+//                displayAlert();
+            }
+        } else {
+            alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                    getString(R.string.ok),getString(R.string.alert));
+            alertDialog.show();
+            //Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void shoppingListLoad() {
+        if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+            try {
+                //progressDialog = new ProgressDialog(activity);
+                //progressDialog.setMessage("Processing");
+                //progressDialog.show();
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET,Constant.WEB_URL + Constant.ShoppingList+"MemberId="+appUtil.getPrefrence("MemberId")+"&CategoryID=1",
+                        new Response.Listener<String>(){
+                            @Override
+                            public void onResponse(String response) {
+                                Log.i("shoppingList Response", response.toString());
+
+                                try {
+                                    JSONObject root = new JSONObject(response);
+                                    root.getString("errorcode");
+                                    Log.i("errorcode", root.getString("errorcode"));
+                                    Log.i("message", root.getString("message"));
+
+
+                                    JSONObject root2 = new JSONObject(root.getString("message"));
+                                    if (root.getString("errorcode").equals("0")){
+                                        // progressDialog.dismiss();
+                                        Log.i("anshuman","test");
+
+                                        try
+                                        {
+                                            shopping= root2.getJSONArray("ShoppingListItems");
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            shopping = null;
+                                        }
+
+                                        if (shopping==null ){
+                                            Log.i("shopping","test");
+                                            shoppingArrayList.clear();
+                                            shoppingListAdapter.notifyDataSetChanged();
+                                            tv_number_item.setText(String.valueOf(0));
+                                            tv.setText(String.valueOf(0));
+                                            activatedOffersListIdLoad();
+
+                                        }else {
+                                            Log.i("shopping", String.valueOf(shopping));
+
+                                            for (int i = 0; i < shopping.length(); i++) {
+                                            }
+                                            tv_number_item.setText(String.valueOf(shopping.length()));
+                                            tv.setText(String.valueOf(shopping.length()));
+
+                                            /*shoppingArrayList.clear();
+                                            List<Shopping> items = new Gson().fromJson(shopping.toString(), new TypeToken<List<Shopping>>() {
+                                            }.getType());
+                                            shoppingArrayList.addAll(items);
+                                            shoppingListAdapter.notifyDataSetChanged();*/
+                                            activatedOffersListIdLoad();
+                                        }
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Volley error resp", "error----" + error.getMessage());
+                        error.printStackTrace();
+                        //  progressDialog.dismiss();
+                    }
+                })
+                {
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/x-www-form-urlencoded";
+                    }
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        // params.put("UserName", et_email.getText().toString().trim());
+                        // params.put("password", et_pwd.getText().toString().trim());
+                        //params.put("Device", "5");
+                        return params;
+                    }
+                    //this is the part, that adds the header to the request
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        //params.put("Content-Type", "application/x-www-form-urlencoded");
+                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (50000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    // FarewayApplication.getInstance().addToRequestQueue(jsonObjectRequest);
+                    mQueue.add(jsonObjectRequest);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                // progressDialog.dismiss();
 //                displayAlert();
             }
         } else {
@@ -5765,41 +6277,8 @@ public class MainFwActivity extends AppCompatActivity
         }
     }
 
-    private void enableSwipeToDeleteAndUndo() {
-        SwipeToDeleteCallback swipeToDeleteCallback = new SwipeToDeleteCallback(this) {
-            @Override
-            public void onSwiped(@NonNull RecyclerView.ViewHolder viewHolder, int i) {
-
-
-                final int position = viewHolder.getAdapterPosition();
-                //final Shopping item = shoppingListAdapter.getData().get(position);
-
-                shoppingListAdapter.removeItem(position);
-
-
-               /* Snackbar snackbar = Snackbar
-                        .make(coordinatorLayout, "Item was removed from the list.", Snackbar.LENGTH_LONG);
-                snackbar.setAction("UNDO", new View.OnClickListener() {
-                    @Override
-                    public void onClick(View view) {
-
-                        shoppingListAdapter.restoreItem(item, position);
-                        recyclerView.scrollToPosition(position);
-                    }
-                });*/
-
-                //snackbar.setActionTextColor(Color.YELLOW);
-                //snackbar.show();
-
-            }
-        };
-
-        ItemTouchHelper itemTouchhelper = new ItemTouchHelper(swipeToDeleteCallback);
-        itemTouchhelper.attachToRecyclerView(rv_shopping_list_items);
-    }
-
     @Override
-    public void onShoppingItemSelected(Shopping shopping) {
+    public void onShoppingItemSelected(final Shopping shopping) {
         Log.i("test",shopping.getDisplayUPC().replace("UPC: ",""));
 
         for (int i = 0; i < message.length(); i++) {
@@ -5820,13 +6299,15 @@ public class MainFwActivity extends AppCompatActivity
         //shoppingListLoad();
 
         Log.i("remove","remove");
+        //https://fwstagingapi.immdemo.net/api/v1/ShoppingList/List/MyOwnItem?ShoppingListOwnItemID=404
         String url = Constant.WEB_URL+Constant.SHOPPINGLISTSINGAL+shopping.getShoppingListItemID()+"&MemberId="+appUtil.getPrefrence("MemberId");
         StringRequest  jsonObjectRequest = new StringRequest (Request.Method.DELETE, url,
                 new Response.Listener<String >() {
                     @Override
                     public void onResponse(String  response) {
                         Log.i("success", String.valueOf(response));
-                        shoppingListLoad();
+                        //shoppingListLoad();
+                        fetchShoppingListLoad();
                        // remove_layout_detail.setVisibility(View.GONE);
                         //    count_product_number_detail.setVisibility(View.GONE);
                        // product.setClickCount(1);
@@ -5840,6 +6321,7 @@ public class MainFwActivity extends AppCompatActivity
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                removeSingleOwnItem(shopping.getShoppingListItemID());
                 Log.i("fail", String.valueOf(error));
             }
         }){
@@ -5946,7 +6428,7 @@ public class MainFwActivity extends AppCompatActivity
     public void withEditText() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
-        builder.setTitle("Add Multiple Items");
+        builder.setTitle("Send Shopping List");
 
         final EditText input = new EditText(activity);
         LinearLayout.LayoutParams lp = new LinearLayout.LayoutParams(
@@ -5954,22 +6436,391 @@ public class MainFwActivity extends AppCompatActivity
                 LinearLayout.LayoutParams.MATCH_PARENT);
         input.setLayoutParams(lp);
         builder.setView(input);
-        builder.setPositiveButton("Add My Items", new DialogInterface.OnClickListener() {
+        builder.setPositiveButton("Send", new DialogInterface.OnClickListener() {
             @Override
             public void onClick(DialogInterface dialogInterface, int i) {
                // Toast.makeText(getApplicationContext(), "Text entered is " + input.getText().toString(), Toast.LENGTH_SHORT).show();
-                addShoppingItem(input.getText().toString());
+                sendEmailShoppingList(input.getText().toString());
             }
         });
         builder.show();
     }
 
+    public class ViewErrorAllDialog {
+
+        public void showDialog(Activity activity, String msg){
+            final Dialog dialog = new Dialog(activity);
+            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
+            dialog.setCancelable(false);
+            dialog.setContentView(R.layout.error_dialog);
+            rv_items.setVisibility(View.GONE);
+
+            TextView text = (TextView) dialog.findViewById(R.id.error_dialog_info);
+            text.setText(msg);
+
+            Button dialogButton = (Button) dialog.findViewById(R.id.error_dialog_ok);
+            dialogButton.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    submit_btn.setImageResource(R.drawable.ic_search_black_24dp);
+                    submit_btn.setTag(0);
+                    edit_txt.getText().clear();
+                    rv_items.setVisibility(View.VISIBLE);
+                    dialog.dismiss();
+                }
+            });
+
+            Button dialogButtonCancel = (Button) dialog.findViewById(R.id.error_dialog_cancel);
+            dialogButtonCancel.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    submit_btn.setImageResource(R.drawable.ic_search_black_24dp);
+                    submit_btn.setTag(0);
+                    edit_txt.getText().clear();
+                    rv_items.setVisibility(View.VISIBLE);
+                    dialog.dismiss();
+                }
+            });
+
+            dialog.show();
+
+        }
+    }
+
+    public void activatedOffersListIdLoad() {
+        if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+            try {
+                //progressDialog = new ProgressDialog(activity);
+                //progressDialog.setMessage("Processing");
+                //progressDialog.show();
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET,Constant.WEB_URL + "ShoopingList/ActivatedCoupons?MemberId="+appUtil.getPrefrence("MemberId")+"&CategoryID=2",
+                        new Response.Listener<String>(){
+                            @Override
+                            public void onResponse(String response) {
+                                Log.i("Fareway response Main", response.toString());
+
+                                try {
+                                    JSONObject root = new JSONObject(response);
+                                    root.getString("errorcode");
+                                    Log.i("errorcode", root.getString("errorcode"));
+                                    Log.i("message", root.getString("message"));
+
+
+                                    JSONObject root2 = new JSONObject(root.getString("message"));
+                                    if (root.getString("errorcode").equals("0")){
+                                        //progressDialog.dismiss();
+                                        Log.i("anshuman","test");
+
+                                        try
+                                        {
+                                            activatedOffer= root2.getJSONArray("WCouponsDetails");
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            activatedOffer = null;
+                                        }
+
+                                        if (activatedOffer==null ){
+                                            Log.i("anshuman","test");
+                                            shoppingArrayList.clear();
+                                            shoppingListAdapter.notifyDataSetChanged();
+                                           // tv_number_item.setText(String.valueOf(0));
+                                           // tv.setText(String.valueOf(0));
+
+                                        }else {
+                                            Log.i("activatedOffer", String.valueOf(activatedOffer));
+
+                                            for (int i = 0; i < activatedOffer.length(); i++) {
+                                            }
+                                           // tv_number_item.setText(String.valueOf(shopping.length()));
+                                           // tv.setText(String.valueOf(shopping.length()));
+
+                                         /* shoppingArrayList.clear();
+                                            List<Shopping> items = new Gson().fromJson(activatedOffer.toString(), new TypeToken<List<Shopping>>() {
+                                            }.getType());
+                                            shoppingArrayList.addAll(items);
+                                            shoppingListAdapter.notifyDataSetChanged(); */
+                                         fetchShopping();
+                                        }
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Volley error resp", "error----" + error.getMessage());
+                        error.printStackTrace();
+                          //progressDialog.dismiss();
+                    }
+                })
+                {
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/x-www-form-urlencoded";
+                    }
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        // params.put("UserName", et_email.getText().toString().trim());
+                        // params.put("password", et_pwd.getText().toString().trim());
+                        //params.put("Device", "5");
+                        return params;
+                    }
+                    //this is the part, that adds the header to the request
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        //params.put("Content-Type", "application/x-www-form-urlencoded");
+                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (50000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    // FarewayApplication.getInstance().addToRequestQueue(jsonObjectRequest);
+                    mQueue.add(jsonObjectRequest);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                 //progressDialog.dismiss();
+//                displayAlert();
+            }
+        } else {
+            alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                    getString(R.string.ok),getString(R.string.alert));
+            alertDialog.show();
+            //Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void fetchShopping(){
+       // Log.i("shopping", String.valueOf(shopping.length()));
+        shopping_list_fragment.setBackground(getResources().getDrawable(R.color.white));
+        shopping_list_fragment.setTextColor(getResources().getColor(R.color.black));
+        activated_offer_fragment.setBackground(getResources().getDrawable(R.color.light_grey));
+        activated_offer_fragment.setTextColor(getResources().getColor(R.color.grey));
+        z=1;
+
+        if (shopping == null) {
+            //no students
+            shoppingArrayList.clear();
+        }else {
+            shoppingArrayList.clear();
+            List<Shopping> items = new Gson().fromJson(shopping.toString(), new TypeToken<List<Shopping>>() {
+            }.getType());
+            shoppingArrayList.addAll(items);
+            shoppingListAdapter.notifyDataSetChanged();
+        }
+
+    }
+
+    private void filterExpShopping(){
+        // Log.i("shopping", String.valueOf(shopping.length()));
+        shopping_list_fragment.setBackground(getResources().getDrawable(R.color.white));
+        shopping_list_fragment.setTextColor(getResources().getColor(R.color.black));
+        activated_offer_fragment.setBackground(getResources().getDrawable(R.color.light_grey));
+        activated_offer_fragment.setTextColor(getResources().getColor(R.color.grey));
+        z=1;
+
+        if (shopping == null) {
+            //no students
+            shoppingArrayList.clear();
+        }else {
+            shoppingArrayList.clear();
+            List<Shopping> items = new Gson().fromJson(shopping.toString(), new TypeToken<List<Shopping>>() {
+            }.getType());
+            shoppingArrayList.clear();
+            shoppingArrayList.addAll(items);
+
+            Collections.sort(shoppingArrayList, new Comparator<Shopping>() {
+
+                @Override
+                public int compare(Shopping o2, Shopping o1) {
+                    if (o1.getExpirationDate() == null || o2.getExpirationDate() == null)
+                        return 0;
+                    return o1.getExpirationDate().compareTo(o2.getExpirationDate());
+                }
+
+            });
+           /* Collections.sort(myList, new Comparator<MyObject>() {
+                public int compare(MyObject o1, MyObject o2) {
+                    if (o1.getDateTime() == null || o2.getDateTime() == null)
+                        return 0;
+                    return o1.getDateTime().compareTo(o2.getDateTime());
+                }
+            });*/
+
+            shoppingListAdapter.notifyDataSetChanged();
+            //rv_shopping_list_items.setAdapter(shoppingListAdapter);
+        }
+
+        /*
+        ArrayList<Events> futureEvents = new ArrayList<>();
+        Date currentDate = new Date();
+
+        for(Events events : eventsList) {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            Date date = null;
+            try {
+                date = formatter.parse(events.getEventDate() + " " + events.getEventTime());
+            } catch (ParseException e) {
+
+            }
+
+            if(currentDate.before(date)) {
+                futureEvents.add(events);
+            }
+        }
+
+        adapter.filter(futureEvents);*/
+
+    }
+
+    private void fetchActivatedOffer(){
+        activated_offer_fragment.setBackground(getResources().getDrawable(R.color.white));
+        activated_offer_fragment.setTextColor(getResources().getColor(R.color.black));
+        shopping_list_fragment.setBackground(getResources().getDrawable(R.color.light_grey));
+        shopping_list_fragment.setTextColor(getResources().getColor(R.color.grey));
+        z=0;
+        if (activatedOffer == null) {
+            shoppingArrayList.clear();
+            //no students
+        }else {
+            shoppingArrayList.clear();
+            List<Shopping> items = new Gson().fromJson(activatedOffer.toString(), new TypeToken<List<Shopping>>() {
+            }.getType());
+            shoppingArrayList.addAll(items);
+            shoppingListAdapter.notifyDataSetChanged();
+        }
+/*
+        ArrayList<Events> futureEvents = new ArrayList<>();
+        Date currentDate = new Date();
+
+        for(Events events : eventsList) {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            Date date = null;
+            try {
+                date = formatter.parse(events.getEventDate() + " " + events.getEventTime());
+            } catch (ParseException e) {
+
+            }
+
+            if(currentDate.before(date)) {
+                futureEvents.add(events);
+            }
+        }
+
+        adapter.filter(futureEvents);*/
+
+    }
+
+    private void sendEmailShoppingList(final String emails){
+        if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+            try {
+                progressDialog = new ProgressDialog(activity);
+                progressDialog.setMessage("Processing");
+                progressDialog.show();
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST,Constant.WEB_URL +"ShoopingList/EmailShoppingList",
+                        new Response.Listener<String>(){
+                            @Override
+                            public void onResponse(String response) {
+                                Log.i("Fareway", response.toString());
+                                progressDialog.dismiss();
+                              //  fetchShoppingListLoad();
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Volley error resp", "error----" + error.getMessage());
+                        error.printStackTrace();
+                        progressDialog.dismiss();
+                        if (error.networkResponse == null) {
+                            progressDialog.dismiss();
+                            if (error.getClass().equals(TimeoutError.class)) {
+//                                Toast.makeText(activity, "Time out error", Toast.LENGTH_LONG).show();
+                                alertDialog=userAlertDialog.createPositiveAlert("Time out error",
+                                        getString(R.string.ok),"Fail");
+                                alertDialog.show();
+
+                            }
+                        }
+                    }
+                })
+                {
+
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/x-www-form-urlencoded";
+                    }
+
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+
+
+                        params.put("Emails", emails);
+                        params.put("MemberId", appUtil.getPrefrence("MemberId"));
+                        params.put("LoyaltyNumber", appUtil.getPrefrence("LoyaltyCard"));
+                        //params.put("password", appUtil.getPrefrence("Password"));
+                        //test
+                        params.put("Device", "5");
+                        return params;
+                    }
+
+                    //this is the part, that adds the header to the request
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/x-www-form-urlencoded");
+                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (50000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    // FarewayApplication.getInstance().addToRequestQueue(jsonObjectRequest);
+                    mQueue.add(jsonObjectRequest);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+                progressDialog.dismiss();
+//                displayAlert();
+            }
+
+        } else {
+            alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                    getString(R.string.ok),getString(R.string.alert));
+            alertDialog.show();
+//            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
+        }
+    }
+
     private void addShoppingItem(final String itemName) {
         if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
             try {
-                 progressDialog = new ProgressDialog(activity);
-                 progressDialog.setMessage("Processing");
-                 progressDialog.show();
+                progressDialog = new ProgressDialog(activity);
+                progressDialog.setMessage("Processing");
+                progressDialog.show();
                 StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST,Constant.WEB_URL + Constant.ADDSHOPPINGITEM,
                         new Response.Listener<String>(){
                             @Override
@@ -5985,7 +6836,7 @@ public class MainFwActivity extends AppCompatActivity
                         error.printStackTrace();
                         progressDialog.dismiss();
                         if (error.networkResponse == null) {
-                                  progressDialog.dismiss();
+                            progressDialog.dismiss();
                             if (error.getClass().equals(TimeoutError.class)) {
 //                                Toast.makeText(activity, "Time out error", Toast.LENGTH_LONG).show();
                                 alertDialog=userAlertDialog.createPositiveAlert("Time out error",
@@ -6062,7 +6913,7 @@ public class MainFwActivity extends AppCompatActivity
                     @Override
                     public void onResponse(String  response) {
                         Log.i("removeOwnItemsuccess", String.valueOf(response));
-                        fetchShoppingListLoad();
+                        // fetchShoppingListLoad();
                         messageLoad();
                         //removeOwnItem();
                     }
@@ -6101,83 +6952,58 @@ public class MainFwActivity extends AppCompatActivity
 
     }
 
-    public class ViewErrorAllDialog {
+    public void removeSingleOwnItem(String shoppingListItemID){
+        Log.i("remove","remove");
+        //https://fwstagingapi.immdemo.net/api/v1/ShoppingList/List/MyOwnItem?ShoppingListOwnItemID=404
+        String url = Constant.WEB_URL+"ShoppingList/List/MyOwnItem?ShoppingListOwnItemID="+shoppingListItemID+"&MemberId="+appUtil.getPrefrence("MemberId");
+        StringRequest  jsonObjectRequest = new StringRequest (Request.Method.DELETE, url,
+                new Response.Listener<String >() {
+                    @Override
+                    public void onResponse(String  response) {
+                        Log.i("success", String.valueOf(response));
+                        //shoppingListLoad();
+                        fetchShoppingListLoad();
+                        // remove_layout_detail.setVisibility(View.GONE);
+                        //    count_product_number_detail.setVisibility(View.GONE);
+                        // product.setClickCount(1);
+                        // tv_status_detaile.setText("Add");
+                        // circular_layout_detaile.setBackground(getResources().getDrawable(R.drawable.circular_red_bg));
+                        //  imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.addwhite));
+                        //remove quantity
+                        //  SetRemoveActivateDetail(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
 
-        public void showDialog(Activity activity, String msg){
-            final Dialog dialog = new Dialog(activity);
-            dialog.requestWindowFeature(Window.FEATURE_NO_TITLE);
-            dialog.setCancelable(false);
-            dialog.setContentView(R.layout.error_dialog);
-            rv_items.setVisibility(View.GONE);
-
-            TextView text = (TextView) dialog.findViewById(R.id.error_dialog_info);
-            text.setText(msg);
-
-            Button dialogButton = (Button) dialog.findViewById(R.id.error_dialog_ok);
-            dialogButton.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    rv_items.setVisibility(View.VISIBLE);
-                    dialog.dismiss();
-
-                    /*String url = Constant.WEB_URL+"ShoopingList/ShoppingListByTYC?shoppinglistid="+appUtil.getPrefrence("ShoppingListId")+"&MemberId="+appUtil.getPrefrence("MemberId");
-                    StringRequest  jsonObjectRequest = new StringRequest (Request.Method.DELETE, url,
-                            new Response.Listener<String >() {
-                                @Override
-                                public void onResponse(String  response) {
-                                    Log.i("ViewRemoveAllDialog", String.valueOf(response));
-                                    //shoppingListLoad();
-                                    //removeOwnItem();
-                                }
-                            }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Log.i("fail", String.valueOf(error));
-                            // messageLoad();
-                            removeOwnItem();
-                        }
-                    }){
-                        @Override
-                        public String getBodyContentType() {
-                            return "application/json; charset=utf-8";
-                        }
-                        @Override
-                        public Map<String, String> getHeaders() {
-                            Map<String, String> params = new HashMap<String, String>();
-                            params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
-                            return params;
-                        }
-                    };
-                    RetryPolicy policy = new DefaultRetryPolicy
-                            (50000,
-                                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-                    jsonObjectRequest.setRetryPolicy(policy);
-                    try {
-                        mQueue.add(jsonObjectRequest);
                     }
-                    catch (Exception e)
-                    {
-                        e.printStackTrace();
-                    }*/
-
-                }
-            });
-
-            Button dialogButtonCancel = (Button) dialog.findViewById(R.id.error_dialog_cancel);
-            dialogButtonCancel.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    rv_items.setVisibility(View.VISIBLE);
-                    dialog.dismiss();
-                }
-            });
-
-            dialog.show();
-
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //removeSingleOwnItem(shopping.getShoppingListItemID());
+                Log.i("fail", String.valueOf(error));
+            }
+        }){
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                params.put("Content-Type", "application/json ;charset=utf-8");
+                return params;
+            }
+        };
+        RetryPolicy policy = new DefaultRetryPolicy
+                (50000,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        jsonObjectRequest.setRetryPolicy(policy);
+        try {
+            mQueue.add(jsonObjectRequest);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
         }
     }
-
-
 
 }

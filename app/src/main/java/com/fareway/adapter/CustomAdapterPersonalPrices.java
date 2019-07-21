@@ -80,7 +80,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 tv_coupon_flag,tv_varieties,limit,must,add_plus,add_minus,additional_offers;
         public ImageView imv_item, imv_info,imv_status,imv_status_mul,coupon_badge;
         private LinearLayout circular_layout,circular_layout_mul,bottomLayout,liner_save,count_product_number,remove_layout,
-                remove_layout_mul;
+                remove_layout_mul,item_layout_tile;
         private CardView card_view;
         private RelativeLayout imv_layout;
         public MyViewHolder(View view) {
@@ -109,6 +109,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             coupon_badge = (ImageView) view.findViewById(R.id.coupon_badge);
             tv_varieties = view.findViewById(R.id.tv_varieties);
             liner_save = (LinearLayout) view.findViewById(R.id.liner_save);
+            item_layout_tile = (LinearLayout) view.findViewById(R.id.item_layout_tile);
+
             limit = view.findViewById(R.id.limit);
 
             //  imv_more = (ImageView) view.findViewById(R.id.imv_more);
@@ -169,14 +171,20 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
                 }
             });
+            imv_item.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener.onProductSelected(productListFiltered.get(getAdapterPosition()));
+                }
+            });
 
-            view.setOnClickListener(new View.OnClickListener() {
+            /*view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
                     // send selected contact in callback
                     listener.onProductSelected(productListFiltered.get(getAdapterPosition()));
                 }
-            });
+            });*/
         }
     }
 
@@ -211,6 +219,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
         final Product product = productListFiltered.get(position);
         if(MainFwActivity.singleView) {
+            holder.item_layout_tile.setVisibility(View.VISIBLE);
             holder.circular_layout.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -584,6 +593,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     holder.additional_offers.setVisibility(View.GONE);
                 }
                 Log.i("elseincircular", String.valueOf(product.getInCircular()));
+
                 if (product.getPrimaryOfferTypeId() == 3) {
                     holder.limit.setGravity(Gravity.CENTER);
                     String saveDate = product.getValidityEndDate();
@@ -693,7 +703,9 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
                     }
 
-                } else if (product.getPrimaryOfferTypeId() == 2) {
+                }
+
+                else if (product.getPrimaryOfferTypeId() == 2) {
                     String saveDate = product.getValidityEndDate();
                     if (saveDate.length()==0){
                         // getTokenkey();
@@ -949,7 +961,9 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
                     }
 
-                }else if (product.getPrimaryOfferTypeId() == 1) {
+                }
+
+                else if (product.getPrimaryOfferTypeId() == 1) {
                     String saveDate = product.getValidityEndDate();
                     holder.limit.setGravity(Gravity.CENTER);
                     if (saveDate.length()==0){
@@ -1036,6 +1050,18 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }
 
                 }
+
+                else if (product.getPrimaryOfferTypeId()==420){
+                    holder.item_layout_tile.setVisibility(View.GONE);
+                    // Gets linearlayout
+                    //LinearLayout layout = findViewById(R.id.numberPadLayout);
+// Gets the layout params that will allow you to resize the layout
+                    ViewGroup.LayoutParams params = holder.item_layout_tile.getLayoutParams();
+// Changes the height and width to the specified *pixels*
+                    params.height = 30;
+                    // params.width = 100;
+                    holder.item_layout_tile.setLayoutParams(params);
+                }
             }
 
             if (product.getOfferDefinitionId()==5){
@@ -1063,6 +1089,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
         }
         else {
+            holder.item_layout_tile.setVisibility(View.VISIBLE);
             holder.circular_layout_mul.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -1557,7 +1584,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
                     }
 
-                } else if (product.getPrimaryOfferTypeId() == 2) {
+                }
+                else if (product.getPrimaryOfferTypeId() == 2) {
                     String saveDate = product.getValidityEndDate();
                     if (saveDate.length()==0){
                         // getTokenkey();
@@ -1814,7 +1842,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
                     }
 
-                }else if (product.getPrimaryOfferTypeId() == 1) {
+                }
+                else if (product.getPrimaryOfferTypeId() == 1) {
                     holder.limit.setGravity(Gravity.CENTER);
                     String saveDate = product.getValidityEndDate();
                     if (saveDate.length()==0){
@@ -1900,6 +1929,16 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
                     }
 
+                }else if (product.getPrimaryOfferTypeId()==420){
+                    holder.item_layout_tile.setVisibility(View.GONE);
+                    // Gets linearlayout
+                    //LinearLayout layout = findViewById(R.id.numberPadLayout);
+// Gets the layout params that will allow you to resize the layout
+                    ViewGroup.LayoutParams params = holder.item_layout_tile.getLayoutParams();
+// Changes the height and width to the specified *pixels*
+                    params.height = 30;
+                   // params.width = 100;
+                    holder.item_layout_tile.setLayoutParams(params);
                 }
             }
             if (product.getOfferDefinitionId()==5){

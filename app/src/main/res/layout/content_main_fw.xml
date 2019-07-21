@@ -73,13 +73,97 @@
         android:scrollbars="vertical"
         android:visibility="gone"/>
 
-    <android.support.v7.widget.RecyclerView
-        android:id="@+id/rv_items"
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
+
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:clipToPadding="false"
-        android:scrollbars="vertical"
-        android:paddingBottom="@dimen/_40sdp"/>
+        android:orientation="vertical" >
+        <android.support.v7.widget.RecyclerView
+            android:id="@+id/rv_items"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:clipToPadding="false"
+            android:scrollbars="horizontal"
+            android:paddingBottom="@dimen/_40sdp"/>
+
+        <RelativeLayout
+            android:paddingBottom="@dimen/_60sdp"
+            android:gravity="center"
+            android:visibility="gone"
+            android:id="@+id/search_message"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+            <TextView
+                android:fontFamily="@font/roboto"
+                android:textColor="@color/black"
+                android:textAlignment="center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="LOOKS LIKE THERE AREN’T MANY TO SHOW."
+                android:id="@+id/error_header"
+                android:textStyle="bold"
+                android:textSize="14sp"/>
+
+            <TextView
+                android:textSize="12sp"
+                android:textAlignment="center"
+                android:layout_below="@+id/error_header"
+                android:textColor="@color/black"
+                android:fontFamily="@font/roboto"
+                android:id="@+id/error_dialog_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:padding="10dp"
+                android:text="We are only showing with a Deal, Coupon or Sale Price. Our stores still might carry it and if we do its at the right price."/>
+
+            <LinearLayout
+                android:gravity="center"
+                android:orientation="horizontal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/error_dialog_info">
+
+
+                <TextView
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:gravity="center"
+                    android:padding="@dimen/_2sdp"
+                    android:textSize="12sp"
+                    android:layout_gravity="center"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:id="@+id/btn_return_pd"
+                    android:layout_width="@dimen/_130sdp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/red"
+                    android:textAllCaps="false"
+                    android:text="Return to Personal Ad"/>
+
+                <TextView
+                    android:layout_marginLeft="@dimen/_10sdp"
+                    android:gravity="center"
+                    android:padding="@dimen/_2sdp"
+                    android:textSize="12sp"
+                    android:layout_gravity="center"
+                    android:textStyle="bold"
+                    android:textColor="@color/white"
+                    android:id="@+id/btn_try_another_search"
+                    android:layout_width="@dimen/_130sdp"
+                    android:layout_height="wrap_content"
+                    android:background="@color/red"
+                    android:textAllCaps="false"
+                    android:text="Try Another Search"/>
+            </LinearLayout>
+        </RelativeLayout>
+
+    </LinearLayout>
+
+    </ScrollView>
 
     <LinearLayout
         android:background="@color/white"
@@ -370,11 +454,13 @@
                 android:gravity="right"
                 android:padding="@dimen/_5sdp">
                 <ImageView
+                    android:id="@+id/email"
                     android:padding="@dimen/_5sdp"
                     android:layout_width="@dimen/_30sdp"
                     android:layout_height="@dimen/_30sdp"
                     android:src="@drawable/iconmail"/>
                 <ImageView
+                    android:id="@+id/print"
                     android:padding="@dimen/_5sdp"
                     android:layout_width="@dimen/_30sdp"
                     android:layout_height="@dimen/_30sdp"
@@ -401,6 +487,31 @@
             android:layout_weight="1"
             android:background="@color/red" />
         <LinearLayout
+            android:gravity="left"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+            <Button
+                android:textAllCaps="false"
+                android:padding="@dimen/_10sdp"
+                android:background="@color/white"
+                android:id="@+id/shopping_list_fragment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Shopping List"/>
+            <Button
+                android:background="@color/light_grey"
+                android:textColor="@color/grey"
+                android:textAllCaps="false"
+                android:padding="@dimen/_10sdp"
+                android:id="@+id/activated_offer_fragment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Activated Offers"/>
+
+        </LinearLayout>
+<!--
+        <LinearLayout
             android:layout_marginTop="@dimen/_5sdp"
             android:layout_marginBottom="@dimen/_10sdp"
             android:layout_width="match_parent"
@@ -419,13 +530,15 @@
                     android:text="Description"/>
 
             </LinearLayout>
+
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal"
                 android:gravity="right"
-                android:layout_marginRight="@dimen/_60sdp">
+                android:layout_marginRight="@dimen/_40sdp">
                 <TextView
+                    android:id="@+id/shopping_date"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:layout_width="wrap_content"
@@ -434,7 +547,121 @@
 
             </LinearLayout>
 
+        </LinearLayout> -->
+
+        <LinearLayout
+            android:id="@+id/linear_shopping_list_tab"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="1"
+            android:layout_marginTop="@dimen/_10sdp"
+            android:layout_marginBottom="@dimen/_10sdp">
+
+            <TextView
+                android:layout_marginLeft="@dimen/_10sdp"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Description"
+                android:layout_weight=".4"
+                android:inputType="textMultiLine"/>
+            <TextView
+                android:id="@+id/tv_location"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_weight=".2"
+                android:inputType="textMultiLine"/>
+            <TextView
+                android:id="@+id/tv_total_spent"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:textAlignment="center"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="QTY"
+                android:layout_weight=".1"
+                android:inputType="textMultiLine"/>
+            <TextView
+                android:id="@+id/tv_total_save"
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:textAlignment="center"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Price"
+                android:layout_weight=".15"
+                android:inputType="textMultiLine"/>
+            <TextView
+                android:textStyle="bold"
+                android:textColor="#000"
+                android:textAlignment="center"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text=""
+                android:layout_weight=".15"
+                android:inputType="textMultiLine"/>
+
         </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/linear_coupon_tab"
+            xmlns:android="http://schemas.android.com/apk/res/android"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="1"
+                android:layout_marginTop="@dimen/_10sdp"
+                android:layout_marginBottom="@dimen/_10sdp">
+
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight=".60"
+                    android:orientation="vertical">
+                    <TextView
+                        android:layout_marginLeft="@dimen/_10sdp"
+                        android:textStyle="bold"
+                        android:textColor="#000"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Description"
+                        android:inputType="textMultiLine"/>
+
+                </LinearLayout>
+
+                <TextView
+                    android:layout_marginRight="@dimen/_10sdp"
+                    android:gravity="right"
+                    android:textStyle="bold"
+                    android:textColor="#000"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:text="Expiration Date"
+                    android:layout_weight=".40"
+                    android:inputType="textMultiLine"/>
+
+            </LinearLayout>
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:background="@color/grey" />
+
+
+        </LinearLayout>
+
+
+
 
     </LinearLayout>
 

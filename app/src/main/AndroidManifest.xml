@@ -15,7 +15,9 @@
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
+        <activity android:name=".activity.ShoppingListPrint">
 
+        </activity>
         <activity
             android:name=".activity.SplashFw"
             android:theme="@style/FarewayMainTheme">
@@ -50,8 +52,9 @@
         <activity
             android:name=".activity.PurchaseHistoryDetail"
             android:theme="@style/FarewayMainTheme" />
-        <activity android:name=".activity.ShoppingFw"
-            android:theme="@style/FarewayMainTheme"/>
+        <activity
+            android:name=".activity.ShoppingFw"
+            android:theme="@style/FarewayMainTheme" />
 
         <meta-data
             android:name="preloaded_fonts"

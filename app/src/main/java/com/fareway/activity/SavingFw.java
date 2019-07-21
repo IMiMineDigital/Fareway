@@ -92,9 +92,9 @@ public class SavingFw extends AppCompatActivity {
                                         message= root.getJSONArray("message");
                                         //fetchProduct();
                                         for (int i = 0; i < message.length(); i++) {
-                                            tv_pty_lbl.setText(message.getJSONObject(i).names().getString(0).replace("PersonalDealSaving","Personal Deals"));
+                                            tv_pty_lbl.setText(message.getJSONObject(i).names().getString(0).replace("PersonalDealSaving","My Personal Deals"));
                                             tv_pty.setText("$"+message.getJSONObject(i).getString("PersonalDealSaving"));
-                                            tv_tyc_lbl.setText(message.getJSONObject(i).names().getString(1).replace("CouponSaving","Personal Coupons"));
+                                            tv_tyc_lbl.setText(message.getJSONObject(i).names().getString(1).replace("CouponSaving","Digital Coupons"));
                                             tv_tyc.setText("$"+message.getJSONObject(i).getString("CouponSaving"));
                                             tv_pc_lbl.setText(message.getJSONObject(i).names().getString(2).replace("TPRSaving","Sale Items"));
                                             tv_pc.setText("$"+message.getJSONObject(i).getString("TPRSaving"));

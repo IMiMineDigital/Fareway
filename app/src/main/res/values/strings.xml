@@ -219,4 +219,8 @@
     <string name="play_again_desc">To see the welcome slider again, goto Settings -> apps -> welcome slider -> clear data</string>
     <string name="play_again">Play Again</string>
 
+    <string name="webapp_name">webapp_name</string>
+    <string name="print_complete">print_complete</string>
+    <string name="print_failed">print_failed</string>
+
 </resources>

@@ -4,13 +4,16 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.content.ActivityNotFoundException;
 import android.content.DialogInterface;
 import android.content.Intent;
+import android.net.Uri;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.widget.Button;
@@ -63,12 +66,17 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
     private RequestQueue mQueue;
     private ArrayList<Shopping> shoppingArrayList;
     public static JSONArray shopping;
+    public static JSONArray activatedOffer;
     private ShoppingListAdapter shoppingListAdapter;
     private static RecyclerView rv_shopping_list_items;
     private TextView tv_number_item;
-    TextView tv;
-    private ImageView imv_all_delete;
+   // TextView tv;
+    private ImageView imv_all_delete,print,email;
     private TextView add_item;
+    public static JSONArray shoppingId;
+    Button shopping_list_fragment,activated_offer_fragment;
+    LinearLayout linear_shopping_list_tab,linear_coupon_tab;
+    public static   int z=0;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -104,11 +112,169 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
 
         add_item=findViewById(R.id.add_item);
         add_item.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+
+                // get prompts.xml view
+                LayoutInflater li = LayoutInflater.from(activity);
+                View promptsView = li.inflate(R.layout.prompts_add_item, null);
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        activity);
+
+                // set prompts.xml to alertdialog builder
+                alertDialogBuilder.setView(promptsView);
+
+                final EditText userInput = (EditText) promptsView
+                        .findViewById(R.id.editTextDialogUserInput);
+
+                // set dialog message
+                alertDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton("Add My Items",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        // get user input and set it to result
+                                        // edit text
+                                        //result.setText(userInput.getText());
+                                        addShoppingItem(userInput.getText().toString());
+                                        //Log.i("text", String.valueOf(userInput.getText()));
+                                    }
+                                })
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // show it
+                alertDialog.show();
+
+            }
+        });
+
+        linear_shopping_list_tab=findViewById(R.id.linear_shopping_list_tab);
+        linear_coupon_tab=findViewById(R.id.linear_coupon_tab);
+
+        shopping_list_fragment=findViewById(R.id.shopping_list_fragment);
+        shopping_list_fragment.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Log.i("anshuman","Singh");
-                withEditText();
 
+                linear_shopping_list_tab.setVisibility(View.VISIBLE);
+                linear_coupon_tab.setVisibility(View.GONE);
+
+                if (z==0){
+                    shopping_list_fragment.setBackground(getResources().getDrawable(R.color.white));
+                    shopping_list_fragment.setTextColor(getResources().getColor(R.color.black));
+                    activated_offer_fragment.setBackground(getResources().getDrawable(R.color.light_grey));
+                    activated_offer_fragment.setTextColor(getResources().getColor(R.color.grey));
+                    z=1;
+                    fetchShopping();
+                }else {
+                    shopping_list_fragment.setBackground(getResources().getDrawable(R.color.white));
+                    shopping_list_fragment.setTextColor(getResources().getColor(R.color.black));
+                    activated_offer_fragment.setBackground(getResources().getDrawable(R.color.light_grey));
+                    activated_offer_fragment.setTextColor(getResources().getColor(R.color.grey));
+                    z=1;
+                }
+
+            }
+        });
+        activated_offer_fragment=findViewById(R.id.activated_offer_fragment);
+        activated_offer_fragment.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                linear_coupon_tab.setVisibility(View.VISIBLE);
+                linear_shopping_list_tab.setVisibility(View.GONE);
+                if (z==1){
+                    activated_offer_fragment.setBackground(getResources().getDrawable(R.color.white));
+                    activated_offer_fragment.setTextColor(getResources().getColor(R.color.black));
+                    shopping_list_fragment.setBackground(getResources().getDrawable(R.color.light_grey));
+                    shopping_list_fragment.setTextColor(getResources().getColor(R.color.grey));
+                    z=0;
+                    fetchActivatedOffer();
+                }else {
+                    activated_offer_fragment.setBackground(getResources().getDrawable(R.color.white));
+                    activated_offer_fragment.setTextColor(getResources().getColor(R.color.black));
+                    shopping_list_fragment.setBackground(getResources().getDrawable(R.color.light_grey));
+                    shopping_list_fragment.setTextColor(getResources().getColor(R.color.grey));
+                    z=0;
+                    fetchActivatedOffer();
+                }
+                // rv_shopping_list_items.setVisibility(View.GONE);
+            }
+        });
+
+        email=findViewById(R.id.email);
+        email.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View arg0) {
+
+                // get prompts.xml view
+                LayoutInflater li = LayoutInflater.from(activity);
+                View promptsView = li.inflate(R.layout.prompts_send_email, null);
+
+                AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(
+                        activity);
+
+                // set prompts.xml to alertdialog builder
+                alertDialogBuilder.setView(promptsView);
+
+                final EditText userInput = (EditText) promptsView
+                        .findViewById(R.id.editTextDialogUserInput);
+
+                // set dialog message
+                alertDialogBuilder
+                        .setCancelable(false)
+                        .setPositiveButton("Send",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        // get user input and set it to result
+                                        // edit text
+                                        //result.setText(userInput.getText());
+                                        sendEmailShoppingList(userInput.getText().toString());
+                                        //Log.i("text", String.valueOf(userInput.getText()));
+                                    }
+                                })
+                        .setNegativeButton("Cancel",
+                                new DialogInterface.OnClickListener() {
+                                    public void onClick(DialogInterface dialog,int id) {
+                                        dialog.cancel();
+                                    }
+                                });
+
+                // create alert dialog
+                AlertDialog alertDialog = alertDialogBuilder.create();
+
+                // show it
+                alertDialog.show();
+
+            }
+        });
+        print=findViewById(R.id.print);
+        print.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                String urlString = "https://fwstaging.immdemo.net/web/printshoppinglist.aspx?shopperid="+appUtil.getPrefrence("ShopperID")+"&memberid="+appUtil.getPrefrence("MemberId");
+                Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlString));
+                intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+                intent.setPackage("com.android.chrome");
+                try {
+                    activity.startActivity(intent);
+                } catch (ActivityNotFoundException ex) {
+                    // Chrome browser presumably not installed and open Kindle Browser
+                    intent.setPackage("com.amazon.cloud9");
+                    activity.startActivity(intent);
+                }
             }
         });
 
@@ -144,7 +310,8 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                 if (appUtil.getPrefrence("isLogin").equalsIgnoreCase("yes")==true) {
                     // getTokenkey();
                     if (currentDate.compareTo(saveDate) < 0) {
-                      shoppingListLoad();
+                      //shoppingListLoad();
+                        shoppingListIdLoad();
 
                     } else {
                         getTokenkey();
@@ -186,6 +353,123 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                         new Response.Listener<String>(){
                             @Override
                             public void onResponse(String response) {
+                                Log.i("shoppingList Response", response.toString());
+
+                                try {
+                                    JSONObject root = new JSONObject(response);
+                                    root.getString("errorcode");
+                                    Log.i("errorcode", root.getString("errorcode"));
+                                    Log.i("message", root.getString("message"));
+
+
+                                    JSONObject root2 = new JSONObject(root.getString("message"));
+                                    if (root.getString("errorcode").equals("0")){
+                                        // progressDialog.dismiss();
+                                        Log.i("anshuman","test");
+
+                                        try
+                                        {
+                                            shopping= root2.getJSONArray("ShoppingListItems");
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            shopping = null;
+                                        }
+
+                                        if (shopping==null ){
+                                            Log.i("shopping","test");
+                                            shoppingArrayList.clear();
+                                            shoppingListAdapter.notifyDataSetChanged();
+                                            tv_number_item.setText(String.valueOf(0));
+                                            //tv.setText(String.valueOf(0));
+                                            activatedOffersListIdLoad();
+
+                                        }else {
+                                            Log.i("shopping", String.valueOf(shopping));
+
+                                            for (int i = 0; i < shopping.length(); i++) {
+                                            }
+                                            tv_number_item.setText(String.valueOf(shopping.length()));
+                                            //tv.setText(String.valueOf(shopping.length()));
+
+                                            /*shoppingArrayList.clear();
+                                            List<Shopping> items = new Gson().fromJson(shopping.toString(), new TypeToken<List<Shopping>>() {
+                                            }.getType());
+                                            shoppingArrayList.addAll(items);
+                                            shoppingListAdapter.notifyDataSetChanged();*/
+                                            activatedOffersListIdLoad();
+                                        }
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Volley error resp", "error----" + error.getMessage());
+                        error.printStackTrace();
+                          progressDialog.dismiss();
+                    }
+                })
+                {
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/x-www-form-urlencoded";
+                    }
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        // params.put("UserName", et_email.getText().toString().trim());
+                        // params.put("password", et_pwd.getText().toString().trim());
+                        //params.put("Device", "5");
+                        return params;
+                    }
+                    //this is the part, that adds the header to the request
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        //params.put("Content-Type", "application/x-www-form-urlencoded");
+                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (50000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    // FarewayApplication.getInstance().addToRequestQueue(jsonObjectRequest);
+                    mQueue.add(jsonObjectRequest);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                 progressDialog.dismiss();
+//                displayAlert();
+            }
+        } else {
+            alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                    getString(R.string.ok),getString(R.string.alert));
+            alertDialog.show();
+            //Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public void activatedOffersListIdLoad() {
+        if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+            try {
+                //progressDialog = new ProgressDialog(activity);
+                //progressDialog.setMessage("Processing");
+                //progressDialog.show();
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET,Constant.WEB_URL + "ShoopingList/ActivatedCoupons?MemberId="+appUtil.getPrefrence("MemberId")+"&CategoryID=2",
+                        new Response.Listener<String>(){
+                            @Override
+                            public void onResponse(String response) {
                                 Log.i("Fareway response Main", response.toString());
 
                                 try {
@@ -202,33 +486,34 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
 
                                         try
                                         {
-                                            shopping= root2.getJSONArray("ShoppingListItems");
+                                            activatedOffer= root2.getJSONArray("WCouponsDetails");
                                         }
                                         catch (Exception ex)
                                         {
-                                            shopping = null;
+                                            activatedOffer = null;
                                         }
 
-                                        if (shopping==null ){
+                                        if (activatedOffer==null ){
                                             Log.i("anshuman","test");
                                             shoppingArrayList.clear();
                                             shoppingListAdapter.notifyDataSetChanged();
-                                            tv_number_item.setText(String.valueOf(0));
-                                           // tv.setText(String.valueOf(0));
+                                            // tv_number_item.setText(String.valueOf(0));
+                                            // tv.setText(String.valueOf(0));
 
                                         }else {
-                                            Log.i("shopping", String.valueOf(shopping));
+                                            Log.i("activatedOffer", String.valueOf(activatedOffer));
 
-                                            for (int i = 0; i < shopping.length(); i++) {
+                                            for (int i = 0; i < activatedOffer.length(); i++) {
                                             }
-                                            tv_number_item.setText(String.valueOf(shopping.length()));
-                                            //tv.setText(String.valueOf(shopping.length()));
+                                            // tv_number_item.setText(String.valueOf(shopping.length()));
+                                            // tv.setText(String.valueOf(shopping.length()));
 
-                                            shoppingArrayList.clear();
-                                            List<Shopping> items = new Gson().fromJson(shopping.toString(), new TypeToken<List<Shopping>>() {
+                                         /* shoppingArrayList.clear();
+                                            List<Shopping> items = new Gson().fromJson(activatedOffer.toString(), new TypeToken<List<Shopping>>() {
                                             }.getType());
                                             shoppingArrayList.addAll(items);
-                                            shoppingListAdapter.notifyDataSetChanged();
+                                            shoppingListAdapter.notifyDataSetChanged(); */
+                                            fetchShopping();
                                         }
                                     }
                                 } catch (JSONException e) {
@@ -291,21 +576,55 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
         }
     }
 
-    @Override
-    public void onShoppingItemSelected(Shopping shopping) {
+    private void fetchShopping(){
+        // Log.i("shopping", String.valueOf(shopping.length()));
+        shopping_list_fragment.setBackground(getResources().getDrawable(R.color.white));
+        shopping_list_fragment.setTextColor(getResources().getColor(R.color.black));
+        activated_offer_fragment.setBackground(getResources().getDrawable(R.color.light_grey));
+        activated_offer_fragment.setTextColor(getResources().getColor(R.color.grey));
+        z=1;
 
+        if (shopping == null) {
+            //no students
+            shoppingArrayList.clear();
+        }else {
+            shoppingArrayList.clear();
+            List<Shopping> items = new Gson().fromJson(shopping.toString(), new TypeToken<List<Shopping>>() {
+            }.getType());
+            shoppingArrayList.addAll(items);
+            shoppingListAdapter.notifyDataSetChanged();
+        }
+
+    }
+
+    @Override
+    public void onShoppingItemSelected(final Shopping shopping) {
+        //shoppingListLoad();
+
+        Log.i("remove","remove");
+        //https://fwstagingapi.immdemo.net/api/v1/ShoppingList/List/MyOwnItem?ShoppingListOwnItemID=404
         String url = Constant.WEB_URL+Constant.SHOPPINGLISTSINGAL+shopping.getShoppingListItemID()+"&MemberId="+appUtil.getPrefrence("MemberId");
         StringRequest  jsonObjectRequest = new StringRequest (Request.Method.DELETE, url,
                 new Response.Listener<String >() {
                     @Override
                     public void onResponse(String  response) {
                         Log.i("success", String.valueOf(response));
-                        shoppingListLoad();
+                        //shoppingListLoad();
+                        fetchShoppingListLoad();
+                        // remove_layout_detail.setVisibility(View.GONE);
+                        //    count_product_number_detail.setVisibility(View.GONE);
+                        // product.setClickCount(1);
+                        // tv_status_detaile.setText("Add");
+                        // circular_layout_detaile.setBackground(getResources().getDrawable(R.drawable.circular_red_bg));
+                        //  imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.addwhite));
+                        //remove quantity
+                        //  SetRemoveActivateDetail(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
 
                     }
                 }, new Response.ErrorListener() {
             @Override
             public void onErrorResponse(VolleyError error) {
+                removeSingleOwnItem(shopping.getShoppingListItemID());
                 Log.i("fail", String.valueOf(error));
             }
         }){
@@ -337,6 +656,118 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
 
     }
 
+    public void fetchShoppingListLoad() {
+        if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+            try {
+                //progressDialog = new ProgressDialog(activity);
+                //progressDialog.setMessage("Processing");
+                //progressDialog.show();
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET,Constant.WEB_URL + Constant.ShoppingList+"MemberId="+appUtil.getPrefrence("MemberId")+"&CategoryID=1",
+                        new Response.Listener<String>(){
+                            @Override
+                            public void onResponse(String response) {
+                                Log.i("Fareway response Main", response.toString());
+
+                                try {
+                                    JSONObject root = new JSONObject(response);
+                                    root.getString("errorcode");
+                                    Log.i("errorcode", root.getString("errorcode"));
+                                    Log.i("message", root.getString("message"));
+
+
+                                    JSONObject root2 = new JSONObject(root.getString("message"));
+                                    if (root.getString("errorcode").equals("0")){
+                                        //progressDialog.dismiss();
+                                        Log.i("anshuman","test");
+
+                                        try
+                                        {
+                                            shopping= root2.getJSONArray("ShoppingListItems");
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            shopping = null;
+                                        }
+
+                                        if (shopping==null ){
+                                            Log.i("anshuman","test");
+                                            shoppingArrayList.clear();
+                                            shoppingListAdapter.notifyDataSetChanged();
+                                            tv_number_item.setText(String.valueOf(0));
+
+
+                                        }else {
+                                            Log.i("shopping", String.valueOf(shopping));
+
+                                            for (int i = 0; i < shopping.length(); i++) {
+                                            }
+                                            tv_number_item.setText(String.valueOf(shopping.length()));
+                                            shoppingArrayList.clear();
+                                            List<Shopping> items = new Gson().fromJson(shopping.toString(), new TypeToken<List<Shopping>>() {
+                                            }.getType());
+                                            shoppingArrayList.addAll(items);
+                                            shoppingListAdapter.notifyDataSetChanged();
+                                        }
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Volley error resp", "error----" + error.getMessage());
+                        error.printStackTrace();
+                        //progressDialog.dismiss();
+                    }
+                })
+                {
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/x-www-form-urlencoded";
+                    }
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        // params.put("UserName", et_email.getText().toString().trim());
+                        // params.put("password", et_pwd.getText().toString().trim());
+                        //params.put("Device", "5");
+                        return params;
+                    }
+                    //this is the part, that adds the header to the request
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        //params.put("Content-Type", "application/x-www-form-urlencoded");
+                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (50000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    // FarewayApplication.getInstance().addToRequestQueue(jsonObjectRequest);
+                    mQueue.add(jsonObjectRequest);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                //progressDialog.dismiss();
+//                displayAlert();
+            }
+        } else {
+            alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                    getString(R.string.ok),getString(R.string.alert));
+            alertDialog.show();
+            //Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
+        }
+    }
 
     @Override
     public boolean onSupportNavigateUp() {
@@ -366,7 +797,8 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                                   //  Intent i = new Intent(activity, LoginFw.class);
                                   //  startActivity(i);
                                  //   finish();
-                                    shoppingListLoad();
+                                   // shoppingListLoad();
+                                    shoppingListIdLoad();
                                 } catch (Throwable e) {
                                     //  progressDialog.dismiss();
                                     Log.i("Excep", "error----" + e.getMessage());
@@ -565,6 +997,60 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
 
     }
 
+    public void removeSingleOwnItem(String shoppingListItemID){
+        Log.i("remove","remove");
+        //https://fwstagingapi.immdemo.net/api/v1/ShoppingList/List/MyOwnItem?ShoppingListOwnItemID=404
+        String url = Constant.WEB_URL+"ShoppingList/List/MyOwnItem?ShoppingListOwnItemID="+shoppingListItemID+"&MemberId="+appUtil.getPrefrence("MemberId");
+        StringRequest  jsonObjectRequest = new StringRequest (Request.Method.DELETE, url,
+                new Response.Listener<String >() {
+                    @Override
+                    public void onResponse(String  response) {
+                        Log.i("success", String.valueOf(response));
+                        //shoppingListLoad();
+                        fetchShoppingListLoad();
+                        // remove_layout_detail.setVisibility(View.GONE);
+                        //    count_product_number_detail.setVisibility(View.GONE);
+                        // product.setClickCount(1);
+                        // tv_status_detaile.setText("Add");
+                        // circular_layout_detaile.setBackground(getResources().getDrawable(R.drawable.circular_red_bg));
+                        //  imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.addwhite));
+                        //remove quantity
+                        //  SetRemoveActivateDetail(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
+
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                //removeSingleOwnItem(shopping.getShoppingListItemID());
+                Log.i("fail", String.valueOf(error));
+            }
+        }){
+            @Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
+            @Override
+            public Map<String, String> getHeaders() {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                params.put("Content-Type", "application/json ;charset=utf-8");
+                return params;
+            }
+        };
+        RetryPolicy policy = new DefaultRetryPolicy
+                (50000,
+                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        jsonObjectRequest.setRetryPolicy(policy);
+        try {
+            mQueue.add(jsonObjectRequest);
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
+        }
+    }
+
     public void withEditText() {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -598,7 +1084,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                             public void onResponse(String response) {
                                 Log.i("Fareway", response.toString());
                                 progressDialog.dismiss();
-                                shoppingListLoad();
+                                fetchShoppingListLoad();
                             }
                         }, new Response.ErrorListener() {
                     @Override
@@ -673,7 +1159,256 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
             alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
                     getString(R.string.ok),getString(R.string.alert));
             alertDialog.show();
+//            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
+        }
+    }
 
+    private void shoppingListIdLoad() {
+        if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+            try {
+                //progressDialog = new ProgressDialog(activity);
+                //progressDialog.setMessage("Processing");
+                //progressDialog.show();
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET,Constant.WEB_URL + "ShoppingList/List?"+"MemberId="+appUtil.getPrefrence("MemberId")+"&CategoryID=1",
+                        new Response.Listener<String>(){
+                            @Override
+                            public void onResponse(String response) {
+                                Log.i("ShoppingListId", response.toString());
+
+                                try {
+                                    JSONObject root = new JSONObject(response);
+                                    root.getString("errorcode");
+                                    Log.i("errorcode", root.getString("errorcode"));
+                                    Log.i("message", root.getString("message"));
+
+
+                                    JSONObject root2 = new JSONObject(root.getString("message"));
+                                    if (root.getString("errorcode").equals("0")){
+                                        //progressDialog.dismiss();
+                                        Log.i("anshuman","test");
+
+                                        try
+                                        {
+                                            shoppingId= root2.getJSONArray("ListName");
+                                        }
+                                        catch (Exception ex)
+                                        {
+                                            shoppingId = null;
+                                        }
+
+                                        if (shoppingId==null ){
+                                            Log.i("shoppingId","test");
+                                        /*    shoppingArrayList.clear();
+                                            shoppingListAdapter.notifyDataSetChanged();
+                                            tv_number_item.setText(String.valueOf(0));
+                                            tv.setText(String.valueOf(0));*/
+
+                                        }else {
+                                            Log.i("shoppingId", String.valueOf(shoppingId));
+
+                                            for (int i = 0; i < shoppingId.length(); i++) {
+                                                JSONObject jsonParam= shoppingId.getJSONObject(i);
+                                                appUtil.setPrefrence("ShoppingListId", jsonParam.getString("ShoppingListId"));
+                                                Log.i("ShoppingListId",appUtil.getPrefrence("ShoppingListId"));
+                                                shoppingListLoad();
+
+                                            }
+                                           /*   tv_number_item.setText(String.valueOf(shopping.length()));
+                                            tv.setText(String.valueOf(shopping.length()));
+
+                                            shoppingArrayList.clear();
+                                            List<Shopping> items = new Gson().fromJson(shopping.toString(), new TypeToken<List<Shopping>>() {
+                                            }.getType());
+                                            shoppingArrayList.addAll(items);
+                                            shoppingListAdapter.notifyDataSetChanged();*/
+                                        }
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Volley error resp", "error----" + error.getMessage());
+                        error.printStackTrace();
+                        // progressDialog.dismiss();
+                    }
+                })
+                {
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/x-www-form-urlencoded";
+                    }
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        // params.put("UserName", et_email.getText().toString().trim());
+                        // params.put("password", et_pwd.getText().toString().trim());
+                        //params.put("Device", "5");
+                        return params;
+                    }
+                    //this is the part, that adds the header to the request
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        //params.put("Content-Type", "application/x-www-form-urlencoded");
+                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (50000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    // FarewayApplication.getInstance().addToRequestQueue(jsonObjectRequest);
+                    mQueue.add(jsonObjectRequest);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                //  progressDialog.dismiss();
+//                displayAlert();
+            }
+        } else {
+            alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                    getString(R.string.ok),getString(R.string.alert));
+            alertDialog.show();
+            //Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void fetchActivatedOffer(){
+        activated_offer_fragment.setBackground(getResources().getDrawable(R.color.white));
+        activated_offer_fragment.setTextColor(getResources().getColor(R.color.black));
+        shopping_list_fragment.setBackground(getResources().getDrawable(R.color.light_grey));
+        shopping_list_fragment.setTextColor(getResources().getColor(R.color.grey));
+        z=0;
+        if (activatedOffer == null) {
+            shoppingArrayList.clear();
+            //no students
+        }else {
+            shoppingArrayList.clear();
+            List<Shopping> items = new Gson().fromJson(activatedOffer.toString(), new TypeToken<List<Shopping>>() {
+            }.getType());
+            shoppingArrayList.addAll(items);
+            shoppingListAdapter.notifyDataSetChanged();
+        }
+/*
+        ArrayList<Events> futureEvents = new ArrayList<>();
+        Date currentDate = new Date();
+
+        for(Events events : eventsList) {
+            SimpleDateFormat formatter = new SimpleDateFormat("dd/MM/yyyy HH:mm");
+            Date date = null;
+            try {
+                date = formatter.parse(events.getEventDate() + " " + events.getEventTime());
+            } catch (ParseException e) {
+
+            }
+
+            if(currentDate.before(date)) {
+                futureEvents.add(events);
+            }
+        }
+
+        adapter.filter(futureEvents);*/
+
+    }
+
+    private void sendEmailShoppingList(final String emails){
+        if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+            try {
+                progressDialog = new ProgressDialog(activity);
+                progressDialog.setMessage("Processing");
+                progressDialog.show();
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST,Constant.WEB_URL +"ShoopingList/EmailShoppingList",
+                        new Response.Listener<String>(){
+                            @Override
+                            public void onResponse(String response) {
+                                Log.i("Fareway", response.toString());
+                                progressDialog.dismiss();
+                                //  fetchShoppingListLoad();
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Volley error resp", "error----" + error.getMessage());
+                        error.printStackTrace();
+                        progressDialog.dismiss();
+                        if (error.networkResponse == null) {
+                            progressDialog.dismiss();
+                            if (error.getClass().equals(TimeoutError.class)) {
+//                                Toast.makeText(activity, "Time out error", Toast.LENGTH_LONG).show();
+                                alertDialog=userAlertDialog.createPositiveAlert("Time out error",
+                                        getString(R.string.ok),"Fail");
+                                alertDialog.show();
+
+                            }
+                        }
+                    }
+                })
+                {
+
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/x-www-form-urlencoded";
+                    }
+
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+
+
+                        params.put("Emails", emails);
+                        params.put("MemberId", appUtil.getPrefrence("MemberId"));
+                        params.put("LoyaltyNumber", appUtil.getPrefrence("LoyaltyCard"));
+                        //params.put("password", appUtil.getPrefrence("Password"));
+                        //test
+                        params.put("Device", "5");
+                        return params;
+                    }
+
+                    //this is the part, that adds the header to the request
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/x-www-form-urlencoded");
+                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (50000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    // FarewayApplication.getInstance().addToRequestQueue(jsonObjectRequest);
+                    mQueue.add(jsonObjectRequest);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+                progressDialog.dismiss();
+//                displayAlert();
+            }
+
+        } else {
+            alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                    getString(R.string.ok),getString(R.string.alert));
+            alertDialog.show();
+//            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
         }
     }
 }

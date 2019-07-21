@@ -12,6 +12,15 @@ public class Shopping {
     private String CouponDescription;
     private String ShoppingListItemID;
     private String DisplayUPC;
+    private String Description;
+    private String ExpirationDate;
+
+    private int PrimaryOfferTypeid;
+    private String Quantity;
+    private String SalesPrice;
+
+
+
 
     public int getCategoryID() {
         return CategoryID;
@@ -99,5 +108,45 @@ public class Shopping {
 
     public void setDisplayUPC(String displayUPC) {
         DisplayUPC = displayUPC;
+    }
+
+    public String getDescription() {
+        return Description;
+    }
+
+    public void setDescription(String description) {
+        Description = description;
+    }
+
+    public int getPrimaryOfferTypeid() {
+        return PrimaryOfferTypeid;
+    }
+
+    public void setPrimaryOfferTypeid(int primaryOfferTypeid) {
+        PrimaryOfferTypeid = primaryOfferTypeid;
+    }
+
+    public String getExpirationDate() {
+        return ExpirationDate;
+    }
+
+    public void setExpirationDate(String expirationDate) {
+        ExpirationDate = expirationDate;
+    }
+
+    public String getQuantity() {
+        return Quantity;
+    }
+
+    public void setQuantity(String quantity) {
+        Quantity = quantity;
+    }
+
+    public String getSalesPrice() {
+        return SalesPrice;
+    }
+
+    public void setSalesPrice(String salesPrice) {
+        SalesPrice = salesPrice;
     }
 }
