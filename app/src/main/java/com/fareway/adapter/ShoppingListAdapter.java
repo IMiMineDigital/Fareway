@@ -42,12 +42,14 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     private List<Shopping> shoppingArrayList;
     public static AppUtilFw appUtil;
     private ShoppingListAdapterListener listener2;
+    private ShoppingListAdapterListener addShoppingListener;
+    private ShoppingListAdapterListener subShoppingListener;
     public MainFwActivity activate = new MainFwActivity();
 
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView tv_coupon_description,tv_expire_end,tv_personal_description,tv_qty_shopping,tv_amount,tv_header_title;
+        private TextView shopping_list_add,shopping_list_sub,tv_coupon_description,tv_expire_end,tv_personal_description,tv_qty_shopping,tv_amount,tv_header_title;
         private ImageView imv_go,imv_shopping_item,imv_remove_shopping;
         private LinearLayout rowLayout,liner_header_title,single_item_remove,liner_shopping_list_body,liner_coupon_description,imv_shopping_item_liner,
                 liner_personal_description,linear_personal,linear_coupon;
@@ -55,6 +57,8 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
         public MyViewHolder(View view) {
             super(view);
+            shopping_list_sub= (TextView) view.findViewById(R.id.shopping_list_sub);
+            shopping_list_add = (TextView) view.findViewById(R.id.shopping_list_add);
             tv_coupon_description = (TextView) view.findViewById(R.id.tv_coupon_description);
             tv_expire_end = (TextView) view.findViewById(R.id.tv_expire_end);
 
@@ -84,15 +88,32 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                     //tv_status.setText("Added");
                 }
             });
+            shopping_list_add.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    addShoppingListener.onShoppingaddSelected(shoppingArrayList.get(getAdapterPosition()));
+
+                }
+            });
+            shopping_list_sub.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    subShoppingListener.onShoppingsubSelected(shoppingArrayList.get(getAdapterPosition()));
+                }
+            });
         }
     }
 
 
-    public ShoppingListAdapter(Context mContext, List<Shopping> shoppingArrayList,ShoppingListAdapterListener listener2) {
+    public ShoppingListAdapter(Context mContext, List<Shopping> shoppingArrayList,ShoppingListAdapterListener listener2,
+                               ShoppingListAdapterListener addShoppingListener,ShoppingListAdapterListener subShoppingListener) {
         this.mContext = mContext;
         this.shoppingArrayList = shoppingArrayList;
         appUtil=new AppUtilFw(mContext);
         this.listener2 = listener2;
+        this.addShoppingListener = addShoppingListener;
+        this.subShoppingListener = subShoppingListener;
+
     }
 
     @Override
@@ -106,7 +127,8 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     @Override
     public void onBindViewHolder(final ShoppingListAdapter.MyViewHolder holder, final int position) {
         final Shopping shopping = shoppingArrayList.get(position);
-
+        holder.shopping_list_add.setVisibility(View.VISIBLE);
+        holder.shopping_list_sub.setVisibility(View.VISIBLE);
         if (shopping.getPrimaryOfferTypeId()==3){
             holder.linear_personal.setVisibility(View.VISIBLE);
             holder.linear_coupon.setVisibility(View.GONE);
@@ -122,6 +144,21 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             }
             holder.liner_header_title.setBackground(mContext.getResources().getDrawable(R.color.red));
             holder.tv_header_title.setText("PERSONAL DEAL");
+        }else if (shopping.getPrimaryOfferTypeId()==2){
+            holder.linear_personal.setVisibility(View.VISIBLE);
+            holder.linear_coupon.setVisibility(View.GONE);
+            holder.tv_personal_description.setText(shopping.getLongDescription());
+            holder.tv_qty_shopping.setText(shopping.getQuantity());
+            try {
+                DecimalFormat dF = new DecimalFormat("00.00");
+                Number num = dF.parse(shopping.getSalesPrice());
+                holder.tv_amount.setText("$" + new DecimalFormat("##.##").format(num));
+
+            } catch (Exception e) {
+
+            }
+            holder.liner_header_title.setBackground(mContext.getResources().getDrawable(R.color.green));
+            holder.tv_header_title.setText("DIGITAL COUPON");
         }else if (shopping.getPrimaryOfferTypeId()==1){
             holder.linear_personal.setVisibility(View.VISIBLE);
             holder.linear_coupon.setVisibility(View.GONE);
@@ -138,6 +175,8 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             holder.liner_header_title.setBackground(mContext.getResources().getDrawable(R.color.blue));
             holder.tv_header_title.setText("SALE ITEM");
         }else if (shopping.getPrimaryOfferTypeId()==0){
+            holder.shopping_list_add.setVisibility(View.VISIBLE);
+            holder.shopping_list_sub.setVisibility(View.VISIBLE);
             holder.linear_personal.setVisibility(View.VISIBLE);
             holder.linear_coupon.setVisibility(View.GONE);
             holder.tv_personal_description.setText(shopping.getLongDescription());
@@ -147,7 +186,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             holder.tv_header_title.setText("");
         }
 
-        if (shopping.getPrimaryOfferTypeId()==3 ||shopping.getPrimaryOfferTypeId()==1||shopping.getPrimaryOfferTypeId()==0){
+        if (shopping.getPrimaryOfferTypeId()==3 || shopping.getPrimaryOfferTypeId()==2||shopping.getPrimaryOfferTypeId()==1||shopping.getPrimaryOfferTypeId()==0){
             if (shopping.getImageURL()==null){
 
             }else if (shopping.getImageURL().contains("https://pty.bashas.com/webapiaccessclient/images/noimage-large.png")||shopping.getImageURL().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
@@ -407,6 +446,8 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
     public interface ShoppingListAdapterListener {
         void onShoppingItemSelected(Shopping shopping);
+        void onShoppingaddSelected(Shopping shopping);
+        void onShoppingsubSelected(Shopping shopping);
     }
 
 }

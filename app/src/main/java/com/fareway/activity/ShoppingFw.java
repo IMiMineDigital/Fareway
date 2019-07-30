@@ -30,6 +30,7 @@ import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
+import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
 import com.fareway.R;
 import com.fareway.adapter.ShoppingListAdapter;
@@ -47,6 +48,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.io.UnsupportedEncodingException;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -94,7 +96,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
 
         shoppingArrayList = new ArrayList<>();
         rv_shopping_list_items = (RecyclerView) findViewById(R.id.rv_shopping_list_items);
-        shoppingListAdapter = new ShoppingListAdapter(this, shoppingArrayList,this);
+        shoppingListAdapter = new ShoppingListAdapter(this, shoppingArrayList,this,this,this);
         RecyclerView.LayoutManager mLayoutManagerShoppingList = new LinearLayoutManager(activity);
         rv_shopping_list_items.setLayoutManager(mLayoutManagerShoppingList);
         rv_shopping_list_items.setAdapter(shoppingListAdapter);
@@ -654,6 +656,308 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
         }
 
 
+    }
+
+    @Override
+    public void onShoppingaddSelected(Shopping shopping) {
+        if (shopping.getPrimaryOfferTypeId()==0){
+            String url = null;
+
+
+            url = Constant.WEB_URL+"ShoppingList/List/MyOwnItem?ShoppingListOwnItemID="+shopping.getShoppingListItemID()+"&Quantity="+(Integer.parseInt(shopping.getQuantity())+1);
+
+            //url ="https://fwstagingapi.immdemo.net/api/v1/ShoppingList/List/MyOwnItem?ShoppingListOwnItemID=505&Quantity=3"
+
+            StringRequest  jsonObjectRequest = new StringRequest (Request.Method.PUT, url,
+                    new Response.Listener<String >() {
+                        @Override
+                        public void onResponse(String  response) {
+                            Log.i("success", String.valueOf(response));
+                            //shopping.setQuantity(String.valueOf((Integer.parseInt(shopping.getQuantity())+1)));
+                            //tv_quantity_detail.setText(shopping.getQuantity());
+                            //add_item_flag_detail.setText(shopping.getQuantity());
+
+
+                            //SetProductActivateDetaile(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1,String.valueOf((Integer.parseInt(product.getQuantity())+0)));
+                            fetchShoppingListLoad();
+                            //activatedOffersListIdLoad();
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.i("fail", String.valueOf(error));
+                }
+            }){
+
+                @Override
+                public String getBodyContentType() {
+                    return "application/x-www-form-urlencoded";
+                }
+
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("grant_type", "password");
+                    return params;
+                }
+                //this is the part, that adds the header to the request
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Content-Type", "application/x-www-form-urlencoded");
+                    params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                    return params;
+                }
+            };
+            RetryPolicy policy = new DefaultRetryPolicy
+                    (50000,
+                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+            jsonObjectRequest.setRetryPolicy(policy);
+            try {
+                mQueue.add(jsonObjectRequest);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+
+        }
+
+        else {
+            Calendar c2 = Calendar.getInstance();
+            SimpleDateFormat dateformat2 = new SimpleDateFormat("dd MMM yyyy");
+            String currentDate = dateformat2.format(c2.getTime());
+            System.out.println(currentDate);
+            JSONObject ShoppingListItems = new JSONObject();
+            try {
+                ShoppingListItems.put("UPC", shopping.getDisplayUPC().replace("UPC","").replace(":",""));
+                ShoppingListItems.put("Quantity", (Integer.parseInt(shopping.getQuantity())+1));
+                ShoppingListItems.put("DateAddedOn", currentDate);
+            } catch (JSONException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+            JSONArray jsonArray = new JSONArray();
+            jsonArray.put(ShoppingListItems);
+            JSONObject studentsObj = new JSONObject();
+            try {
+                studentsObj.put("ShoppingListItems", jsonArray);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            final String mRequestBody = "'"+studentsObj.toString()+"'";
+            Log.i("test",mRequestBody);
+            //String url = Constant.WEB_URL+Constant.SHOPPINGLIST+appUtil.getPrefrence("MemberId");
+            String url = null;
+            Log.i("testobject",mRequestBody);
+
+
+            url = Constant.WEB_URL+Constant.SHOPPINGLIST+appUtil.getPrefrence("MemberId");
+
+            //url ="https://fwstagingapi.immdemo.net/api/v1/ShoppingList/List/MyOwnItem?ShoppingListOwnItemID=505&Quantity=3"
+
+            StringRequest  jsonObjectRequest = new StringRequest (Request.Method.PUT, url,
+                    new Response.Listener<String >() {
+                        @Override
+                        public void onResponse(String  response) {
+                            Log.i("success", String.valueOf(response));
+                            //shopping.setQuantity(String.valueOf((Integer.parseInt(shopping.getQuantity())+1)));
+                            //tv_quantity_detail.setText(shopping.getQuantity());
+                            //add_item_flag_detail.setText(shopping.getQuantity());
+
+
+                            //SetProductActivateDetaile(shopping.getPrimaryOfferTypeId(),shopping.getCouponID(),shopping.getUPC(),shopping.getRequiresActivation(),1,String.valueOf((Integer.parseInt(shopping.getQuantity())+0)));
+                            fetchShoppingListLoad();
+                            //activatedOffersListIdLoad();
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.i("fail", String.valueOf(error));
+                }
+            }){
+
+                @Override
+                public String getBodyContentType() {
+                    return "application/json; charset=utf-8";
+                }
+
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    try {
+                        return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
+                    } catch (UnsupportedEncodingException uee) {
+                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
+                        return null;
+                    }
+                }
+                //this is the part, that adds the header to the request
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Content-Type", "application/json");
+                    return params;
+                }
+            };
+            RetryPolicy policy = new DefaultRetryPolicy
+                    (50000,
+                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+            jsonObjectRequest.setRetryPolicy(policy);
+            try {
+                mQueue.add(jsonObjectRequest);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+    }
+
+    @Override
+    public void onShoppingsubSelected(Shopping shopping) {
+        if (shopping.getPrimaryOfferTypeId()==0){
+            if (Integer.parseInt(shopping.getQuantity())>1){
+
+                String url = Constant.WEB_URL+"ShoppingList/List/MyOwnItem?ShoppingListOwnItemID="+shopping.getShoppingListItemID()+"&Quantity="+(Integer.parseInt(shopping.getQuantity())+1);
+
+                StringRequest  jsonObjectRequest = new StringRequest (Request.Method.PUT, url,
+                        new Response.Listener<String >() {
+                            @Override
+                            public void onResponse(String  response) {
+                                Log.i("success", String.valueOf(response));
+                                //shopping.setQuantity(String.valueOf((Integer.parseInt(shopping.getQuantity())-1)));
+                                fetchShoppingListLoad();
+                                //tv_quantity_detail.setText(shopping.getQuantity());
+                                //add_item_flag_detail.setText(shopping.getQuantity());
+
+                                //SetProductActivateDetaile(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1,String.valueOf((Integer.parseInt(product.getQuantity())-0)));
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("fail", String.valueOf(error));
+                    }
+                }){
+
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/x-www-form-urlencoded";
+                    }
+
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("grant_type", "password");
+                        return params;
+                    }
+                    //this is the part, that adds the header to the request
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/x-www-form-urlencoded");
+                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (50000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    mQueue.add(jsonObjectRequest);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
+        else {
+            if (Integer.parseInt(shopping.getQuantity())>1){
+                Calendar c2 = Calendar.getInstance();
+                SimpleDateFormat dateformat2 = new SimpleDateFormat("dd MMM yyyy");
+                String currentDate = dateformat2.format(c2.getTime());
+                System.out.println(currentDate);
+                JSONObject ShoppingListItems = new JSONObject();
+                try {
+                    ShoppingListItems.put("UPC", shopping.getDisplayUPC().replace("UPC","").replace(":",""));
+                    ShoppingListItems.put("Quantity", (Integer.parseInt(shopping.getQuantity())-1));
+                    ShoppingListItems.put("DateAddedOn", currentDate);
+                } catch (JSONException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+                JSONArray jsonArray = new JSONArray();
+                jsonArray.put(ShoppingListItems);
+                JSONObject studentsObj = new JSONObject();
+                try {
+                    studentsObj.put("ShoppingListItems", jsonArray);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+                final String mRequestBody = "'"+studentsObj.toString()+"'";
+                Log.i("test",mRequestBody);
+                String url = Constant.WEB_URL+Constant.SHOPPINGLIST+appUtil.getPrefrence("MemberId");
+                StringRequest  jsonObjectRequest = new StringRequest (Request.Method.PUT, url,
+                        new Response.Listener<String >() {
+                            @Override
+                            public void onResponse(String  response) {
+                                Log.i("success", String.valueOf(response));
+                               // shopping.setQuantity(String.valueOf((Integer.parseInt(shopping.getQuantity())-1)));
+                                fetchShoppingListLoad();
+                                //tv_quantity_detail.setText(shopping.getQuantity());
+                                //add_item_flag_detail.setText(shopping.getQuantity());
+
+                                //SetProductActivateDetaile(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1,String.valueOf((Integer.parseInt(product.getQuantity())-0)));
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("fail", String.valueOf(error));
+                    }
+                }){
+
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/json; charset=utf-8";
+                    }
+
+                    @Override
+                    public byte[] getBody() throws AuthFailureError {
+                        try {
+                            return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
+                        } catch (UnsupportedEncodingException uee) {
+                            VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
+                            return null;
+                        }
+                    }
+                    //this is the part, that adds the header to the request
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/json");
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (50000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    mQueue.add(jsonObjectRequest);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+            }
+        }
     }
 
     public void fetchShoppingListLoad() {

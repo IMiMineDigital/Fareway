@@ -10,8 +10,9 @@
     android:id="@+id/main"
     android:background="@drawable/tileable_wood">
     <!-- android:layout_marginBottom="@dimen/_40sdp" -->
-<LinearLayout
-    android:visibility="gone"
+<!--
+    <LinearLayout
+    android:visibility="visible"
     android:id="@+id/liner_all_Varieties_activate"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
@@ -19,7 +20,7 @@
     <Button
         android:layout_marginTop="@dimen/_10sdp"
         android:layout_marginRight="@dimen/_10sdp"
-        android:visibility="gone"
+        android:visibility="visible"
         android:id="@+id/all_Varieties_activate"
         android:textAllCaps="false"
         android:layout_width="wrap_content"
@@ -28,8 +29,40 @@
         android:background="@color/red"
         android:textColor="@color/white"
         android:layout_gravity="right"/>
-</LinearLayout>
+</LinearLayout>-->
 
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/liner_all_Varieties_activate"
+        android:layout_width="@dimen/_70sdp"
+        android:layout_height="@dimen/_70sdp"
+        android:layout_alignParentTop="true"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentRight="true"
+        android:layout_marginRight="@dimen/_10sdp"
+        android:background="@drawable/circular_mehrune_bg"
+        android:gravity="center"
+        android:orientation="vertical">
+
+        <TextView
+            android:fontFamily="@font/roboto"
+            android:textSize="16sp"
+            android:maxLines="2"
+            android:id="@+id/all_Varieties_activate"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:text="Added"
+            android:textColor="@color/white"
+            android:textStyle="bold" />
+
+        <ImageView
+            android:id="@+id/imv_status_verities"
+            android:layout_width="@dimen/_16sdp"
+            android:layout_height="@dimen/_16sdp"
+            android:src="@drawable/tick" />
+
+    </LinearLayout>
 
     <TextView
         android:layout_below="@+id/liner_all_Varieties_activate"
@@ -691,7 +724,8 @@
 
         <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:id="@+id/relative_main">
 
             <LinearLayout
                 android:id="@+id/detailLayout"
@@ -728,100 +762,14 @@
                     android:layout_height="wrap_content"
                     android:layout_weight="1"
                     android:orientation="vertical">
-<!--
-                    <LinearLayout
-                        android:id="@+id/circular_layout_detaile"
-                        android:layout_width="@dimen/_60sdp"
-                        android:layout_height="@dimen/_60sdp"
-                        android:layout_gravity="right"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:layout_marginRight="@dimen/_15sdp"
-                        android:background="@drawable/circular_mehrune_bg"
-                        android:gravity="center"
-                        android:orientation="vertical">
-
-                        <TextView
-                            android:id="@+id/tv_status_detaile"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:fontFamily="@font/roboto"
-                            android:gravity="center"
-                            android:text="Add To List"
-                            android:textColor="@color/white"
-                            android:textStyle="bold" />
-
-                        <ImageView
-                            android:id="@+id/imv_status_detaile"
-                            android:layout_width="@dimen/_18sdp"
-                            android:layout_height="@dimen/_18sdp"
-                            android:src="@drawable/tick" />
-                    </LinearLayout>
-
-                    -->
 
                     <RelativeLayout
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
-                        <!--
-
                         <LinearLayout
-                            android:background="@drawable/linear_cornor"
-                            android:id="@+id/remove_layout_detail"
-                            android:layout_width="@dimen/_60sdp"
-                            android:layout_height="@dimen/_50sdp"
-                            android:layout_alignParentTop="true"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginRight="@dimen/_16sdp"
-                            android:layout_marginTop="@dimen/_42sdp"
-                            android:gravity="center"
-                            android:orientation="vertical">
-                            <TextView
-                                android:fontFamily="@font/roboto"
-                                android:textStyle="bold"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:text="REMOVE"
-                                android:layout_marginTop="@dimen/_18sdp"
-                                android:textColor="@color/white"/>
-
-                        </LinearLayout>
-
-                        <LinearLayout
-                            android:id="@+id/circular_layout_detaile"
-                            android:layout_width="@dimen/_70sdp"
-                            android:layout_height="@dimen/_70sdp"
-                            android:layout_alignParentTop="true"
-                            android:layout_alignParentEnd="true"
-                            android:layout_alignParentRight="true"
-                            android:layout_marginRight="@dimen/_10sdp"
-                            android:background="@drawable/circular_mehrune_bg"
-                            android:gravity="center"
-                            android:orientation="vertical">
-
-                            <TextView
-                                android:maxLines="2"
-                                android:id="@+id/tv_status_detaile"
-                                android:layout_width="wrap_content"
-                                android:layout_height="wrap_content"
-                                android:fontFamily="@font/roboto"
-                                android:gravity="center"
-                                android:text="Added"
-                                android:textColor="@color/white"
-                                android:textStyle="bold" />
-
-                            <ImageView
-                                android:id="@+id/imv_status_detaile"
-                                android:layout_width="@dimen/_18sdp"
-                                android:layout_height="@dimen/_18sdp"
-                                android:src="@drawable/tick" />
-
-                        </LinearLayout>   -->
-
-                        <LinearLayout
-                            android:visibility="visible"
+                            android:visibility="gone"
                             android:background="@drawable/linear_cornor"
                             android:id="@+id/remove_layout_detail"
                             android:layout_width="@dimen/_60sdp"
@@ -896,6 +844,13 @@
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_5sdp"
                         android:orientation="vertical">
+                        <TextView
+                            android:id="@+id/tv_fareway_flag"
+                            android:fontFamily="@font/roboto"
+                            android:textColor="@color/red"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="With MyFareway"/>
 
                         <TextView
                             android:id="@+id/tv_price_detaile"
@@ -1257,7 +1212,7 @@
 
                 <TableRow
                     android:id="@+id/table_varieties_view"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <View
                         android:layout_width="match_parent"
@@ -1268,6 +1223,109 @@
                         android:background="@color/green" />
 
                 </TableRow>
+
+                <LinearLayout
+                    android:layout_marginLeft="@dimen/_5sdp"
+                    android:layout_marginRight="@dimen/_5sdp"
+                    android:layout_width="match_parent"
+                    android:layout_height="40dp"
+                    android:orientation="horizontal">
+
+                    <LinearLayout
+                        android:id="@+id/linear_tab_button_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <RelativeLayout
+                            android:layout_gravity="center"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp">
+
+                            <ImageView
+                                android:layout_width="100dp"
+                                android:padding="2dp"
+                                android:src="@drawable/listiconblack"
+                                android:layout_height="100dp"
+                                android:layout_margin="6dp"/>
+
+                            <TextView
+                                android:id="@+id/add_item_flag_detail"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:scaleType="fitStart"
+                                android:layout_marginRight="0dp"
+                                android:padding="2dp"
+                                android:background="@drawable/circular_red_bg"
+                                android:gravity="center"
+                                android:minWidth="17sp"
+                                android:adjustViewBounds="true"
+                                android:minHeight="17sp"
+                                android:paddingBottom="1dp"
+                                android:paddingLeft="4dp"
+                                android:paddingRight="4dp"
+                                android:text="+"
+                                android:textColor="#ffffffff"
+                                android:textSize="12sp"
+                                android:visibility="visible"
+                                android:layout_gravity="center_horizontal"
+                                android:layout_alignParentTop="true"
+                                android:layout_alignParentEnd="true"
+                                />
+
+                        </RelativeLayout>
+
+                        <TextView
+                            android:textColor="@color/black"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:layout_gravity="center"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:fontFamily="@font/roboto_black"
+                            android:gravity="left"
+                            android:maxLines="1"
+                            android:text="Add Item"
+                            android:textSize="14sp" />
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:visibility="gone"
+                        android:id="@+id/liner_item_add_detail"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:layout_gravity="center">
+                        <TextView
+                            android:id="@+id/add_minus_detail"
+                            android:background="@drawable/circular_red_bg"
+                            android:textColor="@color/white"
+                            android:textAlignment="center"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:text="-"/>
+                        <TextView
+                            android:id="@+id/tv_quantity_detail"
+                            android:textColor="@color/black"
+                            android:fontFamily="@font/roboto_black"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:text="0"/>
+                        <TextView
+                            android:id="@+id/add_plus_detail"
+                            android:background="@drawable/circular_red_bg"
+                            android:textColor="@color/white"
+                            android:textAlignment="center"
+                            android:layout_marginLeft="@dimen/_5sdp"
+                            android:layout_width="20dp"
+                            android:layout_height="20dp"
+                            android:text="+"/>
+
+                    </LinearLayout>
+
+                </LinearLayout>
 
 
             </TableLayout>

@@ -49,6 +49,8 @@ public class RelatedItem {
     private String CouponImageURl;
     private String oCouponShortDescription;
     private int MinAmount;
+    private int HasRelatedItems;
+    private int RelatedItemCount;
     private String PercentSavings;
     private String RewardValue;
     private String RewardQty;
@@ -460,5 +462,21 @@ public class RelatedItem {
 
     public void setRewardType(String rewardType) {
         RewardType = rewardType;
+    }
+
+    public int getHasRelatedItems() {
+        return HasRelatedItems;
+    }
+
+    public void setHasRelatedItems(int hasRelatedItems) {
+        HasRelatedItems = hasRelatedItems;
+    }
+
+    public int getRelatedItemCount() {
+        return RelatedItemCount;
+    }
+
+    public void setRelatedItemCount(int relatedItemCount) {
+        RelatedItemCount = relatedItemCount;
     }
 }
