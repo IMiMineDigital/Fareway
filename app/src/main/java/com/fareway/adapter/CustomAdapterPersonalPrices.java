@@ -557,7 +557,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             holder.liner_save.setVisibility(View.VISIBLE);
                         }
                     }else {
-                        String chars = capitalize("*"+product.getDescription());
+                        String chars = capitalize(product.getDescription());
                         holder.tv_detail.setText(chars);
                         if (product.getSavings().equalsIgnoreCase("0.0000")){
                             holder.liner_save.setVisibility(View.GONE);
@@ -643,7 +643,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             holder.tv_saving_pri_fix.setText("");
                             holder.tv_promo_price__pri_fix.setText("");
                             holder.tv_promo_price.setText("");
-                            holder.tv_detail.setText("* "+product.getoCouponShortDescription());
+                            holder.tv_detail.setText(product.getoCouponShortDescription());
                         }
 
                     } catch (Exception e) {
@@ -1176,7 +1176,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             holder.liner_save.setVisibility(View.VISIBLE);
                         }
                     }else {
-                        String chars = capitalize("*"+product.getDescription());
+                        String chars = capitalize(product.getDescription());
                         holder.tv_detail.setText(chars);
                         if (product.getSavings().equalsIgnoreCase("0.0000")){
                             holder.liner_save.setVisibility(View.GONE);
@@ -1261,7 +1261,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             holder.tv_saving_pri_fix.setText("");
                             holder.tv_promo_price__pri_fix.setText("");
                             holder.tv_promo_price.setText("");
-                            holder.tv_detail.setText("* "+product.getoCouponShortDescription());
+                            holder.tv_detail.setText(product.getoCouponShortDescription());
                         }
 
                     } catch (Exception e) {
@@ -1973,7 +1973,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                                 holder.tv_saving.setText("");
                                 holder.tv_promo_price__pri_fix.setText("");
                                 holder.tv_promo_price.setText("");
-                                holder.tv_detail.setText("* "+product.getoCouponShortDescription());
+                                holder.tv_detail.setText(product.getoCouponShortDescription());
                             }
 
                         } catch (Exception e) {
@@ -2517,7 +2517,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                                 holder.liner_save.setVisibility(View.VISIBLE);
                             }
                         }else {
-                            String chars = capitalize("*"+product.getDescription());
+                            String chars = capitalize(product.getDescription());
                             holder.tv_detail.setText(chars);
                             if (product.getSavings().equalsIgnoreCase("0.0000")){
                                 holder.liner_save.setVisibility(View.GONE);
@@ -2613,7 +2613,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                                 holder.tv_saving.setText("");
                                 holder.tv_promo_price__pri_fix.setText("");
                                 holder.tv_promo_price.setText("");
-                                holder.tv_detail.setText("* "+product.getoCouponShortDescription());
+                                holder.tv_detail.setText(product.getoCouponShortDescription());
                             }
 
                         } catch (Exception e) {

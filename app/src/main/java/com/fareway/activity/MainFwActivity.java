@@ -2841,6 +2841,7 @@ public class MainFwActivity extends AppCompatActivity
                                         product.setQuantity(String.valueOf((Integer.parseInt(product.getQuantity())+1)));
                                         tv_quantity_detail.setText(product.getQuantity());
                                         add_item_flag_detail.setText(product.getQuantity());
+                                        fetchShoppingListLoad();
                                         //circular_layout_detaile.setBackground(getResources().getDrawable(R.drawable.circular_mehrune_bg));
                                         //imv_status_detaile.setVisibility(View.VISIBLE);
                                         //imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.tick));
@@ -2945,6 +2946,7 @@ public class MainFwActivity extends AppCompatActivity
                                         imv_status_detaile.setVisibility(View.VISIBLE);
                                         imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.tick));
                                         tv_status_detaile.setText("Activated");
+                                        fetchShoppingListLoad();
                                         SetProductActivateDetaile(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1,String.valueOf((Integer.parseInt(product.getQuantity())+0)));
                                     }
                                 }, new Response.ErrorListener() {
@@ -3123,7 +3125,7 @@ public class MainFwActivity extends AppCompatActivity
                                     product.setQuantity(String.valueOf((Integer.parseInt(product.getQuantity())-1)));
                                     tv_quantity_detail.setText(product.getQuantity());
                                     add_item_flag_detail.setText(product.getQuantity());
-
+                                    fetchShoppingListLoad();
                                     SetProductActivateDetaile(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1,String.valueOf((Integer.parseInt(product.getQuantity())-0)));
 
                                 }

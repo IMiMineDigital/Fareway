@@ -19,11 +19,6 @@ public class Shopping {
     private String Quantity;
     private String SalesPrice;
 
-    private int CouponID;
-    private String RequiresActivation;
-
-
-
 
 
     public int getCategoryID() {
@@ -154,19 +149,5 @@ public class Shopping {
         SalesPrice = salesPrice;
     }
 
-    public String getRequiresActivation() {
-        return RequiresActivation;
-    }
 
-    public void setRequiresActivation(String requiresActivation) {
-        RequiresActivation = requiresActivation;
-    }
-
-    public int getCouponID() {
-        return CouponID;
-    }
-
-    public void setCouponID(int couponID) {
-        CouponID = couponID;
-    }
 }
