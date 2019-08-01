@@ -2468,17 +2468,37 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             }else if(product.getRewardType().equalsIgnoreCase("2")&&product.getPrimaryOfferTypeId()==2){
                                 DecimalFormat dF = new DecimalFormat("00.00");
                                 try {
-                                    Number rewardValue = dF.parse(product.getRewardValue());
-                                    Spanned result = Html.fromHtml(new DecimalFormat("##.##").format(rewardValue)+"% OFF"+"<sup><small> *</small></sup>");
+                                    String displayPrice=product.getDisplayPrice().toString();
+                                    if(product.getDisplayPrice().toString().split("\\.").length>1)
+                                        displayPrice= product.getDisplayPrice().split("\\.")[0]+"<sup>"+ product.getDisplayPrice().split("\\.")[1]+"<sup>";
+
+                                    Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
+                                    Log.i("anshu", String.valueOf(result));
                                     if (product.getOfferDefinitionId()==3){
                                         holder.tv_price.setText("FREE");
+                                        holder.tv_saving_pri_fix.setText("");
+                                        holder.tv_saving.setText("");
+                                        holder.tv_promo_price__pri_fix.setText("");
+                                        holder.tv_promo_price.setText("");
 
                                     }else {
                                         Log.i("test", String.valueOf(product.getOfferDefinitionId()));
+                                        //
+                                        DecimalFormat dF2 = new DecimalFormat("00.00");
+                                        Number adPrice = dF2.parse(product.getAdPrice());
+                                        Number everyDayPrice = dF2.parse(product.getRegularPrice());
+
+                                        holder.tv_saving.setText("$"+everyDayPrice);
+                                        holder.tv_saving_pri_fix.setText("Everyday Price ");
+                                        holder.tv_promo_price__pri_fix.setText("Promo Price    ");
+                                        holder.tv_promo_price.setText("$"+new DecimalFormat("##.##").format(adPrice));
+
                                         holder.tv_price.setText(result);
                                     }
-                                    holder.tv_saving_pri_fix.setText("");
+                                    /*holder.tv_saving_pri_fix.setText("");
                                     holder.tv_saving.setText("");
+                                    holder.tv_promo_price__pri_fix.setText("");
+                                    holder.tv_promo_price.setText("");*/
 
                                 } catch (ParseException e) {
                                     e.printStackTrace();
@@ -2565,24 +2585,9 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                                 Number adPrice = dF.parse(product.getAdPrice());
                                 Number everyDayPrice = dF.parse(product.getRegularPrice());
                                 if (product.getIsbadged().equalsIgnoreCase("True")){
-                                /*holder.tv_saving.setTypeface(holder.tv_saving.getTypeface(), Typeface.NORMAL);
-                                Typeface typeface = ResourcesCompat.getFont(mContext, R.font.roboto_black);
-                                holder.tv_saving.setTypeface(typeface);*/
-
-                                /*Spanned varietiesUnderline = Html.fromHtml("Everyday Price "+"<strike>"+"$"+everyDayPrice+"</strike>"+"<br/>"+"Promo Price "+"<strike>"+"$"+new DecimalFormat("##.##").format(adPrice)+"</strike>");
-                                holder.tv_saving.setText(varietiesUnderline);
-                                holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.black));
-                                holder.liner_save.setBackgroundColor(mContext.getResources().getColor(R.color.white));*/
-
-
-                           /* Spanned varietiesUnderline = Html.fromHtml("Everyday Price "+"<strike>"+"$"+new DecimalFormat("##.##").format(num)+"</strike>");
-                            holder.tv_saving.setText(varietiesUnderline);*/
-                                   //holder.tv_saving.setPaintFlags(holder.tv_saving.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                                     holder.tv_saving.setText("$"+everyDayPrice);
-
                                     holder.tv_saving_pri_fix.setText("Everyday Price ");
                                     holder.tv_promo_price__pri_fix.setText("Promo Price    ");
-                                    //holder.tv_promo_price.setPaintFlags(holder.tv_saving.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                                     holder.tv_promo_price.setText("$"+new DecimalFormat("##.##").format(adPrice));
                                 }else {
                                     holder.tv_saving_pri_fix.setText("");

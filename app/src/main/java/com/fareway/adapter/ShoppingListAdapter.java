@@ -49,7 +49,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView shopping_list_add,shopping_list_sub,tv_coupon_description,tv_expire_end,tv_personal_description,tv_qty_shopping,tv_amount,tv_header_title;
+        private TextView shopping_flag_dot,shopping_list_add,shopping_list_sub,tv_coupon_description,tv_expire_end,tv_personal_description,tv_qty_shopping,tv_amount,tv_header_title;
         private ImageView imv_go,imv_shopping_item,imv_remove_shopping;
         private LinearLayout rowLayout,liner_header_title,single_item_remove,liner_shopping_list_body,liner_coupon_description,imv_shopping_item_liner,
                 liner_personal_description,linear_personal,linear_coupon;
@@ -67,6 +67,8 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             tv_amount = (TextView) view.findViewById(R.id.tv_amount);
 
             tv_header_title = (TextView) view.findViewById(R.id.tv_header_title);
+            shopping_flag_dot = (TextView) view.findViewById(R.id.shopping_flag_dot);
+
 
             imv_shopping_item = (ImageView) view.findViewById(R.id.imv_shopping_item);
 
@@ -142,9 +144,29 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             } catch (Exception e) {
 
             }
-            holder.liner_header_title.setBackground(mContext.getResources().getDrawable(R.color.red));
-            holder.tv_header_title.setText("PERSONAL DEAL");
-        }else if (shopping.getPrimaryOfferTypeId()==2){
+            holder.shopping_flag_dot.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
+            holder.shopping_flag_dot.setVisibility(View.VISIBLE);
+            holder.tv_header_title.setVisibility(View.GONE);
+            holder.shopping_flag_dot.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    holder.tv_header_title.setBackground(mContext.getResources().getDrawable(R.color.red));
+                    holder.tv_header_title.setText("PERSONAL DEAL");
+                    holder.shopping_flag_dot.setVisibility(View.GONE);
+                    holder.tv_header_title.setVisibility(View.VISIBLE);
+                }
+            });
+            holder.tv_header_title.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    holder.shopping_flag_dot.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
+                    holder.shopping_flag_dot.setVisibility(View.VISIBLE);
+                    holder.tv_header_title.setVisibility(View.GONE);
+                }
+            });
+
+        }
+        else if (shopping.getPrimaryOfferTypeId()==2){
             holder.linear_personal.setVisibility(View.VISIBLE);
             holder.linear_coupon.setVisibility(View.GONE);
             holder.tv_personal_description.setText(shopping.getLongDescription());
@@ -157,9 +179,29 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             } catch (Exception e) {
 
             }
-            holder.liner_header_title.setBackground(mContext.getResources().getDrawable(R.color.green));
-            holder.tv_header_title.setText("DIGITAL COUPON");
-        }else if (shopping.getPrimaryOfferTypeId()==1){
+            holder.shopping_flag_dot.setBackground(mContext.getResources().getDrawable(R.drawable.circular_green_bg));
+            holder.shopping_flag_dot.setVisibility(View.VISIBLE);
+            holder.tv_header_title.setVisibility(View.GONE);
+
+            holder.shopping_flag_dot.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    holder.tv_header_title.setBackground(mContext.getResources().getDrawable(R.color.green));
+                    holder.tv_header_title.setText("DIGITAL COUPON");
+                    holder.shopping_flag_dot.setVisibility(View.GONE);
+                    holder.tv_header_title.setVisibility(View.VISIBLE);
+                }
+            });
+            holder.tv_header_title.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    holder.shopping_flag_dot.setBackground(mContext.getResources().getDrawable(R.drawable.circular_green_bg));
+                    holder.shopping_flag_dot.setVisibility(View.VISIBLE);
+                    holder.tv_header_title.setVisibility(View.GONE);
+                }
+            });
+        }
+        else if (shopping.getPrimaryOfferTypeId()==1){
             holder.linear_personal.setVisibility(View.VISIBLE);
             holder.linear_coupon.setVisibility(View.GONE);
             holder.tv_personal_description.setText(shopping.getLongDescription());
@@ -172,9 +214,30 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             } catch (Exception e) {
 
             }
-            holder.liner_header_title.setBackground(mContext.getResources().getDrawable(R.color.blue));
-            holder.tv_header_title.setText("SALE ITEM");
-        }else if (shopping.getPrimaryOfferTypeId()==0){
+            holder.shopping_flag_dot.setBackground(mContext.getResources().getDrawable(R.drawable.circular_blue_bg));
+            holder.shopping_flag_dot.setVisibility(View.VISIBLE);
+            holder.tv_header_title.setVisibility(View.GONE);
+            holder.shopping_flag_dot.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    holder.tv_header_title.setBackground(mContext.getResources().getDrawable(R.color.blue));
+                    holder.tv_header_title.setText("SALE ITEM");
+                    holder.shopping_flag_dot.setVisibility(View.GONE);
+                    holder.tv_header_title.setVisibility(View.VISIBLE);
+                }
+            });
+            holder.tv_header_title.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    holder.shopping_flag_dot.setBackground(mContext.getResources().getDrawable(R.drawable.circular_blue_bg));
+                    holder.shopping_flag_dot.setVisibility(View.VISIBLE);
+                    holder.tv_header_title.setVisibility(View.GONE);
+                }
+            });
+        }
+        else if (shopping.getPrimaryOfferTypeId()==0){
+            holder.shopping_flag_dot.setVisibility(View.GONE);
+            holder.tv_header_title.setVisibility(View.GONE);
             holder.shopping_list_add.setVisibility(View.VISIBLE);
             holder.shopping_list_sub.setVisibility(View.VISIBLE);
             holder.linear_personal.setVisibility(View.VISIBLE);
@@ -182,7 +245,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             holder.tv_personal_description.setText(shopping.getLongDescription());
             holder.tv_qty_shopping.setText(shopping.getQuantity());
             holder.tv_amount.setText("");
-            holder.liner_header_title.setBackground(mContext.getResources().getDrawable(R.color.white));
+            holder.tv_header_title.setBackground(mContext.getResources().getDrawable(R.color.white));
             holder.tv_header_title.setText("");
         }
 
@@ -227,9 +290,29 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
 
             }
-            holder.liner_header_title.setBackground(mContext.getResources().getDrawable(R.color.green));
-            holder.tv_header_title.setText("DIGITAL COUPON");
-        }else if (shopping.getPrimaryOfferTypeid()==3){
+
+            holder.shopping_flag_dot.setBackground(mContext.getResources().getDrawable(R.drawable.circular_green_bg));
+            holder.shopping_flag_dot.setVisibility(View.VISIBLE);
+            holder.tv_header_title.setVisibility(View.GONE);
+            holder.shopping_flag_dot.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    holder.tv_header_title.setBackground(mContext.getResources().getDrawable(R.color.green));
+                    holder.tv_header_title.setText("DIGITAL COUPON");
+                    holder.shopping_flag_dot.setVisibility(View.GONE);
+                    holder.tv_header_title.setVisibility(View.VISIBLE);
+                }
+            });
+            holder.tv_header_title.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    holder.shopping_flag_dot.setBackground(mContext.getResources().getDrawable(R.drawable.circular_green_bg));
+                    holder.shopping_flag_dot.setVisibility(View.VISIBLE);
+                    holder.tv_header_title.setVisibility(View.GONE);
+                }
+            });
+        }
+        else if (shopping.getPrimaryOfferTypeid()==3){
             holder.linear_personal.setVisibility(View.GONE);
             holder.linear_coupon.setVisibility(View.VISIBLE);
             holder.tv_coupon_description.setText(shopping.getDescription());
@@ -252,9 +335,28 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
 
             }
-            holder.liner_header_title.setBackground(mContext.getResources().getDrawable(R.color.red));
-            holder.tv_header_title.setText("PERSONAL DEAL");
-        }else if (shopping.getPrimaryOfferTypeid()==1){
+            holder.shopping_flag_dot.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
+            holder.shopping_flag_dot.setVisibility(View.VISIBLE);
+            holder.tv_header_title.setVisibility(View.GONE);
+            holder.shopping_flag_dot.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    holder.tv_header_title.setBackground(mContext.getResources().getDrawable(R.color.red));
+                    holder.tv_header_title.setText("PERSONAL DEAL");
+                    holder.shopping_flag_dot.setVisibility(View.GONE);
+                    holder.tv_header_title.setVisibility(View.VISIBLE);
+                }
+            });
+            holder.tv_header_title.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    holder.shopping_flag_dot.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
+                    holder.shopping_flag_dot.setVisibility(View.VISIBLE);
+                    holder.tv_header_title.setVisibility(View.GONE);
+                }
+            });
+        }
+        else if (shopping.getPrimaryOfferTypeid()==1){
             holder.linear_personal.setVisibility(View.GONE);
             holder.linear_coupon.setVisibility(View.VISIBLE);
             holder.tv_coupon_description.setText(shopping.getDescription());
@@ -277,8 +379,26 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
 
             }
-            holder.liner_header_title.setBackground(mContext.getResources().getDrawable(R.color.blue));
-            holder.tv_header_title.setText("SALE ITEM");
+            holder.shopping_flag_dot.setBackground(mContext.getResources().getDrawable(R.drawable.circular_blue_bg));
+            holder.shopping_flag_dot.setVisibility(View.VISIBLE);
+            holder.tv_header_title.setVisibility(View.GONE);
+            holder.shopping_flag_dot.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    holder.tv_header_title.setBackground(mContext.getResources().getDrawable(R.color.blue));
+                    holder.tv_header_title.setText("SALE ITEM");
+                    holder.shopping_flag_dot.setVisibility(View.GONE);
+                    holder.tv_header_title.setVisibility(View.VISIBLE);
+                }
+            });
+            holder.tv_header_title.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    holder.shopping_flag_dot.setBackground(mContext.getResources().getDrawable(R.drawable.circular_blue_bg));
+                    holder.shopping_flag_dot.setVisibility(View.VISIBLE);
+                    holder.tv_header_title.setVisibility(View.GONE);
+                }
+            });
         }
 
 

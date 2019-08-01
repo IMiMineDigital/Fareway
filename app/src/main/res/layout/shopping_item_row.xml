@@ -13,21 +13,36 @@
         android:layout_weight="1"
         android:background="@color/grey" />
     <LinearLayout
-        android:background="@color/red"
+
         android:visibility="visible"
         android:id="@+id/liner_header_title"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="24dp"
         android:orientation="horizontal"
         android:layout_gravity="right">
 
         <TextView
+            android:visibility="gone"
+            android:background="@color/red"
             android:textSize="@dimen/_9sdp"
             android:padding="@dimen/_3sdp"
             android:id="@+id/tv_header_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Personal Deal"
+            android:textAlignment="center"
+            android:textColor="@color/white" />
+        <TextView
+            android:visibility="visible"
+            android:id="@+id/shopping_flag_dot"
+            android:layout_marginRight="@dimen/_10sdp"
+            android:layout_gravity="center"
+            android:textSize="@dimen/_9sdp"
+            android:padding="@dimen/_3sdp"
+            android:background="@drawable/circular_red_bg"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:text=""
             android:textAlignment="center"
             android:textColor="@color/white" />
 

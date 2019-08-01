@@ -123,25 +123,17 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                     linear_tab_button.setVisibility(View.VISIBLE);
                 }
             });
-            circular_layout.setOnClickListener(new View.OnClickListener() {
+            add_plus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     listener2.onRelatedItemSelected2(relatedItemsList.get(getAdapterPosition()));
-                    circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                    /*circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
                     imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
-                    tv_status.setText("Added");
+                    tv_status.setText("Added");*/
                 }
             });
-            circular_layout_mul.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener5.onRelatedItemSelected5(relatedItemsList.get(getAdapterPosition()));
-                    circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                    imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
-                    tv_status_mul.setText("Added");
-                }
-            });
-            remove_layout.setOnClickListener(new View.OnClickListener() {
+
+            add_minus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     remove_layout.setVisibility(View.GONE);
@@ -151,6 +143,17 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                     tv_status.setText("Add");
                 }
             });
+
+            circular_layout_mul.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    listener5.onRelatedItemSelected5(relatedItemsList.get(getAdapterPosition()));
+                    circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                    imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                    tv_status_mul.setText("Added");
+                }
+            });
+
             remove_layout_mul.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -1038,6 +1041,11 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
         holder.add_plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                //activateListener.onProductActivate(productListFiltered.get(position));
+                listener2.onRelatedItemSelected2(relatedItemsList.get(position));
+                holder.tv_quantity.setText(String.valueOf((Integer.parseInt(relatedItem.getQuantity())+1)));
+                holder.add_item_flag.setText(String.valueOf((Integer.parseInt(relatedItem.getQuantity())+1)));
+                /*
                 JSONObject json = new JSONObject();
                 Calendar c2 = Calendar.getInstance();
                 SimpleDateFormat dateformat2 = new SimpleDateFormat("dd MMM yyyy");
@@ -1053,7 +1061,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                     ShoppingListItems.put("DateAddedOn", currentDate);
 
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
+
                     e.printStackTrace();
                 }
 
@@ -1222,7 +1230,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 catch (Exception e)
                 {
                     e.printStackTrace();
-                }
+                }*/
 
             }
         });

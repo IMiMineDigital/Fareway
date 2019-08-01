@@ -98,14 +98,14 @@ public class PurchaseHistory extends AppCompatActivity implements PurchaseHistor
                 } catch (ParseException e) {
                     e.printStackTrace();
                 }
-                String c = "dd MMM yyyy HH:mm:ss";
+                String c = "yyyy-MM-dd HH:mm:ss";
                 //String c= "dd MMM yyyy";
                 spf = new SimpleDateFormat(c);
                 saveDate = spf.format(newDate);
                 System.out.println("saveDate " + saveDate);
 
                 Calendar c2 = Calendar.getInstance();
-                SimpleDateFormat dateformat2 = new SimpleDateFormat("dd MMM yyyy HH:mm:ss");
+                SimpleDateFormat dateformat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
                 //SimpleDateFormat dateformat2 = new SimpleDateFormat("dd MMM yyyy");
                 String currentDate = dateformat2.format(c2.getTime());
                 System.out.println("currentDate " + currentDate);
