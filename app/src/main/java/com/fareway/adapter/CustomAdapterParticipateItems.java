@@ -71,11 +71,13 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
         private ImageView imv_item, imv_info, imv_more, imv_status,imv_status_mul;
         private LinearLayout circular_layout,circular_layout_mul, bottomLayout,remove_layout,remove_layout_mul,liner_save,liner_item_add,linear_tab_button;
         private CardView card_view;
-        private RelativeLayout imv_layout,layoutforprofileimage;
+        private RelativeLayout imv_layout,layoutforprofileimage,relative_badge;
         //private Button all_Varieties_activate;
 
         public MyViewHolder(View view) {
             super(view);
+
+            relative_badge = (RelativeLayout) view.findViewById(R.id.relative_badge);
             //all_Varieties_activate= (Button)view.findViewById(R.id.all_Varieties_activate);
             imv_layout = (RelativeLayout) view.findViewById(R.id.imv_layout);
             layoutforprofileimage = (RelativeLayout) view.findViewById(R.id.layoutforprofileimage);
@@ -119,7 +121,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
             view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    liner_item_add.setVisibility(View.GONE);
+                    liner_item_add.setVisibility(View.VISIBLE);
                     linear_tab_button.setVisibility(View.VISIBLE);
                 }
             });
@@ -136,11 +138,11 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
             add_minus.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    remove_layout.setVisibility(View.GONE);
                     listener3.onRelatedItemSelected3(relatedItemsList.get(getAdapterPosition()));
+                    /*remove_layout.setVisibility(View.GONE);
                     circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
                     imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
-                    tv_status.setText("Add");
+                    tv_status.setText("Add");*/
                 }
             });
 
@@ -168,7 +170,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 @Override
                 public void onClick(View v) {
                     liner_item_add.setVisibility(View.VISIBLE);
-                    linear_tab_button.setVisibility(View.GONE);
+                    linear_tab_button.setVisibility(View.VISIBLE);
                 }
             });
             imv_item.setOnClickListener(new View.OnClickListener() {
@@ -207,7 +209,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
     public void onBindViewHolder(final CustomAdapterParticipateItems.MyViewHolder holder, final int position) {
 
         final RelatedItem relatedItem = relatedItemsList.get(position);
-        holder.liner_item_add.setVisibility(View.GONE);
+        holder.liner_item_add.setVisibility(View.VISIBLE);
         holder.linear_tab_button.setVisibility(View.VISIBLE);
         if(MainFwActivity.singleView) {
 
@@ -232,7 +234,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
             holder.tv_unit.setText(charsUnit);
             //holder.tv_unit.setText(relatedItem.getPackagingSize());
             holder.tv_quantity.setText(relatedItem.getQuantity());
-            holder.add_item_flag.setText(relatedItem.getQuantity());
+            //holder.add_item_flag.setText(relatedItem.getQuantity());
 
             holder.circular_layout.getLayoutParams().height = 300;
             holder.circular_layout.getLayoutParams().width = 300;
@@ -513,8 +515,8 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
 
         else {
 
-            holder.circular_layout_mul.setVisibility(View.INVISIBLE);
-            holder.remove_layout_mul.setVisibility(View.INVISIBLE);
+            holder.circular_layout_mul.setVisibility(View.GONE);
+            holder.remove_layout_mul.setVisibility(View.GONE);
             holder.circular_layout.setVisibility(View.GONE);
             holder.remove_layout.setVisibility(View.GONE);
 
@@ -534,11 +536,14 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
             holder.tv_unit.setText(charsUnit);
             //holder.tv_unit.setText(relatedItem.getPackagingSize());
             holder.tv_quantity.setText(relatedItem.getQuantity());
-            holder.add_item_flag.setText(relatedItem.getQuantity());
+            //holder.add_item_flag.setText(relatedItem.getQuantity());
 
             holder.tv_status.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
             holder.circular_layout.getLayoutParams().height = 200;
             holder.circular_layout.getLayoutParams().width = 200;
+
+            holder.relative_badge.getLayoutParams().width = 110;
+            //holder.add_item_flag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 8);
 
             if (relatedItem.getPrimaryOfferTypeId() == 3) {
                 holder.tv_promo_price__pri_fix.setText("");
@@ -592,25 +597,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 /*Spanned result = Html.fromHtml(relatedItem.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
                 holder.tv_price.setText(result);*/
                 holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.mehrune));
-                /*if (relatedItem.getClickCount()>0) {
-                if (relatedItem.getListCount()>0){
-                    holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                    holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
-                    holder.tv_status.setText("Added");
-                    holder.remove_layout.setVisibility(View.VISIBLE);
 
-                }else if (relatedItem.getListCount()==0){
-                    holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
-                    holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
-                    holder.tv_status.setText("Add");
-                    holder.remove_layout.setVisibility(View.GONE);
-                }
-                }else {
-                    holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
-                    holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
-                    holder.tv_status.setText("Activate");
-                    holder.remove_layout.setVisibility(View.GONE);
-                }*/
 
             }
 
@@ -1041,10 +1028,9 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
         holder.add_plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //activateListener.onProductActivate(productListFiltered.get(position));
                 listener2.onRelatedItemSelected2(relatedItemsList.get(position));
                 holder.tv_quantity.setText(String.valueOf((Integer.parseInt(relatedItem.getQuantity())+1)));
-                holder.add_item_flag.setText(String.valueOf((Integer.parseInt(relatedItem.getQuantity())+1)));
+                //holder.add_item_flag.setText(String.valueOf((Integer.parseInt(relatedItem.getQuantity())+1)));
                 /*
                 JSONObject json = new JSONObject();
                 Calendar c2 = Calendar.getInstance();
@@ -1239,8 +1225,13 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
             @Override
             public void onClick(View v) {
                 Log.i("Quantity",relatedItem.getQuantity());
-                if (Integer.parseInt(relatedItem.getQuantity())>1){
-                    Log.i("IfQuantity",relatedItem.getQuantity());
+
+
+                if (Integer.parseInt(relatedItem.getQuantity())>0){
+                    listener3.onRelatedItemSelected3(relatedItemsList.get(position));
+                    holder.tv_quantity.setText(String.valueOf((Integer.parseInt(relatedItem.getQuantity())-1)));
+                    //holder.add_item_flag.setText(String.valueOf((Integer.parseInt(relatedItem.getQuantity())-1)));
+                    /*Log.i("IfQuantity",relatedItem.getQuantity());
                     JSONObject json = new JSONObject();
                     Calendar c2 = Calendar.getInstance();
                     SimpleDateFormat dateformat2 = new SimpleDateFormat("dd MMM yyyy");
@@ -1323,11 +1314,15 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                     catch (Exception e)
                     {
                         e.printStackTrace();
-                    }
+                    }*/
                 }else {
-                    relatedItem.setQuantity(String.valueOf((Integer.parseInt(relatedItem.getQuantity())-1)));
+                    //listener3.onRelatedItemSelected3(relatedItemsList.get(position));
                     holder.tv_quantity.setText("0");
-                    listener3.onRelatedItemSelected3(relatedItemsList.get(position));
+                    //holder.add_item_flag.setText("0");
+
+                    /*relatedItem.setQuantity(String.valueOf((Integer.parseInt(relatedItem.getQuantity())-1)));
+                    holder.tv_quantity.setText("0");
+                    listener3.onRelatedItemSelected3(relatedItemsList.get(position));*/
 
                     /*remove_layout.setVisibility(View.GONE);
                     activateListener.onProductActivate(productListFiltered.get(position));

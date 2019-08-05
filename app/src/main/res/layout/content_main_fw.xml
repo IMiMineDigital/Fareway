@@ -52,7 +52,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:text="Added"
+            android:text="Activated"
             android:textColor="@color/white"
             android:textStyle="bold" />
 
@@ -1284,13 +1284,13 @@
                             android:fontFamily="@font/roboto_black"
                             android:gravity="left"
                             android:maxLines="1"
-                            android:text="Add Item"
+                            android:text=""
                             android:textSize="14sp" />
 
                     </LinearLayout>
 
                     <LinearLayout
-                        android:visibility="gone"
+                        android:visibility="visible"
                         android:id="@+id/liner_item_add_detail"
                         android:layout_marginLeft="@dimen/_5sdp"
                         android:layout_width="wrap_content"

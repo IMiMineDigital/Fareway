@@ -67,7 +67,8 @@ public class ShopperId extends AppCompatActivity {
             }
         });*/
         try {
-            bitmap = encodeAsBitmap(appUtil.getPrefrence("ShopperID"), BarcodeFormat.CODE_128, 600, 300);
+            //bitmap = encodeAsBitmap(appUtil.getPrefrence("ShopperID"), BarcodeFormat.CODE_128, 600, 300);
+            bitmap = encodeAsBitmap(appUtil.getPrefrence("ShopperID"), BarcodeFormat.CODE_128, 800, 300);
 
             gambarBarcode.setImageBitmap(bitmap);
             textnya.setText(appUtil.getPrefrence("ShopperID"));
