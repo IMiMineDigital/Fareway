@@ -124,26 +124,6 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                     linear_tab_button.setVisibility(View.VISIBLE);
                 }
             });
-            add_plus.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener2.onRelatedItemSelected2(relatedItemsList.get(getAdapterPosition()));
-                    /*circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                    imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
-                    tv_status.setText("Added");*/
-                }
-            });
-
-            add_minus.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-                    listener3.onRelatedItemSelected3(relatedItemsList.get(getAdapterPosition()));
-                    /*remove_layout.setVisibility(View.GONE);
-                    circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
-                    imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
-                    tv_status.setText("Add");*/
-                }
-            });
 
             linear_tab_button.setOnClickListener(new View.OnClickListener() {
                 @Override
@@ -251,7 +231,6 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                     DecimalFormat dF = new DecimalFormat("00.00");
                     Number num = dF.parse(relatedItem.getRegularPrice());
                     holder.tv_saving_pri_fix.setText("Everyday Price ");
-                    //holder.tv_saving.setPaintFlags(holder.tv_saving.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     holder.tv_saving.setText("$"+new DecimalFormat("##.##").format(num));
                 } catch (Exception e) {
 
@@ -312,10 +291,6 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                             Typeface typeface = ResourcesCompat.getFont(mContext, R.font.roboto_black);
                             holder.tv_saving.setTypeface(typeface);
 
-                            /*Spanned varietiesUnderline = Html.fromHtml("Everyday Price "+"<strike>"+"$"+everyDayPrice+"</strike>"+"<br/>"+"Promo Price "+"<strike>"+"$"+new DecimalFormat("##.##").format(adPrice)+"</strike>");
-
-                            holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.black));
-                            holder.liner_save.setBackgroundColor(mContext.getResources().getColor(R.color.white));*/
                             if (relatedItem.getRegularPrice().equalsIgnoreCase("0")){
                                 holder.tv_saving_pri_fix.setText("");
                                 holder.tv_saving.setText("");
@@ -454,23 +429,20 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
 
             String charsUnit =lowercase(relatedItem.getPackagingSize());
             holder.tv_unit.setText(charsUnit);
-            //holder.tv_unit.setText(relatedItem.getPackagingSize());
             holder.tv_quantity.setText(relatedItem.getQuantity());
-            //holder.add_item_flag.setText(relatedItem.getQuantity());
 
             holder.tv_status.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
             holder.circular_layout.getLayoutParams().height = 200;
             holder.circular_layout.getLayoutParams().width = 200;
 
             holder.relative_badge.getLayoutParams().width = 110;
-            //holder.add_item_flag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 8);
 
             if (relatedItem.getPrimaryOfferTypeId() == 3) {
                 holder.tv_promo_price__pri_fix.setText("");
                 holder.tv_promo_price.setText("");
                 String saveDate = relatedItem.getValidityEndDate();
                 if (saveDate.length()==0){
-                    // getTokenkey();
+
                 }else {
                     SimpleDateFormat spf = new SimpleDateFormat("MM/dd/yy");
                     Date newDate = null;
@@ -502,7 +474,6 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                     DecimalFormat dF = new DecimalFormat("00.00");
                     Number num = dF.parse(relatedItem.getRegularPrice());
                     holder.tv_saving_pri_fix.setText("Everyday Price ");
-                   // holder.tv_saving.setPaintFlags(holder.tv_saving.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                     holder.tv_saving.setText("$"+new DecimalFormat("##.##").format(num));
                 } catch (Exception e) {
 
@@ -513,18 +484,14 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                     displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ relatedItem.getDisplayPrice().split("\\.")[1]+"<sup>";
                 Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
                 holder.tv_price.setText(result);
-
-                /*Spanned result = Html.fromHtml(relatedItem.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
-                holder.tv_price.setText(result);*/
                 holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.mehrune));
-
 
             }
 
             else if (relatedItem.getPrimaryOfferTypeId() == 2) {
                 String saveDate = relatedItem.getValidityEndDate();
                 if (saveDate.length()==0){
-                    // getTokenkey();
+
                 }else {
                     SimpleDateFormat spf = new SimpleDateFormat("MM/dd/yy");
                     Date newDate = null;
@@ -554,25 +521,12 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 holder.liner_save.setVisibility(View.VISIBLE);
                 holder.tv_saving.setVisibility(View.VISIBLE);
                 holder.tv_varieties.setVisibility(View.VISIBLE);
-                /*try {
-                    DecimalFormat dF = new DecimalFormat("0.00");
-                    Number num = dF.parse(relatedItem.getSavings());
-                    holder.tv_saving.setText("SAVE $" + new DecimalFormat("##.##").format(num));
-                } catch (Exception e) {
 
-                }*/
                 try {
 
                     DecimalFormat dF = new DecimalFormat("00.00");
                     Number adPrice = dF.parse(relatedItem.getAdPrice());
                     Number everyDayPrice = dF.parse(relatedItem.getRegularPrice());
-/*
-                    holder.tv_saving.setTypeface(holder.tv_saving.getTypeface(), Typeface.NORMAL);
-                    Typeface typeface = ResourcesCompat.getFont(mContext, R.font.roboto_black);
-                    holder.tv_saving.setTypeface(typeface);
-
-                    Spanned varietiesUnderline = Html.fromHtml("Everyday Price "+"<strike>"+"$"+everyDayPrice+"</strike>"+"<br/>"+"Promo Price "+"<strike>"+"$"+new DecimalFormat("##.##").format(adPrice)+"</strike>");
-*/
 
                     if (relatedItem.getRegularPrice().equalsIgnoreCase("0")){
                         holder.tv_saving_pri_fix.setText("");
@@ -580,12 +534,9 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                         holder.tv_promo_price__pri_fix.setText("");
                         holder.tv_promo_price.setText("");
                     }else {
-
-                        //holder.tv_saving.setPaintFlags(holder.tv_saving.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                         holder.tv_saving.setText("$"+everyDayPrice);
-                              holder.tv_saving_pri_fix.setText("Everyday Price ");
+                        holder.tv_saving_pri_fix.setText("Everyday Price ");
                         holder.tv_promo_price__pri_fix.setText("Promo Price    ");
-                        //holder.tv_promo_price.setPaintFlags(holder.tv_saving.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                         holder.tv_promo_price.setText("$"+new DecimalFormat("##.##").format(adPrice));
                     }
 
@@ -601,21 +552,19 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                         holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
                         holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
                         holder.tv_status.setText("Added");
-                        // holder.count_product_number.setVisibility(View.VISIBLE);
 
-                        ///  holder.tv_quantity.setText(relatedItem.getQuantity());
                     }else if (relatedItem.getListCount()==0){
                         holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
                         holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
                         holder.tv_status.setText("Add");
-                        //  holder.count_product_number.setVisibility(View.GONE);
+
 
                     }
                 }else {
                     holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
                     holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
                     holder.tv_status.setText("Activate");
-                    //  holder.count_product_number.setVisibility(View.GONE);
+
 
                 }
             }
@@ -625,7 +574,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 holder.tv_promo_price.setText("");
                 String saveDate = relatedItem.getValidityEndDate();
                 if (saveDate.length()==0){
-                    // getTokenkey();
+
                 }else {
                     SimpleDateFormat spf = new SimpleDateFormat("MM/dd/yy");
                     Date newDate = null;
@@ -685,7 +634,9 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                             .load(relatedItem.getCouponImageURl())
                             .into(holder.imv_item);
                 }
-            }else {
+            }
+
+            else {
                 if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
                     Glide.with(mContext)
                             .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
@@ -701,232 +652,12 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 }
             }
         }
-        /*{
 
-            holder.circular_layout.setVisibility(View.INVISIBLE);
-            holder.remove_layout.setVisibility(View.INVISIBLE);
-            holder.circular_layout_mul.setVisibility(View.VISIBLE);
-            holder.remove_layout_mul.setVisibility(View.VISIBLE);
-
-            holder.tv_varieties.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
-            holder.tv_coupon_flag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
-            holder.tv_price.setTextSize(TypedValue.COMPLEX_UNIT_SP, 22);
-            holder.tv_saving.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
-            holder.tv_unit.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-            holder.tv_detail.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-            holder.tv_deal_type.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-            holder.tv_status_mul.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-             holder.tv_unit.setText(relatedItem.getPackagingSize());
-            if (relatedItem.getPrimaryOfferTypeId() == 3) {
-                String saveDate = relatedItem.getValidityEndDate();
-                if (saveDate.length()==0){
-               }else {
-                    SimpleDateFormat spf = new SimpleDateFormat("MM/dd/yy");
-                    Date newDate = null;
-                    try {
-                        newDate = spf.parse(saveDate);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    String c = "MM/dd";
-                    spf = new SimpleDateFormat(c);
-                    saveDate = spf.format(newDate);
-                    System.out.println(saveDate);
-
-                }
-                String headerContent = "";
-                headerContent = "Exp "+saveDate;
-                holder.limit.setText("\n"+headerContent);
-                holder.tv_coupon_flag.setText("With MyFareway");
-                holder.tv_deal_type.setText(relatedItem.getOfferTypeTagName());
-
-                String chars = capitalize(relatedItem.getDescription());
-                holder.tv_detail.setText(chars);
-
-                holder.circular_layout_mul.setVisibility(View.VISIBLE);
-                holder.tv_saving.setVisibility(View.VISIBLE);
-                holder.tv_varieties.setVisibility(View.VISIBLE);
-                try {
-                    DecimalFormat dF = new DecimalFormat("0.00");
-                    Number num = dF.parse(relatedItem.getSavings());
-                    holder.tv_saving.setText("SAVE $" + new DecimalFormat("##.##").format(num));
-                } catch (Exception e) {
-
-                }
-
-                String displayPrice=relatedItem.getDisplayPrice().toString();
-                if(relatedItem.getDisplayPrice().toString().split("\\.").length>1)
-                    displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ relatedItem.getDisplayPrice().split("\\.")[1]+"<sup>";
-                Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
-                holder.tv_price.setText(result);
-
-                holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.mehrune));
-                if (relatedItem.getClickCount()>0) {
-                    if (relatedItem.getListCount()>0){
-                        holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                        holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
-                        holder.tv_status_mul.setText("Added");
-                        holder.remove_layout_mul.setVisibility(View.VISIBLE);
-                    }else if (relatedItem.getListCount()==0){
-                        holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
-                        holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
-                        holder.tv_status_mul.setText("Add");
-                        holder.remove_layout_mul.setVisibility(View.GONE);
-                    }
-                }else {
-                    holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
-                    holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
-                    holder.tv_status_mul.setText("Activate");
-                    holder.remove_layout_mul.setVisibility(View.GONE);
-                }
-
-            }
-            else if (relatedItem.getPrimaryOfferTypeId() == 2) {
-                String saveDate = relatedItem.getValidityEndDate();
-                if (saveDate.length()==0){
-                }else {
-                    SimpleDateFormat spf = new SimpleDateFormat("MM/dd/yy");
-                    Date newDate = null;
-                    try {
-                        newDate = spf.parse(saveDate);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    String c = "MM/dd";
-                    spf = new SimpleDateFormat(c);
-                    saveDate = spf.format(newDate);
-                    System.out.println(saveDate);
-
-
-                }
-                String headerContent = "";
-                headerContent = "Exp "+saveDate;
-                holder.limit.setText("\n"+headerContent);
-                holder.tv_coupon_flag.setText("With Coupon");
-                holder.tv_deal_type.setText(relatedItem.getOfferTypeTagName());
-
-                String chars = capitalize(relatedItem.getDescription());
-                holder.tv_detail.setText(chars);
-
-                holder.circular_layout_mul.setVisibility(View.GONE);
-                holder.tv_saving.setVisibility(View.VISIBLE);
-                holder.tv_varieties.setVisibility(View.VISIBLE);
-                try {
-                    DecimalFormat dF = new DecimalFormat("0.00");
-                    Number num = dF.parse(relatedItem.getSavings());
-                    holder.tv_saving.setText("SAVE $" + new DecimalFormat("##.##").format(num));
-                } catch (Exception e) {
-
-                }
-                Spanned result = Html.fromHtml(relatedItem.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
-                holder.tv_price.setText(result);
-                holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.green));
-                if (relatedItem.getClickCount()>0) {
-                    if (relatedItem.getListCount()>0){
-                        holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                        holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
-                        holder.tv_status_mul.setText("Added");
-                       holder.remove_layout_mul.setVisibility(View.GONE);
-                    }else if (relatedItem.getListCount()==0){
-                        holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
-                        holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
-                        holder.tv_status_mul.setText("Add");
-                       holder.remove_layout_mul.setVisibility(View.GONE);
-                    }
-                }else {
-                    holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
-                    holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
-                    holder.tv_status_mul.setText("Activate");
-                    holder.remove_layout_mul.setVisibility(View.GONE);
-                }
-            }else if (relatedItem.getPrimaryOfferTypeId() == 1) {
-                String saveDate = relatedItem.getValidityEndDate();
-                if (saveDate.length()==0){
-                }else {
-                    SimpleDateFormat spf = new SimpleDateFormat("MM/dd/yy");
-                    Date newDate = null;
-                    try {
-                        newDate = spf.parse(saveDate);
-                    } catch (ParseException e) {
-                        e.printStackTrace();
-                    }
-                    String c = "MM/dd";
-                    spf = new SimpleDateFormat(c);
-                    saveDate = spf.format(newDate);
-                    System.out.println(saveDate);
-
-
-                }
-                String headerContent = "";
-                headerContent = "Exp "+saveDate;
-                holder.limit.setText("\n"+headerContent);
-                holder.tv_coupon_flag.setText("");
-                holder.tv_deal_type.setText(relatedItem.getOfferTypeTagName());
-
-                String chars = capitalize(relatedItem.getDescription());
-                holder.tv_detail.setText(chars);
-
-                holder.circular_layout_mul.setVisibility(View.VISIBLE);
-                holder.tv_saving.setVisibility(View.VISIBLE);
-                holder.tv_varieties.setVisibility(View.VISIBLE);
-                try {
-                    DecimalFormat dF = new DecimalFormat("0.00");
-                    Number num = dF.parse(relatedItem.getSavings());
-                    holder.tv_saving.setText("SAVE $" + new DecimalFormat("##.##").format(num));
-                } catch (Exception e) {
-
-                }
-                Spanned result = Html.fromHtml(relatedItem.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
-                holder.tv_price.setText(result);
-                holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.blue));
-                if (relatedItem.getListCount()>0){
-                    holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                    holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
-                    holder.tv_status_mul.setText("Added");
-                    holder.remove_layout_mul.setVisibility(View.VISIBLE);
-                }else if (relatedItem.getListCount()==0){
-                    holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
-                    holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
-                    holder.tv_status_mul.setText("Add");
-                    holder.remove_layout_mul.setVisibility(View.GONE);
-                }
-            }
-
-            Log.i("image",relatedItem.getLargeImagePath()+"singh");
-            if (relatedItem.getOfferDefinitionId()==5){
-                if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
-                    Glide.with(mContext)
-                            .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
-                            .into(holder.imv_item);
-                }else if (relatedItem.getLargeImagePath().equalsIgnoreCase("")){
-                    Glide.with(mContext)
-                            .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
-                            .into(holder.imv_item);
-                }else {
-                    Glide.with(mContext)
-                            .load(relatedItem.getCouponImageURl())
-                            .into(holder.imv_item);
-                }
-            }else {
-                if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
-                    Glide.with(mContext)
-                            .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
-                            .into(holder.imv_item);
-                }else if (relatedItem.getLargeImagePath().equalsIgnoreCase("")){
-                    Glide.with(mContext)
-                            .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
-                            .into(holder.imv_item);
-                }else {
-                    Glide.with(mContext)
-                            .load(relatedItem.getLargeImagePath())
-                            .into(holder.imv_item);
-                }
-            }
-        }*/
 
         holder.add_plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.i("add_plusQuantity",relatedItem.getQuantity());
                 listener2.onRelatedItemSelected2(relatedItemsList.get(position));
                 holder.tv_quantity.setText(String.valueOf((Integer.parseInt(relatedItem.getQuantity())+1)));
 
@@ -937,9 +668,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
         holder.add_minus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("Quantity",relatedItem.getQuantity());
-
-
+                Log.i("add_minusQuantity",relatedItem.getQuantity());
                 if (Integer.parseInt(relatedItem.getQuantity())>0){
                     listener3.onRelatedItemSelected3(relatedItemsList.get(position));
                     holder.tv_quantity.setText(String.valueOf((Integer.parseInt(relatedItem.getQuantity())-1)));

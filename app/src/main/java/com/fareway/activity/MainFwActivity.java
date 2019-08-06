@@ -2120,6 +2120,7 @@ public class MainFwActivity extends AppCompatActivity
 
     @Override
     public void onProductSelected(final Product product) {
+        Log.i("click", String.valueOf(product.getClickCount()));
         linear_tab_button_detail.setVisibility(View.VISIBLE);
         tv_quantity_detail.setText(product.getQuantity());
         navigation.setVisibility(View.GONE);
@@ -3160,12 +3161,7 @@ public class MainFwActivity extends AppCompatActivity
                                     fetchShoppingListLoad();
                                     remove_layout_detail.setVisibility(View.GONE);
                                     tv_quantity_detail.setText("0");
-                                    //    count_product_number_detail.setVisibility(View.GONE);
-                                    //product.setClickCount(1);
-                                    //tv_status_detaile.setText("Add");
-                                    //circular_layout_detaile.setBackground(getResources().getDrawable(R.drawable.circular_red_bg));
-                                    //imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.addwhite));
-                                    //remove quantity
+
                                     SetRemoveActivateDetail(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
 
                                 }
@@ -3338,7 +3334,8 @@ public class MainFwActivity extends AppCompatActivity
             }
         }else {
             liner_all_Varieties_activate.setVisibility(View.GONE);
-            //all_Varieties_activate.setVisibility(View.GONE);
+            all_Varieties_activate.setVisibility(View.GONE);
+            imv_status_verities.setVisibility(View.GONE);
         }
 
         Group="";
@@ -4508,7 +4505,8 @@ public class MainFwActivity extends AppCompatActivity
                     }
                 }
                 fetchProduct();
-                fetchShoppingListLoad();
+                shoppingListLoad();
+                //fetchShoppingListLoad();
                 if (jsonParam == null) {
                     Log.i("testtttt", String.valueOf(jsonParam));
                     //no students
@@ -6074,6 +6072,7 @@ public class MainFwActivity extends AppCompatActivity
 
     @Override
     public void onRelatedItemSelected2(final RelatedItem relatedItem) {
+        Log.i("clickcount", String.valueOf(relatedItem.getClickCount()));
         JSONObject json = new JSONObject();
         Calendar c2 = Calendar.getInstance();
         SimpleDateFormat dateformat2 = new SimpleDateFormat("dd MMM yyyy");
@@ -6107,7 +6106,7 @@ public class MainFwActivity extends AppCompatActivity
         final String mRequestBody = "'"+studentsObj.toString()+"'";
         String url = null;
         Log.i("testobject",mRequestBody);
-        if (relatedItem.getQuantity().equalsIgnoreCase("0") && relatedItem.getClickCount()==0){
+        if (relatedItem.getQuantity().equalsIgnoreCase("0")){
             try {
 
                 StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST,Constant.WEB_URL + Constant.ACTIVATE,
@@ -6118,10 +6117,26 @@ public class MainFwActivity extends AppCompatActivity
                                 relatedItem.setQuantity(String.valueOf((Integer.parseInt(relatedItem.getQuantity())+1)));
                                 SetProductActivateShopping(relatedItem.getPrimaryOfferTypeId(),relatedItem.getUPC(),1,String.valueOf((Integer.parseInt(relatedItem.getQuantity())+0)));
 
-                                liner_all_Varieties_activate.setVisibility(View.VISIBLE);
-                                liner_all_Varieties_activate.setBackground(getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                                all_Varieties_activate.setText("Activated");
-                                imv_status_verities.setVisibility(View.VISIBLE);
+                                if (relatedItem.getPrimaryOfferTypeId()==3 || relatedItem.getPrimaryOfferTypeId()==2){
+
+                                    if (relatedItem.getClickCount()==0){
+                                        liner_all_Varieties_activate.setVisibility(View.VISIBLE);
+                                        liner_all_Varieties_activate.setBackground(getResources().getDrawable(R.drawable.circular_red_bg));
+                                        all_Varieties_activate.setText("Activate");
+                                        imv_status_verities.setVisibility(View.GONE);
+
+                                    } else {
+                                        liner_all_Varieties_activate.setVisibility(View.VISIBLE);
+                                        liner_all_Varieties_activate.setBackground(getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                                        all_Varieties_activate.setVisibility(View.VISIBLE);
+                                        all_Varieties_activate.setText("Activated");
+                                        imv_status_verities.setVisibility(View.VISIBLE);
+                                    }
+                                }else {
+                                    liner_all_Varieties_activate.setVisibility(View.GONE);
+                                    all_Varieties_activate.setVisibility(View.GONE);
+                                    imv_status_verities.setVisibility(View.GONE);
+                                }
 
                             }
                         }, new Response.ErrorListener() {
@@ -6205,6 +6220,7 @@ public class MainFwActivity extends AppCompatActivity
             }
 
         }
+
         else {
             url = Constant.WEB_URL+Constant.SHOPPINGLIST+appUtil.getPrefrence("MemberId");
 
@@ -6212,7 +6228,7 @@ public class MainFwActivity extends AppCompatActivity
                     new Response.Listener<String >() {
                         @Override
                         public void onResponse(String  response) {
-                            Log.i("success", String.valueOf(response));
+                            Log.i("Selected2success", String.valueOf(response));
                             relatedItem.setQuantity(String.valueOf((Integer.parseInt(relatedItem.getQuantity())+1)));
                             SetProductActivateShopping(relatedItem.getPrimaryOfferTypeId(),relatedItem.getUPC(),1,String.valueOf((Integer.parseInt(relatedItem.getQuantity())+0)));
 
@@ -6264,47 +6280,48 @@ public class MainFwActivity extends AppCompatActivity
     @Override
     public void onRelatedItemSelected3(final RelatedItem relatedItem) {
         Log.i("remove","remove");
+        if (Integer.parseInt(relatedItem.getQuantity())>1) {
 
-        JSONObject json = new JSONObject();
-        Calendar c2 = Calendar.getInstance();
-        SimpleDateFormat dateformat2 = new SimpleDateFormat("dd MMM yyyy");
-        String currentDate = dateformat2.format(c2.getTime());
-        System.out.println(currentDate);
+            JSONObject json = new JSONObject();
+            Calendar c2 = Calendar.getInstance();
+            SimpleDateFormat dateformat2 = new SimpleDateFormat("dd MMM yyyy");
+            String currentDate = dateformat2.format(c2.getTime());
+            System.out.println(currentDate);
 
-        JSONObject ShoppingListItems = new JSONObject();
-        try {
-            ShoppingListItems.put("UPC", relatedItem.getUPC());
-            ShoppingListItems.put("Quantity", (Integer.parseInt(relatedItem.getQuantity())-1));
-            ShoppingListItems.put("DateAddedOn", currentDate);
+            JSONObject ShoppingListItems = new JSONObject();
+            try {
+                ShoppingListItems.put("UPC", relatedItem.getUPC());
+                ShoppingListItems.put("Quantity", (Integer.parseInt(relatedItem.getQuantity()) - 1));
+                ShoppingListItems.put("DateAddedOn", currentDate);
 
-        } catch (JSONException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
+            } catch (JSONException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
 
-        JSONArray jsonArray = new JSONArray();
+            JSONArray jsonArray = new JSONArray();
 
-        jsonArray.put(ShoppingListItems);
+            jsonArray.put(ShoppingListItems);
 
-        JSONObject studentsObj = new JSONObject();
-        try {
-            studentsObj.put("ShoppingListItems", jsonArray);
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
+            JSONObject studentsObj = new JSONObject();
+            try {
+                studentsObj.put("ShoppingListItems", jsonArray);
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
-        final String mRequestBody = "'"+studentsObj.toString()+"'";
-        String url = null;
-        Log.i("testobject",mRequestBody);
+            final String mRequestBody = "'" + studentsObj.toString() + "'";
+            String url = null;
+            Log.i("testobject", mRequestBody);
 
-            url = Constant.WEB_URL+Constant.SHOPPINGLIST+appUtil.getPrefrence("MemberId");
-            StringRequest jsonObjectRequest = new StringRequest (Request.Method.PUT, url,
-                    new Response.Listener<String >() {
+            url = Constant.WEB_URL + Constant.SHOPPINGLIST + appUtil.getPrefrence("MemberId");
+            StringRequest jsonObjectRequest = new StringRequest(Request.Method.PUT, url,
+                    new Response.Listener<String>() {
                         @Override
-                        public void onResponse(String  response) {
+                        public void onResponse(String response) {
                             Log.i("success", String.valueOf(response));
-                            relatedItem.setQuantity(String.valueOf((Integer.parseInt(relatedItem.getQuantity())-1)));
-                            SetProductActivateShopping(relatedItem.getPrimaryOfferTypeId(),relatedItem.getUPC(),1,String.valueOf((Integer.parseInt(relatedItem.getQuantity())-0)));
+                            relatedItem.setQuantity(String.valueOf((Integer.parseInt(relatedItem.getQuantity()) - 1)));
+                            SetProductActivateShopping(relatedItem.getPrimaryOfferTypeId(), relatedItem.getUPC(), 1, String.valueOf((Integer.parseInt(relatedItem.getQuantity()) - 0)));
 
                         }
                     }, new Response.ErrorListener() {
@@ -6312,7 +6329,7 @@ public class MainFwActivity extends AppCompatActivity
                 public void onErrorResponse(VolleyError error) {
                     Log.i("fail", String.valueOf(error));
                 }
-            }){
+            }) {
 
                 @Override
                 public String getBodyContentType() {
@@ -6343,13 +6360,53 @@ public class MainFwActivity extends AppCompatActivity
             jsonObjectRequest.setRetryPolicy(policy);
             try {
                 mQueue.add(jsonObjectRequest);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+        }else {
+            Log.i("remove","remove");
+            String url = Constant.WEB_URL+Constant.REMOVE+relatedItem.getUPC()+"&"+"MemberId="+appUtil.getPrefrence("MemberId");
+            StringRequest  jsonObjectRequest = new StringRequest (Request.Method.DELETE, url,
+                    new Response.Listener<String >() {
+                        @Override
+                        public void onResponse(String  response) {
+                            Log.i("success", String.valueOf(response));
+                            fetchShoppingListLoad();
+
+                            //SetRemoveActivateDetail(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
+
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.i("fail", String.valueOf(error));
+                }
+            }){
+                @Override
+                public String getBodyContentType() {
+                    return "application/json; charset=utf-8";
+                }
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                    params.put("Content-Type", "application/json ;charset=utf-8");
+                    return params;
+                }
+            };
+            RetryPolicy policy = new DefaultRetryPolicy
+                    (50000,
+                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+            jsonObjectRequest.setRetryPolicy(policy);
+            try {
+                mQueue.add(jsonObjectRequest);
             }
             catch (Exception e)
             {
                 e.printStackTrace();
             }
-
-
+        }
 
     }
 
@@ -6890,9 +6947,13 @@ public class MainFwActivity extends AppCompatActivity
 
                                             for (int i = 0; i < shoppingId.length(); i++) {
                                                 JSONObject jsonParam= shoppingId.getJSONObject(i);
-                                                appUtil.setPrefrence("ShoppingListId", jsonParam.getString("ShoppingListId"));
-                                                Log.i("ShoppingListId",appUtil.getPrefrence("ShoppingListId"));
-                                                shoppingListLoad();
+                                                if (jsonParam.getInt("IsActive")==1){
+                                                    appUtil.setPrefrence("ShoppingListId", jsonParam.getString("ShoppingListId"));
+                                                    Log.i("ShoppingListId",appUtil.getPrefrence("ShoppingListId"));
+                                                    shoppingListLoad();
+                                                }
+
+
 
                                             }
                                            /*   tv_number_item.setText(String.valueOf(shopping.length()));

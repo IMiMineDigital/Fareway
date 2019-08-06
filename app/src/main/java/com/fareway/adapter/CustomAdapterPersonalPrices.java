@@ -181,6 +181,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
         final Product product = productListFiltered.get(position);
+
         if(MainFwActivity.singleView) {
             holder.item_layout_tile.setVisibility(View.VISIBLE);
 
@@ -2448,7 +2449,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             }
         });*/
 
-        holder.add_plus.setOnClickListener(new View.OnClickListener() {
+       /* holder.add_plus.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 JSONObject json = new JSONObject();
@@ -2466,7 +2467,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     ShoppingListItems.put("DateAddedOn", currentDate);
 
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
+
                     e.printStackTrace();
                 }
 
@@ -2539,7 +2540,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 }
 
             }
-        });
+        });*/
 
 
     }
