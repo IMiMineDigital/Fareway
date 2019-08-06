@@ -57,11 +57,14 @@ public class SplashFw extends AppCompatActivity {
         String saveDate = appUtil.getPrefrence(".expires");
         Log.i("saveDate", saveDate);
         if (saveDate != null) {
+
             if (saveDate.length() == 0) {
                 Log.i("start date", saveDate + appUtil.getPrefrence("isLogin").equalsIgnoreCase("yes"));
                 //Toast.makeText(activity, "first time open", Toast.LENGTH_LONG).show();
                 getTokenkey();
-            } else {
+            }
+
+            else {
                 //Toast.makeText(activity, "second time open" + saveDate+appUtil.getPrefrence("isLogin").equalsIgnoreCase("yes"), Toast.LENGTH_LONG).show();
                 SimpleDateFormat spf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss");
                 Date newDate = null;
@@ -86,7 +89,11 @@ public class SplashFw extends AppCompatActivity {
                 if (appUtil.getPrefrence("isLogin").equalsIgnoreCase("yes")==true) {
                     // getTokenkey();
                     if (currentDate.compareTo(saveDate) < 0) {
-                        Log.i("mihir", "anshuman");
+                        //getTokenkey();
+                        /*Intent i = new Intent(activity, LoginFw.class);
+                        startActivity(i);
+                        finish();*/
+
                         Intent i = new Intent(activity, MainFwActivity.class);
 
                         if (appUtil.getPrefrence("comeFrom").equalsIgnoreCase("mpp")) {
@@ -115,7 +122,10 @@ public class SplashFw extends AppCompatActivity {
 
                 }
             }
-        } else {
+
+        }
+
+        else {
 
             if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
                 getTokenkey();
@@ -228,4 +238,6 @@ public class SplashFw extends AppCompatActivity {
 //            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
         }
     }
+
+
 }
