@@ -1,7 +1,7 @@
 package com.fareway.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+//import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,6 +10,8 @@ import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
@@ -17,13 +19,14 @@ import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
-import com.bumptech.glide.Glide;
+
 import com.fareway.R;
 import com.fareway.activity.MainFwActivity;
 import com.fareway.controller.FarewayApplication;
 import com.fareway.model.Shopping;
 import com.fareway.utility.AppUtilFw;
 import com.fareway.utility.Constant;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
 
@@ -250,20 +253,14 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         }
 
         if (shopping.getPrimaryOfferTypeId()==3 || shopping.getPrimaryOfferTypeId()==2||shopping.getPrimaryOfferTypeId()==1||shopping.getPrimaryOfferTypeId()==0){
-            if (shopping.getImageURL()==null){
+           if (shopping.getImageURL()==null){
 
             }else if (shopping.getImageURL().contains("https://pty.bashas.com/webapiaccessclient/images/noimage-large.png")||shopping.getImageURL().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
-                Glide.with(mContext)
-                        .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
-                        .into(holder.imv_shopping_item);
+               Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(holder.imv_shopping_item);
             }else if (shopping.getImageURL().equalsIgnoreCase("")){
-                Glide.with(mContext)
-                        .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
-                        .into(holder.imv_shopping_item);
+               Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(holder.imv_shopping_item);
             }else {
-                Glide.with(mContext)
-                        .load(shopping.getImageURL())
-                        .into(holder.imv_shopping_item);
+               Picasso.get().load(shopping.getImageURL()).into(holder.imv_shopping_item);
             }
         }
 

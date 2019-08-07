@@ -17,6 +17,7 @@ import android.os.AsyncTask;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
+/*
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
 import android.support.design.widget.BottomNavigationView;
@@ -25,7 +26,7 @@ import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
-import android.support.v7.widget.helper.ItemTouchHelper;
+import android.support.v7.widget.helper.ItemTouchHelper;*/
 import android.text.Html;
 import android.text.Spanned;
 import android.util.DisplayMetrics;
@@ -35,9 +36,10 @@ import android.view.Gravity;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
+/*
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
+import android.support.v7.widget.Toolbar;*/
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
@@ -55,6 +57,16 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.widget.SearchView;
+import androidx.appcompat.widget.Toolbar;
+import androidx.core.content.ContextCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.ItemTouchHelper;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -65,7 +77,7 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
-import com.bumptech.glide.Glide;
+
 import com.fareway.R;
 import com.fareway.adapter.CustomAdapterFilter;
 import com.fareway.adapter.CustomAdapterParticipateItems;
@@ -85,8 +97,12 @@ import com.fareway.utility.Constant;
 import com.fareway.utility.DividerRVDecoration;
 import com.fareway.utility.NetworkUtils;
 import com.fareway.utility.UserAlertDialog;
+import com.google.android.material.bottomnavigation.BottomNavigationItemView;
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
+import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -209,6 +225,7 @@ public class MainFwActivity extends AppCompatActivity
         linear_shopping_list_tab=findViewById(R.id.linear_shopping_list_tab);
         linear_coupon_tab=findViewById(R.id.linear_coupon_tab);
         search_message=findViewById(R.id.search_message);
+        search_message.setVisibility(View.GONE);
 //        shopping_date=findViewById(R.id.shopping_date);
 
         shopping_list_fragment=findViewById(R.id.shopping_list_fragment);
@@ -388,6 +405,7 @@ public class MainFwActivity extends AppCompatActivity
 
                         } else {
                             search_message.setVisibility(View.GONE);
+                            navigation.setVisibility(View.VISIBLE);
                             submit_btn.setImageResource(R.drawable.ic_search_black_24dp);
                             submit_btn.setTag(0);
                             edit_txt.getText().clear();
@@ -2194,6 +2212,7 @@ public class MainFwActivity extends AppCompatActivity
         tv_varieties_detail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                search_message.setVisibility(View.GONE);
                 navigation.setVisibility(View.GONE);
                 scrollView.setVisibility(View.GONE);
                 DetaileToolbar.setVisibility(View.GONE);
@@ -2218,7 +2237,6 @@ public class MainFwActivity extends AppCompatActivity
 
                 else {
                     liner_all_Varieties_activate.setVisibility(View.GONE);
-                    all_Varieties_activate.setVisibility(View.GONE);
                 }
 
                 Group="";
@@ -2424,23 +2442,15 @@ public class MainFwActivity extends AppCompatActivity
 
         if (product.getOfferDefinitionId()==5){
             if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
-                Glide.with(activity)
-                        .load("https://platform.immdemo.net/web/images/GEnoimage.jpg")
-                        .into(imv_item_detaile);
+                Picasso.get().load("https://platform.immdemo.net/web/images/GEnoimage.jpg").into(imv_item_detaile);
             }else {
-                Glide.with(activity)
-                        .load(product.getCouponImageURl())
-                        .into(imv_item_detaile);
+                Picasso.get().load(product.getCouponImageURl()).into(imv_item_detaile);
             }
         }else {
             if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
-                Glide.with(activity)
-                        .load("https://platform.immdemo.net/web/images/GEnoimage.jpg")
-                        .into(imv_item_detaile);
+                Picasso.get().load("https://platform.immdemo.net/web/images/GEnoimage.jpg").into(imv_item_detaile);
             }else {
-                Glide.with(activity)
-                        .load(product.getLargeImagePath())
-                        .into(imv_item_detaile);
+                Picasso.get().load(product.getLargeImagePath()).into(imv_item_detaile);
             }
         }
 
@@ -3332,7 +3342,8 @@ public class MainFwActivity extends AppCompatActivity
                 all_Varieties_activate.setText("Activated");
                 imv_status_verities.setVisibility(View.VISIBLE);
             }
-        }else {
+        }
+        else {
             liner_all_Varieties_activate.setVisibility(View.GONE);
             all_Varieties_activate.setVisibility(View.GONE);
             imv_status_verities.setVisibility(View.GONE);
@@ -5328,9 +5339,6 @@ public class MainFwActivity extends AppCompatActivity
         TextView tv_coupon_detail = (TextView) findViewById(R.id.tv_coupon_detail);
         TextView tv_varieties_detail = (TextView) findViewById(R.id.tv_varieties_detail);
 
-        /* final TextView tv_quantity_detail=(TextView)findViewById(R.id.tv_quantity_detail);
-        TextView add_minus_detail=(TextView)findViewById(R.id.add_minus_detail);
-        TextView add_plus_detail=(TextView)findViewById(R.id.add_plus_detail);*/
         ImageView imv_item_detaile = (ImageView) findViewById(R.id.imv_item_detaile);
 
         imv_item_detaile.setImageDrawable(getResources().getDrawable(R.drawable.item));
@@ -5354,33 +5362,21 @@ public class MainFwActivity extends AppCompatActivity
 
 
         Log.i("image",relatedItem.getLargeImagePath()+"singh");
-        if (relatedItem.getOfferDefinitionId()==5){
+      if (relatedItem.getOfferDefinitionId()==5){
             if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
-                Glide.with(activity)
-                        .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
-                        .into(imv_item_detaile);
+                Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(imv_item_detaile);
             }else if (relatedItem.getLargeImagePath().equalsIgnoreCase("")){
-                Glide.with(activity)
-                        .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
-                        .into(imv_item_detaile);
+                Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(imv_item_detaile);
             }else {
-                Glide.with(activity)
-                        .load(relatedItem.getCouponImageURl())
-                        .into(imv_item_detaile);
+                Picasso.get().load(relatedItem.getLargeImagePath()).into(imv_item_detaile);
             }
         }else {
             if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
-                Glide.with(activity)
-                        .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
-                        .into(imv_item_detaile);
+                Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(imv_item_detaile);
             }else if (relatedItem.getLargeImagePath().equalsIgnoreCase("")){
-                Glide.with(activity)
-                        .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
-                        .into(imv_item_detaile);
+                Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(imv_item_detaile);
             }else {
-                Glide.with(activity)
-                        .load(relatedItem.getLargeImagePath())
-                        .into(imv_item_detaile);
+                Picasso.get().load(relatedItem.getLargeImagePath()).into(imv_item_detaile);
             }
         }
         String saveDate = relatedItem.getValidityEndDate();
@@ -5619,7 +5615,7 @@ public class MainFwActivity extends AppCompatActivity
 
         }
 
-        remove_layout_detail.setOnClickListener(new View.OnClickListener() {
+       /* remove_layout_detail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i("remove","remove");
@@ -5631,12 +5627,11 @@ public class MainFwActivity extends AppCompatActivity
                                 Log.i("success", String.valueOf(response));
                                 fetchShoppingListLoad();
                                 remove_layout_detail.setVisibility(View.GONE);
-                                //    count_product_number_detail.setVisibility(View.GONE);
                                 relatedItem.setClickCount(1);
                                 tv_status_detaile.setText("Add");
                                 circular_layout_detaile.setBackground(getResources().getDrawable(R.drawable.circular_red_bg));
                                 imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.addwhite));
-                                //remove quantity
+
                                 SetRemoveActivateDetail(relatedItem.getPrimaryOfferTypeId(),relatedItem.getCouponID(),relatedItem.getUPC(),relatedItem.getRequiresActivation(),1);
 
                             }
@@ -5671,7 +5666,7 @@ public class MainFwActivity extends AppCompatActivity
                     e.printStackTrace();
                 }
             }
-        });
+        });*/
 
         circular_layout_detaile.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -7758,6 +7753,9 @@ else {
                     submit_btn.setTag(0);
                     edit_txt.getText().clear();
                     rv_items.setVisibility(View.VISIBLE);
+                    search_message.setVisibility(View.GONE);
+                    navigation.setVisibility(View.VISIBLE);
+                    x=0;
                     dialog.dismiss();
                 }
             });
@@ -7770,6 +7768,9 @@ else {
                     submit_btn.setTag(0);
                     edit_txt.getText().clear();
                     rv_items.setVisibility(View.VISIBLE);
+                    search_message.setVisibility(View.GONE);
+                    navigation.setVisibility(View.VISIBLE);
+                    x=0;
                     dialog.dismiss();
                 }
             });

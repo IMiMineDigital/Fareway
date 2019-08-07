@@ -4,10 +4,11 @@ import android.app.Activity;
 import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+/*
 import android.support.v4.app.NotificationCompatSideChannelService;
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView;*/
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
@@ -23,6 +24,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -34,13 +39,14 @@ import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.android.volley.toolbox.StringRequest;
-import com.bumptech.glide.Glide;
+
 import com.fareway.R;
 import com.fareway.activity.MainFwActivity;
 import com.fareway.controller.FarewayApplication;
 import com.fareway.model.Product;
 import com.fareway.utility.AppUtilFw;
 import com.fareway.utility.Constant;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -228,7 +234,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             holder.tv_promo_price.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
             holder.tv_detail.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
             holder.tv_deal_type.setTextSize(TypedValue.COMPLEX_UNIT_SP, 19);
-            holder.tv_remove.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+
             holder.limit.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
 
             holder.circular_layout.getLayoutParams().height = 300;
@@ -410,16 +416,13 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }
                     holder.coupon_badge.setVisibility(View.VISIBLE);
                     if (product.getIsbadged().equalsIgnoreCase("True")){
-                        Glide.with(mContext)
-                                .load(product.getBadgeFileName())
-                                .into(holder.coupon_badge);
+                        Picasso.get().load(product.getBadgeFileName()).into(holder.coupon_badge);
 
 
                     }else {
-                        Glide.with(mContext)
-                                .load("")
-                                .into(holder.coupon_badge);
+                        Picasso.get().load(R.color.white).into(holder.coupon_badge);
                     }
+
                     holder.tv_coupon_flag.setText("With Coupon");
                     holder.liner_save.setVisibility(View.GONE);
                     String charsUnit =lowercase(product.getPackagingSize());
@@ -487,18 +490,14 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     holder.coupon_badge.setVisibility(View.VISIBLE);
                     holder.limit.setGravity(Gravity.CENTER);
                     holder.limit.setText(headerContent);
+
                     if (product.getIsbadged().equalsIgnoreCase("True")){
-                        Glide.with(mContext)
-                                .load(product.getBadgeFileName())
-                                .into(holder.coupon_badge);
+                        Picasso.get().load(product.getBadgeFileName()).into(holder.coupon_badge);
                         headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection()+", Exp "+saveDate);
                         holder.limit.setText(headerContent);
                         holder.limit.setGravity(Gravity.CENTER);
-
                     }else {
-                        Glide.with(mContext)
-                                .load("")
-                                .into(holder.coupon_badge);
+                        Picasso.get().load(R.color.white).into(holder.coupon_badge);
                     }
 
                     if (product.getOfferDefinitionId()==3 || product.getOfferDefinitionId()==2 || product.getOfferDefinitionId()==1 || product.getOfferDefinitionId()==4){
@@ -989,15 +988,11 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }
                     holder.coupon_badge.setVisibility(View.VISIBLE);
                     if (product.getIsbadged().equalsIgnoreCase("True")){
-                        Glide.with(mContext)
-                                .load(product.getBadgeFileName())
-                                .into(holder.coupon_badge);
+                        Picasso.get().load(product.getBadgeFileName()).into(holder.coupon_badge);
 
 
                     }else {
-                        Glide.with(mContext)
-                                .load("")
-                                .into(holder.coupon_badge);
+                        Picasso.get().load(R.color.white).into(holder.coupon_badge);
                     }
                     holder.tv_coupon_flag.setText("With Coupon");
                     holder.liner_save.setVisibility(View.GONE);
@@ -1066,18 +1061,14 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     holder.coupon_badge.setVisibility(View.VISIBLE);
                     holder.limit.setGravity(Gravity.CENTER);
                     holder.limit.setText(headerContent);
+
                     if (product.getIsbadged().equalsIgnoreCase("True")){
-                        Glide.with(mContext)
-                                .load(product.getBadgeFileName())
-                                .into(holder.coupon_badge);
+                        Picasso.get().load(product.getBadgeFileName()).into(holder.coupon_badge);
                         headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection()+", Exp "+saveDate);
                         holder.limit.setText(headerContent);
                         holder.limit.setGravity(Gravity.CENTER);
-
                     }else {
-                        Glide.with(mContext)
-                                .load("")
-                                .into(holder.coupon_badge);
+                        Picasso.get().load(R.color.white).into(holder.coupon_badge);
                     }
 
                     if (product.getOfferDefinitionId()==3 || product.getOfferDefinitionId()==2 || product.getOfferDefinitionId()==1 || product.getOfferDefinitionId()==4){
@@ -1320,23 +1311,15 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
             if (product.getOfferDefinitionId()==5){
                 if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
-                    Glide.with(mContext)
-                            .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
-                            .into(holder.imv_item);
+                    Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(holder.imv_item);
                 }else {
-                    Glide.with(mContext)
-                            .load(product.getCouponImageURl())
-                            .into(holder.imv_item);
+                    Picasso.get().load(product.getCouponImageURl()).into(holder.imv_item);
                 }
             }else {
                 if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
-                    Glide.with(mContext)
-                            .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
-                            .into(holder.imv_item);
+                    Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(holder.imv_item);
                 }else {
-                    Glide.with(mContext)
-                            .load(product.getLargeImagePath())
-                            .into(holder.imv_item);
+                    Picasso.get().load(product.getLargeImagePath()).into(holder.imv_item);
                 }
             }
 
@@ -1545,15 +1528,9 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         }
                         holder.coupon_badge.setVisibility(View.VISIBLE);
                         if (product.getIsbadged().equalsIgnoreCase("True")){
-                            Glide.with(mContext)
-                                    .load(product.getBadgeFileName())
-                                    .into(holder.coupon_badge);
-
-
+                            Picasso.get().load(product.getBadgeFileName()).into(holder.coupon_badge);
                         }else {
-                            Glide.with(mContext)
-                                    .load("")
-                                    .into(holder.coupon_badge);
+                            Picasso.get().load(R.color.white).into(holder.coupon_badge);
                         }
                         holder.tv_coupon_flag.setText("With Coupon");
                         holder.liner_save.setVisibility(View.GONE);
@@ -1623,18 +1600,14 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         holder.coupon_badge.setVisibility(View.VISIBLE);
                         holder.limit.setGravity(Gravity.CENTER);
                         holder.limit.setText(headerContent);
+
                         if (product.getIsbadged().equalsIgnoreCase("True")){
-                            Glide.with(mContext)
-                                    .load(product.getBadgeFileName())
-                                    .into(holder.coupon_badge);
+                            Picasso.get().load(product.getBadgeFileName()).into(holder.coupon_badge);
                             headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection()+", Exp "+saveDate);
                             holder.limit.setText(headerContent);
                             holder.limit.setGravity(Gravity.RIGHT);
-
                         }else {
-                            Glide.with(mContext)
-                                    .load("")
-                                    .into(holder.coupon_badge);
+                            Picasso.get().load(R.color.white).into(holder.coupon_badge);
                         }
 
                         if (product.getOfferDefinitionId()==3 || product.getOfferDefinitionId()==2 || product.getOfferDefinitionId()==1 || product.getOfferDefinitionId()==4){
@@ -2014,15 +1987,10 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         }
                         holder.coupon_badge.setVisibility(View.VISIBLE);
                         if (product.getIsbadged().equalsIgnoreCase("True")){
-                            Glide.with(mContext)
-                                    .load(product.getBadgeFileName())
-                                    .into(holder.coupon_badge);
-
+                            Picasso.get().load(product.getBadgeFileName()).into(holder.coupon_badge);
 
                         }else {
-                            Glide.with(mContext)
-                                    .load("")
-                                    .into(holder.coupon_badge);
+                            Picasso.get().load(R.color.white).into(holder.coupon_badge);
                         }
                         holder.tv_coupon_flag.setText("With Coupon");
                         holder.liner_save.setVisibility(View.GONE);
@@ -2113,17 +2081,12 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         holder.limit.setGravity(Gravity.CENTER);
                         holder.limit.setText(headerContent);
                         if (product.getIsbadged().equalsIgnoreCase("True")){
-                            Glide.with(mContext)
-                                    .load(product.getBadgeFileName())
-                                    .into(holder.coupon_badge);
+                            Picasso.get().load(product.getBadgeFileName()).into(holder.coupon_badge);
                             headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection()+", Exp "+saveDate);
                             holder.limit.setText(headerContent);
                             holder.limit.setGravity(Gravity.RIGHT);
-
                         }else {
-                            Glide.with(mContext)
-                                    .load("")
-                                    .into(holder.coupon_badge);
+                            Picasso.get().load(R.color.white).into(holder.coupon_badge);
                         }
 
                         if (product.getOfferDefinitionId()==3 || product.getOfferDefinitionId()==2 || product.getOfferDefinitionId()==1 || product.getOfferDefinitionId()==4){
@@ -2359,27 +2322,19 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }
                 }
 
-                if (product.getOfferDefinitionId()==5){
-                    if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
-                        Glide.with(mContext)
-                                .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
-                                .into(holder.imv_item);
-                    }else {
-                        Glide.with(mContext)
-                                .load(product.getCouponImageURl())
-                                .into(holder.imv_item);
-                    }
+            if (product.getOfferDefinitionId()==5){
+                if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+                    Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(holder.imv_item);
                 }else {
-                    if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
-                        Glide.with(mContext)
-                                .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
-                                .into(holder.imv_item);
-                    }else {
-                        Glide.with(mContext)
-                                .load(product.getLargeImagePath())
-                                .into(holder.imv_item);
-                    }
+                    Picasso.get().load(product.getCouponImageURl()).into(holder.imv_item);
                 }
+            }else {
+                if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+                    Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(holder.imv_item);
+                }else {
+                    Picasso.get().load(product.getLargeImagePath()).into(holder.imv_item);
+                }
+            }
 
 
             }

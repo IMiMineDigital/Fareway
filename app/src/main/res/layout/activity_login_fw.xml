@@ -32,7 +32,7 @@
             android:layout_marginRight="@dimen/_20sdp"
             android:layout_marginLeft="@dimen/_20sdp"
             >
-            <android.support.design.widget.TextInputLayout
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
                 <EditText
@@ -47,8 +47,8 @@
                     android:padding="@dimen/_8sdp"
                     android:text=""
                     />
-            </android.support.design.widget.TextInputLayout>
-            <android.support.design.widget.TextInputLayout
+            </com.google.android.material.textfield.TextInputLayout>
+            <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/_10sdp"
@@ -65,7 +65,7 @@
                     android:padding="@dimen/_8sdp"
                     android:text=""
                     />
-            </android.support.design.widget.TextInputLayout>
+            </com.google.android.material.textfield.TextInputLayout>
 
             <Button
                 android:fontFamily="@font/roboto"

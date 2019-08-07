@@ -1,17 +1,19 @@
 package com.fareway.adapter;
 
 import android.content.Context;
-import android.support.v7.widget.RecyclerView;
+//import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import com.bumptech.glide.Glide;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.fareway.R;
 import com.fareway.model.PurchaseModelHistory;
 import com.fareway.utility.AppUtilFw;
+import com.squareup.picasso.Picasso;
 
 import java.text.DecimalFormat;
 import java.util.List;
@@ -92,28 +94,18 @@ public class PurchaseHistoryDetailAdapter extends RecyclerView.Adapter<PurchaseH
             holder.tv_sub_save.setText("Your Savings: $"+purchase.getRemainamount());
        /* holder.tv_total_save.setText(purchase.getRemainamount()); */
 
-        if (purchase.getImage()==""){
-            Glide.with(mContext)
-                    .load("https://fwstaging.immdemo.net/webapiaccessclient/images/GEnoimage.jpg")
-                    .into(holder.imv_purchase_item);
+    if (purchase.getImage()==""){
+        Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(holder.imv_purchase_item);
         }else {
-            Glide.with(mContext)
-                    .load(purchase.getImage())
-                    .into(holder.imv_purchase_item);
+        Picasso.get().load(purchase.getImage()).into(holder.imv_purchase_item);
         }
+    if (purchase.getImage().contains("https://pty.bashas.com/webapiaccessclient/images/noimage-large.png")||purchase.getImage().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
 
-        if (purchase.getImage().contains("https://pty.bashas.com/webapiaccessclient/images/noimage-large.png")||purchase.getImage().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
-            Glide.with(mContext)
-                    .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
-                    .into(holder.imv_purchase_item);
+        Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(holder.imv_purchase_item);
         }else if (purchase.getImage().equalsIgnoreCase("")){
-            Glide.with(mContext)
-                    .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
-                    .into(holder.imv_purchase_item);
+            Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(holder.imv_purchase_item);
         }else {
-            Glide.with(mContext)
-                    .load(purchase.getImage())
-                    .into(holder.imv_purchase_item);
+            Picasso.get().load(purchase.getImage()).into(holder.imv_purchase_item);
         }
 
 

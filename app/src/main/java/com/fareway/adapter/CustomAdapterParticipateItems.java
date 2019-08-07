@@ -3,9 +3,10 @@ package com.fareway.adapter;
 import android.content.Context;
 import android.graphics.Paint;
 import android.graphics.Typeface;
+/*
 import android.support.v4.content.res.ResourcesCompat;
 import android.support.v7.widget.CardView;
-import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.RecyclerView;*/
 import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
@@ -19,6 +20,10 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.cardview.widget.CardView;
+import androidx.core.content.res.ResourcesCompat;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.android.volley.AuthFailureError;
 import com.android.volley.DefaultRetryPolicy;
 import com.android.volley.Request;
@@ -29,13 +34,14 @@ import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.VolleyLog;
 import com.android.volley.toolbox.StringRequest;
-import com.bumptech.glide.Glide;
+
 import com.fareway.R;
 import com.fareway.activity.MainFwActivity;
 import com.fareway.controller.FarewayApplication;
 import com.fareway.model.RelatedItem;
 import com.fareway.utility.AppUtilFw;
 import com.fareway.utility.Constant;
+import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -381,34 +387,23 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
 
             }
 
-
-           if (relatedItem.getOfferDefinitionId()==5){
+            if (relatedItem.getOfferDefinitionId()==5){
                 if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
-                    Glide.with(mContext)
-                            .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
-                            .into(holder.imv_item);
+                    Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(holder.imv_item);
                 }else if (relatedItem.getLargeImagePath().equalsIgnoreCase("")){
-                    Glide.with(mContext)
-                            .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
-                            .into(holder.imv_item);
+                    Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(holder.imv_item);
                 }else {
-                    Glide.with(mContext)
-                            .load(relatedItem.getCouponImageURl())
-                            .into(holder.imv_item);
+                    Picasso.get().load(relatedItem.getLargeImagePath()).into(holder.imv_item);
                 }
-            }else {
+            }
+
+            else {
                 if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
-                    Glide.with(mContext)
-                            .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
-                            .into(holder.imv_item);
+                    Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(holder.imv_item);
                 }else if (relatedItem.getLargeImagePath().equalsIgnoreCase("")){
-                    Glide.with(mContext)
-                            .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
-                            .into(holder.imv_item);
+                    Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(holder.imv_item);
                 }else {
-                    Glide.with(mContext)
-                            .load(relatedItem.getLargeImagePath())
-                            .into(holder.imv_item);
+                    Picasso.get().load(relatedItem.getLargeImagePath()).into(holder.imv_item);
                 }
             }
         }
@@ -622,33 +617,21 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
 
             if (relatedItem.getOfferDefinitionId()==5){
                 if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
-                    Glide.with(mContext)
-                            .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
-                            .into(holder.imv_item);
+                    Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(holder.imv_item);
                 }else if (relatedItem.getLargeImagePath().equalsIgnoreCase("")){
-                    Glide.with(mContext)
-                            .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
-                            .into(holder.imv_item);
+                    Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(holder.imv_item);
                 }else {
-                    Glide.with(mContext)
-                            .load(relatedItem.getCouponImageURl())
-                            .into(holder.imv_item);
+                    Picasso.get().load(relatedItem.getLargeImagePath()).into(holder.imv_item);
                 }
             }
 
             else {
                 if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
-                    Glide.with(mContext)
-                            .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
-                            .into(holder.imv_item);
+                    Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(holder.imv_item);
                 }else if (relatedItem.getLargeImagePath().equalsIgnoreCase("")){
-                    Glide.with(mContext)
-                            .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
-                            .into(holder.imv_item);
+                    Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(holder.imv_item);
                 }else {
-                    Glide.with(mContext)
-                            .load(relatedItem.getLargeImagePath())
-                            .into(holder.imv_item);
+                    Picasso.get().load(relatedItem.getLargeImagePath()).into(holder.imv_item);
                 }
             }
         }
