@@ -123,13 +123,13 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
             limit = view.findViewById(R.id.limit);
 
 
-            view.setOnClickListener(new View.OnClickListener() {
+           /* view.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     liner_item_add.setVisibility(View.VISIBLE);
                     linear_tab_button.setVisibility(View.VISIBLE);
                 }
-            });
+            });*/
 
             linear_tab_button.setOnClickListener(new View.OnClickListener() {
                 @Override

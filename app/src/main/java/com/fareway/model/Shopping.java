@@ -1,6 +1,7 @@
 package com.fareway.model;
 
 public class Shopping {
+    private int CouponID;
     private int CategoryID;
     private String CategoryName;
     private String LongDescription;
@@ -150,4 +151,11 @@ public class Shopping {
     }
 
 
+    public int getCouponID() {
+        return CouponID;
+    }
+
+    public void setCouponID(int couponID) {
+        CouponID = couponID;
+    }
 }

@@ -133,17 +133,11 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             circular_layout= (LinearLayout) view.findViewById(R.id.circular_layout);
 
             bottomLayout= (LinearLayout) view.findViewById(R.id.bottomLayout);
+
             relative_badge.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     listener2.onProductVeritiesSelected(productListFiltered.get(getAdapterPosition()));
-                }
-            });
-
-            circular_layout.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View v) {
-
                 }
             });
 

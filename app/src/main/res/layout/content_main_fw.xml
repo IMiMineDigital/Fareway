@@ -1199,7 +1199,7 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
-                        android:id="@+id/linear_tab_button_detail"
+
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
@@ -1258,7 +1258,6 @@
 
                     <LinearLayout
                         android:visibility="visible"
-                        android:id="@+id/liner_item_add_detail"
                         android:layout_marginLeft="@dimen/_5sdp"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
