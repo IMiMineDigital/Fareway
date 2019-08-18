@@ -12,15 +12,16 @@
         android:gravity="center"
         >
         <LinearLayout
-            android:layout_width="@dimen/_32sdp"
-            android:layout_height="@dimen/_30sdp"
-            android:layout_marginRight="@dimen/_5sdp">
+            android:gravity="center"
+            android:layout_width="22dp"
+            android:layout_height="22dp"
+            android:layout_marginRight="@dimen/_3sdp">
 
             <ImageView
                 android:id="@+id/imv_logo"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:src="@drawable/tilelogo" />
+                android:layout_width="22dp"
+                android:layout_height="22dp"
+                android:src="@drawable/ic_arrow_back_black_24dp" />
 
         </LinearLayout>
 

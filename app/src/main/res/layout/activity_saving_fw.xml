@@ -103,6 +103,47 @@
                     >
                     <TextView
                         android:fontFamily="@font/roboto"
+                        android:id="@+id/tv_tyc_lbl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/label_tx"
+                        android:text="@string/thanku_card"
+                        android:scrollHorizontally="false"
+                        android:layout_weight="1"
+
+                        />
+                    <TextView
+                        android:fontFamily="@font/roboto"
+                        android:id="@+id/tv_tyc"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        style="@style/label_tx"
+                        android:text="$1.00"
+                        android:scrollHorizontally="false"
+                        android:layout_weight="1"
+                        android:gravity="right"
+                        />
+
+
+                </TableRow>
+
+                <TableRow>
+                    <View android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_weight="1"
+                        android:background="@color/grey"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        />
+
+                </TableRow>
+
+                <TableRow
+                    android:paddingTop="@dimen/_8sdp"
+                    android:paddingBottom="@dimen/_8sdp"
+                    >
+                    <TextView
+                        android:fontFamily="@font/roboto"
                         android:id="@+id/tv_pc_lbl"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -135,45 +176,7 @@
 
                 </TableRow>
 
-                <TableRow
-                    android:paddingTop="@dimen/_8sdp"
-                    android:paddingBottom="@dimen/_8sdp"
-                    >
-                    <TextView
-                        android:fontFamily="@font/roboto"
-                        android:id="@+id/tv_tyc_lbl"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="@style/label_tx"
-                        android:text="@string/thanku_card"
-                        android:scrollHorizontally="false"
-                        android:layout_weight="1"
 
-                        />
-                    <TextView
-                        android:fontFamily="@font/roboto"
-                        android:id="@+id/tv_tyc"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        style="@style/label_tx"
-                        android:text="$1.00"
-                        android:scrollHorizontally="false"
-                        android:layout_weight="1"
-                        android:gravity="right"
-                        />
-
-
-                </TableRow>
-                <TableRow>
-                    <View android:layout_width="match_parent"
-                        android:layout_height="1dp"
-                        android:layout_weight="1"
-                        android:background="@color/grey"
-                        android:layout_marginTop="@dimen/_5sdp"
-                        android:layout_marginBottom="@dimen/_5sdp"
-                        />
-
-                </TableRow>
 
                 <TableRow
                     android:paddingTop="@dimen/_8sdp"

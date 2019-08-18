@@ -54,15 +54,30 @@ public class CustomAdapterFilter extends RecyclerView.Adapter<CustomAdapterFilte
     @Override
     public void onBindViewHolder(final CustomAdapterFilter.MyViewHolder holder, final int position) {
         final Category category = categoryList.get(position);
-        holder.tv_type.setText(category.getCategoryName());
+       /* if (category.getCategoryName().equalsIgnoreCase("")){
+
+        }else {
+
+        }*/
+       try {
+           holder.tv_type.setText(category.getCategoryName());
+       }catch (Exception e){
+
+       }
+        //holder.tv_type.setText(category.getCategoryName());
+
         // Log.i("test",categoryList.get(position));
         holder.rowLayout.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("click", category.getCategoryName());
                 //activate.OtherCoupon=0;
                 //activate.OtherCouponmulti=0;
-                MainFwActivity.getDate(category.getCategoryID());
+
+                try {
+                    MainFwActivity.getDate(category.getCategoryID());
+                }catch (Exception e){
+
+                }
             }
         });
 

@@ -1,7 +1,7 @@
 package com.fareway.model;
 
 public class Shopping {
-    private int CouponID;
+    private String CouponID;
     private int CategoryID;
     private String CategoryName;
     private String LongDescription;
@@ -19,6 +19,12 @@ public class Shopping {
     private int PrimaryOfferTypeid;
     private String Quantity;
     private String SalesPrice;
+    private String RequiresActivation;
+    private String Price;
+    private String TotalQuantity;
+
+
+
 
 
 
@@ -150,12 +156,35 @@ public class Shopping {
         SalesPrice = salesPrice;
     }
 
+    public String getRequiresActivation() {
+        return RequiresActivation;
+    }
 
-    public int getCouponID() {
+    public void setRequiresActivation(String requiresActivation) {
+        RequiresActivation = requiresActivation;
+    }
+
+    public String getCouponID() {
         return CouponID;
     }
 
-    public void setCouponID(int couponID) {
+    public void setCouponID(String couponID) {
         CouponID = couponID;
+    }
+
+    public String getPrice() {
+        return Price;
+    }
+
+    public void setPrice(String price) {
+        Price = price;
+    }
+
+    public String getTotalQuantity() {
+        return TotalQuantity;
+    }
+
+    public void setTotalQuantity(String totalQuantity) {
+        TotalQuantity = totalQuantity;
     }
 }

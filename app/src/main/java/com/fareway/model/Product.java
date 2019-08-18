@@ -24,7 +24,7 @@ public class Product {
     private String StoreID;
     private String RelevantUPC;
     private int PrimaryOfferTypeId;
-    private int CouponID;
+    private String CouponID;
     private String CategoryID;
     private String CategoryName;
     private String OfferTypeTagName;
@@ -52,6 +52,8 @@ public class Product {
     private String PricingMasterID;
     private String RewardType;
     private String Quantity;
+    private String TotalQuantity;
+
     private int MinAmount;
     private String PercentSavings;
     private String RewardValue;
@@ -62,6 +64,7 @@ public class Product {
     private String BadgeId;
     private String Isbadged;
     private String BadgeFileName;
+    private String CouponShortDescription;
 
 
 
@@ -325,14 +328,6 @@ public class Product {
         OfferDetailId = offerDetailId;
     }
 
-    public int getCouponID() {
-        return CouponID;
-    }
-
-    public void setCouponID(int couponID) {
-        CouponID = couponID;
-    }
-
     public String getFinalPrice() {
         return FinalPrice;
     }
@@ -547,6 +542,30 @@ public class Product {
 
     public void setBadgeFileName(String badgeFileName) {
         BadgeFileName = badgeFileName;
+    }
+
+    public String getCouponID() {
+        return CouponID;
+    }
+
+    public void setCouponID(String couponID) {
+        CouponID = couponID;
+    }
+
+    public String getTotalQuantity() {
+        return TotalQuantity;
+    }
+
+    public void setTotalQuantity(String totalQuantity) {
+        TotalQuantity = totalQuantity;
+    }
+
+    public String getCouponShortDescription() {
+        return CouponShortDescription;
+    }
+
+    public void setCouponShortDescription(String couponShortDescription) {
+        CouponShortDescription = couponShortDescription;
     }
 }
 

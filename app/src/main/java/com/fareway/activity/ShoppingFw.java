@@ -101,7 +101,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
 
         shoppingArrayList = new ArrayList<>();
         rv_shopping_list_items = (RecyclerView) findViewById(R.id.rv_shopping_list_items);
-        shoppingListAdapter = new ShoppingListAdapter(this, shoppingArrayList,this,this,this);
+        shoppingListAdapter = new ShoppingListAdapter(this, shoppingArrayList,this,this,this,this);
         RecyclerView.LayoutManager mLayoutManagerShoppingList = new LinearLayoutManager(activity);
         rv_shopping_list_items.setLayoutManager(mLayoutManagerShoppingList);
         rv_shopping_list_items.setAdapter(shoppingListAdapter);
@@ -365,15 +365,9 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                                 try {
                                     JSONObject root = new JSONObject(response);
                                     root.getString("errorcode");
-                                    Log.i("errorcode", root.getString("errorcode"));
-                                    Log.i("message", root.getString("message"));
-
 
                                     JSONObject root2 = new JSONObject(root.getString("message"));
                                     if (root.getString("errorcode").equals("0")){
-                                        // progressDialog.dismiss();
-                                        Log.i("anshuman","test");
-
                                         try
                                         {
                                             shopping= root2.getJSONArray("ShoppingListItems");
@@ -482,14 +476,10 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                                 try {
                                     JSONObject root = new JSONObject(response);
                                     root.getString("errorcode");
-                                    Log.i("errorcode", root.getString("errorcode"));
-                                    Log.i("message", root.getString("message"));
-
 
                                     JSONObject root2 = new JSONObject(root.getString("message"));
                                     if (root.getString("errorcode").equals("0")){
                                         progressDialog.dismiss();
-                                        Log.i("anshuman","test");
 
                                         try
                                         {
@@ -665,6 +655,9 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
 
     @Override
     public void onShoppingaddSelected(Shopping shopping) {
+        progressDialog = new ProgressDialog(activity);
+        progressDialog.setMessage("Processing");
+        progressDialog.show();
         if (shopping.getPrimaryOfferTypeId()==0){
             String url = null;
 
@@ -678,14 +671,9 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                         @Override
                         public void onResponse(String  response) {
                             Log.i("success", String.valueOf(response));
-                            //shopping.setQuantity(String.valueOf((Integer.parseInt(shopping.getQuantity())+1)));
-                            //tv_quantity_detail.setText(shopping.getQuantity());
-                            //add_item_flag_detail.setText(shopping.getQuantity());
-
-
-                            //SetProductActivateDetaile(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1,String.valueOf((Integer.parseInt(product.getQuantity())+0)));
                             fetchShoppingListLoad();
-                            //activatedOffersListIdLoad();
+                            progressDialog.dismiss();
+
                         }
                     }, new Response.ErrorListener() {
                 @Override
@@ -760,21 +748,14 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
 
             url = Constant.WEB_URL+Constant.SHOPPINGLIST+appUtil.getPrefrence("MemberId");
 
-            //url ="https://fwstagingapi.immdemo.net/api/v1/ShoppingList/List/MyOwnItem?ShoppingListOwnItemID=505&Quantity=3"
-
             StringRequest  jsonObjectRequest = new StringRequest (Request.Method.PUT, url,
                     new Response.Listener<String >() {
                         @Override
                         public void onResponse(String  response) {
                             Log.i("success", String.valueOf(response));
-                            //shopping.setQuantity(String.valueOf((Integer.parseInt(shopping.getQuantity())+1)));
-                            //tv_quantity_detail.setText(shopping.getQuantity());
-                            //add_item_flag_detail.setText(shopping.getQuantity());
+                           fetchShoppingListLoad();
+                            progressDialog.dismiss();
 
-
-                            //SetProductActivateDetaile(shopping.getPrimaryOfferTypeId(),shopping.getCouponID(),shopping.getUPC(),shopping.getRequiresActivation(),1,String.valueOf((Integer.parseInt(shopping.getQuantity())+0)));
-                            fetchShoppingListLoad();
-                            //activatedOffersListIdLoad();
                         }
                     }, new Response.ErrorListener() {
                 @Override
@@ -822,6 +803,9 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
 
     @Override
     public void onShoppingsubSelected(Shopping shopping) {
+        progressDialog = new ProgressDialog(activity);
+        progressDialog.setMessage("Processing");
+        progressDialog.show();
         if (shopping.getPrimaryOfferTypeId()==0){
             if (Integer.parseInt(shopping.getQuantity())>1){
 
@@ -832,12 +816,8 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                             @Override
                             public void onResponse(String  response) {
                                 Log.i("success", String.valueOf(response));
-                                //shopping.setQuantity(String.valueOf((Integer.parseInt(shopping.getQuantity())-1)));
                                 fetchShoppingListLoad();
-                                //tv_quantity_detail.setText(shopping.getQuantity());
-                                //add_item_flag_detail.setText(shopping.getQuantity());
-
-                                //SetProductActivateDetaile(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1,String.valueOf((Integer.parseInt(product.getQuantity())-0)));
+                                progressDialog.dismiss();
 
                             }
                         }, new Response.ErrorListener() {
@@ -880,6 +860,9 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                     e.printStackTrace();
                 }
             }
+            else {
+                progressDialog.dismiss();
+            }
         }
         else {
             if (Integer.parseInt(shopping.getQuantity())>1){
@@ -912,13 +895,8 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                             @Override
                             public void onResponse(String  response) {
                                 Log.i("success", String.valueOf(response));
-                               // shopping.setQuantity(String.valueOf((Integer.parseInt(shopping.getQuantity())-1)));
                                 fetchShoppingListLoad();
-                                //tv_quantity_detail.setText(shopping.getQuantity());
-                                //add_item_flag_detail.setText(shopping.getQuantity());
-
-                                //SetProductActivateDetaile(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1,String.valueOf((Integer.parseInt(product.getQuantity())-0)));
-
+                                progressDialog.dismiss();
                             }
                         }, new Response.ErrorListener() {
                     @Override
@@ -962,7 +940,15 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                     e.printStackTrace();
                 }
             }
+            else {
+                progressDialog.dismiss();
+            }
         }
+    }
+
+    @Override
+    public void onShoppingDetailSelected(Shopping shopping) {
+
     }
 
     public void fetchShoppingListLoad() {
@@ -1487,14 +1473,9 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                                 try {
                                     JSONObject root = new JSONObject(response);
                                     root.getString("errorcode");
-                                    Log.i("errorcode", root.getString("errorcode"));
-                                    Log.i("message", root.getString("message"));
-
-
                                     JSONObject root2 = new JSONObject(root.getString("message"));
                                     if (root.getString("errorcode").equals("0")){
-                                        //progressDialog.dismiss();
-                                        Log.i("anshuman","test");
+
 
                                         try
                                         {
@@ -1506,11 +1487,6 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                                         }
 
                                         if (shoppingId==null ){
-                                            Log.i("shoppingId","test");
-                                        /*    shoppingArrayList.clear();
-                                            shoppingListAdapter.notifyDataSetChanged();
-                                            tv_number_item.setText(String.valueOf(0));
-                                            tv.setText(String.valueOf(0));*/
 
                                         }else {
                                             Log.i("shoppingId", String.valueOf(shoppingId));

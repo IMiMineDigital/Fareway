@@ -11,6 +11,8 @@
     android:background="@drawable/tileable_wood">
 
 
+
+
     <LinearLayout
         android:visibility="gone"
         android:id="@+id/liner_all_Varieties_activate"
@@ -35,6 +37,7 @@
             android:text="Activated"
             android:textColor="@color/white"
             android:textStyle="bold" />
+        <!-- -->
 
         <ImageView
             android:id="@+id/imv_status_verities"
@@ -73,6 +76,7 @@
         android:visibility="gone"/>
 
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true">
@@ -81,6 +85,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="  Personal Ad"
+            android:background="@drawable/side_nav_bar"
+            android:textColor="@color/white"
+            android:textSize="24sp"
+            android:id="@+id/header_title"/>
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_items"
             android:layout_width="match_parent"
@@ -329,7 +341,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:clipToPadding="false"
-        android:scrollbars="vertical" />
+        android:scrollbars="vertical"
+        android:layout_marginBottom="@dimen/_40sdp"/>
 
     <LinearLayout
         android:visibility="gone"
@@ -584,7 +597,7 @@
                 android:textAlignment="center"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="QTY"
+                android:text=""
                 android:layout_weight=".1"
                 android:inputType="textMultiLine"/>
             <TextView
@@ -594,8 +607,8 @@
                 android:textAlignment="center"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Price"
-                android:layout_weight=".15"
+                android:text="QTY"
+                android:layout_weight=".23"
                 android:inputType="textMultiLine"/>
             <TextView
                 android:textStyle="bold"
@@ -735,6 +748,8 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content">
 
+                        <!--
+
                         <LinearLayout
                             android:visibility="gone"
                             android:background="@drawable/linear_cornor"
@@ -767,6 +782,8 @@
 
 
                         </LinearLayout>
+
+                        -->
 
                         <LinearLayout
                             android:visibility="visible"
@@ -849,6 +866,16 @@
                         android:textColor="@color/black"
                         android:textStyle="bold"
                         android:textSize="18sp"/>
+                    <TextView
+                        android:id="@+id/tv_coupon_detail_detail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="@dimen/_5sdp"
+                        android:maxLines="4"
+                        android:scrollHorizontally="false"
+                        android:text=""
+                        android:textColor="@color/black"
+                        android:textSize="16sp"/>
                     <!--       <TextView
                         android:id="@+id/tv_price"
                         android:layout_width="wrap_content"
@@ -918,8 +945,51 @@
                 </TableRow>
 
                 <TableRow
+                    android:id="@+id/table_promo"
+                    android:visibility="visible">
+
+                    <TextView
+                        android:id="@+id/tv_promo_price_lbl"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/roboto"
+                        android:scrollHorizontally="false"
+                        android:text="Promo Price:"
+                        android:textColor="@color/black" />
+
+
+                    <TextView
+                        android:id="@+id/tv_promo_price_detail"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:fontFamily="@font/roboto"
+                        android:gravity="right"
+                        android:scrollHorizontally="false"
+                        android:text="$2.13"
+                        android:textColor="@color/black" />
+
+
+                </TableRow>
+
+                <TableRow
+                    android:id="@+id/table_promo_view"
+                    android:visibility="visible">
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="2dp"
+                        android:layout_marginTop="@dimen/_5sdp"
+                        android:layout_marginBottom="@dimen/_5sdp"
+                        android:layout_weight="1"
+                        android:background="@color/green" />
+
+                </TableRow>
+
+                <TableRow
                     android:id="@+id/table_coupon"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <TextView
                         android:id="@+id/tv_coupon_lbl"
@@ -948,7 +1018,7 @@
 
                 <TableRow
                     android:id="@+id/table_coupon_view"
-                    android:visibility="gone">
+                    android:visibility="visible">
 
                     <View
                         android:layout_width="match_parent"
@@ -1199,22 +1269,22 @@
                     android:orientation="horizontal">
 
                     <LinearLayout
-
+                        android:id="@+id/liner_detail_add_item"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
                         <RelativeLayout
                             android:layout_gravity="center"
-                            android:layout_width="40dp"
-                            android:layout_height="40dp">
+                            android:layout_width="50dp"
+                            android:layout_height="50dp">
 
                             <ImageView
-                                android:layout_width="100dp"
+                                android:layout_width="50dp"
                                 android:padding="2dp"
-                                android:src="@drawable/listiconblack"
-                                android:layout_height="100dp"
+                                android:src="@drawable/sh_list"
+                                android:layout_height="50dp"
                                 android:layout_margin="6dp"/>
-
+<!--
                             <TextView
                                 android:id="@+id/add_item_flag_detail"
                                 android:layout_width="wrap_content"
@@ -1237,7 +1307,7 @@
                                 android:layout_gravity="center_horizontal"
                                 android:layout_alignParentTop="true"
                                 android:layout_alignParentEnd="true"
-                                />
+                                />-->
 
                         </RelativeLayout>
 
@@ -1257,6 +1327,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:id="@+id/liner_add_sub_button"
                         android:visibility="visible"
                         android:layout_marginLeft="@dimen/_5sdp"
                         android:layout_width="wrap_content"

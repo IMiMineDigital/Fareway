@@ -23,7 +23,7 @@ public class RelatedItem {
     private String StoreID;
     private String RelevantUPC;
     private int PrimaryOfferTypeId;
-    private int CouponID;
+    private String CouponID;
     private String OfferTypeTagName;
     private String Description;
     private String Savings;
@@ -55,6 +55,7 @@ public class RelatedItem {
     private String RewardValue;
     private String RewardQty;
     private String RewardType;
+    private String CouponShortDescription;
 
     public String getName() {
         return name;
@@ -222,14 +223,6 @@ public class RelatedItem {
 
     public void setPrimaryOfferTypeId(int primaryOfferTypeId) {
         PrimaryOfferTypeId = primaryOfferTypeId;
-    }
-
-    public int getCouponID() {
-        return CouponID;
-    }
-
-    public void setCouponID(int couponID) {
-        CouponID = couponID;
     }
 
     public String getOfferTypeTagName() {
@@ -478,5 +471,21 @@ public class RelatedItem {
 
     public void setRelatedItemCount(int relatedItemCount) {
         RelatedItemCount = relatedItemCount;
+    }
+
+    public String getCouponID() {
+        return CouponID;
+    }
+
+    public void setCouponID(String couponID) {
+        CouponID = couponID;
+    }
+
+    public String getCouponShortDescription() {
+        return CouponShortDescription;
+    }
+
+    public void setCouponShortDescription(String couponShortDescription) {
+        CouponShortDescription = couponShortDescription;
     }
 }

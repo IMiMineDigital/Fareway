@@ -235,20 +235,20 @@
                 <LinearLayout
                     android:id="@+id/linear_tab_button"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal">
 
                     <RelativeLayout
                         android:id="@+id/relative_badge"
                         android:layout_gravity="center"
-                        android:layout_width="40dp"
+                        android:layout_width="45dp"
                         android:layout_height="40dp">
 
                         <ImageView
-                            android:layout_width="100dp"
+                            android:layout_width="40dp"
+                            android:layout_height="40dp"
                             android:padding="2dp"
-                            android:src="@drawable/listiconblack"
-                            android:layout_height="100dp"
-                            android:layout_margin="6dp"/>
+                            android:src="@drawable/listiconblack" />
 
                         <TextView
                             android:textSize="10sp"
@@ -256,20 +256,16 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:scaleType="fitStart"
-                            android:layout_marginRight="0dp"
                             android:padding="2dp"
                             android:background="@drawable/circular_red_bg"
                             android:gravity="center"
                             android:minWidth="17sp"
                             android:adjustViewBounds="true"
                             android:minHeight="17sp"
-                            android:paddingBottom="1dp"
-                            android:paddingLeft="4dp"
-                            android:paddingRight="4dp"
                             android:text="+"
                             android:textColor="#ffffffff"
                             android:visibility="visible"
-                            android:layout_gravity="center_horizontal"
+                            android:layout_marginTop="5dp"
                             android:layout_alignParentTop="true"
                             android:layout_alignParentEnd="true"
                             />
@@ -376,7 +372,7 @@
                 </LinearLayout> -->
 
                 <TextView
-                    android:layout_marginTop="-6dp"
+                    android:fontFamily="@font/roboto_black"
                     android:id="@+id/tv_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
@@ -416,17 +412,32 @@
                     android:layout_height="wrap_content"
                     android:orientation="vertical">
 
+                    <TextView
+                        android:visibility="gone"
+                        android:fontFamily="@font/roboto_black"
+                        android:id="@+id/tv_coupon_type_1"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_marginRight="@dimen/_10sdp"
+                        android:textStyle="bold"
+                        android:gravity="right"
+                        android:maxLines="2"
+                        android:text=""
+                        android:textColor="@color/red"
+                        android:textSize="38sp"/>
+
                     <LinearLayout
                         android:orientation="horizontal"
                         android:id="@+id/liner_save"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content">
 
+
                         <TextView
                             android:id="@+id/tv_saving_pri_fix"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/roboto"
+                            android:fontFamily="@font/roboto_black   "
                             android:maxLines="2"
                             android:text=""
                             android:textColor="@color/black"
@@ -453,7 +464,7 @@
                             android:id="@+id/tv_promo_price__pri_fix"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
-                            android:fontFamily="@font/roboto"
+                            android:fontFamily="@font/roboto_black"
                             android:maxLines="2"
                             android:text=""
                             android:textColor="@color/black"

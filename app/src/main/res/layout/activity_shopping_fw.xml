@@ -501,7 +501,7 @@
 
     </LinearLayout>
 
-    <android.support.v7.widget.RecyclerView
+    <androidx.recyclerview.widget.RecyclerView
         android:layout_below="@+id/shopping_list_header"
         android:background="@color/white"
         android:visibility="visible"

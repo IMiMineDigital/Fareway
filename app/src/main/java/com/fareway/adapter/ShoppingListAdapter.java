@@ -38,6 +38,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapter.MyViewHolder> {
 
@@ -47,12 +49,12 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
     private ShoppingListAdapterListener listener2;
     private ShoppingListAdapterListener addShoppingListener;
     private ShoppingListAdapterListener subShoppingListener;
-    public MainFwActivity activate = new MainFwActivity();
+    private ShoppingListAdapterListener ShoppingDetailListener;
 
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView shopping_flag_dot,shopping_list_add,shopping_list_sub,tv_coupon_description,tv_expire_end,tv_personal_description,tv_qty_shopping,tv_amount,tv_header_title;
+        private TextView shopping_flag_dot,shopping_list_add,shopping_list_sub,tv_coupon_description,tv_expire_end,tv_personal_description,tv_qty_shopping,tv_header_title;
         private ImageView imv_go,imv_shopping_item,imv_remove_shopping;
         private LinearLayout rowLayout,liner_header_title,single_item_remove,liner_shopping_list_body,liner_coupon_description,imv_shopping_item_liner,
                 liner_personal_description,linear_personal,linear_coupon;
@@ -67,7 +69,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
             tv_personal_description = (TextView) view.findViewById(R.id.tv_personal_description);
             tv_qty_shopping = (TextView) view.findViewById(R.id.tv_qty_shopping);
-            tv_amount = (TextView) view.findViewById(R.id.tv_amount);
+
 
             tv_header_title = (TextView) view.findViewById(R.id.tv_header_title);
             shopping_flag_dot = (TextView) view.findViewById(R.id.shopping_flag_dot);
@@ -106,18 +108,33 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                     subShoppingListener.onShoppingsubSelected(shoppingArrayList.get(getAdapterPosition()));
                 }
             });
+            tv_personal_description.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ShoppingDetailListener.onShoppingDetailSelected(shoppingArrayList.get(getAdapterPosition()));
+                }
+            });
+            tv_coupon_description.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    ShoppingDetailListener.onShoppingDetailSelected(shoppingArrayList.get(getAdapterPosition()));
+                }
+            });
         }
     }
 
 
     public ShoppingListAdapter(Context mContext, List<Shopping> shoppingArrayList,ShoppingListAdapterListener listener2,
-                               ShoppingListAdapterListener addShoppingListener,ShoppingListAdapterListener subShoppingListener) {
+                               ShoppingListAdapterListener addShoppingListener,ShoppingListAdapterListener subShoppingListener,
+                               ShoppingListAdapterListener ShoppingDetailListener) {
         this.mContext = mContext;
         this.shoppingArrayList = shoppingArrayList;
         appUtil=new AppUtilFw(mContext);
         this.listener2 = listener2;
         this.addShoppingListener = addShoppingListener;
         this.subShoppingListener = subShoppingListener;
+        this.ShoppingDetailListener = ShoppingDetailListener;
+
 
     }
 
@@ -134,19 +151,17 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         final Shopping shopping = shoppingArrayList.get(position);
         holder.shopping_list_add.setVisibility(View.VISIBLE);
         holder.shopping_list_sub.setVisibility(View.VISIBLE);
+        Log.i("primaryy", String.valueOf(shopping.getPrimaryOfferTypeId()));
+
         if (shopping.getPrimaryOfferTypeId()==3){
             holder.linear_personal.setVisibility(View.VISIBLE);
             holder.linear_coupon.setVisibility(View.GONE);
-            holder.tv_personal_description.setText(shopping.getLongDescription());
+
+            String chars = capitalize(shopping.getLongDescription());
+            holder.tv_personal_description.setText(chars);
+
             holder.tv_qty_shopping.setText(shopping.getQuantity());
-            try {
-                DecimalFormat dF = new DecimalFormat("00.00");
-                Number num = dF.parse(shopping.getSalesPrice());
-                holder.tv_amount.setText("$" + new DecimalFormat("##.##").format(num));
 
-            } catch (Exception e) {
-
-            }
             holder.shopping_flag_dot.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
             holder.shopping_flag_dot.setVisibility(View.VISIBLE);
             holder.tv_header_title.setVisibility(View.GONE);
@@ -169,19 +184,14 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             });
 
         }
+
         else if (shopping.getPrimaryOfferTypeId()==2){
             holder.linear_personal.setVisibility(View.VISIBLE);
             holder.linear_coupon.setVisibility(View.GONE);
-            holder.tv_personal_description.setText(shopping.getLongDescription());
+            String chars = capitalize(shopping.getLongDescription());
+            holder.tv_personal_description.setText(chars);
             holder.tv_qty_shopping.setText(shopping.getQuantity());
-            try {
-                DecimalFormat dF = new DecimalFormat("00.00");
-                Number num = dF.parse(shopping.getSalesPrice());
-                holder.tv_amount.setText("$" + new DecimalFormat("##.##").format(num));
 
-            } catch (Exception e) {
-
-            }
             holder.shopping_flag_dot.setBackground(mContext.getResources().getDrawable(R.drawable.circular_green_bg));
             holder.shopping_flag_dot.setVisibility(View.VISIBLE);
             holder.tv_header_title.setVisibility(View.GONE);
@@ -204,19 +214,14 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                 }
             });
         }
+
         else if (shopping.getPrimaryOfferTypeId()==1){
             holder.linear_personal.setVisibility(View.VISIBLE);
             holder.linear_coupon.setVisibility(View.GONE);
-            holder.tv_personal_description.setText(shopping.getLongDescription());
+            String chars = capitalize(shopping.getLongDescription());
+            holder.tv_personal_description.setText(chars);
             holder.tv_qty_shopping.setText(shopping.getQuantity());
-            try {
-                DecimalFormat dF = new DecimalFormat("00.00");
-                Number num = dF.parse(shopping.getSalesPrice());
-                holder.tv_amount.setText("$" + new DecimalFormat("##.##").format(num));
 
-            } catch (Exception e) {
-
-            }
             holder.shopping_flag_dot.setBackground(mContext.getResources().getDrawable(R.drawable.circular_blue_bg));
             holder.shopping_flag_dot.setVisibility(View.VISIBLE);
             holder.tv_header_title.setVisibility(View.GONE);
@@ -238,6 +243,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                 }
             });
         }
+
         else if (shopping.getPrimaryOfferTypeId()==0){
             holder.shopping_flag_dot.setVisibility(View.GONE);
             holder.tv_header_title.setVisibility(View.GONE);
@@ -247,7 +253,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             holder.linear_coupon.setVisibility(View.GONE);
             holder.tv_personal_description.setText(shopping.getLongDescription());
             holder.tv_qty_shopping.setText(shopping.getQuantity());
-            holder.tv_amount.setText("");
+
             holder.tv_header_title.setBackground(mContext.getResources().getDrawable(R.color.white));
             holder.tv_header_title.setText("");
         }
@@ -267,7 +273,9 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         if (shopping.getPrimaryOfferTypeid()==2){
             holder.linear_personal.setVisibility(View.GONE);
             holder.linear_coupon.setVisibility(View.VISIBLE);
-            holder.tv_coupon_description.setText(shopping.getDescription());
+
+            String chars = capitalize(shopping.getDescription());
+            holder.tv_coupon_description.setText(chars);
             String saveDate = shopping.getExpirationDate();
             if (saveDate.length()==0){
                 // getTokenkey();
@@ -309,10 +317,14 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                 }
             });
         }
+
         else if (shopping.getPrimaryOfferTypeid()==3){
             holder.linear_personal.setVisibility(View.GONE);
             holder.linear_coupon.setVisibility(View.VISIBLE);
-            holder.tv_coupon_description.setText(shopping.getDescription());
+           // holder.tv_coupon_description.setText(shopping.getDescription()+"\n$ "+shopping.getPrice());
+
+            String chars = capitalize(shopping.getDescription());
+            holder.tv_coupon_description.setText(chars+"\n$ "+shopping.getPrice());
             String saveDate = shopping.getExpirationDate();
             if (saveDate.length()==0){
                 // getTokenkey();
@@ -353,10 +365,14 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                 }
             });
         }
+
         else if (shopping.getPrimaryOfferTypeid()==1){
             holder.linear_personal.setVisibility(View.GONE);
             holder.linear_coupon.setVisibility(View.VISIBLE);
-            holder.tv_coupon_description.setText(shopping.getDescription());
+            //holder.tv_coupon_description.setText(shopping.getDescription());
+
+            String chars = capitalize(shopping.getDescription());
+            holder.tv_coupon_description.setText(chars);
             String saveDate = shopping.getExpirationDate();
             if (saveDate.length()==0){
                 // getTokenkey();
@@ -398,85 +414,6 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             });
         }
 
-
-        //holder.tv_type.setText(shopping.getLongDescription());
-        //holder.tv_purchase_amount.setText(" $"+shopping.getPurchaseAmount());
-        //holder.tv_purchase_qty.setText(String.valueOf(shopping.getPurchaseQty()));
-
-        /*
-          if (shopping.getImageURL()==null){
-                holder.imv_shopping_item.setVisibility(View.GONE);
-                holder.tv_purchase_amount.setVisibility(View.GONE);
-                holder.tv_coupon_description.setText(shopping.getDescription());
-
-            }else if (shopping.getImageURL().contains("https://pty.bashas.com/webapiaccessclient/images/noimage-large.png")||shopping.getImageURL().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
-                Glide.with(mContext)
-                        .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
-                        .into(holder.imv_shopping_item);
-            }else if (shopping.getImageURL().equalsIgnoreCase("")){
-                Glide.with(mContext)
-                        .load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg")
-                        .into(holder.imv_shopping_item);
-            }else {
-                Glide.with(mContext)
-                        .load(shopping.getImageURL())
-                        .into(holder.imv_shopping_item);
-            }
-         */
-
-     /*    holder.single_item_remove.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                //Log.i("remove", String.valueOf((shopping.toString().length())/2));
-               RequestQueue mQueue;
-                mQueue= FarewayApplication.getmInstance(mContext).getmRequestQueue();
-
-                String url = Constant.WEB_URL+Constant.SHOPPINGLISTSINGAL+shopping.getShoppingListItemID()+"&MemberId="+appUtil.getPrefrence("MemberId");
-                Log.i("url",url);
-                StringRequest jsonObjectRequest = new StringRequest (Request.Method.DELETE, url,
-                        new Response.Listener<String >() {
-                            @Override
-                            public void onResponse(String  response) {
-                                Log.i("success", String.valueOf(response));
-                                holder.liner_shopping_list_body.setVisibility(View.GONE);
-
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.i("fail", String.valueOf(error));
-                    }
-                }){
-
-                    @Override
-                    public String getBodyContentType() {
-                        return "application/json; charset=utf-8";
-                    }
-
-                    @Override
-                    public Map<String, String> getHeaders() {
-                        Map<String, String> params = new HashMap<String, String>();
-
-                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
-                        params.put("Content-Type", "application/json ;charset=utf-8");
-                        return params;
-                    }
-                };
-                RetryPolicy policy = new DefaultRetryPolicy
-                        (50000,
-                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-                jsonObjectRequest.setRetryPolicy(policy);
-                try {
-                    mQueue.add(jsonObjectRequest);
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        });*/
     }
     @Override
     public int getItemCount() {
@@ -565,6 +502,26 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         void onShoppingItemSelected(Shopping shopping);
         void onShoppingaddSelected(Shopping shopping);
         void onShoppingsubSelected(Shopping shopping);
+        void onShoppingDetailSelected(Shopping shopping);
+    }
+
+    private String lowercase(String lowerString){
+        StringBuffer capBuffer = new StringBuffer();
+        Matcher capMatcher = Pattern.compile("([a-z])([a-z]*)", Pattern.CASE_INSENSITIVE).matcher(lowerString);
+        while (capMatcher.find()){
+            capMatcher.appendReplacement(capBuffer, capMatcher.group(1).toLowerCase() + capMatcher.group(2).toLowerCase());
+        }
+
+        return capMatcher.appendTail(capBuffer).toString();
+    }
+    private String capitalize(String capString){
+        StringBuffer capBuffer = new StringBuffer();
+        Matcher capMatcher = Pattern.compile("([a-z])([a-z]*)", Pattern.CASE_INSENSITIVE).matcher(capString);
+        while (capMatcher.find()){
+            capMatcher.appendReplacement(capBuffer, capMatcher.group(1).toUpperCase() + capMatcher.group(2).toLowerCase());
+        }
+
+        return capMatcher.appendTail(capBuffer).toString();
     }
 
 }
