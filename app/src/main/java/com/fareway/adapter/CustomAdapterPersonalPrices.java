@@ -243,8 +243,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             holder.circular_layout.getLayoutParams().width = 300;
 
             holder.relative_badge.getLayoutParams().width = 140;
-
             holder.add_item_flag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+
            /* if (product.getTotalQuantity().equalsIgnoreCase("0")){
                 holder.add_item_flag.setText("+");
             }else {
@@ -452,7 +452,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.green));
                     holder.tv_deal_type.setText(product.getOfferTypeTagName());
                     String headerContent = "";
-                    headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection()+product.getLimitPerTransection()+", Exp "+saveDate);
+                    headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection())+", Exp "+saveDate;
                     holder.limit.setText(headerContent);
                     if (product.getMinAmount()>0){
                         headerContent = "* WITH $"+product.getMinAmount()+" PURCHASE"+"\nLimit "+product.getLimitPerTransection()+", Exp "+saveDate;
@@ -470,7 +470,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         else
                         {
                             if (product.getLimitPerTransection()>1){
-                                headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection()+product.getLimitPerTransection()+", Exp "+saveDate);
+                                headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection())+", Exp "+saveDate;
                             }
                         }
                         if (product.getRewardType().equalsIgnoreCase("3")&&product.getPrimaryOfferTypeId()==2)
@@ -672,6 +672,14 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 }
 
                 else if (product.getPrimaryOfferTypeId() == 1) {
+                    if (product.getQuantity()==null){
+                        holder.add_item_flag.setText("+");
+                    }else if (product.getQuantity().equalsIgnoreCase("0")){
+                        holder.add_item_flag.setText("+");
+
+                    }else {
+                        holder.add_item_flag.setText(product.getQuantity());
+                    }
                     holder.tv_promo_price__pri_fix.setText("");
                     holder.tv_promo_price.setText("");
                     holder.circular_layout.setVisibility(View.GONE);
@@ -940,7 +948,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.green));
                     holder.tv_deal_type.setText(product.getOfferTypeTagName());
                     String headerContent = "";
-                    headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection()+product.getLimitPerTransection()+", Exp "+saveDate);
+                    headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection())+", Exp "+saveDate;
                     holder.limit.setText(headerContent);
                     if (product.getMinAmount()>0){
                         headerContent = "* WITH $"+product.getMinAmount()+" PURCHASE"+"\nLimit "+product.getLimitPerTransection()+", Exp "+saveDate;
@@ -958,7 +966,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         else
                         {
                             if (product.getLimitPerTransection()>1){
-                                headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection()+product.getLimitPerTransection()+", Exp "+saveDate);
+                                headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection())+", Exp "+saveDate;
                             }
                         }
                         if (product.getRewardType().equalsIgnoreCase("3")&&product.getPrimaryOfferTypeId()==2)
@@ -1160,6 +1168,14 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 }
 
                 else if (product.getPrimaryOfferTypeId() == 1) {
+                    if (product.getQuantity()==null){
+                        holder.add_item_flag.setText("+");
+                    }else if (product.getQuantity().equalsIgnoreCase("0")){
+                        holder.add_item_flag.setText("+");
+
+                    }else {
+                        holder.add_item_flag.setText(product.getQuantity());
+                    }
                     holder.tv_promo_price__pri_fix.setText("");
                     holder.tv_promo_price.setText("");
                     holder.circular_layout.setVisibility(View.GONE);
@@ -1519,7 +1535,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.green));
                         holder.tv_deal_type.setText(product.getOfferTypeTagName());
                         String headerContent = "";
-                        headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection()+product.getLimitPerTransection()+", Exp "+saveDate);
+                        headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection())+", Exp "+saveDate;
                         holder.limit.setText(headerContent);
                         if (product.getMinAmount()>0){
                             headerContent = "* WITH $"+product.getMinAmount()+" PURCHASE"+"\nLimit "+product.getLimitPerTransection()+", Exp "+saveDate;
@@ -1537,7 +1553,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             else
                             {
                                 if (product.getLimitPerTransection()>1){
-                                    headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection()+product.getLimitPerTransection()+", Exp "+saveDate);
+                                    headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection())+", Exp "+saveDate;
                                 }
                             }
                             if (product.getRewardType().equalsIgnoreCase("3")&&product.getPrimaryOfferTypeId()==2)
@@ -1739,6 +1755,14 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }
 
                     else if (product.getPrimaryOfferTypeId() == 1) {
+                        if (product.getQuantity()==null){
+                            holder.add_item_flag.setText("+");
+                        }else if (product.getQuantity().equalsIgnoreCase("0")){
+                            holder.add_item_flag.setText("+");
+
+                        }else {
+                            holder.add_item_flag.setText(product.getQuantity());
+                        }
                         holder.tv_promo_price__pri_fix.setText("");
                         holder.tv_promo_price.setText("");
                         holder.circular_layout.setVisibility(View.GONE);
@@ -1867,7 +1891,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             else
                                 holder.additional_offers.setVisibility(View.GONE);
                         }
-                    }else {
+                    }
+                    else {
                         holder.additional_offers.setVisibility(View.GONE);
                     }
                     Log.i("elseincircular", String.valueOf(product.getInCircular()));
@@ -2003,7 +2028,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.green));
                         holder.tv_deal_type.setText(product.getOfferTypeTagName());
                         String headerContent = "";
-                        headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection()+product.getLimitPerTransection()+", Exp "+saveDate);
+                        headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection())+", Exp "+saveDate;
                         holder.limit.setText(headerContent);
                         if (product.getMinAmount()>0){
                             headerContent = "* WITH $"+product.getMinAmount()+" PURCHASE"+"\nLimit "+product.getLimitPerTransection()+", Exp "+saveDate;
@@ -2021,7 +2046,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             else
                             {
                                 if (product.getLimitPerTransection()>1){
-                                    headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection()+product.getLimitPerTransection()+", Exp "+saveDate);
+                                    headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection())+", Exp "+saveDate;
                                 }
                             }
                             if (product.getRewardType().equalsIgnoreCase("3")&&product.getPrimaryOfferTypeId()==2)
@@ -2212,6 +2237,14 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }
 
                     else if (product.getPrimaryOfferTypeId() == 1) {
+                        if (product.getQuantity()==null){
+                            holder.add_item_flag.setText("+");
+                        }else if (product.getQuantity().equalsIgnoreCase("0")){
+                            holder.add_item_flag.setText("+");
+
+                        }else {
+                            holder.add_item_flag.setText(product.getQuantity());
+                        }
                         holder.tv_promo_price__pri_fix.setText("");
                         holder.tv_promo_price.setText("");
                         holder.circular_layout.setVisibility(View.GONE);

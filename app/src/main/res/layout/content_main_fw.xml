@@ -1338,11 +1338,12 @@
                             android:id="@+id/add_minus_detail"
                             android:background="@drawable/min_cir"
                             android:textColor="@color/white"
-                            android:textAlignment="center"
+                            android:gravity="center"
                             android:layout_width="20dp"
                             android:layout_height="20dp"
                             android:text=""/>
                         <TextView
+                            android:gravity="center"
                             android:id="@+id/tv_quantity_detail"
                             android:textColor="@color/black"
                             android:fontFamily="@font/roboto_black"
@@ -1354,7 +1355,7 @@
                             android:id="@+id/add_plus_detail"
                             android:background="@drawable/plus_cir"
                             android:textColor="@color/white"
-                            android:textAlignment="center"
+                            android:gravity="center"
                             android:layout_marginLeft="@dimen/_5sdp"
                             android:layout_width="20dp"
                             android:layout_height="20dp"

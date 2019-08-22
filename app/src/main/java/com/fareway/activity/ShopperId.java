@@ -14,6 +14,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.fareway.R;
 import com.fareway.utility.AppUtilFw;
+import com.fareway.utility.Constant;
 import com.google.zxing.BarcodeFormat;
 import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;
@@ -70,7 +71,7 @@ public class ShopperId extends AppCompatActivity {
         });*/
         try {
             //bitmap = encodeAsBitmap(appUtil.getPrefrence("ShopperID"), BarcodeFormat.CODE_128, 600, 300);
-            bitmap = encodeAsBitmap(appUtil.getPrefrence("ShopperID"), BarcodeFormat.CODE_128, 800, 300);
+            bitmap = encodeAsBitmap(Constant.PRISHOPPERID+appUtil.getPrefrence("ShopperID"), BarcodeFormat.CODE_128, 800, 300);
 
             gambarBarcode.setImageBitmap(bitmap);
             textnya.setText(appUtil.getPrefrence("ShopperID"));

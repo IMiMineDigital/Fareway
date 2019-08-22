@@ -111,13 +111,13 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             tv_personal_description.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ShoppingDetailListener.onShoppingDetailSelected(shoppingArrayList.get(getAdapterPosition()));
+                  //  ShoppingDetailListener.onShoppingDetailSelected(shoppingArrayList.get(getAdapterPosition()));
                 }
             });
             tv_coupon_description.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    ShoppingDetailListener.onShoppingDetailSelected(shoppingArrayList.get(getAdapterPosition()));
+                 //   ShoppingDetailListener.onShoppingDetailSelected(shoppingArrayList.get(getAdapterPosition()));
                 }
             });
         }
@@ -483,7 +483,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             }
         };
         RetryPolicy policy = new DefaultRetryPolicy
-                (50000,
+                (5000,
                         DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         jsonObjectRequest.setRetryPolicy(policy);

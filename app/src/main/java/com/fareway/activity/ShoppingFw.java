@@ -436,7 +436,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                     }
                 };
                 RetryPolicy policy = new DefaultRetryPolicy
-                        (50000,
+                        (5000,
                                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
                 jsonObjectRequest.setRetryPolicy(policy);
@@ -548,7 +548,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                     }
                 };
                 RetryPolicy policy = new DefaultRetryPolicy
-                        (50000,
+                        (5000,
                                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
                 jsonObjectRequest.setRetryPolicy(policy);
@@ -638,7 +638,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
             }
         };
         RetryPolicy policy = new DefaultRetryPolicy
-                (50000,
+                (5000,
                         DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         jsonObjectRequest.setRetryPolicy(policy);
@@ -703,7 +703,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                 }
             };
             RetryPolicy policy = new DefaultRetryPolicy
-                    (50000,
+                    (5000,
                             DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                             DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
             jsonObjectRequest.setRetryPolicy(policy);
@@ -787,7 +787,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                 }
             };
             RetryPolicy policy = new DefaultRetryPolicy
-                    (50000,
+                    (5000,
                             DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                             DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
             jsonObjectRequest.setRetryPolicy(policy);
@@ -848,7 +848,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                     }
                 };
                 RetryPolicy policy = new DefaultRetryPolicy
-                        (50000,
+                        (5000,
                                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
                 jsonObjectRequest.setRetryPolicy(policy);
@@ -928,7 +928,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                     }
                 };
                 RetryPolicy policy = new DefaultRetryPolicy
-                        (50000,
+                        (5000,
                                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
                 jsonObjectRequest.setRetryPolicy(policy);
@@ -1039,7 +1039,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                     }
                 };
                 RetryPolicy policy = new DefaultRetryPolicy
-                        (50000,
+                        (5000,
                                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
                 jsonObjectRequest.setRetryPolicy(policy);
@@ -1146,7 +1146,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                     }
                 };
                 RetryPolicy policy = new DefaultRetryPolicy
-                        (50000,
+                        (5000,
                                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
                 jsonObjectRequest.setRetryPolicy(policy);
@@ -1218,7 +1218,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                         }
                     };
                     RetryPolicy policy = new DefaultRetryPolicy
-                            (50000,
+                            (5000,
                                     DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
                     jsonObjectRequest.setRetryPolicy(policy);
@@ -1277,7 +1277,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
             }
         };
         RetryPolicy policy = new DefaultRetryPolicy
-                (50000,
+                (5000,
                         DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         jsonObjectRequest.setRetryPolicy(policy);
@@ -1333,7 +1333,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
             }
         };
         RetryPolicy policy = new DefaultRetryPolicy
-                (50000,
+                (5000,
                         DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
         jsonObjectRequest.setRetryPolicy(policy);
@@ -1430,7 +1430,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                     }
                 };
                 RetryPolicy policy = new DefaultRetryPolicy
-                        (50000,
+                        (5000,
                                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
                 jsonObjectRequest.setRetryPolicy(policy);
@@ -1543,7 +1543,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                     }
                 };
                 RetryPolicy policy = new DefaultRetryPolicy
-                        (50000,
+                        (5000,
                                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
                 jsonObjectRequest.setRetryPolicy(policy);
@@ -1669,7 +1669,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                     }
                 };
                 RetryPolicy policy = new DefaultRetryPolicy
-                        (50000,
+                        (5000,
                                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
                 jsonObjectRequest.setRetryPolicy(policy);

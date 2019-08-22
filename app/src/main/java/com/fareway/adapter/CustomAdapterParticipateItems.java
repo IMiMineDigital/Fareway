@@ -72,7 +72,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
     public MainFwActivity activate = new MainFwActivity();
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView add_plus,add_minus,tv_quantity,limit,tv_status, tv_price, tv_unit, tv_saving,tv_coupon_type_1,
+        private TextView add_item_flag,add_plus,add_minus,tv_quantity,limit,tv_status, tv_price, tv_unit, tv_saving,tv_coupon_type_1,
                 tv_saving_pri_fix,tv_promo_price__pri_fix,tv_promo_price,tv_deal_type,tv_detail,tv_varieties,tv_coupon_flag;
         private ImageView imv_item, imv_info, imv_more, imv_status;
         private LinearLayout circular_layout, bottomLayout,liner_save,liner_item_add,linear_tab_button;
@@ -103,7 +103,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
             add_minus = (TextView) view.findViewById(R.id.add_minus);
             tv_coupon_type_1 = (TextView) view.findViewById(R.id.tv_coupon_type_1);
 
-           // add_item_flag = (TextView) view.findViewById(R.id.add_item_flag);
+            add_item_flag = (TextView) view.findViewById(R.id.add_item_flag);
 
             imv_item = (ImageView) view.findViewById(R.id.imv_item);
             tv_varieties = view.findViewById(R.id.tv_varieties);
@@ -205,6 +205,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
             holder.circular_layout.getLayoutParams().width = 300;
 
             holder.relative_badge.getLayoutParams().width = 140;
+            holder.add_item_flag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
 
             if (relatedItem.getPrimaryOfferTypeId() == 3) {
                 holder.tv_promo_price__pri_fix.setText("");
@@ -279,8 +280,8 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
 
                 }
                 String headerContent = "";
-                headerContent = "Exp "+saveDate;
-                holder.limit.setText("\n"+headerContent);
+                headerContent = ", Exp "+saveDate;
+                holder.limit.setText("\nLimit " + String.valueOf(relatedItem.getLimitPerTransection())+headerContent);
 
                 holder.tv_coupon_flag.setText("With Coupon");
                 holder.tv_deal_type.setText(relatedItem.getOfferTypeTagName());
@@ -426,18 +427,19 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
             holder.tv_unit.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
             holder.tv_detail.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
             holder.tv_deal_type.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
-
+            holder.limit.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
 
             String charsUnit =lowercase(relatedItem.getPackagingSize());
             holder.tv_unit.setText(charsUnit);
             holder.tv_quantity.setText(relatedItem.getQuantity());
-            //holder.add_item_flag.setText("+");
+            holder.add_item_flag.setText("+");
 
             holder.tv_status.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
             holder.circular_layout.getLayoutParams().height = 200;
             holder.circular_layout.getLayoutParams().width = 200;
 
-            holder.relative_badge.getLayoutParams().width = 80;
+            holder.relative_badge.getLayoutParams().width = 100;
+            holder.add_item_flag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 7);
 
             if (relatedItem.getPrimaryOfferTypeId() == 3) {
                 holder.tv_promo_price__pri_fix.setText("");
@@ -510,8 +512,8 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
 
                 }
                 String headerContent = "";
-                headerContent = "Exp "+saveDate;
-                holder.limit.setText("\n"+headerContent);
+                headerContent = ", Exp "+saveDate;
+                holder.limit.setText("\nLimit " + String.valueOf(relatedItem.getLimitPerTransection())+headerContent);
 
                 holder.tv_coupon_flag.setText("With Coupon");
                 holder.tv_deal_type.setText(relatedItem.getOfferTypeTagName());

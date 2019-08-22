@@ -252,8 +252,8 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
                         Map<String, String> params = new HashMap<String, String>();
 
 
-                        //params.put("UserName", et_email.getText().toString());
-                        //params.put("password", et_pwd.getText().toString());
+                       // params.put("UserName", et_email.getText().toString());
+                       // params.put("password", et_pwd.getText().toString());
                         params.put("UserName", appUtil.getPrefrence("Email"));
                         params.put("password", appUtil.getPrefrence("Password"));
                         //test
@@ -271,7 +271,7 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
                     }
                 };
                 RetryPolicy policy = new DefaultRetryPolicy
-                        (50000,
+                        (5000,
                                 DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
                                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
                 jsonObjectRequest.setRetryPolicy(policy);
