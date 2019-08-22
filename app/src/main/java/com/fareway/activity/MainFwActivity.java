@@ -2347,36 +2347,7 @@ public class MainFwActivity extends AppCompatActivity
             tv_valid_detail.setText(saveDate);
             System.out.println(saveDate);
         }
-        participateToolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                liner_all_Varieties_activate.setVisibility(View.GONE);
-                //messageLoadRefresh();
-                qty=0;
-                if (x==0){
-                    rv_items_group.setVisibility(View.GONE);
-                    rv_items_verite.setVisibility(View.GONE);
-                    participateToolbar.setVisibility(View.GONE);
-                    rv_items.setVisibility(View.VISIBLE);
-                    toolbar.setVisibility(View.VISIBLE);
-                    navigation.setVisibility(View.VISIBLE);
-                    group_count_text.setVisibility(View.GONE);
-                    header_title.setVisibility(View.VISIBLE);
-                }
-                else {
-                    rv_items_group.setVisibility(View.GONE);
-                    rv_items_verite.setVisibility(View.GONE);
-                    participateToolbar.setVisibility(View.GONE);
-                    rv_items.setVisibility(View.VISIBLE);
-                    toolbar.setVisibility(View.VISIBLE);
-                    navigation.setVisibility(View.VISIBLE);
-                    group_count_text.setVisibility(View.GONE);
-                    header_title.setVisibility(View.VISIBLE);
-                }
 
-
-            }
-        });
         //
         liner_all_Varieties_activate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -2591,12 +2562,72 @@ public class MainFwActivity extends AppCompatActivity
                                                 }else if (product.getGroupname()==""){
                                                     fetchVeritesProduct();
                                                 }
+                                                participateToolbar.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        liner_all_Varieties_activate.setVisibility(View.GONE);
+                                                        //messageLoadRefresh();
+                                                        qty=0;
+                                                        if (x==0){
+                                                            rv_items_group.setVisibility(View.GONE);
+                                                            rv_items_verite.setVisibility(View.GONE);
+                                                            participateToolbar.setVisibility(View.GONE);
+                                                            rv_items.setVisibility(View.VISIBLE);
+                                                            toolbar.setVisibility(View.VISIBLE);
+                                                            navigation.setVisibility(View.VISIBLE);
+                                                            group_count_text.setVisibility(View.GONE);
+                                                            header_title.setVisibility(View.VISIBLE);
+                                                        }
+                                                        else {
+                                                            rv_items_group.setVisibility(View.GONE);
+                                                            rv_items_verite.setVisibility(View.GONE);
+                                                            participateToolbar.setVisibility(View.GONE);
+                                                            rv_items.setVisibility(View.VISIBLE);
+                                                            toolbar.setVisibility(View.VISIBLE);
+                                                            navigation.setVisibility(View.VISIBLE);
+                                                            group_count_text.setVisibility(View.GONE);
+                                                            header_title.setVisibility(View.VISIBLE);
+                                                        }
+
+
+                                                    }
+                                                });
 
 
                                             } catch (Throwable e) {
                                                 progressDialog.dismiss();
                                                 Log.i("Excep", "error----" + e.getMessage());
                                                 e.printStackTrace();
+                                                participateToolbar.setOnClickListener(new View.OnClickListener() {
+                                                    @Override
+                                                    public void onClick(View v) {
+                                                        liner_all_Varieties_activate.setVisibility(View.GONE);
+                                                        //messageLoadRefresh();
+                                                        qty=0;
+                                                        if (x==0){
+                                                            rv_items_group.setVisibility(View.GONE);
+                                                            rv_items_verite.setVisibility(View.GONE);
+                                                            participateToolbar.setVisibility(View.GONE);
+                                                            rv_items.setVisibility(View.VISIBLE);
+                                                            toolbar.setVisibility(View.VISIBLE);
+                                                            navigation.setVisibility(View.VISIBLE);
+                                                            group_count_text.setVisibility(View.GONE);
+                                                            header_title.setVisibility(View.VISIBLE);
+                                                        }
+                                                        else {
+                                                            rv_items_group.setVisibility(View.GONE);
+                                                            rv_items_verite.setVisibility(View.GONE);
+                                                            participateToolbar.setVisibility(View.GONE);
+                                                            rv_items.setVisibility(View.VISIBLE);
+                                                            toolbar.setVisibility(View.VISIBLE);
+                                                            navigation.setVisibility(View.VISIBLE);
+                                                            group_count_text.setVisibility(View.GONE);
+                                                            header_title.setVisibility(View.VISIBLE);
+                                                        }
+
+
+                                                    }
+                                                });
                                             }
                                         }
                                         else{
@@ -2604,6 +2635,36 @@ public class MainFwActivity extends AppCompatActivity
                                             alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.incorrect_credentials),
                                                     getString(R.string.ok),getString(R.string.alert));
                                             alertDialog.show();
+                                            participateToolbar.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    liner_all_Varieties_activate.setVisibility(View.GONE);
+                                                    //messageLoadRefresh();
+                                                    qty=0;
+                                                    if (x==0){
+                                                        rv_items_group.setVisibility(View.GONE);
+                                                        rv_items_verite.setVisibility(View.GONE);
+                                                        participateToolbar.setVisibility(View.GONE);
+                                                        rv_items.setVisibility(View.VISIBLE);
+                                                        toolbar.setVisibility(View.VISIBLE);
+                                                        navigation.setVisibility(View.VISIBLE);
+                                                        group_count_text.setVisibility(View.GONE);
+                                                        header_title.setVisibility(View.VISIBLE);
+                                                    }
+                                                    else {
+                                                        rv_items_group.setVisibility(View.GONE);
+                                                        rv_items_verite.setVisibility(View.GONE);
+                                                        participateToolbar.setVisibility(View.GONE);
+                                                        rv_items.setVisibility(View.VISIBLE);
+                                                        toolbar.setVisibility(View.VISIBLE);
+                                                        navigation.setVisibility(View.VISIBLE);
+                                                        group_count_text.setVisibility(View.GONE);
+                                                        header_title.setVisibility(View.VISIBLE);
+                                                    }
+
+
+                                                }
+                                            });
                                         }
                                     }
                                 }, new Response.ErrorListener() {
@@ -2613,6 +2674,36 @@ public class MainFwActivity extends AppCompatActivity
                                 error.printStackTrace();
                                 progressDialog.dismiss();
                                 Toast.makeText(activity, "error", Toast.LENGTH_LONG).show();
+                                participateToolbar.setOnClickListener(new View.OnClickListener() {
+                                    @Override
+                                    public void onClick(View v) {
+                                        liner_all_Varieties_activate.setVisibility(View.GONE);
+                                        //messageLoadRefresh();
+                                        qty=0;
+                                        if (x==0){
+                                            rv_items_group.setVisibility(View.GONE);
+                                            rv_items_verite.setVisibility(View.GONE);
+                                            participateToolbar.setVisibility(View.GONE);
+                                            rv_items.setVisibility(View.VISIBLE);
+                                            toolbar.setVisibility(View.VISIBLE);
+                                            navigation.setVisibility(View.VISIBLE);
+                                            group_count_text.setVisibility(View.GONE);
+                                            header_title.setVisibility(View.VISIBLE);
+                                        }
+                                        else {
+                                            rv_items_group.setVisibility(View.GONE);
+                                            rv_items_verite.setVisibility(View.GONE);
+                                            participateToolbar.setVisibility(View.GONE);
+                                            rv_items.setVisibility(View.VISIBLE);
+                                            toolbar.setVisibility(View.VISIBLE);
+                                            navigation.setVisibility(View.VISIBLE);
+                                            group_count_text.setVisibility(View.GONE);
+                                            header_title.setVisibility(View.VISIBLE);
+                                        }
+
+
+                                    }
+                                });
                             }
                         })
                         {
@@ -2666,6 +2757,36 @@ public class MainFwActivity extends AppCompatActivity
                         catch (Exception e)
                         {
                             e.printStackTrace();
+                            participateToolbar.setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    liner_all_Varieties_activate.setVisibility(View.GONE);
+                                    //messageLoadRefresh();
+                                    qty=0;
+                                    if (x==0){
+                                        rv_items_group.setVisibility(View.GONE);
+                                        rv_items_verite.setVisibility(View.GONE);
+                                        participateToolbar.setVisibility(View.GONE);
+                                        rv_items.setVisibility(View.VISIBLE);
+                                        toolbar.setVisibility(View.VISIBLE);
+                                        navigation.setVisibility(View.VISIBLE);
+                                        group_count_text.setVisibility(View.GONE);
+                                        header_title.setVisibility(View.VISIBLE);
+                                    }
+                                    else {
+                                        rv_items_group.setVisibility(View.GONE);
+                                        rv_items_verite.setVisibility(View.GONE);
+                                        participateToolbar.setVisibility(View.GONE);
+                                        rv_items.setVisibility(View.VISIBLE);
+                                        toolbar.setVisibility(View.VISIBLE);
+                                        navigation.setVisibility(View.VISIBLE);
+                                        group_count_text.setVisibility(View.GONE);
+                                        header_title.setVisibility(View.VISIBLE);
+                                    }
+
+
+                                }
+                            });
                         }
 
                     }
@@ -3607,50 +3728,7 @@ public class MainFwActivity extends AppCompatActivity
         rv_items.setVisibility(View.GONE);
         navigation.setVisibility(View.GONE);
 
-        participateToolbar.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                //fetchShoppingListLoad();
-                qty=0;
-                liner_all_Varieties_activate.setVisibility(View.GONE);
-                header_title.setVisibility(View.VISIBLE);
 
-                //messageLoadRefresh();
-                rv_items_verite.setVisibility(View.GONE);
-                if (x==0){
-                    rv_items_group.setVisibility(View.GONE);
-                    rv_items_verite.setVisibility(View.GONE);
-                    participateToolbar.setVisibility(View.GONE);
-                    rv_items.setVisibility(View.VISIBLE);
-                    toolbar.setVisibility(View.VISIBLE);
-                    navigation.setVisibility(View.VISIBLE);
-                    group_count_text.setVisibility(View.GONE);
-                    header_title.setVisibility(View.VISIBLE);
-                }
-                else if (x==3){
-                    rv_items_group.setVisibility(View.GONE);
-                    rv_items_verite.setVisibility(View.GONE);
-                    participateToolbar.setVisibility(View.GONE);
-                    rv_items.setVisibility(View.VISIBLE);
-                    toolbar.setVisibility(View.VISIBLE);
-                    navigation.setVisibility(View.GONE);
-                    group_count_text.setVisibility(View.GONE);
-                    header_title.setVisibility(View.VISIBLE);
-                }
-                else {
-                    rv_items_group.setVisibility(View.GONE);
-                    rv_items_verite.setVisibility(View.GONE);
-                    participateToolbar.setVisibility(View.GONE);
-                    rv_items.setVisibility(View.VISIBLE);
-                    toolbar.setVisibility(View.VISIBLE);
-                    navigation.setVisibility(View.VISIBLE);
-                    group_count_text.setVisibility(View.GONE);
-                    header_title.setVisibility(View.VISIBLE);
-                }
-
-
-            }
-        });
 
         if (product.getGroupname()==null){
             rv_items_group.setVisibility(View.GONE);
@@ -3712,10 +3790,99 @@ public class MainFwActivity extends AppCompatActivity
                                             fetchVeritesProduct();
                                         }
 
+                                        participateToolbar.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                //fetchShoppingListLoad();
+                                                qty=0;
+                                                liner_all_Varieties_activate.setVisibility(View.GONE);
+                                                header_title.setVisibility(View.VISIBLE);
+
+                                                //messageLoadRefresh();
+                                                rv_items_verite.setVisibility(View.GONE);
+                                                if (x==0){
+                                                    rv_items_group.setVisibility(View.GONE);
+                                                    rv_items_verite.setVisibility(View.GONE);
+                                                    participateToolbar.setVisibility(View.GONE);
+                                                    rv_items.setVisibility(View.VISIBLE);
+                                                    toolbar.setVisibility(View.VISIBLE);
+                                                    navigation.setVisibility(View.VISIBLE);
+                                                    group_count_text.setVisibility(View.GONE);
+                                                    header_title.setVisibility(View.VISIBLE);
+                                                }
+                                                else if (x==3){
+                                                    rv_items_group.setVisibility(View.GONE);
+                                                    rv_items_verite.setVisibility(View.GONE);
+                                                    participateToolbar.setVisibility(View.GONE);
+                                                    rv_items.setVisibility(View.VISIBLE);
+                                                    toolbar.setVisibility(View.VISIBLE);
+                                                    navigation.setVisibility(View.GONE);
+                                                    group_count_text.setVisibility(View.GONE);
+                                                    header_title.setVisibility(View.VISIBLE);
+                                                }
+                                                else {
+                                                    rv_items_group.setVisibility(View.GONE);
+                                                    rv_items_verite.setVisibility(View.GONE);
+                                                    participateToolbar.setVisibility(View.GONE);
+                                                    rv_items.setVisibility(View.VISIBLE);
+                                                    toolbar.setVisibility(View.VISIBLE);
+                                                    navigation.setVisibility(View.VISIBLE);
+                                                    group_count_text.setVisibility(View.GONE);
+                                                    header_title.setVisibility(View.VISIBLE);
+                                                }
+
+
+                                            }
+                                        });
+
                                     } catch (Throwable e) {
                                         progressDialog.dismiss();
                                         Log.i("Excep", "error----" + e.getMessage());
                                         e.printStackTrace();
+                                        participateToolbar.setOnClickListener(new View.OnClickListener() {
+                                            @Override
+                                            public void onClick(View v) {
+                                                //fetchShoppingListLoad();
+                                                qty=0;
+                                                liner_all_Varieties_activate.setVisibility(View.GONE);
+                                                header_title.setVisibility(View.VISIBLE);
+
+                                                //messageLoadRefresh();
+                                                rv_items_verite.setVisibility(View.GONE);
+                                                if (x==0){
+                                                    rv_items_group.setVisibility(View.GONE);
+                                                    rv_items_verite.setVisibility(View.GONE);
+                                                    participateToolbar.setVisibility(View.GONE);
+                                                    rv_items.setVisibility(View.VISIBLE);
+                                                    toolbar.setVisibility(View.VISIBLE);
+                                                    navigation.setVisibility(View.VISIBLE);
+                                                    group_count_text.setVisibility(View.GONE);
+                                                    header_title.setVisibility(View.VISIBLE);
+                                                }
+                                                else if (x==3){
+                                                    rv_items_group.setVisibility(View.GONE);
+                                                    rv_items_verite.setVisibility(View.GONE);
+                                                    participateToolbar.setVisibility(View.GONE);
+                                                    rv_items.setVisibility(View.VISIBLE);
+                                                    toolbar.setVisibility(View.VISIBLE);
+                                                    navigation.setVisibility(View.GONE);
+                                                    group_count_text.setVisibility(View.GONE);
+                                                    header_title.setVisibility(View.VISIBLE);
+                                                }
+                                                else {
+                                                    rv_items_group.setVisibility(View.GONE);
+                                                    rv_items_verite.setVisibility(View.GONE);
+                                                    participateToolbar.setVisibility(View.GONE);
+                                                    rv_items.setVisibility(View.VISIBLE);
+                                                    toolbar.setVisibility(View.VISIBLE);
+                                                    navigation.setVisibility(View.VISIBLE);
+                                                    group_count_text.setVisibility(View.GONE);
+                                                    header_title.setVisibility(View.VISIBLE);
+                                                }
+
+
+                                            }
+                                        });
                                     }
                                 }
                                 else{
@@ -3723,6 +3890,50 @@ public class MainFwActivity extends AppCompatActivity
                                     alertDialog=userAlertDialog.createPositiveAlert("Participating Items (0)Activated",
                                             getString(R.string.ok),getString(R.string.alert));
                                     alertDialog.show();
+                                    participateToolbar.setOnClickListener(new View.OnClickListener() {
+                                        @Override
+                                        public void onClick(View v) {
+                                            //fetchShoppingListLoad();
+                                            qty=0;
+                                            liner_all_Varieties_activate.setVisibility(View.GONE);
+                                            header_title.setVisibility(View.VISIBLE);
+
+                                            //messageLoadRefresh();
+                                            rv_items_verite.setVisibility(View.GONE);
+                                            if (x==0){
+                                                rv_items_group.setVisibility(View.GONE);
+                                                rv_items_verite.setVisibility(View.GONE);
+                                                participateToolbar.setVisibility(View.GONE);
+                                                rv_items.setVisibility(View.VISIBLE);
+                                                toolbar.setVisibility(View.VISIBLE);
+                                                navigation.setVisibility(View.VISIBLE);
+                                                group_count_text.setVisibility(View.GONE);
+                                                header_title.setVisibility(View.VISIBLE);
+                                            }
+                                            else if (x==3){
+                                                rv_items_group.setVisibility(View.GONE);
+                                                rv_items_verite.setVisibility(View.GONE);
+                                                participateToolbar.setVisibility(View.GONE);
+                                                rv_items.setVisibility(View.VISIBLE);
+                                                toolbar.setVisibility(View.VISIBLE);
+                                                navigation.setVisibility(View.GONE);
+                                                group_count_text.setVisibility(View.GONE);
+                                                header_title.setVisibility(View.VISIBLE);
+                                            }
+                                            else {
+                                                rv_items_group.setVisibility(View.GONE);
+                                                rv_items_verite.setVisibility(View.GONE);
+                                                participateToolbar.setVisibility(View.GONE);
+                                                rv_items.setVisibility(View.VISIBLE);
+                                                toolbar.setVisibility(View.VISIBLE);
+                                                navigation.setVisibility(View.VISIBLE);
+                                                group_count_text.setVisibility(View.GONE);
+                                                header_title.setVisibility(View.VISIBLE);
+                                            }
+
+
+                                        }
+                                    });
                                 }
                             }
                         }, new Response.ErrorListener() {
@@ -3732,6 +3943,50 @@ public class MainFwActivity extends AppCompatActivity
                         error.printStackTrace();
                         progressDialog.dismiss();
                         Toast.makeText(activity, "error", Toast.LENGTH_LONG).show();
+                        participateToolbar.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //fetchShoppingListLoad();
+                                qty=0;
+                                liner_all_Varieties_activate.setVisibility(View.GONE);
+                                header_title.setVisibility(View.VISIBLE);
+
+                                //messageLoadRefresh();
+                                rv_items_verite.setVisibility(View.GONE);
+                                if (x==0){
+                                    rv_items_group.setVisibility(View.GONE);
+                                    rv_items_verite.setVisibility(View.GONE);
+                                    participateToolbar.setVisibility(View.GONE);
+                                    rv_items.setVisibility(View.VISIBLE);
+                                    toolbar.setVisibility(View.VISIBLE);
+                                    navigation.setVisibility(View.VISIBLE);
+                                    group_count_text.setVisibility(View.GONE);
+                                    header_title.setVisibility(View.VISIBLE);
+                                }
+                                else if (x==3){
+                                    rv_items_group.setVisibility(View.GONE);
+                                    rv_items_verite.setVisibility(View.GONE);
+                                    participateToolbar.setVisibility(View.GONE);
+                                    rv_items.setVisibility(View.VISIBLE);
+                                    toolbar.setVisibility(View.VISIBLE);
+                                    navigation.setVisibility(View.GONE);
+                                    group_count_text.setVisibility(View.GONE);
+                                    header_title.setVisibility(View.VISIBLE);
+                                }
+                                else {
+                                    rv_items_group.setVisibility(View.GONE);
+                                    rv_items_verite.setVisibility(View.GONE);
+                                    participateToolbar.setVisibility(View.GONE);
+                                    rv_items.setVisibility(View.VISIBLE);
+                                    toolbar.setVisibility(View.VISIBLE);
+                                    navigation.setVisibility(View.VISIBLE);
+                                    group_count_text.setVisibility(View.GONE);
+                                    header_title.setVisibility(View.VISIBLE);
+                                }
+
+
+                            }
+                        });
                     }
                 })
                 {
@@ -3785,6 +4040,50 @@ public class MainFwActivity extends AppCompatActivity
                 catch (Exception e)
                 {
                     e.printStackTrace();
+                    participateToolbar.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            //fetchShoppingListLoad();
+                            qty=0;
+                            liner_all_Varieties_activate.setVisibility(View.GONE);
+                            header_title.setVisibility(View.VISIBLE);
+
+                            //messageLoadRefresh();
+                            rv_items_verite.setVisibility(View.GONE);
+                            if (x==0){
+                                rv_items_group.setVisibility(View.GONE);
+                                rv_items_verite.setVisibility(View.GONE);
+                                participateToolbar.setVisibility(View.GONE);
+                                rv_items.setVisibility(View.VISIBLE);
+                                toolbar.setVisibility(View.VISIBLE);
+                                navigation.setVisibility(View.VISIBLE);
+                                group_count_text.setVisibility(View.GONE);
+                                header_title.setVisibility(View.VISIBLE);
+                            }
+                            else if (x==3){
+                                rv_items_group.setVisibility(View.GONE);
+                                rv_items_verite.setVisibility(View.GONE);
+                                participateToolbar.setVisibility(View.GONE);
+                                rv_items.setVisibility(View.VISIBLE);
+                                toolbar.setVisibility(View.VISIBLE);
+                                navigation.setVisibility(View.GONE);
+                                group_count_text.setVisibility(View.GONE);
+                                header_title.setVisibility(View.VISIBLE);
+                            }
+                            else {
+                                rv_items_group.setVisibility(View.GONE);
+                                rv_items_verite.setVisibility(View.GONE);
+                                participateToolbar.setVisibility(View.GONE);
+                                rv_items.setVisibility(View.VISIBLE);
+                                toolbar.setVisibility(View.VISIBLE);
+                                navigation.setVisibility(View.VISIBLE);
+                                group_count_text.setVisibility(View.GONE);
+                                header_title.setVisibility(View.VISIBLE);
+                            }
+
+
+                        }
+                    });
                 }
 
             } catch (Exception e) {
