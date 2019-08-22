@@ -2298,6 +2298,8 @@ public class MainFwActivity extends AppCompatActivity
         DetaileToolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                liner_all_Varieties_activate.setVisibility(View.GONE);
+                rv_items_verite.setVisibility(View.GONE);
                 navigation.setVisibility(View.VISIBLE);
                 scrollView.setVisibility(View.GONE);
                 DetaileToolbar.setVisibility(View.GONE);
@@ -5201,7 +5203,7 @@ public class MainFwActivity extends AppCompatActivity
                         Log.i("test", String.valueOf(jsonParam.getJSONObject(j)));
                     }
 
-                    fetchVeritesProduct();
+                    //fetchVeritesProduct();
                 }
             }
             catch (JSONException e) {
@@ -5317,7 +5319,7 @@ public class MainFwActivity extends AppCompatActivity
                         Log.i("test", String.valueOf(jsonParam.getJSONObject(j)));
                     }
 
-                    fetchVeritesProduct();
+                    //fetchVeritesProduct();
                 }
             }
             catch (JSONException e) {
