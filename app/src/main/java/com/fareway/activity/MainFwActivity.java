@@ -2286,8 +2286,6 @@ public class MainFwActivity extends AppCompatActivity
         imm.hideSoftInputFromWindow(edit_txt.getWindowToken(), 0);
         Log.i("click", String.valueOf(product.getClickCount()));
 
-
-
         tv_quantity_detail.setText(product.getQuantity());
         navigation.setVisibility(View.GONE);
         scrollView.setVisibility(View.VISIBLE);
@@ -2450,7 +2448,7 @@ public class MainFwActivity extends AppCompatActivity
                                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
                     jsonObjectRequest.setRetryPolicy(policy);
                     try {
-                        mQueue2.add(jsonObjectRequest);
+                        mQueue.add(jsonObjectRequest);
                     }
                     catch (Exception e)
                     {
@@ -2563,6 +2561,9 @@ public class MainFwActivity extends AppCompatActivity
                                                     fetchVeritesProduct();
                                                 }else if (product.getGroupname()==""){
                                                     fetchVeritesProduct();
+                                                }else {
+                                                    fetchVeritesProduct();
+                                                    Log.i("groupname5",product.getGroupname()+"gruptest");
                                                 }
                                                 participateToolbar.setOnClickListener(new View.OnClickListener() {
                                                     @Override
@@ -3051,6 +3052,11 @@ public class MainFwActivity extends AppCompatActivity
             Log.i("anshu", String.valueOf(result));
             if (product.getRewardType().equalsIgnoreCase("2") && product.getOfferDefinitionId()==4){
                 tv_price_detaile.setText("Buy "+product.getRequiredQty()+"\n"+"Get "+product.getRewardQty()+" "+result+"*");
+                table_varieties.setVisibility(View.VISIBLE);
+                table_varieties_view.setVisibility(View.VISIBLE);
+                tv_varieties_detail.setVisibility(View.VISIBLE);
+                Spanned varietiesUnderline = Html.fromHtml("<u>Participating Items</u>");
+                tv_varieties_detail.setText(varietiesUnderline);
             }else if (product.getRewardType().equalsIgnoreCase("3") || product.getOfferDefinitionId()==4 || product.getOfferDefinitionId()==1){
                 tv_price_detaile.setText(result);
             }else {
@@ -3177,9 +3183,6 @@ public class MainFwActivity extends AppCompatActivity
                 String url = null;
                 Log.i("testobject", mRequestBody);
                 if (product.getQuantity().equalsIgnoreCase("0") && product.getPrimaryOfferTypeId() == 1) {
-                    RequestQueue mQueue2;
-                    mQueue2 = FarewayApplication.getmInstance(activity).getmRequestQueue();
-
                     try {
 
                         StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.ACTIVATE,
@@ -3259,7 +3262,7 @@ public class MainFwActivity extends AppCompatActivity
                                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
                         jsonObjectRequest.setRetryPolicy(policy);
                         try {
-                            mQueue2.add(jsonObjectRequest);
+                            mQueue.add(jsonObjectRequest);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -3275,9 +3278,6 @@ public class MainFwActivity extends AppCompatActivity
                 }
 
                 else if (product.getQuantity().equalsIgnoreCase("0")) {
-                    RequestQueue mQueue2;
-                    mQueue2 = FarewayApplication.getmInstance(activity).getmRequestQueue();
-
                     try {
 
                         StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.ACTIVATE,
@@ -3371,7 +3371,7 @@ public class MainFwActivity extends AppCompatActivity
                                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
                         jsonObjectRequest.setRetryPolicy(policy);
                         try {
-                            mQueue2.add(jsonObjectRequest);
+                            mQueue.add(jsonObjectRequest);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -3386,8 +3386,6 @@ public class MainFwActivity extends AppCompatActivity
                 }
 
                 else {
-                    RequestQueue mQueue2;
-                    mQueue2 = FarewayApplication.getmInstance(activity).getmRequestQueue();
                     url = Constant.WEB_URL + Constant.SHOPPINGLIST + appUtil.getPrefrence("MemberId");
 
                     try {
@@ -3434,6 +3432,7 @@ public class MainFwActivity extends AppCompatActivity
                             public Map<String, String> getHeaders() {
                                 Map<String, String> params = new HashMap<String, String>();
                                 params.put("Content-Type", "application/json");
+                                params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
                                 return params;
                             }
                         };
@@ -3443,7 +3442,7 @@ public class MainFwActivity extends AppCompatActivity
                                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
                         jsonObjectRequest.setRetryPolicy(policy);
                         try {
-                            mQueue2.add(jsonObjectRequest);
+                            mQueue.add(jsonObjectRequest);
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -3526,6 +3525,7 @@ public class MainFwActivity extends AppCompatActivity
                             public Map<String, String> getHeaders() {
                                 Map<String, String> params = new HashMap<String, String>();
                                 params.put("Content-Type", "application/json");
+                                params.put("Authorization", appUtil.getPrefrence("token_type") + " " + appUtil.getPrefrence("access_token"));
                                 return params;
                             }
                         };
@@ -3767,6 +3767,13 @@ public class MainFwActivity extends AppCompatActivity
                                         rv_items_verite.setVisibility(View.VISIBLE);
                                         Log.i("Verites response", response.toString());
                                         jsonParam = new JSONArray(response.toString());
+                                       /* List<RelatedItem> items = new Gson().fromJson(jsonParam.toString(), new TypeToken<List<RelatedItem>>() {
+                                        }.getType());
+                                        // adding product to product list
+                                        relatedItemsList.clear();
+                                        relatedItemsList.addAll(items);
+                                        // refreshing recycler view
+                                        customAdapterParticipateItems.notifyDataSetChanged();*/
                                         //
                                         //
                                         qty=0;
@@ -3779,17 +3786,25 @@ public class MainFwActivity extends AppCompatActivity
 
 
 
+
                                         progressDialog.dismiss();
                                         //
                                         Log.i("groupname",product.getGroupname()+"gruptest");
                                         if (product.getGroupname().length()>0){
                                             fetchVeritesProduct2(Group);
+                                            Log.i("groupname1",product.getGroupname()+"gruptest");
                                         }else if (product.getGroupname()==null){
                                             fetchVeritesProduct();
+                                            Log.i("groupname2",product.getGroupname()+"gruptest");
                                         }else if (product.getGroupname()=="null"){
+                                            Log.i("groupname3",product.getGroupname()+"gruptest");
                                             fetchVeritesProduct();
                                         }else if (product.getGroupname()==""){
                                             fetchVeritesProduct();
+                                            Log.i("groupname4",product.getGroupname()+"gruptest");
+                                        }else {
+                                            fetchVeritesProduct();
+                                            Log.i("groupname5",product.getGroupname()+"gruptest");
                                         }
 
                                         participateToolbar.setOnClickListener(new View.OnClickListener() {
@@ -4095,7 +4110,8 @@ public class MainFwActivity extends AppCompatActivity
 //                displayAlert();
             }
 
-        } else {
+        }
+        else {
             alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
                     getString(R.string.ok),getString(R.string.alert));
             alertDialog.show();
@@ -4214,7 +4230,7 @@ public class MainFwActivity extends AppCompatActivity
                                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
                     jsonObjectRequest.setRetryPolicy(policy);
                     try {
-                        mQueue2.add(jsonObjectRequest);
+                        mQueue.add(jsonObjectRequest);
                     }
                     catch (Exception e)
                     {
@@ -4241,113 +4257,7 @@ public class MainFwActivity extends AppCompatActivity
     @Override
     public void onProductActivate(final Product product) {
 
-        /*if (product.getClickCount()>0){
-
-            try {
-
-                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST,Constant.WEB_URL + Constant.ACTIVATE,
-                        new Response.Listener<String>(){
-                            @Override
-                            public void onResponse(String response) {
-                                fetchShoppingListLoad();
-                                Log.i("Activate api Response", response.toString());
-                                if (product.getPrimaryOfferTypeId()==3){
-                                    product.setClickCount(1);
-                                    product.setListCount(1);
-                                    product.setQuantity("1");
-                                    SetProductActivate(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
-                                }else if (product.getPrimaryOfferTypeId()==2){
-                                    product.setClickCount(1);
-                                    product.setQuantity("1");
-                                    if (product.getRequiresActivation().contains("False")){
-                                        product.setListCount(1);
-                                    }else {
-                                        product.setListCount(1);
-                                    }
-                                    SetProductActivate(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),2);
-                                }else if (product.getPrimaryOfferTypeId()==1){
-                                    product.setListCount(1);
-                                    product.setQuantity("1");
-                                    SetProductActivate(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
-                                }
-
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.i("Volley error resp", "error----" + error.getMessage());
-                        error.printStackTrace();
-
-                        if (error.networkResponse == null) {
-                            if (error.getClass().equals(TimeoutError.class)) {
-                            }
-                        }
-                    }
-                })
-                {
-                    @Override
-                    public String getBodyContentType() {
-                        return "application/x-www-form-urlencoded";
-                    }
-                    @Override
-                    protected Map<String, String> getParams() throws AuthFailureError {
-                        Map<String, String> params = new HashMap<String, String>();
-                        params.put("UPCCode", product.getUPC());
-                        params.put("CategoryID", String.valueOf(product.getCategoryID()));
-                        params.put("SalePrice", product.getFinalPrice());
-                        params.put("PrimaryOfferTypeId", String.valueOf(product.getPrimaryOfferTypeId()));
-                        params.put("OfferDetailId", String.valueOf(product.getOfferDetailId()));
-                        params.put("PersonalCircularID", String.valueOf(product.getPersonalCircularID()));
-                        params.put("ExpirationDate", product.getValidityEndDate());
-                        params.put("ClientID", "1");
-                        params.put("PackagingSize", product.getPackagingSize());
-                        params.put("DisplayPrice", product.getDisplayPrice());
-                        params.put("PageID", String.valueOf(product.getPageID()));
-                        params.put("Description", product.getDescription());
-                        params.put("CouponID", String.valueOf(product.getCouponID()));
-                        params.put("MemberID", String.valueOf(product.getMemberID()));
-                        params.put("DeviceId", "1");
-                        params.put("ClickType", "2");
-                        params.put("iPositionID", product.getTileNumber());
-                        params.put("OPMOfferID", String.valueOf(product.getPricingMasterID()));
-                        params.put("AdPrice", product.getAdPrice());
-                        params.put("RegPrice", product.getRegularPrice());
-                        params.put("Savings", product.getSavings());
-                        return params;
-                    }
-
-                    @Override
-                    public Map<String, String> getHeaders() {
-                        Map<String, String> params = new HashMap<String, String>();
-                        params.put("Content-Type", "application/x-www-form-urlencoded");
-                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
-                        return params;
-                    }
-                };
-                RetryPolicy policy = new DefaultRetryPolicy
-                        (5000,
-                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-                jsonObjectRequest.setRetryPolicy(policy);
-                try {
-                    mQueue.add(jsonObjectRequest);
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-
-            } catch (Exception e) {
-
-                e.printStackTrace();
-
-
-            }
-        }
-
-        else */
-
-            if (product.getClickCount()==0){
+        if (product.getClickCount()==0){
             //
 
             try {
@@ -6197,7 +6107,7 @@ public class MainFwActivity extends AppCompatActivity
                                     DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
                     jsonObjectRequest.setRetryPolicy(policy);
                     try {
-                        mQueue2.add(jsonObjectRequest);
+                        mQueue.add(jsonObjectRequest);
                     }
                     catch (Exception e)
                     {
@@ -6232,7 +6142,7 @@ public class MainFwActivity extends AppCompatActivity
                 if (Group.length()>0){
                     group_count_text.setVisibility(View.VISIBLE);
                 }
-                fetchVeritesProduct2(Group);
+                //fetchVeritesProduct2(Group);
                 /*header_title.setVisibility(View.GONE);
 
                 if (relatedItem.getPrimaryOfferTypeId()==3 || relatedItem.getPrimaryOfferTypeId()==2){
@@ -6862,60 +6772,68 @@ public class MainFwActivity extends AppCompatActivity
                     final String mRequestBody = "'"+studentsObj.toString()+"'";
                     Log.i("test",mRequestBody);
                     String url = Constant.WEB_URL+Constant.SHOPPINGLIST+appUtil.getPrefrence("MemberId");
-                    StringRequest  jsonObjectRequest = new StringRequest (Request.Method.PUT, url,
-                            new Response.Listener<String >() {
-                                @Override
-                                public void onResponse(String  response) {
-                                    Log.i("success", String.valueOf(response));
-                                    relatedItem.setQuantity(String.valueOf((Integer.parseInt(relatedItem.getQuantity())-1)));
-                                    tv_quantity_detail.setText(relatedItem.getQuantity());
-                                    //.setText(product.getQuantity());
-                                    qty=qty-1;
-                                    fetchShoppingListLoad();
-                                    SetProductActivateDetaile(relatedItem.getPrimaryOfferTypeId(),relatedItem.getCouponID(),relatedItem.getUPC(),relatedItem.getRequiresActivation(),1,String.valueOf((Integer.parseInt(relatedItem.getQuantity())-0)));
-                                    progressDialog.dismiss();
-                                }
-                            }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Log.i("fail", String.valueOf(error));
-                        }
-                    }){
-
-                        @Override
-                        public String getBodyContentType() {
-                            return "application/json; charset=utf-8";
-                        }
-
-                        @Override
-                        public byte[] getBody() throws AuthFailureError {
-                            try {
-                                return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
-                            } catch (UnsupportedEncodingException uee) {
-                                VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
-                                return null;
-                            }
-                        }
-                        //this is the part, that adds the header to the request
-                        @Override
-                        public Map<String, String> getHeaders() {
-                            Map<String, String> params = new HashMap<String, String>();
-                            params.put("Content-Type", "application/json");
-                            return params;
-                        }
-                    };
-                    RetryPolicy policy = new DefaultRetryPolicy
-                            (5000,
-                                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-                    jsonObjectRequest.setRetryPolicy(policy);
                     try {
-                        mQueue.add(jsonObjectRequest);
+                        StringRequest  jsonObjectRequest = new StringRequest (Request.Method.PUT, url,
+                                new Response.Listener<String >() {
+                                    @Override
+                                    public void onResponse(String  response) {
+                                        Log.i("success", String.valueOf(response));
+                                        relatedItem.setQuantity(String.valueOf((Integer.parseInt(relatedItem.getQuantity())-1)));
+                                        tv_quantity_detail.setText(relatedItem.getQuantity());
+                                        //.setText(product.getQuantity());
+                                        qty=qty-1;
+                                        fetchShoppingListLoad();
+                                        SetProductActivateDetaile(relatedItem.getPrimaryOfferTypeId(),relatedItem.getCouponID(),relatedItem.getUPC(),relatedItem.getRequiresActivation(),1,String.valueOf((Integer.parseInt(relatedItem.getQuantity())-0)));
+                                        progressDialog.dismiss();
+                                    }
+                                }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.i("fail", String.valueOf(error));
+                            }
+                        }){
+
+                            @Override
+                            public String getBodyContentType() {
+                                return "application/json; charset=utf-8";
+                            }
+
+                            @Override
+                            public byte[] getBody() throws AuthFailureError {
+                                try {
+                                    return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
+                                } catch (UnsupportedEncodingException uee) {
+                                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
+                                    return null;
+                                }
+                            }
+                            //this is the part, that adds the header to the request
+                            @Override
+                            public Map<String, String> getHeaders() {
+                                Map<String, String> params = new HashMap<String, String>();
+                                params.put("Content-Type", "application/json");
+                                params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                                return params;
+                            }
+                        };
+                        RetryPolicy policy = new DefaultRetryPolicy
+                                (5000,
+                                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                        jsonObjectRequest.setRetryPolicy(policy);
+                        try {
+                            mQueue.add(jsonObjectRequest);
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
                     }
                     catch (Exception e)
                     {
                         e.printStackTrace();
                     }
+
                 }
 
                 else {
@@ -6923,47 +6841,54 @@ public class MainFwActivity extends AppCompatActivity
 
                     Log.i("remove","remove");
                     String url = Constant.WEB_URL+Constant.REMOVE+relatedItem.getUPC()+"&"+"MemberId="+appUtil.getPrefrence("MemberId");
-                    StringRequest  jsonObjectRequest = new StringRequest (Request.Method.DELETE, url,
-                            new Response.Listener<String >() {
-                                @Override
-                                public void onResponse(String  response) {
-                                    Log.i("success", String.valueOf(response));
-                                    fetchShoppingListLoad();
-                                    tv_quantity_detail.setText("0");
-
-                                    SetRemoveActivateDetail(relatedItem.getPrimaryOfferTypeId(),relatedItem.getCouponID(),relatedItem.getUPC(),relatedItem.getRequiresActivation(),1);
-                                    progressDialog.dismiss();
-                                }
-                            }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Log.i("fail", String.valueOf(error));
-                        }
-                    }){
-                        @Override
-                        public String getBodyContentType() {
-                            return "application/json; charset=utf-8";
-                        }
-                        @Override
-                        public Map<String, String> getHeaders() {
-                            Map<String, String> params = new HashMap<String, String>();
-                            params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
-                            params.put("Content-Type", "application/json ;charset=utf-8");
-                            return params;
-                        }
-                    };
-                    RetryPolicy policy = new DefaultRetryPolicy
-                            (5000,
-                                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-                    jsonObjectRequest.setRetryPolicy(policy);
                     try {
-                        mQueue.add(jsonObjectRequest);
+                        StringRequest  jsonObjectRequest = new StringRequest (Request.Method.DELETE, url,
+                                new Response.Listener<String >() {
+                                    @Override
+                                    public void onResponse(String  response) {
+                                        Log.i("success", String.valueOf(response));
+                                        fetchShoppingListLoad();
+                                        tv_quantity_detail.setText("0");
+
+                                        SetRemoveActivateDetail(relatedItem.getPrimaryOfferTypeId(),relatedItem.getCouponID(),relatedItem.getUPC(),relatedItem.getRequiresActivation(),1);
+                                        progressDialog.dismiss();
+                                    }
+                                }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.i("fail", String.valueOf(error));
+                            }
+                        }){
+                            @Override
+                            public String getBodyContentType() {
+                                return "application/json; charset=utf-8";
+                            }
+                            @Override
+                            public Map<String, String> getHeaders() {
+                                Map<String, String> params = new HashMap<String, String>();
+                                params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                                params.put("Content-Type", "application/json ;charset=utf-8");
+                                return params;
+                            }
+                        };
+                        RetryPolicy policy = new DefaultRetryPolicy
+                                (5000,
+                                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                        jsonObjectRequest.setRetryPolicy(policy);
+                        try {
+                            mQueue.add(jsonObjectRequest);
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
                     }
                     catch (Exception e)
                     {
                         e.printStackTrace();
                     }
+
                 }
             }
         });
@@ -7001,8 +6926,6 @@ public class MainFwActivity extends AppCompatActivity
                 String url = null;
                 Log.i("testobject",mRequestBody);
                 if (relatedItem.getQuantity().equalsIgnoreCase("0")&& relatedItem.getPrimaryOfferTypeId()==1){
-                    RequestQueue mQueue2;
-                    mQueue2=FarewayApplication.getmInstance(activity).getmRequestQueue();
 
                     try {
 
@@ -7098,14 +7021,15 @@ public class MainFwActivity extends AppCompatActivity
                                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
                         jsonObjectRequest.setRetryPolicy(policy);
                         try {
-                            mQueue2.add(jsonObjectRequest);
+                            mQueue.add(jsonObjectRequest);
                         }
                         catch (Exception e)
                         {
                             e.printStackTrace();
                         }
 
-                    } catch (Exception e) {
+                    }
+                    catch (Exception e) {
 
                         e.printStackTrace();
 
@@ -7113,10 +7037,8 @@ public class MainFwActivity extends AppCompatActivity
                     }
 
                 }
-                else if (relatedItem.getQuantity().equalsIgnoreCase("0")){
-                    RequestQueue mQueue2;
-                    mQueue2=FarewayApplication.getmInstance(activity).getmRequestQueue();
 
+                else if (relatedItem.getQuantity().equalsIgnoreCase("0")){
                     try {
 
                         StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST,Constant.WEB_URL + Constant.ACTIVATE,
@@ -7208,7 +7130,7 @@ public class MainFwActivity extends AppCompatActivity
                                         DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
                         jsonObjectRequest.setRetryPolicy(policy);
                         try {
-                            mQueue2.add(jsonObjectRequest);
+                            mQueue.add(jsonObjectRequest);
                         }
                         catch (Exception e)
                         {
@@ -7222,65 +7144,74 @@ public class MainFwActivity extends AppCompatActivity
 
                     }
                 }
+
                 else {
                     url = Constant.WEB_URL+Constant.SHOPPINGLIST+appUtil.getPrefrence("MemberId");
-                    StringRequest  jsonObjectRequest = new StringRequest (Request.Method.PUT, url,
-                            new Response.Listener<String >() {
-                                @Override
-                                public void onResponse(String  response) {
-                                    Log.i("ClickAddgr81", String.valueOf(response));
-                                    relatedItem.setQuantity(String.valueOf((Integer.parseInt(relatedItem.getQuantity())+1)));
-                                    tv_quantity_detail.setText(relatedItem.getQuantity());
-                                    //add_item_flag_detail.setText(relatedItem.getQuantity());
-                                    //
-                                    Log.i("qty", String.valueOf(qty));
-                                    qty=qty+1;
-                                    fetchShoppingListLoad();
-                                    //
-                                    SetProductActivateDetaile(relatedItem.getPrimaryOfferTypeId(),relatedItem.getCouponID(),relatedItem.getUPC(),relatedItem.getRequiresActivation(),1,String.valueOf((Integer.parseInt(relatedItem.getQuantity())+0)));
-                                    progressDialog.dismiss();
-                                }
-                            }, new Response.ErrorListener() {
-                        @Override
-                        public void onErrorResponse(VolleyError error) {
-                            Log.i("fail", String.valueOf(error));
-                        }
-                    }){
-
-                        @Override
-                        public String getBodyContentType() {
-                            return "application/json; charset=utf-8";
-                        }
-
-                        @Override
-                        public byte[] getBody() throws AuthFailureError {
-                            try {
-                                return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
-                            } catch (UnsupportedEncodingException uee) {
-                                VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
-                                return null;
-                            }
-                        }
-                        //this is the part, that adds the header to the request
-                        @Override
-                        public Map<String, String> getHeaders() {
-                            Map<String, String> params = new HashMap<String, String>();
-                            params.put("Content-Type", "application/json");
-                            return params;
-                        }
-                    };
-                    RetryPolicy policy = new DefaultRetryPolicy
-                            (5000,
-                                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-                    jsonObjectRequest.setRetryPolicy(policy);
                     try {
-                        mQueue.add(jsonObjectRequest);
+                        StringRequest  jsonObjectRequest = new StringRequest (Request.Method.PUT, url,
+                                new Response.Listener<String >() {
+                                    @Override
+                                    public void onResponse(String  response) {
+                                        Log.i("ClickAddgr81", String.valueOf(response));
+                                        relatedItem.setQuantity(String.valueOf((Integer.parseInt(relatedItem.getQuantity())+1)));
+                                        tv_quantity_detail.setText(relatedItem.getQuantity());
+                                        //add_item_flag_detail.setText(relatedItem.getQuantity());
+                                        //
+                                        Log.i("qty", String.valueOf(qty));
+                                        qty=qty+1;
+                                        fetchShoppingListLoad();
+                                        //
+                                        SetProductActivateDetaile(relatedItem.getPrimaryOfferTypeId(),relatedItem.getCouponID(),relatedItem.getUPC(),relatedItem.getRequiresActivation(),1,String.valueOf((Integer.parseInt(relatedItem.getQuantity())+0)));
+                                        progressDialog.dismiss();
+                                    }
+                                }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.i("fail", String.valueOf(error));
+                            }
+                        }){
+
+                            @Override
+                            public String getBodyContentType() {
+                                return "application/json; charset=utf-8";
+                            }
+
+                            @Override
+                            public byte[] getBody() throws AuthFailureError {
+                                try {
+                                    return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
+                                } catch (UnsupportedEncodingException uee) {
+                                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
+                                    return null;
+                                }
+                            }
+                            //this is the part, that adds the header to the request
+                            @Override
+                            public Map<String, String> getHeaders() {
+                                Map<String, String> params = new HashMap<String, String>();
+                                params.put("Content-Type", "application/json");
+                                params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                                return params;
+                            }
+                        };
+                        RetryPolicy policy = new DefaultRetryPolicy
+                                (5000,
+                                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                        jsonObjectRequest.setRetryPolicy(policy);
+                        try {
+                            mQueue.add(jsonObjectRequest);
+                        }
+                        catch (Exception e)
+                        {
+                            e.printStackTrace();
+                        }
                     }
                     catch (Exception e)
                     {
                         e.printStackTrace();
                     }
+
                 }
 
             }
@@ -7421,7 +7352,8 @@ public class MainFwActivity extends AppCompatActivity
                                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
                 jsonObjectRequest.setRetryPolicy(policy);
                 try {
-                    mQueue2.add(jsonObjectRequest);
+
+                    mQueue.add(jsonObjectRequest);
                 }
                 catch (Exception e)
                 {
@@ -7441,63 +7373,71 @@ public class MainFwActivity extends AppCompatActivity
 
         else {
             url = Constant.WEB_URL+Constant.SHOPPINGLIST+appUtil.getPrefrence("MemberId");
+            try {
+                StringRequest jsonObjectRequest = new StringRequest (Request.Method.PUT, url,
+                        new Response.Listener<String >() {
+                            @Override
+                            public void onResponse(String  response) {
+                                Log.i("Selected2success", String.valueOf(response));
+                                relatedItem.setQuantity(String.valueOf((Integer.parseInt(relatedItem.getQuantity())+1)));
+                                Log.i("qtytest", String.valueOf(qty));
+                                qty=qty+1;
+                                //
+                                Log.i("qtytest2", String.valueOf(qty));
+                                SetProductActivateShopping(relatedItem.getUPC(),relatedItem.getPrimaryOfferTypeId(),relatedItem.getCouponID(),1,String.valueOf((Integer.parseInt(relatedItem.getQuantity())+0)));
+                                progressDialog.dismiss();
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("fail", String.valueOf(error));
+                        progressDialog.dismiss();
+                    }
+                }){
 
-            StringRequest jsonObjectRequest = new StringRequest (Request.Method.PUT, url,
-                    new Response.Listener<String >() {
-                        @Override
-                        public void onResponse(String  response) {
-                            Log.i("Selected2success", String.valueOf(response));
-                            relatedItem.setQuantity(String.valueOf((Integer.parseInt(relatedItem.getQuantity())+1)));
-                            Log.i("qtytest", String.valueOf(qty));
-                            qty=qty+1;
-                            //
-                            Log.i("qtytest2", String.valueOf(qty));
-                            SetProductActivateShopping(relatedItem.getUPC(),relatedItem.getPrimaryOfferTypeId(),relatedItem.getCouponID(),1,String.valueOf((Integer.parseInt(relatedItem.getQuantity())+0)));
-                            progressDialog.dismiss();
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/json; charset=utf-8";
+                    }
+
+                    @Override
+                    public byte[] getBody() throws AuthFailureError {
+                        try {
+                            return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
+                        } catch (UnsupportedEncodingException uee) {
+                            VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
+                            return null;
                         }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.i("fail", String.valueOf(error));
+                    }
+
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/json");
+                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (5000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    mQueue.add(jsonObjectRequest);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
                     progressDialog.dismiss();
                 }
-            }){
-
-                @Override
-                public String getBodyContentType() {
-                    return "application/json; charset=utf-8";
-                }
-
-                @Override
-                public byte[] getBody() throws AuthFailureError {
-                    try {
-                        return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
-                    } catch (UnsupportedEncodingException uee) {
-                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
-                        return null;
-                    }
-                }
-
-                @Override
-                public Map<String, String> getHeaders() {
-                    Map<String, String> params = new HashMap<String, String>();
-                    params.put("Content-Type", "application/json");
-                    return params;
-                }
-            };
-            RetryPolicy policy = new DefaultRetryPolicy
-                    (5000,
-                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-            jsonObjectRequest.setRetryPolicy(policy);
-            try {
-                mQueue.add(jsonObjectRequest);
             }
             catch (Exception e)
             {
                 e.printStackTrace();
                 progressDialog.dismiss();
             }
+
         }
     }
 
@@ -7542,106 +7482,121 @@ public class MainFwActivity extends AppCompatActivity
             Log.i("testobject", mRequestBody);
 
             url = Constant.WEB_URL + Constant.SHOPPINGLIST + appUtil.getPrefrence("MemberId");
-            StringRequest jsonObjectRequest = new StringRequest(Request.Method.PUT, url,
-                    new Response.Listener<String>() {
-                        @Override
-                        public void onResponse(String response) {
-                            Log.i("success", String.valueOf(response));
-                            relatedItem.setQuantity(String.valueOf((Integer.parseInt(relatedItem.getQuantity()) - 1)));
-                            qty=qty-1;
-                            SetProductActivateShopping(relatedItem.getUPC(), relatedItem.getPrimaryOfferTypeId(), relatedItem.getCouponID(), 1, String.valueOf((Integer.parseInt(relatedItem.getQuantity()) - 0)));
-                            progressDialog.dismiss();
+            try {
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.PUT, url,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.i("success", String.valueOf(response));
+                                relatedItem.setQuantity(String.valueOf((Integer.parseInt(relatedItem.getQuantity()) - 1)));
+                                qty=qty-1;
+                                SetProductActivateShopping(relatedItem.getUPC(), relatedItem.getPrimaryOfferTypeId(), relatedItem.getCouponID(), 1, String.valueOf((Integer.parseInt(relatedItem.getQuantity()) - 0)));
+                                progressDialog.dismiss();
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("fail", String.valueOf(error));
+                        progressDialog.dismiss();
+                    }
+                }) {
+
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/json; charset=utf-8";
+                    }
+
+                    @Override
+                    public byte[] getBody() throws AuthFailureError {
+                        try {
+                            return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
+                        } catch (UnsupportedEncodingException uee) {
+                            VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
+                            return null;
                         }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.i("fail", String.valueOf(error));
+                    }
+
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/json");
+                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (5000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    mQueue.add(jsonObjectRequest);
+                } catch (Exception e) {
+                    e.printStackTrace();
                     progressDialog.dismiss();
                 }
-            }) {
-
-                @Override
-                public String getBodyContentType() {
-                    return "application/json; charset=utf-8";
-                }
-
-                @Override
-                public byte[] getBody() throws AuthFailureError {
-                    try {
-                        return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
-                    } catch (UnsupportedEncodingException uee) {
-                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
-                        return null;
-                    }
-                }
-
-                @Override
-                public Map<String, String> getHeaders() {
-                    Map<String, String> params = new HashMap<String, String>();
-                    params.put("Content-Type", "application/json");
-                    return params;
-                }
-            };
-            RetryPolicy policy = new DefaultRetryPolicy
-                    (5000,
-                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-            jsonObjectRequest.setRetryPolicy(policy);
-            try {
-                mQueue.add(jsonObjectRequest);
             } catch (Exception e) {
                 e.printStackTrace();
                 progressDialog.dismiss();
             }
+
         }
 
         else {
             Log.i("remove","remove");
             String url = Constant.WEB_URL+Constant.REMOVE+relatedItem.getUPC()+"&"+"MemberId="+appUtil.getPrefrence("MemberId");
-            StringRequest  jsonObjectRequest = new StringRequest (Request.Method.DELETE, url,
-                    new Response.Listener<String >() {
-                        @Override
-                        public void onResponse(String  response) {
-                            Log.i("success", String.valueOf(response));
+            try {
+                StringRequest  jsonObjectRequest = new StringRequest (Request.Method.DELETE, url,
+                        new Response.Listener<String >() {
+                            @Override
+                            public void onResponse(String  response) {
+                                Log.i("success", String.valueOf(response));
 
-                            progressDialog.dismiss();
-                            qty=qty-1;
+                                progressDialog.dismiss();
+                                qty=qty-1;
 
-                            SetRemoveActivateDetail(relatedItem.getPrimaryOfferTypeId(),relatedItem.getCouponID(),relatedItem.getUPC(),relatedItem.getRequiresActivation(),1);
-                            fetchShoppingListLoad();
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.i("fail", String.valueOf(error));
+                                SetRemoveActivateDetail(relatedItem.getPrimaryOfferTypeId(),relatedItem.getCouponID(),relatedItem.getUPC(),relatedItem.getRequiresActivation(),1);
+                                fetchShoppingListLoad();
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("fail", String.valueOf(error));
+                        progressDialog.dismiss();
+                    }
+                }){
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/json; charset=utf-8";
+                    }
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                        params.put("Content-Type", "application/json ;charset=utf-8");
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (5000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    mQueue.add(jsonObjectRequest);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
                     progressDialog.dismiss();
                 }
-            }){
-                @Override
-                public String getBodyContentType() {
-                    return "application/json; charset=utf-8";
-                }
-                @Override
-                public Map<String, String> getHeaders() {
-                    Map<String, String> params = new HashMap<String, String>();
-                    params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
-                    params.put("Content-Type", "application/json ;charset=utf-8");
-                    return params;
-                }
-            };
-            RetryPolicy policy = new DefaultRetryPolicy
-                    (5000,
-                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-            jsonObjectRequest.setRetryPolicy(policy);
-            try {
-                mQueue.add(jsonObjectRequest);
             }
             catch (Exception e)
             {
                 e.printStackTrace();
                 progressDialog.dismiss();
             }
+
         }
 
     }
@@ -8623,59 +8578,65 @@ public class MainFwActivity extends AppCompatActivity
 
 
     url = Constant.WEB_URL+"ShoppingList/List/MyOwnItem?ShoppingListOwnItemID="+shopping.getShoppingListItemID()+"&Quantity="+(Integer.parseInt(shopping.getQuantity())+1);
+        try {
+            StringRequest  jsonObjectRequest = new StringRequest (Request.Method.PUT, url,
+                    new Response.Listener<String >() {
+                        @Override
+                        public void onResponse(String  response) {
+                            Log.i("success", String.valueOf(response));
+                            shopping.setQuantity(String.valueOf((Integer.parseInt(shopping.getQuantity())+1)));
+                            tv_quantity_detail.setText(shopping.getQuantity());
 
-    StringRequest  jsonObjectRequest = new StringRequest (Request.Method.PUT, url,
-            new Response.Listener<String >() {
+                            SetProductActivateShopping(shopping.getUPC(), shopping.getPrimaryOfferTypeId(),shopping.getCouponID(),1,String.valueOf((Integer.parseInt(shopping.getQuantity())+0)));
+
+                            fetchShoppingListLoad();
+                            progressDialog.dismiss();
+                        }
+                    }, new Response.ErrorListener() {
                 @Override
-                public void onResponse(String  response) {
-                    Log.i("success", String.valueOf(response));
-                    shopping.setQuantity(String.valueOf((Integer.parseInt(shopping.getQuantity())+1)));
-                    tv_quantity_detail.setText(shopping.getQuantity());
-
-                    SetProductActivateShopping(shopping.getUPC(), shopping.getPrimaryOfferTypeId(),shopping.getCouponID(),1,String.valueOf((Integer.parseInt(shopping.getQuantity())+0)));
-
-                    fetchShoppingListLoad();
-                    progressDialog.dismiss();
+                public void onErrorResponse(VolleyError error) {
+                    Log.i("fail", String.valueOf(error));
                 }
-            }, new Response.ErrorListener() {
-        @Override
-        public void onErrorResponse(VolleyError error) {
-            Log.i("fail", String.valueOf(error));
-        }
-    }){
+            }){
 
-        @Override
-        public String getBodyContentType() {
-            return "application/x-www-form-urlencoded";
+                @Override
+                public String getBodyContentType() {
+                    return "application/x-www-form-urlencoded";
+                }
+
+                @Override
+                protected Map<String, String> getParams() throws AuthFailureError {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("grant_type", "password");
+                    return params;
+                }
+                //this is the part, that adds the header to the request
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Content-Type", "application/x-www-form-urlencoded");
+                    params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                    return params;
+                }
+            };
+            RetryPolicy policy = new DefaultRetryPolicy
+                    (5000,
+                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+            jsonObjectRequest.setRetryPolicy(policy);
+            try {
+                mQueue.add(jsonObjectRequest);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
+        catch (Exception e)
+        {
+            e.printStackTrace();
         }
 
-        @Override
-        protected Map<String, String> getParams() throws AuthFailureError {
-            Map<String, String> params = new HashMap<String, String>();
-            params.put("grant_type", "password");
-            return params;
-        }
-        //this is the part, that adds the header to the request
-        @Override
-        public Map<String, String> getHeaders() {
-            Map<String, String> params = new HashMap<String, String>();
-            params.put("Content-Type", "application/x-www-form-urlencoded");
-            params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
-            return params;
-        }
-    };
-    RetryPolicy policy = new DefaultRetryPolicy
-            (5000,
-                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-    jsonObjectRequest.setRetryPolicy(policy);
-    try {
-        mQueue.add(jsonObjectRequest);
-    }
-    catch (Exception e)
-    {
-        e.printStackTrace();
-    }
 
 }
 
@@ -8749,6 +8710,7 @@ public class MainFwActivity extends AppCompatActivity
                 public Map<String, String> getHeaders() {
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("Content-Type", "application/json");
+                    params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
                     return params;
                 }
             };
@@ -8929,6 +8891,7 @@ public class MainFwActivity extends AppCompatActivity
                         public Map<String, String> getHeaders() {
                             Map<String, String> params = new HashMap<String, String>();
                             params.put("Content-Type", "application/json");
+                            params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
                             return params;
                         }
                     };

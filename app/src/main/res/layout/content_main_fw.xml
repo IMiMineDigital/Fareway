@@ -823,7 +823,7 @@
 
                     <LinearLayout
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/_55sdp"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="@dimen/_5sdp"
                         android:layout_marginTop="@dimen/_10sdp"
                         android:layout_marginRight="@dimen/_5sdp"
@@ -837,6 +837,7 @@
                             android:text="With MyFareway"/>
 
                         <TextView
+                            android:maxLines="4"
                             android:id="@+id/tv_price_detaile"
                             android:layout_width="fill_parent"
                             android:layout_height="fill_parent"
@@ -1083,7 +1084,7 @@
                         android:layout_weight="1"
                         android:fontFamily="@font/roboto"
                         android:scrollHorizontally="false"
-                        android:text="@string/upc"
+                        android:text="UPC:"
                         android:textColor="@color/black"
 
 
@@ -1097,7 +1098,7 @@
                         android:fontFamily="@font/roboto"
                         android:gravity="right"
                         android:scrollHorizontally="false"
-                        android:text="2265530604"
+                        android:text="123"
                         android:textColor="@color/black" />
 
 
