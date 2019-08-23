@@ -783,6 +783,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                 public Map<String, String> getHeaders() {
                     Map<String, String> params = new HashMap<String, String>();
                     params.put("Content-Type", "application/json");
+                    params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
                     return params;
                 }
             };
@@ -924,6 +925,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                     public Map<String, String> getHeaders() {
                         Map<String, String> params = new HashMap<String, String>();
                         params.put("Content-Type", "application/json");
+                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
                         return params;
                     }
                 };
