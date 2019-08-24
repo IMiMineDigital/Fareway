@@ -80,7 +80,7 @@ android:weightSum="1"
         android:layout_height="wrap_content"
         android:id="@+id/txt_hasil"
         android:textAlignment="center"
-        android:text="text hasil" />
+        android:text="text" />
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"

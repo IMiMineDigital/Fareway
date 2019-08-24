@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.graphics.Bitmap;
 //import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -52,8 +53,10 @@ public class ShopperId extends AppCompatActivity {
         //textInput = (EditText) findViewById(R.id.input_isi);
 
        // tombolGenerate = (Button) findViewById(R.id.btn_generate);
+        Log.i("shopper","start1");
         gambarBarcode = (ImageView) findViewById(R.id.img_barcode);
         textnya = (TextView) findViewById(R.id.txt_hasil);
+        Log.i("shopper","start2");
 
         /** buat gambar barcode nya ketika tombol di tekan*/
        /* tombolGenerate.setOnClickListener(new View.OnClickListener() {
@@ -74,7 +77,8 @@ public class ShopperId extends AppCompatActivity {
             bitmap = encodeAsBitmap(Constant.PRISHOPPERID+appUtil.getPrefrence("ShopperID"), BarcodeFormat.CODE_128, 800, 300);
 
             gambarBarcode.setImageBitmap(bitmap);
-            textnya.setText(appUtil.getPrefrence("ShopperID"));
+            textnya.setText(appUtil.getPrefrence("ShopperID").toString());
+            Log.i("shopper","id");
         } catch (WriterException e) {
             e.printStackTrace();
         }
@@ -125,6 +129,7 @@ public class ShopperId extends AppCompatActivity {
         // Very crude at the moment
         for (int i = 0; i < contents.length(); i++) {
             if (contents.charAt(i) > 0xFF) {
+                Log.i("shopper","utf");
                 return "UTF-8";
             }
         }

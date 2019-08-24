@@ -627,13 +627,13 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
         }){
             @Override
             public String getBodyContentType() {
-                return "application/json; charset=utf-8";
+                return "application/x-www-form-urlencoded";
             }
             @Override
             public Map<String, String> getHeaders() {
                 Map<String, String> params = new HashMap<String, String>();
                 params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
-                params.put("Content-Type", "application/json ;charset=utf-8");
+                params.put("Content-Type", "application/x-www-form-urlencoded");
                 return params;
             }
         };
@@ -747,58 +747,73 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
 
 
             url = Constant.WEB_URL+Constant.SHOPPINGLIST+appUtil.getPrefrence("MemberId");
-
-            StringRequest  jsonObjectRequest = new StringRequest (Request.Method.PUT, url,
-                    new Response.Listener<String >() {
-                        @Override
-                        public void onResponse(String  response) {
-                            Log.i("success", String.valueOf(response));
-                           fetchShoppingListLoad();
-                            progressDialog.dismiss();
-
-                        }
-                    }, new Response.ErrorListener() {
-                @Override
-                public void onErrorResponse(VolleyError error) {
-                    Log.i("fail", String.valueOf(error));
-                }
-            }){
-
-                @Override
-                public String getBodyContentType() {
-                    return "application/json; charset=utf-8";
-                }
-
-                @Override
-                public byte[] getBody() throws AuthFailureError {
-                    try {
-                        return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
-                    } catch (UnsupportedEncodingException uee) {
-                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
-                        return null;
-                    }
-                }
-                //this is the part, that adds the header to the request
-                @Override
-                public Map<String, String> getHeaders() {
-                    Map<String, String> params = new HashMap<String, String>();
-                    params.put("Content-Type", "application/json");
-                    params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
-                    return params;
-                }
-            };
-            RetryPolicy policy = new DefaultRetryPolicy
-                    (5000,
-                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-            jsonObjectRequest.setRetryPolicy(policy);
             try {
-                mQueue.add(jsonObjectRequest);
+                StringRequest  jsonObjectRequest = new StringRequest (Request.Method.PUT, url,
+                        new Response.Listener<String >() {
+                            @Override
+                            public void onResponse(String  response) {
+                                Log.i("success", String.valueOf(response));
+                                fetchShoppingListLoad();
+                                progressDialog.dismiss();
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("fail", String.valueOf(error));
+                    }
+                }){
+
+                    /*@Override
+         public String getBodyContentType() {
+             return "application/json; charset=utf-8";
+         }
+
+         @Override
+         public byte[] getBody() throws AuthFailureError {
+             try {
+                 return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
+             } catch (UnsupportedEncodingException uee) {
+                 VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
+                 return null;
+             }
+         }*/
+                    @Override
+                    public byte[] getBody() throws AuthFailureError {
+                        try {
+                            return mRequestBody.getBytes();
+                        } catch (Exception uee) {
+                            VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
+                            return null;
+                        }
+                    }
+                    //this is the part, that adds the header to the request
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/json");
+                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (5000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    mQueue.add(jsonObjectRequest);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
             }
             catch (Exception e)
             {
                 e.printStackTrace();
             }
+
         }
     }
 
@@ -891,56 +906,72 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                 final String mRequestBody = "'"+studentsObj.toString()+"'";
                 Log.i("test",mRequestBody);
                 String url = Constant.WEB_URL+Constant.SHOPPINGLIST+appUtil.getPrefrence("MemberId");
-                StringRequest  jsonObjectRequest = new StringRequest (Request.Method.PUT, url,
-                        new Response.Listener<String >() {
-                            @Override
-                            public void onResponse(String  response) {
-                                Log.i("success", String.valueOf(response));
-                                fetchShoppingListLoad();
-                                progressDialog.dismiss();
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.i("fail", String.valueOf(error));
-                    }
-                }){
-
-                    @Override
-                    public String getBodyContentType() {
-                        return "application/json; charset=utf-8";
-                    }
-
-                    @Override
-                    public byte[] getBody() throws AuthFailureError {
-                        try {
-                            return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
-                        } catch (UnsupportedEncodingException uee) {
-                            VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
-                            return null;
-                        }
-                    }
-                    //this is the part, that adds the header to the request
-                    @Override
-                    public Map<String, String> getHeaders() {
-                        Map<String, String> params = new HashMap<String, String>();
-                        params.put("Content-Type", "application/json");
-                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
-                        return params;
-                    }
-                };
-                RetryPolicy policy = new DefaultRetryPolicy
-                        (5000,
-                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-                jsonObjectRequest.setRetryPolicy(policy);
                 try {
-                    mQueue.add(jsonObjectRequest);
+                    StringRequest  jsonObjectRequest = new StringRequest (Request.Method.PUT, url,
+                            new Response.Listener<String >() {
+                                @Override
+                                public void onResponse(String  response) {
+                                    Log.i("success", String.valueOf(response));
+                                    fetchShoppingListLoad();
+                                    progressDialog.dismiss();
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.i("fail", String.valueOf(error));
+                        }
+                    }){
+
+                        /*@Override
+        public String getBodyContentType() {
+            return "application/json; charset=utf-8";
+        }
+
+        @Override
+        public byte[] getBody() throws AuthFailureError {
+            try {
+                return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
+            } catch (UnsupportedEncodingException uee) {
+                VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
+                return null;
+            }
+        }*/
+                        @Override
+                        public byte[] getBody() throws AuthFailureError {
+                            try {
+                                return mRequestBody.getBytes();
+                            } catch (Exception uee) {
+                                VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
+                                return null;
+                            }
+                        }
+                        //this is the part, that adds the header to the request
+                        @Override
+                        public Map<String, String> getHeaders() {
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("Content-Type", "application/json");
+                            params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                            return params;
+                        }
+                    };
+                    RetryPolicy policy = new DefaultRetryPolicy
+                            (5000,
+                                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                    jsonObjectRequest.setRetryPolicy(policy);
+                    try {
+                        mQueue.add(jsonObjectRequest);
+                    }
+                    catch (Exception e)
+                    {
+                        e.printStackTrace();
+                    }
                 }
                 catch (Exception e)
                 {
                     e.printStackTrace();
                 }
+
             }
             else {
                 progressDialog.dismiss();

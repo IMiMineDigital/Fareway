@@ -3412,22 +3412,29 @@ public class MainFwActivity extends AppCompatActivity
                             }
                         }) {
 
-                            @Override
-                            public String getBodyContentType() {
-                                return "application/json; charset=utf-8";
-                            }
+                            /*@Override
+              public String getBodyContentType() {
+                  return "application/json; charset=utf-8";
+              }
 
+              @Override
+              public byte[] getBody() throws AuthFailureError {
+                  try {
+                      return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
+                  } catch (UnsupportedEncodingException uee) {
+                      VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
+                      return null;
+                  }
+              }*/
                             @Override
                             public byte[] getBody() throws AuthFailureError {
                                 try {
-                                    return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
-                                } catch (UnsupportedEncodingException uee) {
+                                    return mRequestBody.getBytes();
+                                } catch (Exception uee) {
                                     VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
                                     return null;
                                 }
                             }
-
-                            //this is the part, that adds the header to the request
                             @Override
                             public Map<String, String> getHeaders() {
                                 Map<String, String> params = new HashMap<String, String>();
@@ -3506,21 +3513,29 @@ public class MainFwActivity extends AppCompatActivity
                             }
                         }){
 
-                            @Override
-                            public String getBodyContentType() {
-                                return "application/json; charset=utf-8";
-                            }
+                            /*@Override
+              public String getBodyContentType() {
+                  return "application/json; charset=utf-8";
+              }
 
+              @Override
+              public byte[] getBody() throws AuthFailureError {
+                  try {
+                      return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
+                  } catch (UnsupportedEncodingException uee) {
+                      VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
+                      return null;
+                  }
+              }*/
                             @Override
                             public byte[] getBody() throws AuthFailureError {
                                 try {
-                                    return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
-                                } catch (UnsupportedEncodingException uee) {
+                                    return mRequestBody.getBytes();
+                                } catch (Exception uee) {
                                     VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
                                     return null;
                                 }
                             }
-                            //this is the part, that adds the header to the request
                             @Override
                             public Map<String, String> getHeaders() {
                                 Map<String, String> params = new HashMap<String, String>();
@@ -3578,8 +3593,8 @@ public class MainFwActivity extends AppCompatActivity
                             @Override
                             public Map<String, String> getHeaders() {
                                 Map<String, String> params = new HashMap<String, String>();
+                                params.put("Content-Type", "application/x-www-form-urlencoded");
                                 params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
-                                params.put("Content-Type", "application/json ;charset=utf-8");
                                 return params;
                             }
                         };
@@ -6793,21 +6808,29 @@ public class MainFwActivity extends AppCompatActivity
                             }
                         }){
 
-                            @Override
-                            public String getBodyContentType() {
-                                return "application/json; charset=utf-8";
-                            }
+                            /*@Override
+              public String getBodyContentType() {
+                  return "application/json; charset=utf-8";
+              }
 
+              @Override
+              public byte[] getBody() throws AuthFailureError {
+                  try {
+                      return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
+                  } catch (UnsupportedEncodingException uee) {
+                      VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
+                      return null;
+                  }
+              }*/
                             @Override
                             public byte[] getBody() throws AuthFailureError {
                                 try {
-                                    return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
-                                } catch (UnsupportedEncodingException uee) {
+                                    return mRequestBody.getBytes();
+                                } catch (Exception uee) {
                                     VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
                                     return null;
                                 }
                             }
-                            //this is the part, that adds the header to the request
                             @Override
                             public Map<String, String> getHeaders() {
                                 Map<String, String> params = new HashMap<String, String>();
@@ -6861,13 +6884,13 @@ public class MainFwActivity extends AppCompatActivity
                         }){
                             @Override
                             public String getBodyContentType() {
-                                return "application/json; charset=utf-8";
+                                return "application/x-www-form-urlencoded";
                             }
                             @Override
                             public Map<String, String> getHeaders() {
                                 Map<String, String> params = new HashMap<String, String>();
                                 params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
-                                params.put("Content-Type", "application/json ;charset=utf-8");
+                                params.put("Content-Type", "application/x-www-form-urlencoded");
                                 return params;
                             }
                         };
@@ -7171,21 +7194,29 @@ public class MainFwActivity extends AppCompatActivity
                             }
                         }){
 
-                            @Override
-                            public String getBodyContentType() {
-                                return "application/json; charset=utf-8";
-                            }
+                            /*@Override
+              public String getBodyContentType() {
+                  return "application/json; charset=utf-8";
+              }
 
+              @Override
+              public byte[] getBody() throws AuthFailureError {
+                  try {
+                      return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
+                  } catch (UnsupportedEncodingException uee) {
+                      VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
+                      return null;
+                  }
+              }*/
                             @Override
                             public byte[] getBody() throws AuthFailureError {
                                 try {
-                                    return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
-                                } catch (UnsupportedEncodingException uee) {
+                                    return mRequestBody.getBytes();
+                                } catch (Exception uee) {
                                     VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
                                     return null;
                                 }
                             }
-                            //this is the part, that adds the header to the request
                             @Override
                             public Map<String, String> getHeaders() {
                                 Map<String, String> params = new HashMap<String, String>();
@@ -7395,10 +7426,10 @@ public class MainFwActivity extends AppCompatActivity
                     }
                 }){
 
-                    @Override
+                   /* @Override
                     public String getBodyContentType() {
                         return "application/json; charset=utf-8";
-                    }
+                    }*/
 
                     @Override
                     public byte[] getBody() throws AuthFailureError {
@@ -8691,7 +8722,7 @@ public class MainFwActivity extends AppCompatActivity
                 }
             }){
 
-                @Override
+                /*@Override
                 public String getBodyContentType() {
                     return "application/json; charset=utf-8";
                 }
@@ -8704,8 +8735,17 @@ public class MainFwActivity extends AppCompatActivity
                         VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
                         return null;
                     }
+                }*/
+                @Override
+                public byte[] getBody() throws AuthFailureError {
+                    try {
+                        return mRequestBody.getBytes();
+                    } catch (Exception uee) {
+                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
+                        return null;
+                    }
                 }
-                //this is the part, that adds the header to the request
+
                 @Override
                 public Map<String, String> getHeaders() {
                     Map<String, String> params = new HashMap<String, String>();
@@ -8872,21 +8912,29 @@ public class MainFwActivity extends AppCompatActivity
                         }
                     }){
 
-                        @Override
-                        public String getBodyContentType() {
-                            return "application/json; charset=utf-8";
-                        }
+                        /*@Override
+            public String getBodyContentType() {
+                return "application/json; charset=utf-8";
+            }
 
+            @Override
+            public byte[] getBody() throws AuthFailureError {
+                try {
+                    return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
+                } catch (UnsupportedEncodingException uee) {
+                    VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
+                    return null;
+                }
+            }*/
                         @Override
                         public byte[] getBody() throws AuthFailureError {
                             try {
-                                return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
-                            } catch (UnsupportedEncodingException uee) {
+                                return mRequestBody.getBytes();
+                            } catch (Exception uee) {
                                 VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
                                 return null;
                             }
                         }
-                        //this is the part, that adds the header to the request
                         @Override
                         public Map<String, String> getHeaders() {
                             Map<String, String> params = new HashMap<String, String>();
