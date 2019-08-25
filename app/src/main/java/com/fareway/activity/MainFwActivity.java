@@ -451,7 +451,8 @@ public class MainFwActivity extends AppCompatActivity
                             edit_txt.getText().clear();
                             fetchProduct();
                             x=0;
-                            header_title.setVisibility(View.VISIBLE);
+                            //header_title visible
+                            header_title.setVisibility(View.GONE);
                         }
                     }
                 }
@@ -2580,7 +2581,8 @@ public class MainFwActivity extends AppCompatActivity
                                                             toolbar.setVisibility(View.VISIBLE);
                                                             navigation.setVisibility(View.VISIBLE);
                                                             group_count_text.setVisibility(View.GONE);
-                                                            header_title.setVisibility(View.VISIBLE);
+                                                            //header_title visible
+                                                            header_title.setVisibility(View.GONE);
                                                         }
                                                         else {
                                                             rv_items_group.setVisibility(View.GONE);
@@ -2590,7 +2592,8 @@ public class MainFwActivity extends AppCompatActivity
                                                             toolbar.setVisibility(View.VISIBLE);
                                                             navigation.setVisibility(View.VISIBLE);
                                                             group_count_text.setVisibility(View.GONE);
-                                                            header_title.setVisibility(View.VISIBLE);
+                                                            //header_title visible
+                                                            header_title.setVisibility(View.GONE);
                                                         }
 
 
@@ -2616,7 +2619,9 @@ public class MainFwActivity extends AppCompatActivity
                                                             toolbar.setVisibility(View.VISIBLE);
                                                             navigation.setVisibility(View.VISIBLE);
                                                             group_count_text.setVisibility(View.GONE);
-                                                            header_title.setVisibility(View.VISIBLE);
+                                                            //header_title visible
+                                                            header_title.setVisibility(View.GONE);
+
                                                         }
                                                         else {
                                                             rv_items_group.setVisibility(View.GONE);
@@ -2626,7 +2631,8 @@ public class MainFwActivity extends AppCompatActivity
                                                             toolbar.setVisibility(View.VISIBLE);
                                                             navigation.setVisibility(View.VISIBLE);
                                                             group_count_text.setVisibility(View.GONE);
-                                                            header_title.setVisibility(View.VISIBLE);
+                                                            //header_title visible
+                                                            header_title.setVisibility(View.GONE);
                                                         }
 
 
@@ -2653,7 +2659,8 @@ public class MainFwActivity extends AppCompatActivity
                                                         toolbar.setVisibility(View.VISIBLE);
                                                         navigation.setVisibility(View.VISIBLE);
                                                         group_count_text.setVisibility(View.GONE);
-                                                        header_title.setVisibility(View.VISIBLE);
+                                                        //header_title visible
+                                                        header_title.setVisibility(View.GONE);
                                                     }
                                                     else {
                                                         rv_items_group.setVisibility(View.GONE);
@@ -2663,7 +2670,8 @@ public class MainFwActivity extends AppCompatActivity
                                                         toolbar.setVisibility(View.VISIBLE);
                                                         navigation.setVisibility(View.VISIBLE);
                                                         group_count_text.setVisibility(View.GONE);
-                                                        header_title.setVisibility(View.VISIBLE);
+                                                        //header_title visible
+                                                        header_title.setVisibility(View.GONE);
                                                     }
 
 
@@ -2692,7 +2700,8 @@ public class MainFwActivity extends AppCompatActivity
                                             toolbar.setVisibility(View.VISIBLE);
                                             navigation.setVisibility(View.VISIBLE);
                                             group_count_text.setVisibility(View.GONE);
-                                            header_title.setVisibility(View.VISIBLE);
+                                            //header_title visible
+                                            header_title.setVisibility(View.GONE);
                                         }
                                         else {
                                             rv_items_group.setVisibility(View.GONE);
@@ -2702,7 +2711,8 @@ public class MainFwActivity extends AppCompatActivity
                                             toolbar.setVisibility(View.VISIBLE);
                                             navigation.setVisibility(View.VISIBLE);
                                             group_count_text.setVisibility(View.GONE);
-                                            header_title.setVisibility(View.VISIBLE);
+                                            //header_title visible
+                                            header_title.setVisibility(View.GONE);
                                         }
 
 
@@ -2775,7 +2785,8 @@ public class MainFwActivity extends AppCompatActivity
                                         toolbar.setVisibility(View.VISIBLE);
                                         navigation.setVisibility(View.VISIBLE);
                                         group_count_text.setVisibility(View.GONE);
-                                        header_title.setVisibility(View.VISIBLE);
+                                        //header_title visible
+                                        header_title.setVisibility(View.GONE);
                                     }
                                     else {
                                         rv_items_group.setVisibility(View.GONE);
@@ -2785,7 +2796,8 @@ public class MainFwActivity extends AppCompatActivity
                                         toolbar.setVisibility(View.VISIBLE);
                                         navigation.setVisibility(View.VISIBLE);
                                         group_count_text.setVisibility(View.GONE);
-                                        header_title.setVisibility(View.VISIBLE);
+                                        //header_title visible
+                                        header_title.setVisibility(View.GONE);
                                     }
 
 
@@ -3816,7 +3828,8 @@ public class MainFwActivity extends AppCompatActivity
                                                 //fetchShoppingListLoad();
                                                 qty=0;
                                                 liner_all_Varieties_activate.setVisibility(View.GONE);
-                                                header_title.setVisibility(View.VISIBLE);
+                                                //header_title visible
+                                                header_title.setVisibility(View.GONE);
 
                                                 //messageLoadRefresh();
                                                 rv_items_verite.setVisibility(View.GONE);
@@ -3828,7 +3841,8 @@ public class MainFwActivity extends AppCompatActivity
                                                     toolbar.setVisibility(View.VISIBLE);
                                                     navigation.setVisibility(View.VISIBLE);
                                                     group_count_text.setVisibility(View.GONE);
-                                                    header_title.setVisibility(View.VISIBLE);
+                                                    //header_title visible
+                                                    header_title.setVisibility(View.GONE);
                                                 }
                                                 else if (x==3){
                                                     rv_items_group.setVisibility(View.GONE);
@@ -3838,7 +3852,8 @@ public class MainFwActivity extends AppCompatActivity
                                                     toolbar.setVisibility(View.VISIBLE);
                                                     navigation.setVisibility(View.GONE);
                                                     group_count_text.setVisibility(View.GONE);
-                                                    header_title.setVisibility(View.VISIBLE);
+                                                    //header_title visible
+                                                    header_title.setVisibility(View.GONE);
                                                 }
                                                 else {
                                                     rv_items_group.setVisibility(View.GONE);
@@ -3848,7 +3863,8 @@ public class MainFwActivity extends AppCompatActivity
                                                     toolbar.setVisibility(View.VISIBLE);
                                                     navigation.setVisibility(View.VISIBLE);
                                                     group_count_text.setVisibility(View.GONE);
-                                                    header_title.setVisibility(View.VISIBLE);
+                                                    //header_title visible
+                                                    header_title.setVisibility(View.GONE);
                                                 }
 
 
@@ -3865,7 +3881,8 @@ public class MainFwActivity extends AppCompatActivity
                                                 //fetchShoppingListLoad();
                                                 qty=0;
                                                 liner_all_Varieties_activate.setVisibility(View.GONE);
-                                                header_title.setVisibility(View.VISIBLE);
+                                                //header_title visible
+                                                header_title.setVisibility(View.GONE);
 
                                                 //messageLoadRefresh();
                                                 rv_items_verite.setVisibility(View.GONE);
@@ -3877,7 +3894,8 @@ public class MainFwActivity extends AppCompatActivity
                                                     toolbar.setVisibility(View.VISIBLE);
                                                     navigation.setVisibility(View.VISIBLE);
                                                     group_count_text.setVisibility(View.GONE);
-                                                    header_title.setVisibility(View.VISIBLE);
+                                                    //header_title visible
+                                                    header_title.setVisibility(View.GONE);
                                                 }
                                                 else if (x==3){
                                                     rv_items_group.setVisibility(View.GONE);
@@ -3887,7 +3905,8 @@ public class MainFwActivity extends AppCompatActivity
                                                     toolbar.setVisibility(View.VISIBLE);
                                                     navigation.setVisibility(View.GONE);
                                                     group_count_text.setVisibility(View.GONE);
-                                                    header_title.setVisibility(View.VISIBLE);
+                                                    //header_title visible
+                                                    header_title.setVisibility(View.GONE);
                                                 }
                                                 else {
                                                     rv_items_group.setVisibility(View.GONE);
@@ -3897,7 +3916,8 @@ public class MainFwActivity extends AppCompatActivity
                                                     toolbar.setVisibility(View.VISIBLE);
                                                     navigation.setVisibility(View.VISIBLE);
                                                     group_count_text.setVisibility(View.GONE);
-                                                    header_title.setVisibility(View.VISIBLE);
+                                                    //header_title visible
+                                                    header_title.setVisibility(View.GONE);
                                                 }
 
 
@@ -3916,7 +3936,8 @@ public class MainFwActivity extends AppCompatActivity
                                             //fetchShoppingListLoad();
                                             qty=0;
                                             liner_all_Varieties_activate.setVisibility(View.GONE);
-                                            header_title.setVisibility(View.VISIBLE);
+                                            //header_title visible
+                                            header_title.setVisibility(View.GONE);
 
                                             //messageLoadRefresh();
                                             rv_items_verite.setVisibility(View.GONE);
@@ -3928,7 +3949,8 @@ public class MainFwActivity extends AppCompatActivity
                                                 toolbar.setVisibility(View.VISIBLE);
                                                 navigation.setVisibility(View.VISIBLE);
                                                 group_count_text.setVisibility(View.GONE);
-                                                header_title.setVisibility(View.VISIBLE);
+                                                //header_title visible
+                                                header_title.setVisibility(View.GONE);
                                             }
                                             else if (x==3){
                                                 rv_items_group.setVisibility(View.GONE);
@@ -3938,7 +3960,8 @@ public class MainFwActivity extends AppCompatActivity
                                                 toolbar.setVisibility(View.VISIBLE);
                                                 navigation.setVisibility(View.GONE);
                                                 group_count_text.setVisibility(View.GONE);
-                                                header_title.setVisibility(View.VISIBLE);
+                                                //header_title visible
+                                                header_title.setVisibility(View.GONE);
                                             }
                                             else {
                                                 rv_items_group.setVisibility(View.GONE);
@@ -3948,7 +3971,8 @@ public class MainFwActivity extends AppCompatActivity
                                                 toolbar.setVisibility(View.VISIBLE);
                                                 navigation.setVisibility(View.VISIBLE);
                                                 group_count_text.setVisibility(View.GONE);
-                                                header_title.setVisibility(View.VISIBLE);
+                                                //header_title visible
+                                                header_title.setVisibility(View.GONE);
                                             }
 
 
@@ -3969,7 +3993,8 @@ public class MainFwActivity extends AppCompatActivity
                                 //fetchShoppingListLoad();
                                 qty=0;
                                 liner_all_Varieties_activate.setVisibility(View.GONE);
-                                header_title.setVisibility(View.VISIBLE);
+                                //header_title visible
+                                header_title.setVisibility(View.GONE);
 
                                 //messageLoadRefresh();
                                 rv_items_verite.setVisibility(View.GONE);
@@ -3981,7 +4006,8 @@ public class MainFwActivity extends AppCompatActivity
                                     toolbar.setVisibility(View.VISIBLE);
                                     navigation.setVisibility(View.VISIBLE);
                                     group_count_text.setVisibility(View.GONE);
-                                    header_title.setVisibility(View.VISIBLE);
+                                    //header_title visible
+                                    header_title.setVisibility(View.GONE);
                                 }
                                 else if (x==3){
                                     rv_items_group.setVisibility(View.GONE);
@@ -3991,7 +4017,8 @@ public class MainFwActivity extends AppCompatActivity
                                     toolbar.setVisibility(View.VISIBLE);
                                     navigation.setVisibility(View.GONE);
                                     group_count_text.setVisibility(View.GONE);
-                                    header_title.setVisibility(View.VISIBLE);
+                                    //header_title visible
+                                    header_title.setVisibility(View.GONE);
                                 }
                                 else {
                                     rv_items_group.setVisibility(View.GONE);
@@ -4001,7 +4028,8 @@ public class MainFwActivity extends AppCompatActivity
                                     toolbar.setVisibility(View.VISIBLE);
                                     navigation.setVisibility(View.VISIBLE);
                                     group_count_text.setVisibility(View.GONE);
-                                    header_title.setVisibility(View.VISIBLE);
+                                    //header_title visible
+                                    header_title.setVisibility(View.GONE);
                                 }
 
 
@@ -4066,7 +4094,8 @@ public class MainFwActivity extends AppCompatActivity
                             //fetchShoppingListLoad();
                             qty=0;
                             liner_all_Varieties_activate.setVisibility(View.GONE);
-                            header_title.setVisibility(View.VISIBLE);
+                            //header_title visible
+                            header_title.setVisibility(View.GONE);
 
                             //messageLoadRefresh();
                             rv_items_verite.setVisibility(View.GONE);
@@ -4078,7 +4107,8 @@ public class MainFwActivity extends AppCompatActivity
                                 toolbar.setVisibility(View.VISIBLE);
                                 navigation.setVisibility(View.VISIBLE);
                                 group_count_text.setVisibility(View.GONE);
-                                header_title.setVisibility(View.VISIBLE);
+                                //header_title visible
+                                header_title.setVisibility(View.GONE);
                             }
                             else if (x==3){
                                 rv_items_group.setVisibility(View.GONE);
@@ -4088,7 +4118,8 @@ public class MainFwActivity extends AppCompatActivity
                                 toolbar.setVisibility(View.VISIBLE);
                                 navigation.setVisibility(View.GONE);
                                 group_count_text.setVisibility(View.GONE);
-                                header_title.setVisibility(View.VISIBLE);
+                                //header_title visible
+                                header_title.setVisibility(View.GONE);
                             }
                             else {
                                 rv_items_group.setVisibility(View.GONE);
@@ -4098,7 +4129,8 @@ public class MainFwActivity extends AppCompatActivity
                                 toolbar.setVisibility(View.VISIBLE);
                                 navigation.setVisibility(View.VISIBLE);
                                 group_count_text.setVisibility(View.GONE);
-                                header_title.setVisibility(View.VISIBLE);
+                                //header_title visible
+                                header_title.setVisibility(View.GONE);
                             }
 
 
@@ -5995,7 +6027,9 @@ public class MainFwActivity extends AppCompatActivity
                     toolbar.setVisibility(View.VISIBLE);
                     navigation.setVisibility(View.VISIBLE);
                     group_count_text.setVisibility(View.GONE);
-                    header_title.setVisibility(View.VISIBLE);
+                    //header_title visible
+                    header_title.setVisibility(View.GONE);
+
                 }else {
                     rv_items_group.setVisibility(View.GONE);
                     rv_items_verite.setVisibility(View.GONE);
@@ -6004,7 +6038,8 @@ public class MainFwActivity extends AppCompatActivity
                     toolbar.setVisibility(View.VISIBLE);
                     navigation.setVisibility(View.VISIBLE);
                     group_count_text.setVisibility(View.GONE);
-                    header_title.setVisibility(View.VISIBLE);
+                    //header_title visible
+                    header_title.setVisibility(View.GONE);
                 }
 
 
