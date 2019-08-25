@@ -3427,9 +3427,17 @@ public class MainFwActivity extends AppCompatActivity
                   }
               }*/
                             @Override
+                            public String getBodyContentType() {
+                                Log.i("getBodayContent1","type");
+                                Log.i("getBodayContent2",mRequestBody);
+                                return "application/json; charset=utf-8";
+                            }
+                            @Override
                             public byte[] getBody() throws AuthFailureError {
                                 try {
-                                    return mRequestBody.getBytes();
+                                    Log.i("getbody1","boday");
+                                    Log.i("getbody2",mRequestBody);
+                                    return mRequestBody.getBytes("utf-8");
                                 } catch (Exception uee) {
                                     VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
                                     return null;
@@ -3438,6 +3446,8 @@ public class MainFwActivity extends AppCompatActivity
                             @Override
                             public Map<String, String> getHeaders() {
                                 Map<String, String> params = new HashMap<String, String>();
+                                Log.i("head1","boday");
+                                Log.i("head2",mRequestBody);
                                 params.put("Content-Type", "application/json");
                                 params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
                                 return params;
@@ -3450,11 +3460,18 @@ public class MainFwActivity extends AppCompatActivity
                         jsonObjectRequest.setRetryPolicy(policy);
                         try {
                             mQueue.add(jsonObjectRequest);
+                            Log.i("mQueue1","test1");
+                            Log.i("mQueue2",mRequestBody);
                         } catch (Exception e) {
                             e.printStackTrace();
+                            Log.i("catchmQueue1","test1");
+                            Log.i("catchmQueue2",mRequestBody);
+                            progressDialog.dismiss();
                         }
                     }catch (Exception e){
                         e.printStackTrace();
+                        Log.i("catch1",mRequestBody);
+                        Log.i("catch2","test2");
                     }
             }
             }
@@ -3528,9 +3545,17 @@ public class MainFwActivity extends AppCompatActivity
                   }
               }*/
                             @Override
+                            public String getBodyContentType() {
+                                Log.i("getBodayContent1","type");
+                                Log.i("getBodayContent2",mRequestBody);
+                                return "application/json; charset=utf-8";
+                            }
+                            @Override
                             public byte[] getBody() throws AuthFailureError {
                                 try {
-                                    return mRequestBody.getBytes();
+                                    Log.i("getbody1","boday");
+                                    Log.i("getbody2",mRequestBody);
+                                    return mRequestBody.getBytes("utf-8");
                                 } catch (Exception uee) {
                                     VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
                                     return null;
@@ -3539,8 +3564,10 @@ public class MainFwActivity extends AppCompatActivity
                             @Override
                             public Map<String, String> getHeaders() {
                                 Map<String, String> params = new HashMap<String, String>();
+                                Log.i("head1","boday");
+                                Log.i("head2",mRequestBody);
                                 params.put("Content-Type", "application/json");
-                                params.put("Authorization", appUtil.getPrefrence("token_type") + " " + appUtil.getPrefrence("access_token"));
+                                params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
                                 return params;
                             }
                         };
@@ -3551,15 +3578,18 @@ public class MainFwActivity extends AppCompatActivity
                         jsonObjectRequest.setRetryPolicy(policy);
                         try {
                             mQueue.add(jsonObjectRequest);
-                        }
-                        catch (Exception e)
-                        {
+                            Log.i("mQueue1","test1");
+                            Log.i("mQueue2",mRequestBody);
+                        } catch (Exception e) {
                             e.printStackTrace();
+                            Log.i("catchmQueue1","test1");
+                            Log.i("catchmQueue2",mRequestBody);
+                            progressDialog.dismiss();
                         }
-                    }
-                    catch (Exception e)
-                    {
+                    }catch (Exception e){
                         e.printStackTrace();
+                        Log.i("catch1",mRequestBody);
+                        Log.i("catch2","test2");
                     }
                 }
 

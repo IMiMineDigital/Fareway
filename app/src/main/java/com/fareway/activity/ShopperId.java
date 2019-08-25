@@ -32,8 +32,8 @@ public class ShopperId extends AppCompatActivity {
     /** inisialisasi objek di layout */
    // EditText textInput;
    // Button tombolGenerate;
-    ImageView gambarBarcode;
-    TextView textnya;
+    ImageView FwBarcode;
+    TextView Shopper;
     Bitmap bitmap = null;
 
     private static final int WHITE = 0xFFFFFFFF;
@@ -54,8 +54,8 @@ public class ShopperId extends AppCompatActivity {
 
        // tombolGenerate = (Button) findViewById(R.id.btn_generate);
         Log.i("shopper","start1");
-        gambarBarcode = (ImageView) findViewById(R.id.img_barcode);
-        textnya = (TextView) findViewById(R.id.txt_hasil);
+        FwBarcode = (ImageView) findViewById(R.id.fw_barcode);
+        Shopper = (TextView) findViewById(R.id.txt_shopper);
         Log.i("shopper","start2");
 
         /** buat gambar barcode nya ketika tombol di tekan*/
@@ -76,8 +76,8 @@ public class ShopperId extends AppCompatActivity {
             //bitmap = encodeAsBitmap(appUtil.getPrefrence("ShopperID"), BarcodeFormat.CODE_128, 600, 300);
             bitmap = encodeAsBitmap(Constant.PRISHOPPERID+appUtil.getPrefrence("ShopperID"), BarcodeFormat.CODE_128, 800, 300);
 
-            gambarBarcode.setImageBitmap(bitmap);
-            textnya.setText(appUtil.getPrefrence("ShopperID").toString());
+            FwBarcode.setImageBitmap(bitmap);
+            Shopper.setText(appUtil.getPrefrence("ShopperID").toString());
             Log.i("shopper","id");
         } catch (WriterException e) {
             e.printStackTrace();
