@@ -26,8 +26,7 @@ public class Constant {
     public static final String ADDSHOPPINGITEM = "ShoopingList/List/MyOwnItem";
     public static final String REMOVESHOPPINGOWMITEM = "ShoopingList/AllownItems?Memberid=";
     public static final String PRISHOPPERID = "45";
-
-
+    public static final String SHOPPINGLISTUPDATE = "ShoppingList/List/ParmItem";
 
 
    // https://fwstagingapi.immdemo.net

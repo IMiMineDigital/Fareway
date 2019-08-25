@@ -54,7 +54,7 @@ public class ShopperId extends AppCompatActivity {
 
        // tombolGenerate = (Button) findViewById(R.id.btn_generate);
         Log.i("shopper","start1");
-        FwBarcode = (ImageView) findViewById(R.id.fw_barcode);
+       // FwBarcode = (ImageView) findViewById(R.id.fw_barcode);
         Shopper = (TextView) findViewById(R.id.txt_shopper);
         Log.i("shopper","start2");
 
@@ -76,7 +76,7 @@ public class ShopperId extends AppCompatActivity {
             //bitmap = encodeAsBitmap(appUtil.getPrefrence("ShopperID"), BarcodeFormat.CODE_128, 600, 300);
             bitmap = encodeAsBitmap(Constant.PRISHOPPERID+appUtil.getPrefrence("ShopperID"), BarcodeFormat.CODE_128, 800, 300);
 
-            FwBarcode.setImageBitmap(bitmap);
+            //FwBarcode.setImageBitmap(bitmap);
             Shopper.setText(appUtil.getPrefrence("ShopperID").toString());
             Log.i("shopper","id");
         } catch (WriterException e) {

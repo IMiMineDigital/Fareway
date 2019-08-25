@@ -719,7 +719,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
 
         else {
             Calendar c2 = Calendar.getInstance();
-            SimpleDateFormat dateformat2 = new SimpleDateFormat("dd MMM yyyy");
+            SimpleDateFormat dateformat2 = new SimpleDateFormat("ddMMMyyyy");
             String currentDate = dateformat2.format(c2.getTime());
             System.out.println(currentDate);
             JSONObject ShoppingListItems = new JSONObject();
@@ -742,11 +742,10 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
             final String mRequestBody = "'"+studentsObj.toString()+"'";
             Log.i("test",mRequestBody);
             //String url = Constant.WEB_URL+Constant.SHOPPINGLIST+appUtil.getPrefrence("MemberId");
-            String url = null;
+            String url = "";
             Log.i("testobject",mRequestBody);
+            url = Constant.WEB_URL + Constant.SHOPPINGLISTUPDATE+"?MemberId="+appUtil.getPrefrence("MemberId")+"&UPC="+shopping.getDisplayUPC().replace("UPC","").replace(":","")+"&Quantity="+(Integer.parseInt(shopping.getQuantity()) + 1)+"&DateAddedOn="+currentDate;
 
-
-            url = Constant.WEB_URL+Constant.SHOPPINGLIST+appUtil.getPrefrence("MemberId");
             try {
                 StringRequest  jsonObjectRequest = new StringRequest (Request.Method.PUT, url,
                         new Response.Listener<String >() {
@@ -779,19 +778,14 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
              }
          }*/
                     @Override
-                    public byte[] getBody() throws AuthFailureError {
-                        try {
-                            return mRequestBody.getBytes();
-                        } catch (Exception uee) {
-                            VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
-                            return null;
-                        }
+                    public String getBodyContentType() {
+                        return "application/x-www-form-urlencoded";
                     }
                     //this is the part, that adds the header to the request
                     @Override
                     public Map<String, String> getHeaders() {
                         Map<String, String> params = new HashMap<String, String>();
-                        params.put("Content-Type", "application/json");
+                        params.put("Content-Type", "application/x-www-form-urlencoded");
                         params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
                         return params;
                     }
@@ -883,7 +877,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
         else {
             if (Integer.parseInt(shopping.getQuantity())>1){
                 Calendar c2 = Calendar.getInstance();
-                SimpleDateFormat dateformat2 = new SimpleDateFormat("dd MMM yyyy");
+                SimpleDateFormat dateformat2 = new SimpleDateFormat("ddMMMyyyy");
                 String currentDate = dateformat2.format(c2.getTime());
                 System.out.println(currentDate);
                 JSONObject ShoppingListItems = new JSONObject();
@@ -905,7 +899,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                 }
                 final String mRequestBody = "'"+studentsObj.toString()+"'";
                 Log.i("test",mRequestBody);
-                String url = Constant.WEB_URL+Constant.SHOPPINGLIST+appUtil.getPrefrence("MemberId");
+                String  url = Constant.WEB_URL + Constant.SHOPPINGLISTUPDATE+"?MemberId="+appUtil.getPrefrence("MemberId")+"&UPC="+shopping.getDisplayUPC().replace("UPC","").replace(":","")+"&Quantity="+(Integer.parseInt(shopping.getQuantity()) - 1)+"&DateAddedOn="+currentDate;
                 try {
                     StringRequest  jsonObjectRequest = new StringRequest (Request.Method.PUT, url,
                             new Response.Listener<String >() {
@@ -937,19 +931,14 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
             }
         }*/
                         @Override
-                        public byte[] getBody() throws AuthFailureError {
-                            try {
-                                return mRequestBody.getBytes();
-                            } catch (Exception uee) {
-                                VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
-                                return null;
-                            }
+                        public String getBodyContentType() {
+                            return "application/x-www-form-urlencoded";
                         }
                         //this is the part, that adds the header to the request
                         @Override
                         public Map<String, String> getHeaders() {
                             Map<String, String> params = new HashMap<String, String>();
-                            params.put("Content-Type", "application/json");
+                            params.put("Content-Type", "application/x-www-form-urlencoded");
                             params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
                             return params;
                         }
