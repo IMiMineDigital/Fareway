@@ -110,6 +110,7 @@ import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.URI;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -1075,11 +1076,11 @@ public class MainFwActivity extends AppCompatActivity
                 return true;
             }
 
-            else if (i2==R.id.by_shopper_id){
+           /* else if (i2==R.id.by_shopper_id){
                 //Log.i("test","anshuma");
                 Intent i1=new Intent(activity,ShopperId.class);
                 startActivity(i1);
-            }
+            }*/
 
             else if (i2==R.id.by_purchase_history){
                 //Log.i("test","anshuma");
@@ -3157,7 +3158,7 @@ public class MainFwActivity extends AppCompatActivity
                 progressDialog.setMessage("Processing");
                 progressDialog.show();
                 Calendar c2 = Calendar.getInstance();
-                SimpleDateFormat dateformat2 = new SimpleDateFormat("dd MMM yyyy");
+                SimpleDateFormat dateformat2 = new SimpleDateFormat("ddMMMyyyy");
                 String currentDate = dateformat2.format(c2.getTime());
                 System.out.println(currentDate);
                 JSONObject ShoppingListItems = new JSONObject();
@@ -3575,7 +3576,7 @@ public class MainFwActivity extends AppCompatActivity
                         }){
                             @Override
                             public String getBodyContentType() {
-                                return "application/json; charset=utf-8";
+                                return "application/x-www-form-urlencoded";
                             }
                             @Override
                             public Map<String, String> getHeaders() {
@@ -8181,7 +8182,7 @@ public class MainFwActivity extends AppCompatActivity
                     @Override
                     public Map<String, String> getHeaders() {
                         Map<String, String> params = new HashMap<String, String>();
-                        //params.put("Content-Type", "application/x-www-form-urlencoded");
+                        params.put("Content-Type", "application/x-www-form-urlencoded");
                         params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
                         return params;
                     }
@@ -8571,7 +8572,7 @@ public class MainFwActivity extends AppCompatActivity
         progressDialog.show();
 
     if (shopping.getPrimaryOfferTypeId()==0){
-        String url = null;
+        String url = "";
 
 
     url = Constant.WEB_URL+"ShoppingList/List/MyOwnItem?ShoppingListOwnItemID="+shopping.getShoppingListItemID()+"&Quantity="+(Integer.parseInt(shopping.getQuantity())+1);
@@ -8665,8 +8666,8 @@ public class MainFwActivity extends AppCompatActivity
     String url = "";
     Log.i("testobject",mRequestBody);
 
-    url = Constant.WEB_URL + Constant.SHOPPINGLISTUPDATE+"?MemberId="+appUtil.getPrefrence("MemberId")+"&UPC="+shopping.getDisplayUPC().replace("UPC","").replace(":","")+"&Quantity="+(Integer.parseInt(shopping.getQuantity()) + 1)+"&DateAddedOn="+currentDate;
-
+    url = Constant.WEB_URL + Constant.SHOPPINGLISTUPDATE+"?MemberId="+appUtil.getPrefrence("MemberId")+"&UPC="+shopping.getDisplayUPC().replace("UPC","").replace(":","").replace(" ","")+"&Quantity="+(Integer.parseInt(shopping.getQuantity()) + 1)+"&DateAddedOn="+currentDate;
+        Log.i("url", url);
 
         try {
             StringRequest  jsonObjectRequest = new StringRequest (Request.Method.PUT, url,
@@ -8845,7 +8846,7 @@ public class MainFwActivity extends AppCompatActivity
                 String url = null;
                 Log.i("testobject",mRequestBody);
 
-                url = Constant.WEB_URL + Constant.SHOPPINGLISTUPDATE+"?MemberId="+appUtil.getPrefrence("MemberId")+"&UPC="+shopping.getDisplayUPC().replace("UPC","").replace(":","")+"&Quantity="+(Integer.parseInt(shopping.getQuantity()) - 1)+"&DateAddedOn="+currentDate;
+                url = Constant.WEB_URL + Constant.SHOPPINGLISTUPDATE+"?MemberId="+appUtil.getPrefrence("MemberId")+"&UPC="+shopping.getDisplayUPC().replace("UPC","").replace(":","").replace(" ","")+"&Quantity="+(Integer.parseInt(shopping.getQuantity()) - 1)+"&DateAddedOn="+currentDate;
 
                 try {
                     StringRequest  jsonObjectRequest = new StringRequest (Request.Method.PUT, url,
@@ -10238,7 +10239,7 @@ public class MainFwActivity extends AppCompatActivity
                     @Override
                     public Map<String, String> getHeaders() {
                         Map<String, String> params = new HashMap<String, String>();
-                        //params.put("Content-Type", "application/x-www-form-urlencoded");
+                        params.put("Content-Type", "application/x-www-form-urlencoded");
                         params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
                         return params;
                     }

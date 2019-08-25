@@ -744,7 +744,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
             //String url = Constant.WEB_URL+Constant.SHOPPINGLIST+appUtil.getPrefrence("MemberId");
             String url = "";
             Log.i("testobject",mRequestBody);
-            url = Constant.WEB_URL + Constant.SHOPPINGLISTUPDATE+"?MemberId="+appUtil.getPrefrence("MemberId")+"&UPC="+shopping.getDisplayUPC().replace("UPC","").replace(":","")+"&Quantity="+(Integer.parseInt(shopping.getQuantity()) + 1)+"&DateAddedOn="+currentDate;
+            url = Constant.WEB_URL + Constant.SHOPPINGLISTUPDATE+"?MemberId="+appUtil.getPrefrence("MemberId")+"&UPC="+shopping.getDisplayUPC().replace("UPC","").replace(":","").replace(" ","")+"&Quantity="+(Integer.parseInt(shopping.getQuantity()) + 1)+"&DateAddedOn="+currentDate;
 
             try {
                 StringRequest  jsonObjectRequest = new StringRequest (Request.Method.PUT, url,
@@ -899,7 +899,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                 }
                 final String mRequestBody = "'"+studentsObj.toString()+"'";
                 Log.i("test",mRequestBody);
-                String  url = Constant.WEB_URL + Constant.SHOPPINGLISTUPDATE+"?MemberId="+appUtil.getPrefrence("MemberId")+"&UPC="+shopping.getDisplayUPC().replace("UPC","").replace(":","")+"&Quantity="+(Integer.parseInt(shopping.getQuantity()) - 1)+"&DateAddedOn="+currentDate;
+                String  url = Constant.WEB_URL + Constant.SHOPPINGLISTUPDATE+"?MemberId="+appUtil.getPrefrence("MemberId")+"&UPC="+shopping.getDisplayUPC().replace("UPC","").replace(":","").replace(" ","")+"&Quantity="+(Integer.parseInt(shopping.getQuantity()) - 1)+"&DateAddedOn="+currentDate;
                 try {
                     StringRequest  jsonObjectRequest = new StringRequest (Request.Method.PUT, url,
                             new Response.Listener<String >() {
