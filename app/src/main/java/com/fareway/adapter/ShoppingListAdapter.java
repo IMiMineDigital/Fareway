@@ -117,7 +117,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             tv_coupon_description.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                 //   ShoppingDetailListener.onShoppingDetailSelected(shoppingArrayList.get(getAdapterPosition()));
+                    ShoppingDetailListener.onShoppingDetailSelected(shoppingArrayList.get(getAdapterPosition()));
                 }
             });
         }

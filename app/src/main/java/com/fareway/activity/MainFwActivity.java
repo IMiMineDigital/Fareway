@@ -1142,6 +1142,10 @@ public class MainFwActivity extends AppCompatActivity
                                     try {
                                         Log.i("Fareway response", response.toString());
                                         JSONArray jsonParam = new JSONArray(response.toString());
+                                        /*
+                                          message3=message;
+                                        message=jsonParam;
+                                        */
                                         message3=jsonParam;
                                         tmp=0;
                                         searchProduct();
@@ -1668,19 +1672,6 @@ public class MainFwActivity extends AppCompatActivity
 
                 String data = "["+String.valueOf(strCategory)+"]";
 
-                /*try {
-                    JSONArray jsonParam = new JSONArray(data.toString());
-                    for (int i=0;i<jsonParam.length();i++) {
-                    }
-                    List<Category> items2 = new Gson().fromJson(data, new TypeToken<List<Category>>() {
-                    }.getType());
-                    categoryList.clear();
-                    categoryList.addAll(items2);
-                    customAdapterFilter.notifyDataSetChanged();
-                    rv_category.setAdapter(customAdapterFilter);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }*/
                     try {
                         JSONArray jsonParam = new JSONArray(data.toString());
                         // refreshing recycler view
@@ -1812,17 +1803,28 @@ public class MainFwActivity extends AppCompatActivity
                             e.printStackTrace();
                         }
                     }
-                    List<Product> items1 = new Gson().fromJson("[" + categorydata.toString() + "]", new TypeToken<List<Product>>() {
-                    }.getType());
+                    List<Product> items1;
+                    if (categorydata!="")
+                    {
+                        items1 = new Gson().fromJson("[" + categorydata.toString() + "]", new TypeToken<List<Product>>() {
+                        }.getType());
+                        productList.clear();
+                        productList.addAll(items1);
+                        customAdapterPersonalPrices.notifyDataSetChanged();
+                        strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category (" + category_count + ")\"}," + strCategory;
+                    }
+                    else {
+                        Toast.makeText(activity, "no data", Toast.LENGTH_SHORT).show();
+                        productList.clear();
+                        customAdapterPersonalPrices.notifyDataSetChanged();
+                        strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category (" + category_count + ")\"}";
+                    }
+
                     // adding product to product list
-                    productList.clear();
-                    productList.addAll(items1);
+
                     // Log.i("string", String.valueOf(items1));
                     // refreshing recycler view
-                    customAdapterPersonalPrices.notifyDataSetChanged();
-
-                    strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category (" + category_count + ")\"}," + strCategory;
-                    // Log.i("text", "["+String.valueOf(strCategory)+"]");
+                    Log.i("text", "["+String.valueOf(strCategory)+"]");
                     String data = "[" + String.valueOf(strCategory) + "]";
                     //categoryList.clear();
                     try {
@@ -1850,6 +1852,7 @@ public class MainFwActivity extends AppCompatActivity
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
+
                 }
                 //////
 
@@ -1949,22 +1952,36 @@ public class MainFwActivity extends AppCompatActivity
                                     strCategory += (strCategory == "" ? "{" + "\"CategoryID\":" + message3.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message3.getJSONObject(i).getString("CategoryName") + " (" + subcat + ")\"}" : "," + "{" + "\"CategoryID\":" + message3.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message3.getJSONObject(i).getString("CategoryName") + " (" + subcat + ")\"}");
                                 }
                             }
+                        }else {
+                            Log.i("desk","desk");
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
                 }
-                List<Product> items1 = new Gson().fromJson("[" + categorydata.toString() + "]", new TypeToken<List<Product>>() {
-                }.getType());
+
+                List<Product> items1;
+                if (categorydata!="")
+                {
+                    items1 = new Gson().fromJson("[" + categorydata.toString() + "]", new TypeToken<List<Product>>() {
+                    }.getType());
+                    productList.clear();
+                    productList.addAll(items1);
+                    customAdapterPersonalPrices.notifyDataSetChanged();
+                    strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category (" + category_count + ")\"}," + strCategory;
+                }
+                else {
+                    Toast.makeText(activity, "no data", Toast.LENGTH_SHORT).show();
+                    productList.clear();
+                    customAdapterPersonalPrices.notifyDataSetChanged();
+                    strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category (" + category_count + ")\"}";
+                }
+
                 // adding product to product list
-                productList.clear();
-                productList.addAll(items1);
+
                 // Log.i("string", String.valueOf(items1));
                 // refreshing recycler view
-                customAdapterPersonalPrices.notifyDataSetChanged();
-
-                strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category (" + category_count + ")\"}," + strCategory;
-                // Log.i("text", "["+String.valueOf(strCategory)+"]");
+                Log.i("text", "["+String.valueOf(strCategory)+"]");
                 String data = "[" + String.valueOf(strCategory) + "]";
                 //categoryList.clear();
                 try {
@@ -1992,6 +2009,10 @@ public class MainFwActivity extends AppCompatActivity
                 } catch (JSONException e) {
                     e.printStackTrace();
                 }
+
+
+
+
             }
         }
 
@@ -3153,8 +3174,10 @@ public class MainFwActivity extends AppCompatActivity
                     Spanned varietiesUnderline = Html.fromHtml("<u>"+product.getRelatedItemCount()+" Varieties"+"</u>");
                     tv_varieties_detail.setText(varietiesUnderline);
                 }else {
-                    tv_varieties_detail.setVisibility(View.GONE);
-                    table_varieties_view.setVisibility(View.GONE);
+                    tv_varieties_detail.setVisibility(View.VISIBLE);
+                    table_varieties_view.setVisibility(View.VISIBLE);
+                    Spanned varietiesUnderline = Html.fromHtml("<u>"+product.getRelatedItemCount()+" Varieties"+"</u>");
+                    tv_varieties_detail.setText(varietiesUnderline);
                 }
             }else if (product.getHasRelatedItems()==0){
                 tv_varieties_detail.setVisibility(View.GONE);
@@ -3845,12 +3868,15 @@ public class MainFwActivity extends AppCompatActivity
                                                     header_title.setVisibility(View.GONE);
                                                 }
                                                 else if (x==3){
+                                                    if (message3.length()<5){
+                                                        search_message.setVisibility(View.VISIBLE);
+                                                    }
                                                     rv_items_group.setVisibility(View.GONE);
                                                     rv_items_verite.setVisibility(View.GONE);
                                                     participateToolbar.setVisibility(View.GONE);
                                                     rv_items.setVisibility(View.VISIBLE);
                                                     toolbar.setVisibility(View.VISIBLE);
-                                                    navigation.setVisibility(View.GONE);
+                                                    navigation.setVisibility(View.VISIBLE);
                                                     group_count_text.setVisibility(View.GONE);
                                                     //header_title visible
                                                     header_title.setVisibility(View.GONE);
@@ -6030,6 +6056,19 @@ public class MainFwActivity extends AppCompatActivity
                     //header_title visible
                     header_title.setVisibility(View.GONE);
 
+                }else if (x==3){
+                    if (message3.length()<5){
+                        search_message.setVisibility(View.VISIBLE);
+                    }
+                    rv_items_group.setVisibility(View.GONE);
+                    rv_items_verite.setVisibility(View.GONE);
+                    participateToolbar.setVisibility(View.GONE);
+                    rv_items.setVisibility(View.VISIBLE);
+                    toolbar.setVisibility(View.VISIBLE);
+                    navigation.setVisibility(View.VISIBLE);
+                    group_count_text.setVisibility(View.GONE);
+                    //header_title visible
+                    header_title.setVisibility(View.GONE);
                 }else {
                     rv_items_group.setVisibility(View.GONE);
                     rv_items_verite.setVisibility(View.GONE);
@@ -6662,8 +6701,10 @@ public class MainFwActivity extends AppCompatActivity
                     Spanned varietiesUnderline = Html.fromHtml("<u>"+relatedItem.getRelatedItemCount()+" Varieties"+"</u>");
                     tv_varieties_detail.setText(varietiesUnderline);
                 }else {
-                    tv_varieties_detail.setVisibility(View.GONE);
-                    table_varieties_view.setVisibility(View.GONE);
+                    tv_varieties_detail.setVisibility(View.VISIBLE);
+                    table_varieties_view.setVisibility(View.VISIBLE);
+                    Spanned varietiesUnderline = Html.fromHtml("<u>"+relatedItem.getRelatedItemCount()+" Varieties"+"</u>");
+                    tv_varieties_detail.setText(varietiesUnderline);
                 }
             }else if (relatedItem.getHasRelatedItems()==0){
                 tv_varieties_detail.setVisibility(View.GONE);
@@ -9453,6 +9494,7 @@ public class MainFwActivity extends AppCompatActivity
                                             TextView tv_coupon_detail_detail = (TextView) findViewById(R.id.tv_coupon_detail_detail);
 
                                             Log.i("qut", jsonShoppingParam.getJSONObject(i).getString("Quantity"));
+                                            tv_quantity_detail.setText(jsonShoppingParam.getJSONObject(i).getString("Quantity"));
 
 
                                             final ImageView imv_status_detaile = (ImageView) findViewById(R.id.imv_status_detaile);
@@ -9475,6 +9517,8 @@ public class MainFwActivity extends AppCompatActivity
                                             TableRow table_upc_view = (TableRow) findViewById(R.id.table_upc_view);
                                             TableRow table_varieties = (TableRow) findViewById(R.id.table_varieties);
                                             TableRow table_varieties_view = (TableRow) findViewById(R.id.table_varieties_view);
+                                            table_varieties.setVisibility(View.GONE);
+                                            table_varieties_view.setVisibility(View.GONE);
 
                                             String saveDate = jsonShoppingParam.getJSONObject(i).getString("ValidityEndDate");
                                             if (saveDate.length()==0){
@@ -9494,6 +9538,371 @@ public class MainFwActivity extends AppCompatActivity
                                                 tv_valid_detail.setText(saveDate);
                                                 System.out.println(saveDate);
                                             }
+                                            /*tv_varieties_detail.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+
+                                                }
+                                            });*/
+                                            final int primaryId=jsonShoppingParam.getJSONObject(i).getInt("PrimaryOfferTypeId");
+                                            final int clickcount=jsonShoppingParam.getJSONObject(i).getInt("ClickCount");
+                                            final String PriceAssociationCode=jsonShoppingParam.getJSONObject(i).getString("PriceAssociationCode");
+                                            final String UPC=jsonShoppingParam.getJSONObject(i).getString("UPC");
+                                            final String StoreId=jsonShoppingParam.getJSONObject(i).getString("StoreID");
+                                            final String RelevantUPC=jsonShoppingParam.getJSONObject(i).getString("RelevantUPC");
+                                            final int CouponID=jsonShoppingParam.getJSONObject(i).getInt("CouponID");
+
+
+                                            tv_varieties_detail.setOnClickListener(new View.OnClickListener() {
+                                                @Override
+                                                public void onClick(View v) {
+                                                    //Log.i("anshuCl", String.valueOf(product.getClickCount()));
+                                                    header_title.setVisibility(View.GONE);
+
+                                                    if (primaryId==3 || primaryId==2){
+
+                                                        if (clickcount==0){
+                                                            liner_all_Varieties_activate.setVisibility(View.VISIBLE);
+                                                            liner_all_Varieties_activate.setBackground(getResources().getDrawable(R.drawable.circular_red_bg));
+                                                            all_Varieties_activate.setText("Activate");
+                                                            imv_status_verities.setVisibility(View.GONE);
+
+                                                        } else {
+                                                            liner_all_Varieties_activate.setVisibility(View.VISIBLE);
+                                                            liner_all_Varieties_activate.setBackground(getResources().getDrawable(R.drawable.circular_mehrune_bg));
+                                                            all_Varieties_activate.setVisibility(View.VISIBLE);
+                                                            all_Varieties_activate.setText("Activated");
+                                                            imv_status_verities.setVisibility(View.VISIBLE);
+                                                        }
+                                                    }
+
+                                                    else {
+                                                        liner_all_Varieties_activate.setVisibility(View.GONE);
+                                                        all_Varieties_activate.setVisibility(View.GONE);
+                                                        imv_status_verities.setVisibility(View.GONE);
+                                                    }
+
+                                                    search_message.setVisibility(View.GONE);
+                                                    navigation.setVisibility(View.GONE);
+                                                    scrollView.setVisibility(View.GONE);
+                                                    DetaileToolbar.setVisibility(View.GONE);
+                                                    rv_items.setVisibility(View.GONE);
+                                                    toolbar.setVisibility(View.GONE);
+                                                    participateToolbar.setVisibility(View.VISIBLE);
+                                                    participateToolbar.setTitle("Participating Items");
+
+                                                    Group="";
+                                                    //productrelated2=product;
+                                                    groupItemsList.clear();
+
+                                                    rv_items_group.setVisibility(View.VISIBLE);
+                                                    /*if (product.getGroupname()==null){
+                                                        rv_items_group.setVisibility(View.GONE);
+                                                        group_count_text.setVisibility(View.GONE);
+                                                    }else if (product.getGroupname()==""){
+                                                        rv_items_group.setVisibility(View.GONE);
+                                                        group_count_text.setVisibility(View.GONE);
+                                                    }else if (product.getGroupname()=="null"){
+                                                        rv_items_group.setVisibility(View.GONE);
+                                                        group_count_text.setVisibility(View.GONE);
+                                                    }else if (product.getGroupname().length()>0){
+                                                        veritiesGroupDetail(product.getCouponID());
+                                                    }*/
+
+                                                    //relatedItemsList.clear();
+                                                    qty=0;
+
+
+                                                    if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+                                                        try {
+                                                            progressDialog = new ProgressDialog(activity);
+                                                            progressDialog.setMessage("Processing");
+                                                            progressDialog.show();
+                                                            StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST,Constant.WEB_URL + Constant.RELATEDITEMLIST+"?MemberID="+appUtil.getPrefrence("MemberId"),
+                                                                    new Response.Listener<String>(){
+                                                                        @Override
+                                                                        public void onResponse(String response) {
+
+                                                                            if (!response.equals("[]")) {
+                                                                                try {
+
+                                                                                    Log.i("Verites response", response.toString());
+                                                                                    jsonParam = new JSONArray(response.toString());
+                                                                                    for (int i = 0; i < jsonParam.length(); i++) {
+                                                                                        jsonParam.getJSONObject(i).getString("Quantity");
+                                                                                        qty= qty+Integer.parseInt(jsonParam.getJSONObject(i).getString("Quantity"));
+                                                                                        Log.i("qut", jsonParam.getJSONObject(i).getString("Quantity"));
+                                                                                    }
+                                                                                    Log.i("qut", String.valueOf(qty));
+                                                                                    //
+                                                                                    progressDialog.dismiss();
+                                                                                   /* if (product.getGroupname().length()>0){
+                                                                                        fetchVeritesProduct2(Group);
+                                                                                    }else if (product.getGroupname()==null){
+                                                                                        fetchVeritesProduct();
+                                                                                    }else if (product.getGroupname()=="null"){
+                                                                                        fetchVeritesProduct();
+                                                                                    }else if (product.getGroupname()==""){
+                                                                                        fetchVeritesProduct();
+                                                                                    }*/
+                                                                                        fetchVeritesProduct();
+                                                                                        //Log.i("groupname5",product.getGroupname()+"gruptest");
+
+                                                                                    participateToolbar.setOnClickListener(new View.OnClickListener() {
+                                                                                        @Override
+                                                                                        public void onClick(View v) {
+                                                                                            liner_all_Varieties_activate.setVisibility(View.GONE);
+                                                                                            //messageLoadRefresh();
+                                                                                            qty=0;
+                                                                                            if (x==0){
+                                                                                                rv_items_group.setVisibility(View.GONE);
+                                                                                                rv_items_verite.setVisibility(View.GONE);
+                                                                                                participateToolbar.setVisibility(View.GONE);
+                                                                                                rv_items.setVisibility(View.VISIBLE);
+                                                                                                toolbar.setVisibility(View.VISIBLE);
+                                                                                                navigation.setVisibility(View.VISIBLE);
+                                                                                                group_count_text.setVisibility(View.GONE);
+                                                                                                //header_title visible
+                                                                                                header_title.setVisibility(View.GONE);
+                                                                                            }
+                                                                                            else {
+                                                                                                rv_items_group.setVisibility(View.GONE);
+                                                                                                rv_items_verite.setVisibility(View.GONE);
+                                                                                                participateToolbar.setVisibility(View.GONE);
+                                                                                                rv_items.setVisibility(View.VISIBLE);
+                                                                                                toolbar.setVisibility(View.VISIBLE);
+                                                                                                navigation.setVisibility(View.VISIBLE);
+                                                                                                group_count_text.setVisibility(View.GONE);
+                                                                                                //header_title visible
+                                                                                                header_title.setVisibility(View.GONE);
+                                                                                            }
+
+
+                                                                                        }
+                                                                                    });
+
+
+                                                                                } catch (Throwable e) {
+                                                                                    progressDialog.dismiss();
+                                                                                    Log.i("Excep", "error----" + e.getMessage());
+                                                                                    e.printStackTrace();
+                                                                                    participateToolbar.setOnClickListener(new View.OnClickListener() {
+                                                                                        @Override
+                                                                                        public void onClick(View v) {
+                                                                                            liner_all_Varieties_activate.setVisibility(View.GONE);
+                                                                                            //messageLoadRefresh();
+                                                                                            qty=0;
+                                                                                            if (x==0){
+                                                                                                rv_items_group.setVisibility(View.GONE);
+                                                                                                rv_items_verite.setVisibility(View.GONE);
+                                                                                                participateToolbar.setVisibility(View.GONE);
+                                                                                                rv_items.setVisibility(View.VISIBLE);
+                                                                                                toolbar.setVisibility(View.VISIBLE);
+                                                                                                navigation.setVisibility(View.VISIBLE);
+                                                                                                group_count_text.setVisibility(View.GONE);
+                                                                                                //header_title visible
+                                                                                                header_title.setVisibility(View.GONE);
+
+                                                                                            }
+                                                                                            else {
+                                                                                                rv_items_group.setVisibility(View.GONE);
+                                                                                                rv_items_verite.setVisibility(View.GONE);
+                                                                                                participateToolbar.setVisibility(View.GONE);
+                                                                                                rv_items.setVisibility(View.VISIBLE);
+                                                                                                toolbar.setVisibility(View.VISIBLE);
+                                                                                                navigation.setVisibility(View.VISIBLE);
+                                                                                                group_count_text.setVisibility(View.GONE);
+                                                                                                //header_title visible
+                                                                                                header_title.setVisibility(View.GONE);
+                                                                                            }
+
+
+                                                                                        }
+                                                                                    });
+                                                                                }
+                                                                            }
+                                                                            else{
+                                                                                progressDialog.dismiss();
+                                                                                alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.incorrect_credentials),
+                                                                                        getString(R.string.ok),getString(R.string.alert));
+                                                                                alertDialog.show();
+                                                                                participateToolbar.setOnClickListener(new View.OnClickListener() {
+                                                                                    @Override
+                                                                                    public void onClick(View v) {
+                                                                                        liner_all_Varieties_activate.setVisibility(View.GONE);
+                                                                                        //messageLoadRefresh();
+                                                                                        qty=0;
+                                                                                        if (x==0){
+                                                                                            rv_items_group.setVisibility(View.GONE);
+                                                                                            rv_items_verite.setVisibility(View.GONE);
+                                                                                            participateToolbar.setVisibility(View.GONE);
+                                                                                            rv_items.setVisibility(View.VISIBLE);
+                                                                                            toolbar.setVisibility(View.VISIBLE);
+                                                                                            navigation.setVisibility(View.VISIBLE);
+                                                                                            group_count_text.setVisibility(View.GONE);
+                                                                                            //header_title visible
+                                                                                            header_title.setVisibility(View.GONE);
+                                                                                        }
+                                                                                        else {
+                                                                                            rv_items_group.setVisibility(View.GONE);
+                                                                                            rv_items_verite.setVisibility(View.GONE);
+                                                                                            participateToolbar.setVisibility(View.GONE);
+                                                                                            rv_items.setVisibility(View.VISIBLE);
+                                                                                            toolbar.setVisibility(View.VISIBLE);
+                                                                                            navigation.setVisibility(View.VISIBLE);
+                                                                                            group_count_text.setVisibility(View.GONE);
+                                                                                            //header_title visible
+                                                                                            header_title.setVisibility(View.GONE);
+                                                                                        }
+
+
+                                                                                    }
+                                                                                });
+                                                                            }
+                                                                        }
+                                                                    }, new Response.ErrorListener() {
+                                                                @Override
+                                                                public void onErrorResponse(VolleyError error) {
+                                                                    Log.i("Volley error resp", "error----" + error.getMessage());
+                                                                    error.printStackTrace();
+                                                                    progressDialog.dismiss();
+                                                                    Toast.makeText(activity, "error", Toast.LENGTH_LONG).show();
+                                                                    participateToolbar.setOnClickListener(new View.OnClickListener() {
+                                                                        @Override
+                                                                        public void onClick(View v) {
+                                                                            liner_all_Varieties_activate.setVisibility(View.GONE);
+                                                                            //messageLoadRefresh();
+                                                                            qty=0;
+                                                                            if (x==0){
+                                                                                rv_items_group.setVisibility(View.GONE);
+                                                                                rv_items_verite.setVisibility(View.GONE);
+                                                                                participateToolbar.setVisibility(View.GONE);
+                                                                                rv_items.setVisibility(View.VISIBLE);
+                                                                                toolbar.setVisibility(View.VISIBLE);
+                                                                                navigation.setVisibility(View.VISIBLE);
+                                                                                group_count_text.setVisibility(View.GONE);
+                                                                                //header_title visible
+                                                                                header_title.setVisibility(View.GONE);
+                                                                            }
+                                                                            else {
+                                                                                rv_items_group.setVisibility(View.GONE);
+                                                                                rv_items_verite.setVisibility(View.GONE);
+                                                                                participateToolbar.setVisibility(View.GONE);
+                                                                                rv_items.setVisibility(View.VISIBLE);
+                                                                                toolbar.setVisibility(View.VISIBLE);
+                                                                                navigation.setVisibility(View.VISIBLE);
+                                                                                group_count_text.setVisibility(View.GONE);
+                                                                                //header_title visible
+                                                                                header_title.setVisibility(View.GONE);
+                                                                            }
+
+
+                                                                        }
+                                                                    });
+                                                                }
+                                                            })
+                                                            {
+
+                                                                @Override
+                                                                public String getBodyContentType() {
+                                                                    return "application/x-www-form-urlencoded";
+                                                                }
+
+                                                                @Override
+                                                                protected Map<String, String> getParams() throws AuthFailureError {
+                                                                    Map<String, String> params = new HashMap<String, String>();
+
+                                                                    if (primaryId==1){
+                                                                        params.put("PriceAssociationCode", String.valueOf(PriceAssociationCode));
+                                                                        params.put("UPC", String.valueOf(UPC));
+                                                                        params.put("StoreId", String.valueOf(StoreId));
+                                                                        params.put("Plateform", "2");
+                                                                        params.put("PrimaryOfferTypeId", String.valueOf(primaryId));
+                                                                        params.put("RelevantUPC", String.valueOf(RelevantUPC));
+                                                                    }else {
+                                                                        params.put("PriceAssociationCode", String.valueOf(PriceAssociationCode));
+                                                                        params.put("UPC", String.valueOf(CouponID));
+                                                                        params.put("StoreId", String.valueOf(StoreId));
+                                                                        params.put("Plateform", "2");
+                                                                        params.put("PrimaryOfferTypeId", String.valueOf(primaryId));
+                                                                        params.put("RelevantUPC", String.valueOf(RelevantUPC));
+                                                                    }
+
+                                                                    return params;
+                                                                }
+
+
+                                                                @Override
+                                                                public Map<String, String> getHeaders() {
+                                                                    Map<String, String> params = new HashMap<String, String>();
+                                                                    params.put("Content-Type", "application/x-www-form-urlencoded");
+                                                                    params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                                                                    return params;
+                                                                }
+                                                            };
+                                                            RetryPolicy policy = new DefaultRetryPolicy
+                                                                    (5000,
+                                                                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                                                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                                                            jsonObjectRequest.setRetryPolicy(policy);
+                                                            try {
+
+                                                                mQueue.add(jsonObjectRequest);
+                                                            }
+                                                            catch (Exception e)
+                                                            {
+                                                                e.printStackTrace();
+                                                                participateToolbar.setOnClickListener(new View.OnClickListener() {
+                                                                    @Override
+                                                                    public void onClick(View v) {
+                                                                        liner_all_Varieties_activate.setVisibility(View.GONE);
+                                                                        //messageLoadRefresh();
+                                                                        qty=0;
+                                                                        if (x==0){
+                                                                            rv_items_group.setVisibility(View.GONE);
+                                                                            rv_items_verite.setVisibility(View.GONE);
+                                                                            participateToolbar.setVisibility(View.GONE);
+                                                                            rv_items.setVisibility(View.VISIBLE);
+                                                                            toolbar.setVisibility(View.VISIBLE);
+                                                                            navigation.setVisibility(View.VISIBLE);
+                                                                            group_count_text.setVisibility(View.GONE);
+                                                                            //header_title visible
+                                                                            header_title.setVisibility(View.GONE);
+                                                                        }
+                                                                        else {
+                                                                            rv_items_group.setVisibility(View.GONE);
+                                                                            rv_items_verite.setVisibility(View.GONE);
+                                                                            participateToolbar.setVisibility(View.GONE);
+                                                                            rv_items.setVisibility(View.VISIBLE);
+                                                                            toolbar.setVisibility(View.VISIBLE);
+                                                                            navigation.setVisibility(View.VISIBLE);
+                                                                            group_count_text.setVisibility(View.GONE);
+                                                                            //header_title visible
+                                                                            header_title.setVisibility(View.GONE);
+                                                                        }
+
+
+                                                                    }
+                                                                });
+                                                            }
+
+                                                        }
+                                                        catch (Exception e) {
+
+                                                            e.printStackTrace();
+                                                            progressDialog.dismiss();
+//                displayAlert();
+                                                        }
+
+                                                    }
+
+                                                    else {
+                                                        alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                                                                getString(R.string.ok),getString(R.string.alert));
+                                                        alertDialog.show();
+                                                    }
+                                                }
+                                            });
 
                                             if (shopping.getPrimaryOfferTypeid()==3){
                                                 if (jsonShoppingParam.getJSONObject(i).getString("LargeImagePath").contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
@@ -9771,11 +10180,12 @@ public class MainFwActivity extends AppCompatActivity
                 progressDialog.setMessage("Processing");
                 progressDialog.show();
                 Calendar c2 = Calendar.getInstance();
-                SimpleDateFormat dateformat2 = new SimpleDateFormat("dd MMM yyyy");
+                SimpleDateFormat dateformat2 = new SimpleDateFormat("ddMMMyyyy");
                 String currentDate = dateformat2.format(c2.getTime());
                 System.out.println(currentDate);
                 JSONObject ShoppingListItems = new JSONObject();
                 Log.i("jsonShoppingParam", String.valueOf(jsonShoppingParam.length()));
+                String couponId="";
                 int quantity;
                 //
 
@@ -9783,6 +10193,7 @@ public class MainFwActivity extends AppCompatActivity
                     for (int i = 0; i < jsonShoppingParam.length(); i++) {
                         scrollView.setVisibility(View.VISIBLE);
                         quantity=Integer.parseInt(jsonShoppingParam.getJSONObject(i).getString("Quantity")) + 1;
+                        couponId=String.valueOf(jsonShoppingParam.getJSONObject(i).getInt("CouponID"));
                         Log.i("quantiyuy", String.valueOf(quantity));
 
                         jsonShoppingParam.getJSONObject(i).put("Quantity", quantity);
@@ -9811,17 +10222,27 @@ public class MainFwActivity extends AppCompatActivity
                         Log.i("testobject", mRequestBody);
                         final int finalQuantity = quantity;
 
-                       url = Constant.WEB_URL + Constant.SHOPPINGLIST + appUtil.getPrefrence("MemberId");
+                        url = Constant.WEB_URL + Constant.SHOPPINGLISTUPDATE+"?MemberId="+appUtil.getPrefrence("MemberId")+"&UPC="+jsonShoppingParam.getJSONObject(i).getString("UPC")+"&Quantity="+quantity+"&DateAddedOn="+currentDate;
+
                         try {
+                            final int finalQuantity1 = quantity;
+                            final String finalCouponId = couponId;
                             StringRequest jsonObjectRequest = new StringRequest(Request.Method.PUT, url,
                                     new Response.Listener<String>() {
                                         @Override
                                         public void onResponse(String response) {
                                             Log.i("success", String.valueOf(response));
-                                            //fetchShoppingListLoad();
-                                            fetchActivatedOffer();
+                                            fetchShoppingListLoad();
+                                            //fetchActivatedOffer();
+                                            //shoppingListLoad();
+                                            shoppingCouponID=finalCouponId;
                                             progressDialog.dismiss();
                                             tv_quantity_detail.setText(String.valueOf(finalQuantity));
+                                            Log.i("upc",(shopping.getCouponID()+"kjghj"));
+
+
+                                            SetProductActivateShopping(shopping.getUPC(), shopping.getPrimaryOfferTypeid(), finalCouponId,1, String.valueOf(finalQuantity1));
+
                                         }
                                     }, new Response.ErrorListener() {
                                 @Override
@@ -9832,24 +10253,15 @@ public class MainFwActivity extends AppCompatActivity
 
                                 @Override
                                 public String getBodyContentType() {
-                                    return "application/json; charset=utf-8";
-                                }
-
-                                @Override
-                                public byte[] getBody() throws AuthFailureError {
-                                    try {
-                                        return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
-                                    } catch (UnsupportedEncodingException uee) {
-                                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
-                                        return null;
-                                    }
+                                    return "application/x-www-form-urlencoded";
                                 }
 
                                 //this is the part, that adds the header to the request
                                 @Override
                                 public Map<String, String> getHeaders() {
                                     Map<String, String> params = new HashMap<String, String>();
-                                    params.put("Content-Type", "application/json");
+                                    params.put("Content-Type", "application/x-www-form-urlencoded");
+                                    params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
                                     return params;
                                 }
                             };
@@ -9889,12 +10301,13 @@ public class MainFwActivity extends AppCompatActivity
                 progressDialog.setMessage("Processing");
                 progressDialog.show();
                 Calendar c2 = Calendar.getInstance();
-                SimpleDateFormat dateformat2 = new SimpleDateFormat("dd MMM yyyy");
+                SimpleDateFormat dateformat2 = new SimpleDateFormat("ddMMMyyyy");
                 String currentDate = dateformat2.format(c2.getTime());
                 System.out.println(currentDate);
                 JSONObject ShoppingListItems = new JSONObject();
                 Log.i("ankit", String.valueOf(jsonShoppingParam.length()));
                 int quantity;
+                String couponId="";
                 //
 
                 try {
@@ -9904,6 +10317,7 @@ public class MainFwActivity extends AppCompatActivity
                         Log.i("quantiyuy", String.valueOf(quantity));
 
                         jsonShoppingParam.getJSONObject(i).put("Quantity", quantity);
+                        couponId=String.valueOf(jsonShoppingParam.getJSONObject(i).getInt("CouponID"));
                         //
 
                         try {
@@ -9928,17 +10342,27 @@ public class MainFwActivity extends AppCompatActivity
                         String url = null;
                         Log.i("testobject", mRequestBody);
                         if (quantity>0){
-                            url = Constant.WEB_URL + Constant.SHOPPINGLIST + appUtil.getPrefrence("MemberId");
+                            //url = Constant.WEB_URL + Constant.SHOPPINGLIST + appUtil.getPrefrence("MemberId");
+                            url = Constant.WEB_URL + Constant.SHOPPINGLISTUPDATE+"?MemberId="+appUtil.getPrefrence("MemberId")+"&UPC="+jsonShoppingParam.getJSONObject(i).getString("UPC")+"&Quantity="+quantity+"&DateAddedOn="+currentDate;
 
                             final int finalQuantity = quantity;
+                            final int finalQuantity1 = quantity;
+                            final String finalCouponId = couponId;
                             StringRequest jsonObjectRequest = new StringRequest(Request.Method.PUT, url,
                                     new Response.Listener<String>() {
                                         @Override
                                         public void onResponse(String response) {
                                             Log.i("success", String.valueOf(response));
-                                            tv_quantity_detail.setText(String.valueOf(finalQuantity));
+                                            /*tv_quantity_detail.setText(String.valueOf(finalQuantity));
                                             fetchShoppingListLoad();
+                                            progressDialog.dismiss();*/
+
+                                            shoppingCouponID=finalCouponId;
                                             progressDialog.dismiss();
+                                            tv_quantity_detail.setText(String.valueOf(finalQuantity));
+                                            Log.i("upc",(shopping.getCouponID()+"kjghj"));
+                                            SetProductActivateShopping(shopping.getUPC(), shopping.getPrimaryOfferTypeid(), finalCouponId,1, String.valueOf(finalQuantity1));
+                                            fetchShoppingListLoad();
                                         }
                                     }, new Response.ErrorListener() {
                                 @Override
@@ -9949,24 +10373,15 @@ public class MainFwActivity extends AppCompatActivity
 
                                 @Override
                                 public String getBodyContentType() {
-                                    return "application/json; charset=utf-8";
-                                }
-
-                                @Override
-                                public byte[] getBody() throws AuthFailureError {
-                                    try {
-                                        return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
-                                    } catch (UnsupportedEncodingException uee) {
-                                        VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
-                                        return null;
-                                    }
+                                    return "application/x-www-form-urlencoded";
                                 }
 
                                 //this is the part, that adds the header to the request
                                 @Override
                                 public Map<String, String> getHeaders() {
                                     Map<String, String> params = new HashMap<String, String>();
-                                    params.put("Content-Type", "application/json");
+                                    params.put("Content-Type", "application/x-www-form-urlencoded");
+                                    params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
                                     return params;
                                 }
                             };

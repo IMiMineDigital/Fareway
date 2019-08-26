@@ -261,7 +261,14 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
 
             if (product.getInCircular()==0) {
-                if (product.getTileNumber().equalsIgnoreCase("999")) {
+                if (position==0){
+                    holder.additional_offers.setVisibility(View.VISIBLE);
+                    holder.additional_offers.setText("Personal Ad");
+                }else {
+                    holder.additional_offers.setVisibility(View.GONE);
+                    holder.additional_offers.setText("");
+                }
+               /* if (product.getTileNumber().equalsIgnoreCase("999")) {
                     Log.i("offercoupn", String.valueOf(activate.OtherCoupon)+"hhjj");
                     if (activate.OtherCoupon.equalsIgnoreCase("0")) {
                         holder.additional_offers.setVisibility(View.VISIBLE);
@@ -279,7 +286,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }
                 }else {
                     holder.additional_offers.setVisibility(View.GONE);
-                }
+                }*/
                 Log.i("elseincircular", String.valueOf(product.getInCircular()));
 
                 if (product.getPrimaryOfferTypeId() == 3) {
@@ -797,6 +804,13 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             }
 
             else {
+                if (position==0){
+                    holder.additional_offers.setVisibility(View.VISIBLE);
+                    holder.additional_offers.setText("Personal Ad");
+                }else {
+                    holder.additional_offers.setVisibility(View.GONE);
+                    holder.additional_offers.setText("");
+                }
                 if (product.getTileNumber().equalsIgnoreCase("999")) {
                     Log.i("offercoupn", String.valueOf(activate.OtherCoupon)+"hhjj");
                     if (activate.OtherCoupon.equalsIgnoreCase("0")) {
@@ -814,7 +828,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         holder.additional_offers.setVisibility(View.GONE);
                     }
                 }else {
-                    holder.additional_offers.setVisibility(View.GONE);
+                   // holder.additional_offers.setVisibility(View.GONE);
                 }
                 Log.i("elseincircular", String.valueOf(product.getInCircular()));
 
@@ -1298,6 +1312,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
         else {
 
+
                 holder.item_layout_tile.setVisibility(View.VISIBLE);
                 holder.circular_layout.setVisibility(View.VISIBLE);
 
@@ -1370,11 +1385,18 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 holder.add_item_flag.setText(product.getTotalQuantity());
             }
 
-
-
-
-                if (product.getInCircular()==0){
-                    if (product.getTileNumber().equalsIgnoreCase("999")) {
+            if (product.getInCircular()==0){
+                if (position==0){
+                    holder.additional_offers.setVisibility(View.VISIBLE);
+                    holder.additional_offers.setText("Personal Ad");
+                }else if (position==1){
+                    holder.additional_offers.setVisibility(View.VISIBLE);
+                    holder.additional_offers.setText("");
+                }else {
+                    holder.additional_offers.setVisibility(View.GONE);
+                    holder.additional_offers.setText("");
+                }
+                  /*  if (product.getTileNumber().equalsIgnoreCase("999")) {
                         if (activate.OtherCoupon.equalsIgnoreCase("0")) {
                             holder.additional_offers.setVisibility(View.VISIBLE);
                             holder.additional_offers.setText("Additional Offers");
@@ -1402,7 +1424,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         }
                     }else {
                         holder.additional_offers.setVisibility(View.GONE);
-                    }
+                    }*/
                     Log.i("elseincircular", String.valueOf(product.getInCircular()));
 
                     if (product.getPrimaryOfferTypeId() == 3) {
@@ -1864,7 +1886,19 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }
                 }
 
-                else {
+            else {
+                Log.i("test","else");
+                if (position==0){
+                    holder.additional_offers.setVisibility(View.VISIBLE);
+                    holder.additional_offers.setText("Personal Ad");
+                }else if (position==1){
+                    holder.additional_offers.setVisibility(View.VISIBLE);
+                    holder.additional_offers.setText("");
+                }else {
+                    holder.additional_offers.setVisibility(View.GONE);
+                    holder.additional_offers.setText("");
+                }
+
                     if (product.getTileNumber().equalsIgnoreCase("999")) {
                         if (activate.OtherCoupon.equalsIgnoreCase("0")) {
                             holder.additional_offers.setVisibility(View.VISIBLE);
@@ -1888,12 +1922,11 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                                 holder.additional_offers.setVisibility(View.VISIBLE);
                                 holder.additional_offers.setText(" ");
                             }
-                            else
-                                holder.additional_offers.setVisibility(View.GONE);
+
                         }
                     }
                     else {
-                        holder.additional_offers.setVisibility(View.GONE);
+                       // holder.additional_offers.setVisibility(View.GONE);
                     }
                     Log.i("elseincircular", String.valueOf(product.getInCircular()));
 
