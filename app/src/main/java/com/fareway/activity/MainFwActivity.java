@@ -1705,6 +1705,7 @@ public class MainFwActivity extends AppCompatActivity
         }
         else {
             Log.i("obj", String.valueOf(message3.length()));
+
             if (message3.length() < 5) {
                 search_message.setVisibility(View.VISIBLE);
                 String strCategory = "";
@@ -3168,14 +3169,14 @@ public class MainFwActivity extends AppCompatActivity
 
 
             if (product.getHasRelatedItems()==1){
-                if (product.getRelatedItemCount()>1){
+                if (product.getRelatedItemCount()>0){
                     tv_varieties_detail.setVisibility(View.VISIBLE);
                     table_varieties_view.setVisibility(View.VISIBLE);
                     Spanned varietiesUnderline = Html.fromHtml("<u>"+product.getRelatedItemCount()+" Varieties"+"</u>");
                     tv_varieties_detail.setText(varietiesUnderline);
                 }else {
-                    tv_varieties_detail.setVisibility(View.VISIBLE);
-                    table_varieties_view.setVisibility(View.VISIBLE);
+                    tv_varieties_detail.setVisibility(View.GONE);
+                    table_varieties_view.setVisibility(View.GONE);
                     Spanned varietiesUnderline = Html.fromHtml("<u>"+product.getRelatedItemCount()+" Varieties"+"</u>");
                     tv_varieties_detail.setText(varietiesUnderline);
                 }

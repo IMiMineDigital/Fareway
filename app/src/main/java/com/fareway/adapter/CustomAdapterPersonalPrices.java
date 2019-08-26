@@ -262,8 +262,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
             if (product.getInCircular()==0) {
                 if (position==0){
-                    holder.additional_offers.setVisibility(View.VISIBLE);
-                    holder.additional_offers.setText("Personal Ad");
+                   // holder.additional_offers.setVisibility(View.VISIBLE);
+                   // holder.additional_offers.setText("Personal Ad");
                 }else {
                     holder.additional_offers.setVisibility(View.GONE);
                     holder.additional_offers.setText("");
@@ -805,8 +805,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
             else {
                 if (position==0){
-                    holder.additional_offers.setVisibility(View.VISIBLE);
-                    holder.additional_offers.setText("Personal Ad");
+                    //holder.additional_offers.setVisibility(View.VISIBLE);
+                    //holder.additional_offers.setText("Personal Ad");
                 }else {
                     holder.additional_offers.setVisibility(View.GONE);
                     holder.additional_offers.setText("");
@@ -828,7 +828,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         holder.additional_offers.setVisibility(View.GONE);
                     }
                 }else {
-                   // holder.additional_offers.setVisibility(View.GONE);
+                    holder.additional_offers.setVisibility(View.GONE);
                 }
                 Log.i("elseincircular", String.valueOf(product.getInCircular()));
 
@@ -1387,11 +1387,11 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
             if (product.getInCircular()==0){
                 if (position==0){
-                    holder.additional_offers.setVisibility(View.VISIBLE);
-                    holder.additional_offers.setText("Personal Ad");
+                    //holder.additional_offers.setVisibility(View.VISIBLE);
+                    //holder.additional_offers.setText("Personal Ad");
                 }else if (position==1){
-                    holder.additional_offers.setVisibility(View.VISIBLE);
-                    holder.additional_offers.setText("");
+                    //holder.additional_offers.setVisibility(View.VISIBLE);
+                    //holder.additional_offers.setText("");
                 }else {
                     holder.additional_offers.setVisibility(View.GONE);
                     holder.additional_offers.setText("");
@@ -1889,11 +1889,11 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             else {
                 Log.i("test","else");
                 if (position==0){
-                    holder.additional_offers.setVisibility(View.VISIBLE);
-                    holder.additional_offers.setText("Personal Ad");
+                    //holder.additional_offers.setVisibility(View.VISIBLE);
+                    //holder.additional_offers.setText("Personal Ad");
                 }else if (position==1){
-                    holder.additional_offers.setVisibility(View.VISIBLE);
-                    holder.additional_offers.setText("");
+                    //holder.additional_offers.setVisibility(View.VISIBLE);
+                    //holder.additional_offers.setText("");
                 }else {
                     holder.additional_offers.setVisibility(View.GONE);
                     holder.additional_offers.setText("");
@@ -1926,7 +1926,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         }
                     }
                     else {
-                       // holder.additional_offers.setVisibility(View.GONE);
+                        holder.additional_offers.setVisibility(View.GONE);
                     }
                     Log.i("elseincircular", String.valueOf(product.getInCircular()));
 
