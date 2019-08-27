@@ -9021,7 +9021,7 @@ public class MainFwActivity extends AppCompatActivity
         DetaileToolbar.setVisibility(View.VISIBLE);
         DetaileToolbar.setTitle("Detail");
         navigation.setVisibility(View.GONE);
-        scrollView.setVisibility(View.VISIBLE);
+       // scrollView.setVisibility(View.VISIBLE);
         liner_detail_add_item.setVisibility(View.VISIBLE);
         liner_add_sub_button.setVisibility(View.VISIBLE);
 
@@ -9477,7 +9477,7 @@ public class MainFwActivity extends AppCompatActivity
                             @Override
                             public void onResponse(String response) {
                                 Log.i("Fareway Reated text", response.toString());
-
+                                scrollView.setVisibility(View.VISIBLE);
                                 if (!response.equals("[]")) {
                                     try {
 
