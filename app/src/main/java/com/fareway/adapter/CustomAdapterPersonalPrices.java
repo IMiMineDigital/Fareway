@@ -1302,6 +1302,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             }else {
                 if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
                     Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(holder.imv_item);
+                }else if (product.getLargeImagePath().equalsIgnoreCase("")){
+                    Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(holder.imv_item);
                 }else {
                     Picasso.get().load(product.getLargeImagePath()).into(holder.imv_item);
                 }
@@ -2388,6 +2390,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 }
             }else {
                 if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+                    Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(holder.imv_item);
+                }else if (product.getLargeImagePath().equalsIgnoreCase("")){
                     Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(holder.imv_item);
                 }else {
                     Picasso.get().load(product.getLargeImagePath()).into(holder.imv_item);

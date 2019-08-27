@@ -2878,6 +2878,8 @@ public class MainFwActivity extends AppCompatActivity
         else {
             if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
                 Picasso.get().load("https://platform.immdemo.net/web/images/GEnoimage.jpg").into(imv_item_detaile);
+            }else if (product.getLargeImagePath().equalsIgnoreCase("")){
+                Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(imv_item_detaile);
             }else {
                 Picasso.get().load(product.getLargeImagePath()).into(imv_item_detaile);
             }
@@ -5257,6 +5259,41 @@ public class MainFwActivity extends AppCompatActivity
         else if (x==3){
             try {
 
+                for (int i = 0; i < message.length(); i++) {
+
+                    if(PrimaryOfferTypeID ==1)
+                    {
+
+                        if (message.getJSONObject(i).getString("UPC").equalsIgnoreCase(upc)) {
+
+                            message.getJSONObject(i).put("ListCount", 1);
+                            message.getJSONObject(i).put("ClickCount", 1);
+                            message.getJSONObject(i).put("Quantity", quantity);
+
+                        }
+
+                    }
+                    else
+                    {
+                        Log.i("ansnns","test1");
+                        if (message.getJSONObject(i).getString("CouponID").equalsIgnoreCase(UPC)) {
+
+                            message.getJSONObject(i).put("ClickCount", 1);
+                            message.getJSONObject(i).put("ListCount", 1);
+                            message.getJSONObject(i).put("Quantity", quantity);
+                            Log.i("qutytestststst", String.valueOf(qty));
+                            message.getJSONObject(i).put("TotalQuantity", qty);
+
+
+                        }
+                        else {
+
+                        }
+
+                    }
+                }
+               // fetchProduct();
+
                 for (int i = 0; i < message3.length(); i++) {
 
                     if(PrimaryOfferTypeID ==1)
@@ -6423,6 +6460,8 @@ public class MainFwActivity extends AppCompatActivity
             }
         }else {
             if (relatedItem.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+                Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(imv_item_detaile);
+            }else if (relatedItem.getLargeImagePath().equalsIgnoreCase("")){
                 Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(imv_item_detaile);
             }else if (relatedItem.getLargeImagePath().equalsIgnoreCase("")){
                 Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(imv_item_detaile);
