@@ -173,7 +173,7 @@ public class MainFwActivity extends AppCompatActivity
     private ArrayList<Shopping> shoppingArrayList;
     private ShoppingListAdapter shoppingListAdapter;
 
-    public static   int x=0; int y=0; int z=1; int c=0;
+    public static   int x=0; int y=0; int z=1; int c=0; int participate=1;
     public int a=0; int b=0 ;
     private EditText et_search;
     private RequestQueue mQueue;
@@ -400,6 +400,7 @@ public class MainFwActivity extends AppCompatActivity
                             submit_btn.setImageResource(R.drawable.ic_clear_black_24dp);
                             submit_btn.setTag(1);
                             String search=edit_txt.getText().toString();
+                            participate=0;
                             searchLoad(search);
                             x=3;
 
@@ -435,6 +436,7 @@ public class MainFwActivity extends AppCompatActivity
                             submit_btn.setImageResource(R.drawable.ic_clear_black_24dp);
                             submit_btn.setTag(1);
                             String search=edit_txt.getText().toString();
+                            participate=0;
                             searchLoad(search);
                             navigation.setVisibility(View.VISIBLE);
                             x=3;
@@ -449,6 +451,7 @@ public class MainFwActivity extends AppCompatActivity
                             submit_btn.setImageResource(R.drawable.ic_search_black_24dp);
                             submit_btn.setTag(0);
                             edit_txt.getText().clear();
+                            participate=1;
                             fetchProduct();
                             x=0;
                             //header_title visible
@@ -466,8 +469,9 @@ public class MainFwActivity extends AppCompatActivity
                 if (Integer.parseInt(imv_micro_recorder.getTag().toString())==0){
                     imv_micro_recorder.setImageResource(R.drawable.ic_clear_black_24dp);
                     imv_micro_recorder.setTag(1);
+                    participate=0;
                     getSpeechInput(v);
-                    navigation.setVisibility(View.GONE);
+                    navigation.setVisibility(View.VISIBLE);
                 }else {
                     imv_micro_recorder.setImageResource(R.drawable.micro_recorder);
                     imv_micro_recorder.setTag(0);
@@ -575,6 +579,8 @@ public class MainFwActivity extends AppCompatActivity
         imv_logo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                x=0;
+                participate=1;
                 finish();
             }
         });
@@ -584,6 +590,7 @@ public class MainFwActivity extends AppCompatActivity
             public void onClick(View v) {
                 InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                 imm.hideSoftInputFromWindow(edit_txt.getWindowToken(), 0);
+
             }
         });
         shopping_list_header = findViewById(R.id.shopping_list_header);
@@ -786,7 +793,8 @@ public class MainFwActivity extends AppCompatActivity
                 }
                 return true;
             }else*/  if (i == R.id.home_button) {
-
+                x=0;
+                participate=1;
                 finish();
                 return true;
             } else if (i == R.id.savings) {
@@ -1707,7 +1715,12 @@ public class MainFwActivity extends AppCompatActivity
             Log.i("obj", String.valueOf(message3.length()));
 
             if (message3.length() < 5) {
-                search_message.setVisibility(View.VISIBLE);
+                if (participate==0){
+                    search_message.setVisibility(View.VISIBLE);
+                }else if (participate==1){
+                    search_message.setVisibility(View.GONE);
+                }
+
                 String strCategory = "";
                 String strCategoryCheck = "";
                 int Categoryid = 0;
@@ -2306,6 +2319,7 @@ public class MainFwActivity extends AppCompatActivity
 
     @Override
     public void onProductSelected(final Product product) {
+        //participate=0;
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(edit_txt.getWindowToken(), 0);
         Log.i("click", String.valueOf(product.getClickCount()));
@@ -2607,6 +2621,7 @@ public class MainFwActivity extends AppCompatActivity
                                                             header_title.setVisibility(View.GONE);
                                                         }
                                                         else {
+                                                            search_message.setVisibility(View.VISIBLE);
                                                             rv_items_group.setVisibility(View.GONE);
                                                             rv_items_verite.setVisibility(View.GONE);
                                                             participateToolbar.setVisibility(View.GONE);
@@ -5147,18 +5162,17 @@ public class MainFwActivity extends AppCompatActivity
                     }
                     else
                     {
-                        Log.i("ansnns","test1");
-                        if (message.getJSONObject(i).getString("CouponID").equalsIgnoreCase(UPC)) {
 
+                        if (message.getJSONObject(i).getString("CouponID").equalsIgnoreCase(UPC)) {
                             message.getJSONObject(i).put("ClickCount", 1);
                             message.getJSONObject(i).put("ListCount", 1);
-                            message.getJSONObject(i).put("Quantity", quantity);
-                            Log.i("qutytestststst", String.valueOf(qty));
+                            Log.i("qut", String.valueOf(qty));
                             message.getJSONObject(i).put("TotalQuantity", qty);
 
-
                         }
-                        else {
+                        if (message.getJSONObject(i).getString("UPC").equalsIgnoreCase(upc)) {
+                            message.getJSONObject(i).put("Quantity", quantity);
+                            Log.i("qut", String.valueOf(qty));
 
                         }
 
@@ -5280,16 +5294,16 @@ public class MainFwActivity extends AppCompatActivity
 
                             message.getJSONObject(i).put("ClickCount", 1);
                             message.getJSONObject(i).put("ListCount", 1);
-                            message.getJSONObject(i).put("Quantity", quantity);
                             Log.i("qutytestststst", String.valueOf(qty));
                             message.getJSONObject(i).put("TotalQuantity", qty);
 
 
                         }
-                        else {
+                        if (message.getJSONObject(i).getString("UPC").equalsIgnoreCase(upc)) {
+                            message.getJSONObject(i).put("Quantity", quantity);
+                            Log.i("qutytestststst", String.valueOf(qty));
 
                         }
-
                     }
                 }
                // fetchProduct();
@@ -5302,22 +5316,29 @@ public class MainFwActivity extends AppCompatActivity
                             message3.getJSONObject(i).put("ListCount", 1);
                             message3.getJSONObject(i).put("ClickCount", 1);
                             message3.getJSONObject(i).put("Quantity", quantity);
+                            message3.getJSONObject(i).put("TotalQuantity", qty);
                         }
                     }
                     else
                     {
-                        Log.i("ansnns","test1");
+
                         if (message3.getJSONObject(i).getString("CouponID").equalsIgnoreCase(UPC)) {
                             message3.getJSONObject(i).put("ClickCount", 1);
                             message3.getJSONObject(i).put("ListCount", 1);
-                            message3.getJSONObject(i).put("Quantity", quantity);
+                            Log.i("qut", String.valueOf(qty));
+                            message3.getJSONObject(i).put("TotalQuantity", qty);
+
                         }
-                        else {
+                        if (message3.getJSONObject(i).getString("UPC").equalsIgnoreCase(upc)) {
+                            message3.getJSONObject(i).put("Quantity", quantity);
+                            Log.i("qut", String.valueOf(qty));
+
                         }
 
                     }
                 }
-                //searchProduct();
+                //
+                searchProduct();
                 shoppingListLoad();
                 if (jsonParam == null) {
                     Log.i("testtttt", String.valueOf(jsonParam));
@@ -5382,17 +5403,16 @@ public class MainFwActivity extends AppCompatActivity
                             message.getJSONObject(i).put("TotalQuantity", qty);
                             Log.i("testqty", String.valueOf(qty));
 
-                        }else {
-                            if (message.getJSONObject(i).getString("CouponID").equalsIgnoreCase(CouponID)) {
-                                message.getJSONObject(i).put("ClickCount", 1);
-                                message.getJSONObject(i).put("ListCount", 1);
-                                message.getJSONObject(i).put("Quantity", quantity);
-                                message.getJSONObject(i).put("TotalQuantity", qty);
-                                Log.i("Coupontestqty", String.valueOf(qty));
+                        }
+                        if (message.getJSONObject(i).getString("CouponID").equalsIgnoreCase(CouponID)) {
+                            message.getJSONObject(i).put("ClickCount", 1);
+                            message.getJSONObject(i).put("ListCount", 1);
+                            //message.getJSONObject(i).put("Quantity", quantity);
+                            message.getJSONObject(i).put("TotalQuantity", qty);
+                            Log.i("Coupontestqty", String.valueOf(qty));
 
 
 
-                            }
                         }
 
                     }
@@ -5497,6 +5517,47 @@ public class MainFwActivity extends AppCompatActivity
         else if (x==3){
             try {
 
+                for (int i = 0; i < message.length(); i++) {
+
+                    if(PrimaryOfferTypeID ==1)
+                    {
+                        if (message.getJSONObject(i).getString("UPC").contains(UPC)) {
+                            message.getJSONObject(i).put("ListCount", 1);
+                            message.getJSONObject(i).put("ClickCount", 1);
+                            message.getJSONObject(i).put("Quantity", quantity);
+
+                        }else {
+                            if (message.getJSONObject(i).getString("CouponID").equalsIgnoreCase(CouponID)) {
+                                message.getJSONObject(i).put("ClickCount", 1);
+                                message.getJSONObject(i).put("ListCount", 1);
+                                //message.getJSONObject(i).put("Quantity", quantity);
+
+
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        if (message.getJSONObject(i).getString("UPC").contains(UPC)) {
+                            //message.getJSONObject(i).put("ClickCount", 1);
+                            //message.getJSONObject(i).put("ListCount", 1);
+                            message.getJSONObject(i).put("Quantity", quantity);
+                            //message.getJSONObject(i).put("TotalQuantity", qty);
+                            Log.i("testqty", String.valueOf(qty));
+
+                        }
+                        if (message.getJSONObject(i).getString("CouponID").equalsIgnoreCase(CouponID)) {
+                            message.getJSONObject(i).put("ClickCount", 1);
+                            message.getJSONObject(i).put("ListCount", 1);
+                            //message.getJSONObject(i).put("Quantity", quantity);
+                            message.getJSONObject(i).put("TotalQuantity", qty);
+                            Log.i("Coupontestqty", String.valueOf(qty));
+                        }
+
+                    }
+                }
+
                 for (int i = 0; i < message3.length(); i++) {
 
                     if(PrimaryOfferTypeID ==1)
@@ -5505,6 +5566,7 @@ public class MainFwActivity extends AppCompatActivity
                         if (message3.getJSONObject(i).getString("UPC").contains(UPC)) {
                             message3.getJSONObject(i).put("ListCount", 1);
                             message3.getJSONObject(i).put("ClickCount", 1);
+                            message3.getJSONObject(i).put("Quantity", quantity);
                         }
 
                     }
@@ -5513,11 +5575,17 @@ public class MainFwActivity extends AppCompatActivity
                         if (message3.getJSONObject(i).getString("UPC").contains(UPC)) {
                             message3.getJSONObject(i).put("ClickCount", 1);
                             message3.getJSONObject(i).put("ListCount", 1);
+                            message3.getJSONObject(i).put("Quantity", quantity);
+                            message3.getJSONObject(i).put("TotalQuantity", qty);
+                            Log.i("testqty", String.valueOf(qty));
 
-                        }else {
-                            if (message3.getJSONObject(i).getString("CouponID").equalsIgnoreCase(CouponID)) {
-                                message3.getJSONObject(i).put("ClickCount", 1);
-                            }
+                        }
+                        else if (message3.getJSONObject(i).getString("CouponID").equalsIgnoreCase(CouponID)) {
+                            message3.getJSONObject(i).put("ClickCount", 1);
+                            message3.getJSONObject(i).put("ListCount", 1);
+                            //message3.getJSONObject(i).put("Quantity", quantity);
+                            message3.getJSONObject(i).put("TotalQuantity", qty);
+                            Log.i("Coupontestqty", String.valueOf(qty));
                         }
 
                     }
@@ -5531,6 +5599,7 @@ public class MainFwActivity extends AppCompatActivity
                         if (jsonParam.getJSONObject(j).getString("UPC").contains(UPC)) {
                             jsonParam.getJSONObject(j).put("ListCount", 1);
                             jsonParam.getJSONObject(j).put("ClickCount", 1);
+                            jsonParam.getJSONObject(j).put("Quantity", quantity);
                             Log.i("testttt", String.valueOf(jsonParam.getJSONObject(j).getString("UPC").contains(UPC)));
                         }else {
                             jsonParam.getJSONObject(j).put("ClickCount", 1);
@@ -5759,7 +5828,7 @@ public class MainFwActivity extends AppCompatActivity
                                 Log.i("qtydetail ", String.valueOf(qty));
                                 message.getJSONObject(i).put("ClickCount", 1);
                                 message.getJSONObject(i).put("ListCount", 0);
-                                message.getJSONObject(i).put("Quantity", "0");
+                               // message.getJSONObject(i).put("Quantity", "0");
                                 message.getJSONObject(i).put("TotalQuantity", qty);
                             }
                         }
@@ -5862,6 +5931,26 @@ public class MainFwActivity extends AppCompatActivity
         else if (x==3){
             try {
 
+                for (int i = 0; i < message.length(); i++) {
+
+
+                    if (message.getJSONObject(i).getString("UPC").contains(UPC)) {
+                        message.getJSONObject(i).put("ClickCount", 1);
+                        message.getJSONObject(i).put("ListCount", 0);
+                        message.getJSONObject(i).put("Quantity", "0");
+                        //message.getJSONObject(i).put("TotalQuantity", qty);
+
+                    }
+                    if (message.getJSONObject(i).getString("CouponID").equalsIgnoreCase(CouponID)) {
+                        Log.i("qtydetail ", String.valueOf(qty));
+                        message.getJSONObject(i).put("ClickCount", 1);
+                        message.getJSONObject(i).put("ListCount", 0);
+                        //message.getJSONObject(i).put("Quantity", "0");
+                        message.getJSONObject(i).put("TotalQuantity", qty);
+                    }
+
+                }
+
                 for (int i = 0; i < message3.length(); i++) {
 
                     if(PrimaryOfferTypeID ==1)
@@ -5870,41 +5959,47 @@ public class MainFwActivity extends AppCompatActivity
                         if (message3.getJSONObject(i).getString("UPC").contains(UPC)) {
                             message3.getJSONObject(i).put("ListCount", 1);
                             message3.getJSONObject(i).put("ClickCount", 1);
+                            message.getJSONObject(i).put("Quantity", "0");
                         }
 
                     }
                     else
                     {
-                        if (message3.getJSONObject(i).getString("UPC").contains(UPC)) {
+                        if (message3.getJSONObject(i).getString("CouponID").equalsIgnoreCase(CouponID)) {
+                            Log.i("qtydetail ", String.valueOf(qty));
                             message3.getJSONObject(i).put("ClickCount", 1);
-                            message3.getJSONObject(i).put("ListCount", 1);
+                            message3.getJSONObject(i).put("ListCount", 0);
+                            message3.getJSONObject(i).put("Quantity", "0");
+                            message3.getJSONObject(i).put("TotalQuantity", qty);
 
-                        }else {
-                            if (message3.getJSONObject(i).getString("CouponID") == CouponID) {
-                                message3.getJSONObject(i).put("ClickCount", 1);
-                            }
                         }
 
                     }
                 }
+
                 searchProduct();
+                //fetchProduct();
                 if (jsonParam == null) {
                     Log.i("testtttt", String.valueOf(jsonParam));
                     //no students
                 }else {
                     for (int j = 0; j < jsonParam.length(); j++) {
                         if (jsonParam.getJSONObject(j).getString("UPC").contains(UPC)) {
-                            jsonParam.getJSONObject(j).put("ListCount", 1);
+                            jsonParam.getJSONObject(j).put("ListCount", 0);
                             jsonParam.getJSONObject(j).put("ClickCount", 1);
+                            jsonParam.getJSONObject(j).put("Quantity", 0);
+
                             Log.i("testttt", String.valueOf(jsonParam.getJSONObject(j).getString("UPC").contains(UPC)));
                         }else {
+                            //  jsonParam.getJSONObject(j).put("ListCount", 0);
                             jsonParam.getJSONObject(j).put("ClickCount", 1);
                             Log.i("elsetestttt", String.valueOf(jsonParam.getJSONObject(j).getString("UPC").contains(UPC)));
 
                         }
                         Log.i("test", String.valueOf(jsonParam.getJSONObject(j)));
                     }
-
+                    // jsonParam.getJSONObject(i).put("ClickCount", 1);
+                    // jsonParam.getJSONObject(i).put("ListCount", 1);
                     fetchVeritesProduct();
                 }
             }
@@ -6910,6 +7005,7 @@ public class MainFwActivity extends AppCompatActivity
                                         //.setText(product.getQuantity());
                                         qty=qty-1;
                                         fetchShoppingListLoad();
+                                        //
                                         SetProductActivateDetaile(relatedItem.getPrimaryOfferTypeId(),relatedItem.getCouponID(),relatedItem.getUPC(),relatedItem.getRequiresActivation(),1,String.valueOf((Integer.parseInt(relatedItem.getQuantity())-0)));
                                         progressDialog.dismiss();
                                     }
@@ -7069,6 +7165,7 @@ public class MainFwActivity extends AppCompatActivity
 
                                         SetProductActivateDetaile(relatedItem.getPrimaryOfferTypeId(),relatedItem.getCouponID(),relatedItem.getUPC(),relatedItem.getRequiresActivation(),1,String.valueOf((Integer.parseInt(relatedItem.getQuantity())+0)));
                                         progressDialog.dismiss();
+                                        //
                                         //
 
                                        /* Log.i("success", String.valueOf(response));
@@ -7355,6 +7452,7 @@ public class MainFwActivity extends AppCompatActivity
 
     @Override
     public void onRelatedItemSelected2(final RelatedItem relatedItem) {
+        participate=1;
         Log.i("clickcount", String.valueOf(relatedItem.getClickCount()));
         progressDialog = new ProgressDialog(activity);
         progressDialog.setMessage("Processing");
@@ -7401,8 +7499,9 @@ public class MainFwActivity extends AppCompatActivity
                                 Log.i("Fareway Reated text", response.toString());
                                 relatedItem.setQuantity(String.valueOf((Integer.parseInt(relatedItem.getQuantity())+1)));
                                 qty=qty+1;
-                                SetProductActivateShopping(relatedItem.getUPC(), relatedItem.getPrimaryOfferTypeId(),relatedItem.getCouponID(),1,String.valueOf((Integer.parseInt(relatedItem.getQuantity())+0)));
 
+                                SetProductActivateShopping(relatedItem.getUPC(), relatedItem.getPrimaryOfferTypeId(),relatedItem.getCouponID(),1,String.valueOf((Integer.parseInt(relatedItem.getQuantity())+0)));
+//
                                 if (relatedItem.getPrimaryOfferTypeId()==3 || relatedItem.getPrimaryOfferTypeId()==2){
 
                                         liner_all_Varieties_activate.setVisibility(View.VISIBLE);
@@ -7517,6 +7616,7 @@ public class MainFwActivity extends AppCompatActivity
                                 relatedItem.setQuantity(String.valueOf((Integer.parseInt(relatedItem.getQuantity())+1)));
                                 Log.i("qtytest", String.valueOf(qty));
                                 qty=qty+1;
+
                                 //
                                 Log.i("qtytest2", String.valueOf(qty));
                                 SetProductActivateShopping(relatedItem.getUPC(),relatedItem.getPrimaryOfferTypeId(),relatedItem.getCouponID(),1,String.valueOf((Integer.parseInt(relatedItem.getQuantity())+0)));
@@ -7573,6 +7673,7 @@ public class MainFwActivity extends AppCompatActivity
 
     @Override
     public void onRelatedItemSelected3(final RelatedItem relatedItem) {
+        participate=1;
         Log.i("remove","remove");
         progressDialog = new ProgressDialog(activity);
         progressDialog.setMessage("Processing");
@@ -7620,6 +7721,7 @@ public class MainFwActivity extends AppCompatActivity
                                 Log.i("success", String.valueOf(response));
                                 relatedItem.setQuantity(String.valueOf((Integer.parseInt(relatedItem.getQuantity()) - 1)));
                                 qty=qty-1;
+
                                 SetProductActivateShopping(relatedItem.getUPC(), relatedItem.getPrimaryOfferTypeId(), relatedItem.getCouponID(), 1, String.valueOf((Integer.parseInt(relatedItem.getQuantity()) - 0)));
                                 progressDialog.dismiss();
                             }
@@ -7675,7 +7777,10 @@ public class MainFwActivity extends AppCompatActivity
                                 progressDialog.dismiss();
                                 qty=qty-1;
 
+                                //
+
                                 SetRemoveActivateDetail(relatedItem.getPrimaryOfferTypeId(),relatedItem.getCouponID(),relatedItem.getUPC(),relatedItem.getRequiresActivation(),1);
+
                                 fetchShoppingListLoad();
                             }
                         }, new Response.ErrorListener() {
@@ -8505,7 +8610,11 @@ public class MainFwActivity extends AppCompatActivity
 
                                                 }
                                             }
-                                            fetchProduct();
+                                            if (x==3){
+
+                                            }else {
+                                                fetchProduct();
+                                            }
                                             Log.i("qut", String.valueOf(0));
 
                                         }else {
@@ -8531,7 +8640,12 @@ public class MainFwActivity extends AppCompatActivity
 
                                                 }
                                             }
-                                            fetchProduct();
+                                            if (x==3){
+
+                                            }else {
+                                                fetchProduct();
+                                            }
+
                                             Log.i("qut", String.valueOf(qtyShopping));
 
                                             tv_number_item.setText(String.valueOf(shopping.length()));
@@ -8619,6 +8733,8 @@ public class MainFwActivity extends AppCompatActivity
                 if (message.getJSONObject(i).getString("UPC").contains(shopping.getDisplayUPC().replace("UPC: ",""))) {
                     message.getJSONObject(i).put("ListCount", 0);
                     message.getJSONObject(i).put("ClickCount", 1);
+                    message.getJSONObject(i).put("Quantity", "0");
+                    //
 
                 }
             } catch (JSONException e) {
@@ -8626,7 +8742,7 @@ public class MainFwActivity extends AppCompatActivity
             }
 
         }
-        fetchProduct();
+       // fetchProduct();
         //shoppingListLoad();
 
         Log.i("remove","remove");
