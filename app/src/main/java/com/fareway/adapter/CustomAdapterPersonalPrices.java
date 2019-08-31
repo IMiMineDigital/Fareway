@@ -2151,7 +2151,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                                 holder.liner_save.setVisibility(View.GONE);
                                 holder.liner_promo_price.setVisibility(View.GONE);
                                 holder.tv_coupon_type_1.setVisibility(View.GONE);
-                            }else {
+                            }
+                            else {
                                 holder.liner_save.setVisibility(View.GONE);
                                 holder.liner_promo_price.setVisibility(View.GONE);
                                 holder.tv_coupon_type_1.setVisibility(View.GONE);
@@ -2234,7 +2235,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                                 holder.tv_detail.setText(product.getoCouponShortDescription());
                             }
 
-                        } catch (Exception e) {
+                        }
+                        catch (Exception e) {
 
                         }
 
@@ -2383,8 +2385,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 }
 
             if (product.getOfferDefinitionId()==5 ||product.getOfferDefinitionId()==8){
-                if (product.getLargeImagePath().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
-                    Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(holder.imv_item);
+                if (product.getCouponImageURl().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+                   // Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(holder.imv_item);
                 }else {
                     Picasso.get().load(product.getCouponImageURl()).into(holder.imv_item);
                 }

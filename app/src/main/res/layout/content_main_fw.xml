@@ -506,14 +506,6 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal">
             <Button
-                android:textAllCaps="false"
-                android:padding="@dimen/_10sdp"
-                android:background="@color/white"
-                android:id="@+id/shopping_list_fragment"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="Shopping List"/>
-            <Button
                 android:background="@color/light_grey"
                 android:textColor="@color/grey"
                 android:textAllCaps="false"
@@ -522,6 +514,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Activated Offers"/>
+            <Button
+                android:textAllCaps="false"
+                android:padding="@dimen/_10sdp"
+                android:background="@color/white"
+                android:id="@+id/shopping_list_fragment"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Shopping List"/>
+
 
         </LinearLayout>
 <!--
