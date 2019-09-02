@@ -80,6 +80,9 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
     public MainFwActivity varites = new MainFwActivity();
     public static AppUtilFw appUtil;
     public int tileNo=0;
+    public static boolean couponTile=true;
+    int p=0;
+    int q=0;
 
     public class MyViewHolder extends RecyclerView.ViewHolder
     {
@@ -1923,15 +1926,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     holder.additional_offers.setText("Additional Offers");
                 }*/
 
-
+/*
                     if (product.getTileNumber().equalsIgnoreCase("999")) {
-                       /* int tileNo1=tileNo;
-
-                        if (tileNo1+1==position){
-                            holder.additional_offers.setVisibility(View.VISIBLE);
-                            holder.additional_offers.setText("Additional Offers");
-
-                        }*/
 
                         if (activate.OtherCoupon.equalsIgnoreCase("0")) {
                             holder.additional_offers.setVisibility(View.VISIBLE);
@@ -1963,8 +1959,39 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }
                     else {
                         holder.additional_offers.setVisibility(View.GONE);
-                    }
+                    }*/
+
+
                     Log.i("elseincircular", String.valueOf(product.getInCircular()));
+                    if (product.getCouponID().equalsIgnoreCase("1111")){
+                        if (couponTile==true){
+                            p=position+1;
+                            q=position+2;
+
+                            Log.i("puper", String.valueOf(p));
+
+                            Log.i("boolen","test");
+                            couponTile=false;
+                        }
+                        Log.i("tilecoupon",product.getCouponID()+"test");
+                        holder.item_layout_tile.setVisibility(View.GONE);
+
+/*
+                        ViewGroup.LayoutParams params = holder.item_layout_tile.getLayoutParams();
+                        params.height = 30;
+                        holder.item_layout_tile.setLayoutParams(params);*/
+                    }
+                    Log.i("valuep", String.valueOf(p));
+                Log.i("valueq", String.valueOf(q));
+                    if (p==position && p!=0){
+                        holder.additional_offers.setVisibility(View.VISIBLE);
+                        holder.additional_offers.setText("Additional Offers");
+                    }else if (q==position && q!=0){
+                        holder.additional_offers.setVisibility(View.VISIBLE);
+                        holder.additional_offers.setText("");
+                    }else {
+                        holder.additional_offers.setVisibility(View.GONE);
+                    }
 
                     if (product.getPrimaryOfferTypeId() == 3) {
                         holder.tv_promo_price__pri_fix.setText("");
@@ -2059,6 +2086,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }
 
                     else if (product.getPrimaryOfferTypeId() == 2) {
+
                         holder.liner_save.setVisibility(View.GONE);
                         holder.liner_promo_price.setVisibility(View.GONE);
                         holder.tv_coupon_type_1.setVisibility(View.GONE);
@@ -2405,18 +2433,16 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
                     }
 
-                    else  if (product.getPrimaryOfferTypeId()==420){
+                   /* else  if (product.getPrimaryOfferTypeId()==420){
 
                         holder.item_layout_tile.setVisibility(View.GONE);
 
                         ViewGroup.LayoutParams params = holder.item_layout_tile.getLayoutParams();
-
                         params.height = 30;
-
                         holder.item_layout_tile.setLayoutParams(params);
 
 
-                    }
+                    }*/
 
                 }
 
