@@ -159,6 +159,7 @@ public class MainFwActivity extends AppCompatActivity
     private LinearLayout rowLayout,rowLayout0,rowLayout1,rowLayout2,rowLayout3;
     public static int tmp=0;
     public String OtherCoupon="0";
+
     public String OtherCouponmulti="0";
     public static JSONArray message;
     public static JSONArray morecouponlist;
@@ -2066,11 +2067,11 @@ public class MainFwActivity extends AppCompatActivity
                                          String s1=  root.getJSONArray("message").toString();
                                            String s2=  message.toString();
                                            String s3="";
-                                           String s4="{\"oCouponShortDescription\":\"OSCAR MAYER GRILLED CHICKEN STRIPS\",\"CouponShortDescription\":\"OSCAR MAYER GRILLED CHICKEN STRIPS\",\"CouponLongDescription\":\"\",\"RewardType\":\"3\",\"RewardQty\":\"0\",\"Groupname\":\"\",\"oGroupname\":\"\",\"oDisplayPrice\":\"<sup>$</sup>2.84\",\"rewardGroupname\":\"\",\"Quantity\":1,\"inCircular\":1,\"RequiresActivation\":\"True\",\"IsMidWeek\":0,\"FreeOffer\":0,\"AltTitleBarImage\":\"\",\"LimitPerTransection\":0,\"TileNumber\":\"2\",\"MemberID\":41761,\"UPCRank\":\"0\",\"HasRelatedItems\":1,\"OriginatorID\":0,\"RelevantUPC\":\"4470002288\",\"IsEmployeeOffer\":false,\"BadgeId\":\"0\",\"RedeemLimit\":0,\"RequiredQty\":1,\"CategoryPriority\":1,\"PercentSavings\":\"28.82\",\"FinalPrice\":\"2.8400\",\"AdPrice\":\"0.0000\",\"CouponDiscount\":\"0.0000\",\"PersonalCircularID\":38477,\"LoyaltyCardNumber\":\"5155567152\",\"PersonalCircularItemId\":1029271,\"SectionNumber\":3,\"StoreID\":\"657\",\"RegularPrice\":\"3.99\",\"DisplayPrice\":\"<sup>$</sup>2.84\",\"Savings\":\"1.1500\",\"DateAdded\":\"7/20/2019 2:44:13 AM\",\"ValidityStartDate\":\"7/9/19\",\"BadgeName\":\"\",\"BadgeFileName\":\"\",\"ValidityEndDate\":\"7/24/19\",\"Description\":\"OSCAR MAYER GRILLED CHICKEN STRIPS\",\"PackagingSize\":\"5.5 OZ\",\"PricingMasterID\":0,\"CategoryID\":11,\"UPC\":\"4470002288\",\"CategoryName\":\"Meat & Seafood\",\"SmallImagePath\":\"https://images.immdemo.net/product/wlarge/00044700022887.png\",\"LargeImagePath\":\"https://images.immdemo.net/product/wlarge/00044700022887.png\",\"Isbadged\":\"False\",\"ListCount\":1,\"SpecialInformation\":\"\",\"TileTemplateID\":3,\"MinAmount\":0.0,\"PriceAssociationCode\":\"\",\"PrimaryOfferTypeName\":\"Personal Deals\",\"OfferTypeTagName\":\"My Personal Deal\",\"OfferDefinition\":\"New Price\",\"CPRPromoTypeName\":\"Individual\",\"RelevancyDetail\":\"Pushed\",\"PrimaryOfferTypeId\":420,\"OfferDetailId\":1,\"OfferDefinitionId\":2,\"CPRPromoTypeId\":1,\"RelevancyTypeD\":5,\"CouponID\":7984,\"RelatedItemCount\":2,\"ClickCount\":1,\"PageID\":1,\"BrandId\":1,\"BrandName\":\"Sally Hansen\",\"DietaryId\":0,\"DietaryName\":\"\",\"RewardValue\":\"2.84\",\"CouponImageURl\":\"http://images.immdemo.net/coupon/wlarge/couponImg.jpg\"}";
+                                           String s4="{\"oCouponShortDescription\":\"OSCAR MAYER GRILLED CHICKEN STRIPS\",\"CouponShortDescription\":\"OSCAR MAYER GRILLED CHICKEN STRIPS\",\"CouponLongDescription\":\"\",\"RewardType\":\"3\",\"RewardQty\":\"0\",\"Groupname\":\"\",\"oGroupname\":\"\",\"oDisplayPrice\":\"<sup>$</sup>2.84\",\"rewardGroupname\":\"\",\"Quantity\":1,\"inCircular\":1,\"RequiresActivation\":\"True\",\"IsMidWeek\":0,\"FreeOffer\":0,\"AltTitleBarImage\":\"\",\"LimitPerTransection\":0,\"TileNumber\":\"2\",\"MemberID\":41761,\"UPCRank\":\"0\",\"HasRelatedItems\":1,\"OriginatorID\":0,\"RelevantUPC\":\"4470002288\",\"IsEmployeeOffer\":false,\"BadgeId\":\"0\",\"RedeemLimit\":0,\"RequiredQty\":1,\"CategoryPriority\":1,\"PercentSavings\":\"28.82\",\"FinalPrice\":\"2.8400\",\"AdPrice\":\"0.0000\",\"CouponDiscount\":\"0.0000\",\"PersonalCircularID\":38477,\"LoyaltyCardNumber\":\"5155567152\",\"PersonalCircularItemId\":1029271,\"SectionNumber\":3,\"StoreID\":\"657\",\"RegularPrice\":\"3.99\",\"DisplayPrice\":\"<sup>$</sup>2.84\",\"Savings\":\"1.1500\",\"DateAdded\":\"7/20/2019 2:44:13 AM\",\"ValidityStartDate\":\"7/9/19\",\"BadgeName\":\"\",\"BadgeFileName\":\"\",\"ValidityEndDate\":\"7/24/19\",\"Description\":\"OSCAR MAYER GRILLED CHICKEN STRIPS\",\"PackagingSize\":\"5.5 OZ\",\"PricingMasterID\":0,\"CategoryID\":11,\"UPC\":\"4470002288\",\"CategoryName\":\"Meat & Seafood\",\"SmallImagePath\":\"https://images.immdemo.net/product/wlarge/00044700022887.png\",\"LargeImagePath\":\"https://images.immdemo.net/product/wlarge/00044700022887.png\",\"Isbadged\":\"False\",\"ListCount\":1,\"SpecialInformation\":\"\",\"TileTemplateID\":3,\"MinAmount\":0.0,\"PriceAssociationCode\":\"\",\"PrimaryOfferTypeName\":\"Personal Deals\",\"OfferTypeTagName\":\"My Personal Deal\",\"OfferDefinition\":\"New Price\",\"CPRPromoTypeName\":\"Individual\",\"RelevancyDetail\":\"Pushed\",\"PrimaryOfferTypeId\":420,\"OfferDetailId\":1,\"OfferDefinitionId\":2,\"CPRPromoTypeId\":1,\"RelevancyTypeD\":5,\"CouponID\":1111,\"RelatedItemCount\":2,\"ClickCount\":1,\"PageID\":1,\"BrandId\":1,\"BrandName\":\"Sally Hansen\",\"DietaryId\":0,\"DietaryName\":\"\",\"RewardValue\":\"2.84\",\"CouponImageURl\":\"http://images.immdemo.net/coupon/wlarge/couponImg.jpg\"}";
                                            s1=s1.substring(s1.indexOf("[")+1, s1.lastIndexOf("]"));
                                            s2=s2.substring(s2.indexOf("[")+1, s2.lastIndexOf("]"));
                                            int a=message.length()/2;
-
+                                           //s3="["+s2+","+s1+"]";
                                            if (a*2==message.length()){
                                                s3="["+s2+","+s1+"]";
                                            }else {
@@ -3125,6 +3126,7 @@ public class MainFwActivity extends AppCompatActivity
             else {
 
             }
+            //
 
             String chars = capitalize(product.getDescription());
             tv_detail_detail.setText(chars+" "+product.getPackagingSize());
@@ -10276,6 +10278,9 @@ Log.i("test12345","click");
 
                                 bottomLayout_detaile.setBackgroundColor(getResources().getColor(R.color.green));
 
+                                //
+
+
                                 String displayPrice=message.getJSONObject(i).getString("DisplayPrice").toString();
                                 if(message.getJSONObject(i).getString("DisplayPrice").toString().split("\\.").length>1)
                                     displayPrice= message.getJSONObject(i).getString("DisplayPrice").split("\\.")[0]+"<sup>"+ message.getJSONObject(i).getString("DisplayPrice").split("\\.")[1]+"<sup>";
@@ -10283,6 +10288,7 @@ Log.i("test12345","click");
                                 Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
                                 //
                                 Log.i("anshu", String.valueOf(result));
+                                tv_price_detaile.setText(result);
                                 if (message.getJSONObject(i).getString("RewardType").equalsIgnoreCase("2") && message.getJSONObject(i).getInt("OfferDefinitionId")==4){
                                     tv_price_detaile.setText("Buy "+message.getJSONObject(i).getString("RequiredQty")+"\n"+"Get "+message.getJSONObject(i).getString("RewardQty")+" "+result+"*");
                                 } else if (message.getJSONObject(i).getString("RewardType").equalsIgnoreCase("1") && message.getJSONObject(i).getInt("OfferDefinitionId")==4 ){
@@ -10300,7 +10306,7 @@ Log.i("test12345","click");
 
                                 }
                                 String chars = capitalize(message.getJSONObject(i).getString("Description"));
-                                tv_detail_detail.setText(chars);
+                                tv_detail_detail.setText(chars+" "+message.getJSONObject(i).getString("PackagingSize"));
 
                                 String chars2 = capitalize(message.getJSONObject(i).getString("CouponShortDescription"));
                                 tv_coupon_detail_detail.setText("\n"+chars2);

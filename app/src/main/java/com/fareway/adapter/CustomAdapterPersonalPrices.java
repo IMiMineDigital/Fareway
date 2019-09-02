@@ -79,6 +79,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
     public MainFwActivity activate = new MainFwActivity();
     public MainFwActivity varites = new MainFwActivity();
     public static AppUtilFw appUtil;
+    public int tileNo=0;
 
     public class MyViewHolder extends RecyclerView.ViewHolder
     {
@@ -1890,30 +1891,63 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
             else {
                 Log.i("test","else");
-                if (position==0){
-                    //holder.additional_offers.setVisibility(View.VISIBLE);
-                    //holder.additional_offers.setText("Personal Ad");
+                /*if (position==0){
+                    holder.additional_offers.setVisibility(View.VISIBLE);
+                    holder.additional_offers.setText("Personal Ad");
                 }else if (position==1){
-                    //holder.additional_offers.setVisibility(View.VISIBLE);
-                    //holder.additional_offers.setText("");
+                    holder.additional_offers.setVisibility(View.VISIBLE);
+                    holder.additional_offers.setText("");
                 }else {
                     holder.additional_offers.setVisibility(View.GONE);
                     holder.additional_offers.setText("");
+                }*/
+                int tile1=0;
+                /*
+                if (product.getPrimaryOfferTypeId()==420){
+                    tileNo=position;
+                    tile1=tileNo+1;
+                    Log.i("tileno1", String.valueOf(tileNo));
+                    holder.item_layout_tile.setVisibility(View.GONE);
+
+                    ViewGroup.LayoutParams params = holder.item_layout_tile.getLayoutParams();
+
+                    params.height = 30;
+
+                    holder.item_layout_tile.setLayoutParams(params);
+
+
                 }
+                if (tile1==position&&product.getTileNumber().equalsIgnoreCase("999")){
+                    Log.i("tileno2", String.valueOf(tile1));
+                    holder.additional_offers.setVisibility(View.VISIBLE);
+                    holder.additional_offers.setText("Additional Offers");
+                }*/
+
 
                     if (product.getTileNumber().equalsIgnoreCase("999")) {
+                       /* int tileNo1=tileNo;
+
+                        if (tileNo1+1==position){
+                            holder.additional_offers.setVisibility(View.VISIBLE);
+                            holder.additional_offers.setText("Additional Offers");
+
+                        }*/
+
                         if (activate.OtherCoupon.equalsIgnoreCase("0")) {
                             holder.additional_offers.setVisibility(View.VISIBLE);
                             holder.additional_offers.setText("Additional Offers");
                             activate.OtherCoupon=product.getCouponID();
+
                         }
                         else if (activate.OtherCoupon.equalsIgnoreCase(product.getCouponID()))
                         {
                             holder.additional_offers.setVisibility(View.VISIBLE);
                             holder.additional_offers.setText("Additional Offers");
+
                         }
                         else
                         {
+
                             if (activate.OtherCouponmulti.equalsIgnoreCase("0")) {
                                 holder.additional_offers.setVisibility(View.VISIBLE);
                                 holder.additional_offers.setText(" ");
@@ -2371,17 +2405,19 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
                     }
 
-                    else if (product.getPrimaryOfferTypeId()==420){
+                    else  if (product.getPrimaryOfferTypeId()==420){
+
                         holder.item_layout_tile.setVisibility(View.GONE);
-                        // Gets linearlayout
-                        //LinearLayout layout = findViewById(R.id.numberPadLayout);
-// Gets the layout params that will allow you to resize the layout
+
                         ViewGroup.LayoutParams params = holder.item_layout_tile.getLayoutParams();
-// Changes the height and width to the specified *pixels*
+
                         params.height = 30;
-                        // params.width = 100;
+
                         holder.item_layout_tile.setLayoutParams(params);
+
+
                     }
+
                 }
 
             if (product.getOfferDefinitionId()==5 ||product.getOfferDefinitionId()==8){
