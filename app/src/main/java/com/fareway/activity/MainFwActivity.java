@@ -132,7 +132,8 @@ public class MainFwActivity extends AppCompatActivity
         ShoppingListAdapter.ShoppingListAdapterListener{
 
     private DrawerLayout drawer;
-    private Toolbar toolbar;private Toolbar DetaileToolbar;private Toolbar participateToolbar;
+    public static Toolbar toolbar;
+    private Toolbar DetaileToolbar;private Toolbar participateToolbar;
     //private NavigationView navigationView;
     private TextView mTextMessage,tv_uname,tv_filter_by_category,tv_filter_by_offer,tv_type,tv_number_item,add_item;
     private ImageView imv_view_list,imv_all_delete,imv_logo,imv_status_verities;
@@ -146,6 +147,7 @@ public class MainFwActivity extends AppCompatActivity
     public static ArrayList<Product> productList;
     private static CustomAdapterPersonalPrices customAdapterPersonalPrices;
     public static boolean singleView=true;private Activity activity;
+    public static boolean pdView=true;
     private BottomNavigationView navigation;
     private RelativeLayout main,search_message;
     private PopupWindow popupWindow;
@@ -403,6 +405,7 @@ public class MainFwActivity extends AppCompatActivity
                             String search=edit_txt.getText().toString();
                             participate=0;
                             searchLoad(search);
+                            pdView=false;
                             x=3;
 
 
@@ -413,6 +416,7 @@ public class MainFwActivity extends AppCompatActivity
                             submit_btn.setImageResource(R.drawable.ic_search_black_24dp);
                             submit_btn.setTag(0);
                             edit_txt.getText().clear();
+                            pdView=true;
                             fetchProduct();
                             x=0;
                         }
@@ -439,6 +443,7 @@ public class MainFwActivity extends AppCompatActivity
                             String search=edit_txt.getText().toString();
                             participate=0;
                             searchLoad(search);
+                            pdView=false;
                             navigation.setVisibility(View.VISIBLE);
                             x=3;
                             header_title.setVisibility(View.GONE);
@@ -453,6 +458,7 @@ public class MainFwActivity extends AppCompatActivity
                             submit_btn.setTag(0);
                             edit_txt.getText().clear();
                             participate=1;
+                            pdView=true;
                             fetchProduct();
                             x=0;
                             //header_title visible
@@ -829,8 +835,8 @@ public class MainFwActivity extends AppCompatActivity
             else if(i == R.id.ShoppingList){
                 //startActivity(new Intent(MainFwActivity.this,ShoppingFw.class));
                 if (x==0 || x==3) {
-                    linear_shopping_list_tab.setVisibility(View.VISIBLE);
-                    linear_coupon_tab.setVisibility(View.GONE);
+                    linear_shopping_list_tab.setVisibility(View.GONE);
+                    linear_coupon_tab.setVisibility(View.VISIBLE);
 
                     rv_shopping_list_items.setVisibility(View.VISIBLE);
                     shopping_list_header.setVisibility(View.VISIBLE);
@@ -847,16 +853,18 @@ public class MainFwActivity extends AppCompatActivity
 
                     x=1;
                     z=0;
-                    shopping_list_fragment.setBackground(getResources().getDrawable(R.color.white));
-                    shopping_list_fragment.setTextColor(getResources().getColor(R.color.black));
-                    activated_offer_fragment.setBackground(getResources().getDrawable(R.color.light_grey));
-                    activated_offer_fragment.setTextColor(getResources().getColor(R.color.grey));
+                    shopping_list_fragment.setBackground(getResources().getDrawable(R.color.light_grey));
+                    shopping_list_fragment.setTextColor(getResources().getColor(R.color.grey));
+                    activated_offer_fragment.setBackground(getResources().getDrawable(R.color.white));
+                    activated_offer_fragment.setTextColor(getResources().getColor(R.color.black));
                     navigation.getMenu().findItem(R.id.ShoppingList).setTitle("Personal Ad");
                     navigation.getMenu().findItem(R.id.ShoppingList).setIcon(R.drawable.account);
                     Log.i("ifbottom", String.valueOf(x)+comeFrom);
 
-
-                    fetchActivatedOffer();
+                    //fetchActivatedOffer();
+                    //
+                    activatedOffersListIdLoad();
+                    //
                     //
                     imv_all_delete.setOnClickListener(new View.OnClickListener() {
                         @Override
@@ -873,6 +881,9 @@ public class MainFwActivity extends AppCompatActivity
                         public void onClick(View v) {
                             x=0;
                             z=0;
+                            shoppingArrayList.clear();
+                            shoppingListAdapter.notifyDataSetChanged();
+
                             navigation.getMenu().findItem(R.id.ShoppingList).setTitle("MyFareway List");
                             navigation.getMenu().findItem(R.id.ShoppingList).setIcon(R.drawable.ic_view_list_black_24dp);
                             tv.setVisibility(View.VISIBLE);
@@ -890,6 +901,9 @@ public class MainFwActivity extends AppCompatActivity
                 else if(x==1 ) {
                     x=0;
                     z=0;
+                    shoppingArrayList.clear();
+                    shoppingListAdapter.notifyDataSetChanged();
+
                     navigation.getMenu().findItem(R.id.ShoppingList).setTitle("MyFareway List");
                     navigation.getMenu().findItem(R.id.ShoppingList).setIcon(R.drawable.ic_view_list_black_24dp);
                     tv.setVisibility(View.VISIBLE);
@@ -949,7 +963,7 @@ public class MainFwActivity extends AppCompatActivity
                 rv_shopping_list_items.setVisibility(View.GONE);
 
                 navigation.setVisibility(View.VISIBLE);
-                toolbar.setVisibility(View.VISIBLE);
+                toolbar.setVisibility(View.GONE);
                 tv.setVisibility(View.VISIBLE);
                // x=0;
                 navigation.getMenu().findItem(R.id.ShoppingList).setTitle("MyFareway List");
@@ -970,7 +984,7 @@ public class MainFwActivity extends AppCompatActivity
                 rv_shopping_list_items.setVisibility(View.GONE);
 
                 navigation.setVisibility(View.VISIBLE);
-                toolbar.setVisibility(View.VISIBLE);
+                toolbar.setVisibility(View.GONE);
                 tv.setVisibility(View.VISIBLE);
 
                 navigation.getMenu().findItem(R.id.ShoppingList).setTitle("MyFareway List");
@@ -984,22 +998,26 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout0.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            pdView=true;
                             tmp=0;
                             fetchProduct();
                             rv_category.setVisibility(View.GONE);
                             rowLayout.setVisibility(View.GONE);
                             rv_items.setVisibility(View.VISIBLE);
+                            toolbar.setVisibility(View.VISIBLE);
                         }
                     });
                     rowLayout1.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
+                            pdView=false;
                             tmp=3;
                             fetchProduct();
                             rv_category.setVisibility(View.GONE);
                             rowLayout.setVisibility(View.GONE);
                             rv_items.setVisibility(View.VISIBLE);
+                            toolbar.setVisibility(View.VISIBLE);
+
                         }
                     });
                     rowLayout2.setOnClickListener(new View.OnClickListener() {
@@ -1010,6 +1028,7 @@ public class MainFwActivity extends AppCompatActivity
                             rv_category.setVisibility(View.GONE);
                             rowLayout.setVisibility(View.GONE);
                             rv_items.setVisibility(View.VISIBLE);
+                            toolbar.setVisibility(View.VISIBLE);
                         }
                     });
                     rowLayout3.setOnClickListener(new View.OnClickListener() {
@@ -1020,6 +1039,7 @@ public class MainFwActivity extends AppCompatActivity
                             rv_category.setVisibility(View.GONE);
                             rowLayout.setVisibility(View.GONE);
                             rv_items.setVisibility(View.VISIBLE);
+                            toolbar.setVisibility(View.VISIBLE);
                         }
                     });
                 }
@@ -1036,6 +1056,7 @@ public class MainFwActivity extends AppCompatActivity
                             rv_category.setVisibility(View.GONE);
                             rowLayout.setVisibility(View.GONE);
                             rv_items.setVisibility(View.VISIBLE);
+                            toolbar.setVisibility(View.VISIBLE);
                         }
                     });
                     rowLayout1.setOnClickListener(new View.OnClickListener() {
@@ -1046,6 +1067,7 @@ public class MainFwActivity extends AppCompatActivity
                             rv_category.setVisibility(View.GONE);
                             rowLayout.setVisibility(View.GONE);
                             rv_items.setVisibility(View.VISIBLE);
+                            toolbar.setVisibility(View.VISIBLE);
                         }
                     });
                     rowLayout2.setOnClickListener(new View.OnClickListener() {
@@ -1056,6 +1078,7 @@ public class MainFwActivity extends AppCompatActivity
                             rv_category.setVisibility(View.GONE);
                             rowLayout.setVisibility(View.GONE);
                             rv_items.setVisibility(View.VISIBLE);
+                            toolbar.setVisibility(View.VISIBLE);
                         }
                     });
                     rowLayout3.setOnClickListener(new View.OnClickListener() {
@@ -1066,6 +1089,7 @@ public class MainFwActivity extends AppCompatActivity
                             rv_category.setVisibility(View.GONE);
                             rowLayout.setVisibility(View.GONE);
                             rv_items.setVisibility(View.VISIBLE);
+                            toolbar.setVisibility(View.VISIBLE);
                         }
                     });
                 }
@@ -4785,8 +4809,11 @@ Log.i("test12345","click");
         getCategoryViceData(s);
         rv_category.setVisibility(View.GONE);
         rv_items.setVisibility(View.VISIBLE);
+        toolbar.setVisibility(View.VISIBLE);
+
         return null;
     }
+
 
     public static String getCategoryViceData(int s){
         Log.i("anshu", String.valueOf(x));
@@ -8607,7 +8634,7 @@ Log.i("test12345","click");
                                             shoppingListAdapter.notifyDataSetChanged();
                                             tv_number_item.setText(String.valueOf(0));
                                             tv.setText(String.valueOf(0));
-                                            activatedOffersListIdLoad();
+                                            //activatedOffersListIdLoad();
 
                                         }else {
                                             Log.i("shopping", String.valueOf(shopping));
@@ -8626,7 +8653,7 @@ Log.i("test12345","click");
                                             tv_number_item.setText(String.valueOf(shopping.length()));
                                             tv.setText(String.valueOf(shopping.length()));
                                             //
-                                            activatedOffersListIdLoad();
+                                            //activatedOffersListIdLoad();
                                         }
                                     }
                                 } catch (JSONException e) {
@@ -11861,9 +11888,9 @@ Log.i("url",url);
     public void activatedOffersListIdLoad() {
         if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
             try {
-                //progressDialog = new ProgressDialog(activity);
-                //progressDialog.setMessage("Processing");
-                //progressDialog.show();
+                progressDialog = new ProgressDialog(activity);
+                progressDialog.setMessage("Processing");
+                progressDialog.show();
                 StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET,Constant.WEB_URL + "ShoopingList/ActivatedCoupons?MemberId="+appUtil.getPrefrence("MemberId")+"&CategoryID=2",
                         new Response.Listener<String>(){
                             @Override
@@ -11879,7 +11906,7 @@ Log.i("url",url);
 
                                     JSONObject root2 = new JSONObject(root.getString("message"));
                                     if (root.getString("errorcode").equals("0")){
-                                        //progressDialog.dismiss();
+                                        progressDialog.dismiss();
                                         Log.i("anshuman","test");
 
                                         try
@@ -11890,8 +11917,25 @@ Log.i("url",url);
                                         {
                                             activatedOffer = null;
                                         }
+                                        /*activated_offer_fragment.setBackground(getResources().getDrawable(R.color.white));
+                                        activated_offer_fragment.setTextColor(getResources().getColor(R.color.black));
+                                        shopping_list_fragment.setBackground(getResources().getDrawable(R.color.light_grey));
+                                        shopping_list_fragment.setTextColor(getResources().getColor(R.color.grey));
+                                        z=0;*/
+                                        if (activatedOffer == null) {
+                                            shoppingArrayList.clear();
+                                            shoppingListAdapter.notifyDataSetChanged();
+                                            //no students
+                                        }else {
+                                            shoppingArrayList.clear();
+                                            List<Shopping> items = new Gson().fromJson(activatedOffer.toString(), new TypeToken<List<Shopping>>() {
+                                            }.getType());
+                                            shoppingArrayList.addAll(items);
+                                            shoppingListAdapter.notifyDataSetChanged();
+                                        }
+                                        //fetchShoppingListLoad();
 
-                                        if (activatedOffer==null ){
+                                        /*if (activatedOffer==null ){
                                             Log.i("anshuman","test");
                                             shoppingArrayList.clear();
                                             shoppingListAdapter.notifyDataSetChanged();
@@ -11901,9 +11945,7 @@ Log.i("url",url);
 
                                             for (int i = 0; i < activatedOffer.length(); i++) {
                                             }
-
-                                        // fetchShopping();
-                                        }
+                                        }*/
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();

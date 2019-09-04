@@ -81,14 +81,17 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
     public static AppUtilFw appUtil;
     public int tileNo=0;
     public static boolean couponTile=true;
+
     int p=0;
     int q=0;
+    int r=0;
+    int s=0;
 
     public class MyViewHolder extends RecyclerView.ViewHolder
     {
 
         private TextView tv_coupon_type_1,add_item_flag,tv_status,tv_remove,tv_price,tv_unit,tv_saving,tv_saving_pri_fix,tv_promo_price__pri_fix,tv_promo_price,tv_detail,tv_deal_type,
-                tv_coupon_flag,tv_varieties,limit,must,add_plus,add_minus,tv_quantity,additional_offers;
+                tv_coupon_flag,tv_varieties,limit,must,add_plus,add_minus,tv_quantity,additional_offers,personal_offers;
         public ImageView imv_item, imv_info,imv_status,coupon_badge;
         private LinearLayout circular_layout,bottomLayout,liner_save,count_product_number,liner_promo_price,
                 item_layout_tile;
@@ -119,6 +122,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             tv_deal_type = (TextView) view.findViewById(R.id.tv_deal_type);
             tv_coupon_flag=(TextView)view.findViewById(R.id.tv_coupon_flag);
             additional_offers=(TextView)view.findViewById(R.id.additional_offers);
+
+
 
             tv_quantity = (TextView) view.findViewById(R.id.tv_quantity);
             add_item_flag = (TextView) view.findViewById(R.id.add_item_flag);
@@ -1894,16 +1899,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
             else {
                 Log.i("test","else");
-                /*if (position==0){
-                    holder.additional_offers.setVisibility(View.VISIBLE);
-                    holder.additional_offers.setText("Personal Ad");
-                }else if (position==1){
-                    holder.additional_offers.setVisibility(View.VISIBLE);
-                    holder.additional_offers.setText("");
-                }else {
-                    holder.additional_offers.setVisibility(View.GONE);
-                    holder.additional_offers.setText("");
-                }*/
+
                 int tile1=0;
                 /*
                 if (product.getPrimaryOfferTypeId()==420){
@@ -1980,9 +1976,17 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         ViewGroup.LayoutParams params = holder.item_layout_tile.getLayoutParams();
                         params.height = 30;
                         holder.item_layout_tile.setLayoutParams(params);*/
+                    }else if (product.getTileNumber().equalsIgnoreCase("999")){
+                        if (couponTile==true){
+                            r=position;
+                            s=position+1;
+                            couponTile=false;
+                        }
                     }
+
                     Log.i("valuep", String.valueOf(p));
-                Log.i("valueq", String.valueOf(q));
+                    Log.i("valueq", String.valueOf(q));
+
                     if (p==position && p!=0){
                         holder.additional_offers.setVisibility(View.VISIBLE);
                         holder.additional_offers.setText("Additional Offers");
@@ -1992,8 +1996,29 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }else {
                         holder.additional_offers.setVisibility(View.GONE);
                     }
+                    if (r==position && r!=0){
+                        holder.additional_offers.setVisibility(View.VISIBLE);
+                        holder.additional_offers.setText("Additional Offers");
+                    }else if (s==position && s!=0){
+                        holder.additional_offers.setVisibility(View.VISIBLE);
+                        holder.additional_offers.setText("");
+                     }else {
+                        holder.additional_offers.setVisibility(View.GONE);
+                    }
+
 
                     if (product.getPrimaryOfferTypeId() == 3) {
+                        if (position==0 && MainFwActivity.pdView==true){
+                            holder.additional_offers.setVisibility(View.VISIBLE);
+                            holder.additional_offers.setText("Personal Ad");
+                        }else if (position==1 && MainFwActivity.pdView==true){
+                            holder.additional_offers.setVisibility(View.VISIBLE);
+                            holder.additional_offers.setText("");
+                        }else {
+                            holder.additional_offers.setVisibility(View.GONE);
+                            holder.additional_offers.setText("");
+                        }
+
                         holder.tv_promo_price__pri_fix.setText("");
                         holder.tv_promo_price.setText("");
                         holder.limit.setGravity(Gravity.CENTER);

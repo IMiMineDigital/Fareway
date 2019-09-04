@@ -6,7 +6,17 @@
     android:orientation="vertical"
     android:id="@+id/item_layout_tile"
     >
-
+    <TextView
+        android:visibility="gone"
+        android:background="@color/red"
+        android:gravity="center"
+        android:fontFamily="@font/roboto"
+        android:textColor="@color/white"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="Personal Offers"
+        android:lines="2"
+        android:id="@+id/personal_offers"/>
     <TextView
         android:visibility="gone"
         android:background="@color/red"
