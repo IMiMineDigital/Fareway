@@ -510,7 +510,8 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                                             }.getType());
                                             shoppingArrayList.addAll(items);
                                             shoppingListAdapter.notifyDataSetChanged(); */
-                                            fetchShopping();
+                                            fetchActivatedOffer();
+                                            //fetchShopping();
                                         }
                                     }
                                 } catch (JSONException e) {
@@ -1217,6 +1218,9 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                                 @Override
                                 public void onResponse(String  response) {
                                     Log.i("ViewRemoveAllDialog", String.valueOf(response));
+                                    activatedOffer=null;
+                                    shoppingArrayList.clear();
+                                    shoppingListAdapter.notifyDataSetChanged();
                                     //shoppingListLoad();
                                     //removeOwnItem();
                                 }
@@ -1225,6 +1229,9 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                         public void onErrorResponse(VolleyError error) {
                             Log.i("fail", String.valueOf(error));
                             // messageLoad();
+                            activatedOffer=null;
+                            shoppingArrayList.clear();
+                            shoppingListAdapter.notifyDataSetChanged();
                             removeOwnItem();
                         }
                     }){

@@ -11767,6 +11767,10 @@ Log.i("url",url);
                                     Log.i("ViewRemoveAllDialog", String.valueOf(response));
                                     //shoppingListLoad();
                                     removeOwnItem();
+                                    activatedOffer=null;
+                                    shoppingArrayList.clear();
+                                    shoppingListAdapter.notifyDataSetChanged();
+                                    //
                                     //
                                 }
                             }, new Response.ErrorListener() {
@@ -11774,6 +11778,9 @@ Log.i("url",url);
                         public void onErrorResponse(VolleyError error) {
                             Log.i("fail", String.valueOf(error));
                            // messageLoad();
+                            activatedOffer=null;
+                            shoppingArrayList.clear();
+                            shoppingListAdapter.notifyDataSetChanged();
                             removeOwnItem();
                         }
                     }){
