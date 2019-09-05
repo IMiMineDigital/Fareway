@@ -44,6 +44,7 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -250,12 +251,19 @@ public class PurchaseHistory extends AppCompatActivity implements PurchaseHistor
     public void onProductSelected(final Purchase purchase) {
 
         Toast.makeText(getApplicationContext(), "Selected: " + purchase.getPurchasedate(), Toast.LENGTH_SHORT).show();
-        Intent i = new Intent(PurchaseHistory.this, PurchaseHistoryDetail.class);
+        try {
+            DecimalFormat dF = new DecimalFormat("00.00");
+            Number num = dF.parse(purchase.getTotalamount());
+
+            Intent i = new Intent(PurchaseHistory.this, PurchaseHistoryDetail.class);
         i.putExtra("PURCHASEID",purchase.getPurchaseid());
         i.putExtra("PURCHASEDATE",purchase.getPurchasedate());
         i.putExtra("PURCHASESTORELOCATION",purchase.getStorelocation());
-        i.putExtra("PURCHASETOTALAMOUNT",purchase.getTotalamount());
+        i.putExtra("PURCHASETOTALAMOUNT",new DecimalFormat("##.##").format(num));
         startActivity(i);
+        } catch (Exception e) {
+
+        }
     }
 
     @Override
