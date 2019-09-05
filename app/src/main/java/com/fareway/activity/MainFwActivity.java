@@ -1023,6 +1023,7 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout2.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            pdView=false;
                             tmp=2;
                             fetchProduct();
                             rv_category.setVisibility(View.GONE);
@@ -1034,6 +1035,7 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout3.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            pdView=false;
                             tmp=1;
                             fetchProduct();
                             rv_category.setVisibility(View.GONE);
@@ -2432,7 +2434,7 @@ public class MainFwActivity extends AppCompatActivity
                             new Response.Listener<String>(){
                                 @Override
                                 public void onResponse(String response) {
-                                    Log.i("Fareway Reated text", response.toString());
+                                    Log.i("Fareway Related btn", response.toString());
                                     //product.setQuantity(String.valueOf((Integer.parseInt(product.getQuantity())+1)));
                                     SetProductActivateShopping(product.getUPC(), product.getPrimaryOfferTypeId(),product.getCouponID(),1,String.valueOf((Integer.parseInt(product.getQuantity())+0)));
 
@@ -2441,7 +2443,7 @@ public class MainFwActivity extends AppCompatActivity
                                         liner_all_Varieties_activate.setVisibility(View.VISIBLE);
                                         liner_all_Varieties_activate.setBackground(getResources().getDrawable(R.drawable.circular_mehrune_bg));
                                         all_Varieties_activate.setVisibility(View.VISIBLE);
-                                        all_Varieties_activate.setText("Activa");
+                                        all_Varieties_activate.setText("Activated");
                                         imv_status_verities.setVisibility(View.VISIBLE);
 
                                     }else {
@@ -2714,9 +2716,9 @@ public class MainFwActivity extends AppCompatActivity
                                         }
                                         else{
                                             progressDialog.dismiss();
-                                            alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.incorrect_credentials),
+                                            /*alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.incorrect_credentials),
                                                     getString(R.string.ok),getString(R.string.alert));
-                                            alertDialog.show();
+                                            alertDialog.show();*/
                                             participateToolbar.setOnClickListener(new View.OnClickListener() {
                                                 @Override
                                                 public void onClick(View v) {
@@ -3846,7 +3848,6 @@ public class MainFwActivity extends AppCompatActivity
 
         //relatedItemsList.clear();
         if (product.getPrimaryOfferTypeId()==3 || product.getPrimaryOfferTypeId()==2){
-Log.i("test12345","click");
             if (product.getClickCount()==0){
                 all_Varieties_activate.setVisibility(View.VISIBLE);
                 liner_all_Varieties_activate.setVisibility(View.VISIBLE);
@@ -5234,7 +5235,7 @@ Log.i("test12345","click");
                         Log.i("test", String.valueOf(jsonParam.getJSONObject(j)));
                     }
 
-                    //fetchVeritesProduct();
+                    fetchVeritesProduct();
                 }
             }
             catch (JSONException e) {
@@ -5407,7 +5408,7 @@ Log.i("test12345","click");
                         Log.i("test", String.valueOf(jsonParam.getJSONObject(j)));
                     }
 
-                    //fetchVeritesProduct();
+                    fetchVeritesProduct();
                 }
             }
             catch (JSONException e) {
@@ -7652,6 +7653,7 @@ Log.i("test12345","click");
                             public void onResponse(String response) {
                                 Log.i("Fareway Reated text", response.toString());
                                 relatedItem.setQuantity(String.valueOf((Integer.parseInt(relatedItem.getQuantity())+1)));
+                                relatedItem.setClickCount(1);
                                 qty=qty+1;
 
                                 SetProductActivateShopping(relatedItem.getUPC(), relatedItem.getPrimaryOfferTypeId(),relatedItem.getCouponID(),1,String.valueOf((Integer.parseInt(relatedItem.getQuantity())+0)));

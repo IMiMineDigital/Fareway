@@ -214,10 +214,11 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
                                         startActivity(i);
                                         finish();
                                     }else if (root.getString("errorcode").equals("200")){
-                                       // finish();
+                                        finish();
                                         Toast.makeText(activity, root.getString("message"), Toast.LENGTH_LONG).show();
                                     }
                                 } catch (JSONException e) {
+                                    finish();
                                     e.printStackTrace();
                                 }
 
@@ -238,6 +239,7 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
 
                             }
                         }
+                        finish();
                     }
                 })
                 {
@@ -256,6 +258,7 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
                         //params.put("password", et_pwd.getText().toString());
                         params.put("UserName", appUtil.getPrefrence("Email"));
                         params.put("password", appUtil.getPrefrence("Password"));
+
                         //test
                         params.put("Device", "5");
                         return params;
@@ -281,17 +284,19 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
                 }
                 catch (Exception e)
                 {
+                    finish();
                     e.printStackTrace();
                 }
 
             } catch (Exception e) {
-
+                finish();
                 e.printStackTrace();
                 //  progressDialog.dismiss();
 //                displayAlert();
             }
 
         } else {
+            finish();
             alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
                     getString(R.string.ok),getString(R.string.alert));
             alertDialog.show();
