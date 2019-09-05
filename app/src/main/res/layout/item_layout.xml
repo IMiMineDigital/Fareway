@@ -10,7 +10,7 @@
     <TextView
         android:padding="@dimen/_5sdp"
         android:textSize="20sp"
-        android:visibility="visible"
+        android:visibility="gone"
         android:background="@color/red"
         android:gravity="left"
         android:textStyle="bold"
