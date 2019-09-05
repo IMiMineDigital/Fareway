@@ -813,13 +813,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             }
 
             else {
-                if (position==0){
-                    //holder.additional_offers.setVisibility(View.VISIBLE);
-                    //holder.additional_offers.setText("Personal Ad");
-                }else {
-                    holder.additional_offers.setVisibility(View.GONE);
-                    holder.additional_offers.setText("");
-                }
+
                 if (product.getTileNumber().equalsIgnoreCase("999")) {
                     Log.i("offercoupn", String.valueOf(activate.OtherCoupon)+"hhjj");
                     if (activate.OtherCoupon.equalsIgnoreCase("0")) {
@@ -842,6 +836,13 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 Log.i("elseincircular", String.valueOf(product.getInCircular()));
 
                 if (product.getPrimaryOfferTypeId() == 3) {
+                    if (position==0 && MainFwActivity.pdView==true){
+                        holder.additional_offers.setVisibility(View.VISIBLE);
+                        holder.additional_offers.setText("Personal Ad");
+                    }else {
+                        holder.additional_offers.setVisibility(View.GONE);
+                        holder.additional_offers.setText("");
+                    }
                     holder.tv_promo_price__pri_fix.setText("");
                     holder.tv_promo_price.setText("");
                     holder.limit.setGravity(Gravity.CENTER);

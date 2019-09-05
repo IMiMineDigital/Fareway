@@ -3,7 +3,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 group 'IMeMine'
-version '5.3'
+version '5.4'
 android {
     compileSdkVersion 28
     defaultConfig {

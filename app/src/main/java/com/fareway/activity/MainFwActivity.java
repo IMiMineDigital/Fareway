@@ -8888,7 +8888,7 @@ Log.i("test12345","click");
 
 
             try {
-                if (message.getJSONObject(i).getString("UPC").contains(shopping.getDisplayUPC().replace("UPC: ",""))) {
+                if (message.getJSONObject(i).getString("UPC").equalsIgnoreCase(shopping.getDisplayUPC().replace("UPC: ",""))) {
                     message.getJSONObject(i).put("ListCount", 0);
                     message.getJSONObject(i).put("ClickCount", 1);
                     message.getJSONObject(i).put("Quantity", "0");
@@ -8903,7 +8903,7 @@ Log.i("test12345","click");
        // fetchProduct();
         //shoppingListLoad();
 
-        Log.i("remove","remove");
+        Log.i("remove","remove"+shopping.getPrimaryOfferTypeId());
         //https://fwstagingapi.immdemo.net/api/v1/ShoppingList/List/MyOwnItem?ShoppingListOwnItemID=404
         String url = Constant.WEB_URL+Constant.SHOPPINGLISTSINGAL+shopping.getShoppingListItemID()+"&MemberId="+appUtil.getPrefrence("MemberId");
         StringRequest  jsonObjectRequest = new StringRequest (Request.Method.DELETE, url,
