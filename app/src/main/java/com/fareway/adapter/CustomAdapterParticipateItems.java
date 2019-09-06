@@ -201,8 +201,16 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
             holder.tv_quantity.setText(relatedItem.getQuantity());
             //holder.add_item_flag.setText("+");
 
+
+
             holder.circular_layout.getLayoutParams().height = 300;
             holder.circular_layout.getLayoutParams().width = 300;
+
+            holder.add_minus.getLayoutParams().height = 75;
+            holder.add_minus.getLayoutParams().width = 75;
+            holder.tv_quantity.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+            holder.add_plus.getLayoutParams().height = 75;
+            holder.add_plus.getLayoutParams().width = 75;
 
             holder.relative_badge.getLayoutParams().width = 140;
             holder.add_item_flag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
@@ -439,6 +447,12 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
             holder.tv_status.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
             holder.circular_layout.getLayoutParams().height = 200;
             holder.circular_layout.getLayoutParams().width = 200;
+
+            holder.add_minus.getLayoutParams().height = 50;
+            holder.add_minus.getLayoutParams().width = 50;
+            holder.tv_quantity.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
+            holder.add_plus.getLayoutParams().height = 50;
+            holder.add_plus.getLayoutParams().width = 50;
 
             holder.relative_badge.getLayoutParams().width = 100;
             holder.add_item_flag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 7);

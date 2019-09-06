@@ -148,6 +148,8 @@ public class MainFwActivity extends AppCompatActivity
     private static CustomAdapterPersonalPrices customAdapterPersonalPrices;
     public static boolean singleView=true;private Activity activity;
     public static boolean pdView=true;
+    public static boolean cdOddView=false;
+    public static String UPCOddView="";
     private BottomNavigationView navigation;
     private RelativeLayout main,search_message;
     private PopupWindow popupWindow;
@@ -586,6 +588,7 @@ public class MainFwActivity extends AppCompatActivity
         imv_logo.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                CustomAdapterPersonalPrices.couponTile=true;
                 x=0;
                 participate=1;
                 finish();
@@ -800,6 +803,7 @@ public class MainFwActivity extends AppCompatActivity
                 }
                 return true;
             }else*/  if (i == R.id.home_button) {
+                CustomAdapterPersonalPrices.couponTile=true;
                 x=0;
                 participate=1;
                 finish();
@@ -958,6 +962,7 @@ public class MainFwActivity extends AppCompatActivity
             int i2 = item.getItemId();
 
             if (i2 == R.id.filter_by_categories) {
+                //pdView=false;
                 DetaileToolbar.setVisibility(View.GONE);
                 shopping_list_header.setVisibility(View.GONE);
                 rv_shopping_list_items.setVisibility(View.GONE);
@@ -2101,7 +2106,16 @@ public class MainFwActivity extends AppCompatActivity
                                            if (a*2==message.length()){
                                                s3="["+s2+","+s1+"]";
                                            }else {
+                                               //cdOddView=true;
+                                               /*for (int i = message.length()-1; i < message.length(); i++) {
+                                                   Log.i("UPCghbj",message.getJSONObject(i).getString("UPC"));
+                                                   Log.i("string", String.valueOf(message.getJSONObject(i)));
+                                                   UPCOddView=message.getJSONObject(i).getString("UPC");
+                                                   s3="["+s2+","+String.valueOf(message.getJSONObject(i))+","+s1+"]";
+                                               }*/
+                                               //s3="["+s2+","+s1+"]";
                                                s3="["+s2+","+s4+","+s1+"]";
+
                                            }
 
                                            message=null;
@@ -4828,7 +4842,6 @@ public class MainFwActivity extends AppCompatActivity
                 int category_count = 0;
                 int subcat=0;
                 if (tmp==0){
-
                     String test1="";
                     for (int i = 0; i < message.length(); i++) {
                         try {
@@ -4880,7 +4893,7 @@ public class MainFwActivity extends AppCompatActivity
 
                 }
                 else {
-
+                    pdView=false;
                     String test1="";
                     for (int i = 0; i < message.length(); i++) {
                         try {

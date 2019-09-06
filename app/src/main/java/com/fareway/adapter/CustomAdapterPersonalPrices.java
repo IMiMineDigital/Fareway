@@ -86,6 +86,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
     int q=0;
     int r=0;
     int s=0;
+    int blockTile=0;
 
     public class MyViewHolder extends RecyclerView.ViewHolder
     {
@@ -842,6 +843,13 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 Log.i("elseincircular", String.valueOf(product.getInCircular()));
 
                 if (product.getPrimaryOfferTypeId() == 3) {
+                    if (position==0 && MainFwActivity.pdView==true){
+                        holder.additional_offers.setVisibility(View.VISIBLE);
+                        holder.additional_offers.setText("Personal Ad");
+                    }else {
+                        holder.additional_offers.setVisibility(View.GONE);
+                        holder.additional_offers.setText("");
+                    }
                     holder.tv_promo_price__pri_fix.setText("");
                     holder.tv_promo_price.setText("");
                     holder.limit.setGravity(Gravity.CENTER);
@@ -1900,7 +1908,6 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             else {
                 Log.i("test","else");
 
-                int tile1=0;
                 /*
                 if (product.getPrimaryOfferTypeId()==420){
                     tileNo=position;
@@ -1959,6 +1966,56 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
 
                     Log.i("elseincircular", String.valueOf(product.getInCircular()));
+
+
+                  /*  if (MainFwActivity.cdOddView==true&&MainFwActivity.UPCOddView.equalsIgnoreCase(product.getUPC())){
+
+                        blockTile =position+1;
+                        Log.i("tilecoupon2",blockTile+"test");
+                        Log.i("pos",position+"test");
+
+
+                    }
+                if (blockTile-1==position){
+                    Log.i("tilecoupon",product.getCouponID()+"test");
+                    holder.item_layout_tile.setVisibility(View.GONE);
+                }*/
+
+/*
+                    if (MainFwActivity.cdOddView==true&&MainFwActivity.UPCOddView.equalsIgnoreCase(product.getUPC())){
+                        if (couponTile==true && MainFwActivity.pdView==true){
+                            p=position+1;
+                            q=position+2;
+
+                            Log.i("puper", String.valueOf(p));
+
+                            Log.i("boolen","test");
+                            couponTile=false;
+                            holder.item_layout_tile.setVisibility(View.VISIBLE);
+                        }else {
+                            holder.item_layout_tile.setVisibility(View.GONE);
+                        }
+                        Log.i("tilecoupon",product.getCouponID()+"test");
+
+
+                    }
+
+                if (product.getTileNumber().equalsIgnoreCase("999")){
+                    Log.i("offersssfhs",product.getCouponID()+"test");
+                    if (couponTile==true && MainFwActivity.pdView==true){
+                        Log.i("offerssss",product.getCouponID()+"test");
+                        r=position;
+                        s=position+1;
+                        couponTile=false;
+                    }
+                }
+                    if (p==position && p!=0){
+                        holder.item_layout_tile.setVisibility(View.GONE);
+                    }
+                    if ((p-1)==position &&p!=0){
+                        holder.item_layout_tile.setVisibility(View.VISIBLE);
+                    }*/
+
                     if (product.getCouponID().equalsIgnoreCase("1111")){
                         if (couponTile==true && MainFwActivity.pdView==true){
                             p=position+1;
@@ -1972,12 +2029,11 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         Log.i("tilecoupon",product.getCouponID()+"test");
                         holder.item_layout_tile.setVisibility(View.GONE);
 
-/*
-                        ViewGroup.LayoutParams params = holder.item_layout_tile.getLayoutParams();
-                        params.height = 30;
-                        holder.item_layout_tile.setLayoutParams(params);*/
                     }else if (product.getTileNumber().equalsIgnoreCase("999")){
+                        Log.i("puperxdf", String.valueOf(couponTile));
+                        Log.i("puperxdf", String.valueOf(MainFwActivity.pdView));
                         if (couponTile==true && MainFwActivity.pdView==true){
+                            Log.i("puperxdf", "test");
                             r=position;
                             s=position+1;
                             couponTile=false;
@@ -1986,8 +2042,13 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
                     Log.i("valuep", String.valueOf(p));
                     Log.i("valueq", String.valueOf(q));
+                Log.i("valuer", String.valueOf(r));
+                Log.i("values", String.valueOf(s));
 
-                    if (p==position && p!=0){
+
+                if (p==position && p!=0){
+                        Log.i("valuepif", String.valueOf(p));
+                        Log.i("valueq", String.valueOf(q));
                         holder.additional_offers.setVisibility(View.VISIBLE);
                         holder.additional_offers.setText("Additional Offers");
                     }else if (q==position && q!=0){
@@ -2003,7 +2064,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         holder.additional_offers.setVisibility(View.VISIBLE);
                         holder.additional_offers.setText("");
                      }else {
-                        holder.additional_offers.setVisibility(View.GONE);
+                        //holder.additional_offers.setVisibility(View.GONE);
                     }
 
 

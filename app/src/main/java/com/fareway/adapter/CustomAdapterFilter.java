@@ -72,6 +72,11 @@ public class CustomAdapterFilter extends RecyclerView.Adapter<CustomAdapterFilte
             public void onClick(View v) {
                 //activate.OtherCoupon=0;
                 //activate.OtherCouponmulti=0;
+                if (position==0){
+                    MainFwActivity.pdView=true;
+                }else {
+                    MainFwActivity.pdView=false;
+                }
 
                 try {
                     MainFwActivity.getDate(category.getCategoryID());
