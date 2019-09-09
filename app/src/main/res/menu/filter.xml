@@ -11,6 +11,11 @@
         android:orderInCategory="100"
         android:title="All offers"
         app:showAsAction="never" />
+    <item
+        android:id="@+id/filter_by_short"
+        android:orderInCategory="100"
+        android:title="Sort"
+        app:showAsAction="never" />
     <!--   <item
           android:id="@+id/filter_by_personal_deal"
           android:orderInCategory="100"

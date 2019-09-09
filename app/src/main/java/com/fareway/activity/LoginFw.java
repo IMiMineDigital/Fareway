@@ -126,7 +126,7 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
         tv_forgot.setText(forgot_support);
         tv_forgot.setMovementMethod(LinkMovementMethod.getInstance());
         tv_forgot.setHighlightColor(Color.TRANSPARENT);
-       // login();
+        //login();
     }
 
 

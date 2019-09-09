@@ -335,6 +335,127 @@
 
     </LinearLayout>
 
+    <LinearLayout
+        android:background="@color/white"
+        android:visibility="gone"
+        android:id="@+id/rowLayoutShort"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <LinearLayout
+
+            android:id="@+id/rowLayout0Short"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/_10sdp"
+            >
+            <TextView
+                android:fontFamily="@font/roboto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Recommended"
+                android:scrollHorizontally="false"
+                style="@style/label_tx"
+                android:layout_weight="1"
+                />
+
+            <ImageView
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:layout_gravity="center"
+                android:layout_weight="0"
+                android:src="@drawable/go"
+                />
+
+        </LinearLayout>
+
+        <View android:id="@+id/separator1Short"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:background="#acaaaa"
+            android:layout_width = "fill_parent"
+            android:layout_height="1dip"
+            android:layout_centerVertical ="true"
+            android:layout_alignParentTop="true"/>
+
+        <LinearLayout
+
+            android:id="@+id/rowLayout1Short"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/_10sdp"
+            >
+            <TextView
+                android:fontFamily="@font/roboto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Saving"
+                android:scrollHorizontally="false"
+                style="@style/label_tx"
+                android:layout_weight="1"
+                />
+
+            <ImageView
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:layout_gravity="center"
+                android:layout_weight="0"
+                android:src="@drawable/go"
+                />
+
+        </LinearLayout>
+
+        <View android:id="@+id/separator2Short"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:background="#acaaaa"
+            android:layout_width = "fill_parent"
+            android:layout_height="1dip"
+            android:layout_centerVertical ="true"
+            android:layout_alignParentTop="true"/>
+
+        <LinearLayout
+
+            android:id="@+id/rowLayout2Short"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/_10sdp"
+            >
+            <TextView
+                android:fontFamily="@font/roboto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Offer Type"
+                android:scrollHorizontally="false"
+                style="@style/label_tx"
+                android:layout_weight="1"
+                />
+
+            <ImageView
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:layout_gravity="center"
+                android:layout_weight="0"
+                android:src="@drawable/go"
+                />
+
+        </LinearLayout>
+
+        <View android:id="@+id/separator3Short"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:background="#acaaaa"
+            android:layout_width = "fill_parent"
+            android:layout_height="1dip"
+            android:layout_centerVertical ="true"
+            android:layout_alignParentTop="true"/>
+
+    </LinearLayout>
+
     <androidx.recyclerview.widget.RecyclerView
         android:background="@color/white"
         android:visibility="invisible"

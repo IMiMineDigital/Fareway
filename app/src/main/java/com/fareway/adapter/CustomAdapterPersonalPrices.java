@@ -80,7 +80,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
     public MainFwActivity varites = new MainFwActivity();
     public static AppUtilFw appUtil;
     public int tileNo=0;
-    public static boolean couponTile=true;
+    //public static boolean couponTile=true;
 
     int p=0;
     int q=0;
@@ -800,7 +800,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
                 }
 
-                else if (product.getPrimaryOfferTypeId()==420){
+                else if (product.getPrimaryOfferTypeId()==0){
                     holder.item_layout_tile.setVisibility(View.GONE);
                     // Gets linearlayout
                     //LinearLayout layout = findViewById(R.id.numberPadLayout);
@@ -821,7 +821,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     holder.additional_offers.setVisibility(View.GONE);
                     holder.additional_offers.setText("");
                 }
-                if (product.getTileNumber().equalsIgnoreCase("999")) {
+                if (product.getTileNumber().equalsIgnoreCase("999")&& MainFwActivity.couponTile==true) {
                     Log.i("offercoupn", String.valueOf(activate.OtherCoupon)+"hhjj");
                     if (activate.OtherCoupon.equalsIgnoreCase("0")) {
                         holder.additional_offers.setVisibility(View.VISIBLE);
@@ -1297,7 +1297,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
                 }
 
-                else if (product.getPrimaryOfferTypeId()==420){
+                else if (product.getPrimaryOfferTypeId()==0){
                     holder.item_layout_tile.setVisibility(View.GONE);
                     // Gets linearlayout
                     //LinearLayout layout = findViewById(R.id.numberPadLayout);
@@ -1892,7 +1892,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
                     }
 
-                    else if (product.getPrimaryOfferTypeId()==420){
+                    else if (product.getPrimaryOfferTypeId()==0){
                         holder.item_layout_tile.setVisibility(View.GONE);
                         // Gets linearlayout
                         //LinearLayout layout = findViewById(R.id.numberPadLayout);
@@ -2017,26 +2017,27 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }*/
 
                     if (product.getCouponID().equalsIgnoreCase("1111")){
-                        if (couponTile==true && MainFwActivity.pdView==true){
+                        if (MainFwActivity.couponTile==true && MainFwActivity.pdView==true){
                             p=position+1;
                             q=position+2;
 
                             Log.i("puper", String.valueOf(p));
 
                             Log.i("boolen","test");
-                            couponTile=false;
+                            MainFwActivity.couponTile=false;
+                            Log.i("tilecoupon",product.getCouponID()+"test");
+                            holder.item_layout_tile.setVisibility(View.GONE);
                         }
-                        Log.i("tilecoupon",product.getCouponID()+"test");
-                        holder.item_layout_tile.setVisibility(View.GONE);
+
 
                     }else if (product.getTileNumber().equalsIgnoreCase("999")){
-                        Log.i("puperxdf", String.valueOf(couponTile));
+                        Log.i("puperxdf", String.valueOf(MainFwActivity.couponTile));
                         Log.i("puperxdf", String.valueOf(MainFwActivity.pdView));
-                        if (couponTile==true && MainFwActivity.pdView==true){
+                        if (MainFwActivity.couponTile==true && MainFwActivity.pdView==true){
                             Log.i("puperxdf", "test");
                             r=position;
                             s=position+1;
-                            couponTile=false;
+                            MainFwActivity.couponTile=false;
                         }
                     }
 
@@ -2046,21 +2047,21 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 Log.i("values", String.valueOf(s));
 
 
-                if (p==position && p!=0){
+                if (p==position && p!=0 && MainFwActivity.pdView==true){
                         Log.i("valuepif", String.valueOf(p));
                         Log.i("valueq", String.valueOf(q));
                         holder.additional_offers.setVisibility(View.VISIBLE);
                         holder.additional_offers.setText("Additional Offers");
-                    }else if (q==position && q!=0){
+                    }else if (q==position && q!=0 && MainFwActivity.pdView==true){
                         holder.additional_offers.setVisibility(View.VISIBLE);
                         holder.additional_offers.setText("");
                     }else {
                         holder.additional_offers.setVisibility(View.GONE);
                     }
-                    if (r==position && r!=0){
+                    if (r==position && r!=0 && MainFwActivity.pdView==true){
                         holder.additional_offers.setVisibility(View.VISIBLE);
                         holder.additional_offers.setText("Additional Offers");
-                    }else if (s==position && s!=0){
+                    }else if (s==position && s!=0 && MainFwActivity.pdView==true){
                         holder.additional_offers.setVisibility(View.VISIBLE);
                         holder.additional_offers.setText("");
                      }else {
@@ -2519,7 +2520,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
                     }
 
-                   /* else  if (product.getPrimaryOfferTypeId()==420){
+                    else  if (product.getPrimaryOfferTypeId()==0){
 
                         holder.item_layout_tile.setVisibility(View.GONE);
 
@@ -2528,7 +2529,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         holder.item_layout_tile.setLayoutParams(params);
 
 
-                    }*/
+                    }
 
                 }
 
