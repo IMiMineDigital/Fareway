@@ -106,8 +106,30 @@ public class SavingFw extends AppCompatActivity {
                                             tv_total_save.setText("$"+message.getJSONObject(i).getString("TotalSaving"));
 
                                         }
+                                    }else  if (root.getString("errorcode").equals("400")){
+                                        progressDialog.dismiss();
+                                        message= root.getJSONArray("message");
+                                        tv_pty_lbl.setText("My Personal Deals");
+                                        tv_tyc_lbl.setText("Digital Coupons");
+                                        tv_total_save_lbl.setText("Total Savings");
+                                        //fetchProduct();
+                                        /*for (int i = 0; i < message.length(); i++) {
+                                            tv_pty_lbl.setText(message.getJSONObject(i).names().getString(0).replace("PersonalDealSaving","My Personal Deals"));
+                                            tv_pty.setText("$"+message.getJSONObject(i).getString("PersonalDealSaving"));
+                                            tv_tyc_lbl.setText(message.getJSONObject(i).names().getString(1).replace("CouponSaving","Digital Coupons"));
+                                            tv_tyc.setText("$"+message.getJSONObject(i).getString("CouponSaving"));
+                                            tv_pc_lbl.setText(message.getJSONObject(i).names().getString(2).replace("TPRSaving","Sale Items"));
+                                            tv_pc.setText("$"+message.getJSONObject(i).getString("TPRSaving"));
+                                            tv_total_save_lbl.setText(message.getJSONObject(i).names().getString(3).replace("TotalSaving","Total Savings"));
+                                            tv_total_save.setText("$"+message.getJSONObject(i).getString("TotalSaving"));
+
+                                        }*/
                                     }
                                 } catch (JSONException e) {
+                                    progressDialog.dismiss();
+                                    tv_pty_lbl.setText("My Personal Deals");
+                                    tv_tyc_lbl.setText("Digital Coupons");
+                                    tv_total_save_lbl.setText("Total Savings");
                                     e.printStackTrace();
                                 }
                             }
@@ -115,6 +137,10 @@ public class SavingFw extends AppCompatActivity {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.i("Volley error resp", "error----" + error.getMessage());
+
+                        tv_pty_lbl.setText("My Personal Deals");
+                        tv_tyc_lbl.setText("Digital Coupons");
+                        tv_total_save_lbl.setText("Total Savings");
                         error.printStackTrace();
                         progressDialog.dismiss();
                     }

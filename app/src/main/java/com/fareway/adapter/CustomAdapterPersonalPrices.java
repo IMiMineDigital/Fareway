@@ -92,10 +92,11 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
     {
 
         private TextView tv_coupon_type_1,add_item_flag,tv_status,tv_remove,tv_price,tv_unit,tv_saving,tv_saving_pri_fix,tv_promo_price__pri_fix,tv_promo_price,tv_detail,tv_deal_type,
-                tv_coupon_flag,tv_varieties,limit,must,add_plus,add_minus,tv_quantity,additional_offers,personal_offers;
-        public ImageView imv_item, imv_info,imv_status,coupon_badge;
+                tv_coupon_flag,tv_varieties,limit,must,add_plus,add_minus,tv_quantity,additional_offers,personal_offers,tv_location,
+                tv_personal_lable,tv_location_multi;
+        public ImageView imv_item, imv_info,imv_status,coupon_badge,imv_location;
         private LinearLayout circular_layout,bottomLayout,liner_save,count_product_number,liner_promo_price,
-                item_layout_tile;
+                item_layout_tile,linear_personal_ad_lable,linear_multi_personal_ad_lable;
         private CardView card_view;
         private RelativeLayout imv_layout,relative_badge;
         public MyViewHolder(View view) {
@@ -123,6 +124,11 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             tv_deal_type = (TextView) view.findViewById(R.id.tv_deal_type);
             tv_coupon_flag=(TextView)view.findViewById(R.id.tv_coupon_flag);
             additional_offers=(TextView)view.findViewById(R.id.additional_offers);
+            tv_location=(TextView)view.findViewById(R.id.tv_location);
+            tv_location_multi=(TextView)view.findViewById(R.id.tv_location_multi);
+
+            tv_personal_lable=(TextView)view.findViewById(R.id.tv_personal_lable);
+
 
 
 
@@ -133,13 +139,15 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             add_minus = (TextView) view.findViewById(R.id.add_minus);
 
 
+            imv_location = (ImageView) view.findViewById(R.id.imv_location);
             imv_item = (ImageView) view.findViewById(R.id.imv_item);
             coupon_badge = (ImageView) view.findViewById(R.id.coupon_badge);
             tv_varieties = view.findViewById(R.id.tv_varieties);
             liner_save = (LinearLayout) view.findViewById(R.id.liner_save);
             liner_promo_price = (LinearLayout) view.findViewById(R.id.liner_promo_price);
             item_layout_tile = (LinearLayout) view.findViewById(R.id.item_layout_tile);
-
+            linear_personal_ad_lable = (LinearLayout) view.findViewById(R.id.linear_personal_ad_lable);
+            linear_multi_personal_ad_lable = (LinearLayout) view.findViewById(R.id.linear_multi_personal_ad_lable);
 
 
             limit = view.findViewById(R.id.limit);
@@ -821,7 +829,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     holder.additional_offers.setVisibility(View.GONE);
                     holder.additional_offers.setText("");
                 }
-                if (product.getTileNumber().equalsIgnoreCase("999")&& MainFwActivity.couponTile==true) {
+                /*if (product.getTileNumber().equalsIgnoreCase("999")&& MainFwActivity.couponTile==true) {
                     Log.i("offercoupn", String.valueOf(activate.OtherCoupon)+"hhjj");
                     if (activate.OtherCoupon.equalsIgnoreCase("0")) {
                         holder.additional_offers.setVisibility(View.VISIBLE);
@@ -839,16 +847,45 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }
                 }else {
                     holder.additional_offers.setVisibility(View.GONE);
+                }*/
+                if (MainFwActivity.multiLable==true){
+                    MainFwActivity.couponTile=true;
+                    MainFwActivity.multiLable=false;
+                }
+                if (product.getTileNumber().equalsIgnoreCase("999")){
+                    Log.i("puperxdf", String.valueOf(MainFwActivity.couponTile));
+                    Log.i("puperxdf", String.valueOf(MainFwActivity.pdView));
+                    if (MainFwActivity.couponTile==true && MainFwActivity.pdView==true){
+                        Log.i("puperxdf", "test");
+                        r=position;
+
+                        MainFwActivity.couponTile=false;
+                        MainFwActivity.singleLable=true;
+                    }
+                }
+
+                Log.i("valuer", String.valueOf(r));
+                Log.i("values", String.valueOf(s));
+
+                if (r==position && r!=0 && MainFwActivity.pdView==true){
+                    holder.additional_offers.setVisibility(View.VISIBLE);
+                    holder.additional_offers.setText("Additional Offers");
+                }else {
+                    //holder.additional_offers.setVisibility(View.GONE);
                 }
                 Log.i("elseincircular", String.valueOf(product.getInCircular()));
 
                 if (product.getPrimaryOfferTypeId() == 3) {
                     if (position==0 && MainFwActivity.pdView==true){
-                        holder.additional_offers.setVisibility(View.VISIBLE);
-                        holder.additional_offers.setText("Personal Ad");
-                    }else {
                         holder.additional_offers.setVisibility(View.GONE);
-                        holder.additional_offers.setText("");
+                        holder.tv_personal_lable.setVisibility(View.VISIBLE);
+                        holder.imv_location.setVisibility(View.VISIBLE);
+                        holder.tv_location.setVisibility(View.VISIBLE);
+                        holder.linear_personal_ad_lable.setVisibility(View.VISIBLE);
+                        holder.tv_location.setText(appUtil.getPrefrence("StoreName"));
+                    }else {
+                        holder.linear_personal_ad_lable.setVisibility(View.GONE);
+
                     }
                     holder.tv_promo_price__pri_fix.setText("");
                     holder.tv_promo_price.setText("");
@@ -1405,6 +1442,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             }
 
             if (product.getInCircular()==0){
+                holder.additional_offers.setVisibility(View.GONE);
                 if (position==0){
                     //holder.additional_offers.setVisibility(View.VISIBLE);
                     //holder.additional_offers.setText("Personal Ad");
@@ -1894,14 +1932,10 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
                     else if (product.getPrimaryOfferTypeId()==0){
                         holder.item_layout_tile.setVisibility(View.GONE);
-                        // Gets linearlayout
-                        //LinearLayout layout = findViewById(R.id.numberPadLayout);
-// Gets the layout params that will allow you to resize the layout
-                        ViewGroup.LayoutParams params = holder.item_layout_tile.getLayoutParams();
-// Changes the height and width to the specified *pixels*
+
+                        /*ViewGroup.LayoutParams params = holder.item_layout_tile.getLayoutParams();
                         params.height = 30;
-                        // params.width = 100;
-                        holder.item_layout_tile.setLayoutParams(params);
+                        holder.item_layout_tile.setLayoutParams(params);*/
                     }
                 }
 
@@ -2015,6 +2049,12 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     if ((p-1)==position &&p!=0){
                         holder.item_layout_tile.setVisibility(View.VISIBLE);
                     }*/
+                if (MainFwActivity.singleLable==true){
+                    MainFwActivity.couponTile=true;
+                    MainFwActivity.singleLable=false;
+                }
+
+
 
                     if (product.getCouponID().equalsIgnoreCase("1111")){
                         if (MainFwActivity.couponTile==true && MainFwActivity.pdView==true){
@@ -2025,6 +2065,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
                             Log.i("boolen","test");
                             MainFwActivity.couponTile=false;
+                            MainFwActivity.multiLable=true;
                             Log.i("tilecoupon",product.getCouponID()+"test");
                             holder.item_layout_tile.setVisibility(View.GONE);
                         }
@@ -2071,14 +2112,25 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
                     if (product.getPrimaryOfferTypeId() == 3) {
                         if (position==0 && MainFwActivity.pdView==true){
+                            holder.tv_location.setVisibility(View.GONE);
+                            holder.imv_location.setVisibility(View.GONE);
+                            holder.linear_multi_personal_ad_lable.setVisibility(View.GONE);
+                            holder.linear_personal_ad_lable.setVisibility(View.GONE);
                             holder.additional_offers.setVisibility(View.VISIBLE);
                             holder.additional_offers.setText("Personal Ad");
+
+                            //holder.tv_location.setText(appUtil.getPrefrence("StoreName"));
                         }else if (position==1 && MainFwActivity.pdView==true){
-                            holder.additional_offers.setVisibility(View.VISIBLE);
-                            holder.additional_offers.setText("");
+                            holder.additional_offers.setVisibility(View.GONE);
+                            holder.linear_personal_ad_lable.setVisibility(View.GONE);
+
+                            holder.linear_multi_personal_ad_lable.setVisibility(View.VISIBLE);
+                            holder.tv_location_multi.setVisibility(View.VISIBLE);
+                            holder.tv_location_multi.setText(appUtil.getPrefrence("StoreName"));
                         }else {
                             holder.additional_offers.setVisibility(View.GONE);
-                            holder.additional_offers.setText("");
+                            holder.linear_personal_ad_lable.setVisibility(View.GONE);
+                            holder.linear_multi_personal_ad_lable.setVisibility(View.GONE);
                         }
 
                         holder.tv_promo_price__pri_fix.setText("");
@@ -2130,11 +2182,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         try {
                             DecimalFormat dF = new DecimalFormat("00.00");
                             Number num = dF.parse(product.getRegularPrice());
-                           /* Spanned varietiesUnderline = Html.fromHtml("Everyday Price "+"<strike>"+"$"+new DecimalFormat("##.##").format(num)+"</strike>");
-                            holder.tv_saving.setText(varietiesUnderline);*/
-                           holder.tv_saving_pri_fix.setText("Everyday Price ");
-                           //holder.tv_saving.setPaintFlags(holder.tv_saving.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                           holder.tv_saving.setText("$"+new DecimalFormat("##.##").format(num));
+                            holder.tv_saving_pri_fix.setText("Everyday Price ");
+                            holder.tv_saving.setText("$"+new DecimalFormat("##.##").format(num));
 
                         } catch (Exception e) {
 
@@ -2520,13 +2569,13 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
                     }
 
-                    else  if (product.getPrimaryOfferTypeId()==0){
+                    else  if (product.getPrimaryOfferTypeId()==0 && MainFwActivity.savingsShort==false){
 
                         holder.item_layout_tile.setVisibility(View.GONE);
-
+                        /*
                         ViewGroup.LayoutParams params = holder.item_layout_tile.getLayoutParams();
                         params.height = 30;
-                        holder.item_layout_tile.setLayoutParams(params);
+                        holder.item_layout_tile.setLayoutParams(params);*/
 
 
                     }

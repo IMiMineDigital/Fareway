@@ -7,6 +7,85 @@
     android:id="@+id/item_layout_tile"
     >
 
+    <LinearLayout
+            android:visibility="gone"
+            android:id="@+id/linear_personal_ad_lable"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:background="@color/red"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/tv_personal_lable"
+                android:padding="@dimen/_5sdp"
+                android:textSize="20sp"
+                android:visibility="visible"
+                android:layout_weight=".5"
+                android:gravity="left"
+                android:textStyle="bold"
+                android:fontFamily="@font/roboto"
+                android:textColor="@color/white"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Personal Ad"
+                android:lines="1" />
+            <ImageView
+                android:id="@+id/imv_location"
+                android:layout_gravity="center|left"
+                android:src="@drawable/ic_location_on_black_24dp"
+                android:layout_weight=".05"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:layout_gravity="center|left"
+                android:id="@+id/tv_location"
+                android:textSize="10sp"
+                android:layout_weight=".45"
+                android:textStyle="bold"
+                android:fontFamily="@font/roboto"
+                android:textColor="@color/white"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="430 NW 2nd Ave, Faribault"
+                android:lines="1" />
+
+
+        </LinearLayout>
+
+    <LinearLayout
+        android:visibility="gone"
+        android:id="@+id/linear_multi_personal_ad_lable"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:orientation="horizontal"
+        android:background="@color/red"
+        android:weightSum="1">
+
+        <ImageView
+            android:layout_gravity="center|left"
+            android:src="@drawable/ic_location_on_black_24dp"
+            android:layout_weight=".1"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:layout_gravity="center|left"
+            android:id="@+id/tv_location_multi"
+            android:textSize="10sp"
+            android:layout_weight=".9"
+            android:textStyle="bold"
+            android:fontFamily="@font/roboto"
+            android:textColor="@color/white"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="430 NW 2nd Ave, Faribault"
+            android:lines="1" />
+
+
+    </LinearLayout>
+
     <TextView
         android:padding="@dimen/_5sdp"
         android:textSize="20sp"

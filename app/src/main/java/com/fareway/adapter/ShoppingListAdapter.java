@@ -95,19 +95,20 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                     //tv_status.setText("Added");
                 }
             });
-            shopping_list_add.setOnClickListener(new View.OnClickListener() {
+           /* shopping_list_add.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     addShoppingListener.onShoppingaddSelected(shoppingArrayList.get(getAdapterPosition()));
 
                 }
-            });
+            });*/
+           /*
             shopping_list_sub.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
                     subShoppingListener.onShoppingsubSelected(shoppingArrayList.get(getAdapterPosition()));
                 }
-            });
+            });*/
             tv_personal_description.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
@@ -152,6 +153,31 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         holder.shopping_list_add.setVisibility(View.VISIBLE);
         holder.shopping_list_sub.setVisibility(View.VISIBLE);
         Log.i("primaryy", String.valueOf(shopping.getPrimaryOfferTypeId()));
+        holder.shopping_list_add.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.i("add_plusQuantity",shopping.getQuantity());
+                addShoppingListener.onShoppingaddSelected(shoppingArrayList.get(position));
+                //listener2.onRelatedItemSelected2(relatedItemsList.get(position));
+                holder.tv_qty_shopping.setText(String.valueOf((Integer.parseInt(shopping.getQuantity())+1)));
+
+
+            }
+        });
+        holder.shopping_list_sub.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                if (Integer.parseInt(shopping.getQuantity())>1){
+                    subShoppingListener.onShoppingsubSelected(shoppingArrayList.get(position));
+                    holder.tv_qty_shopping.setText(String.valueOf((Integer.parseInt(shopping.getQuantity())-1)));
+
+                }else {
+
+                }
+
+            }
+        });
 
         if (shopping.getPrimaryOfferTypeId()==3){
             holder.linear_personal.setVisibility(View.VISIBLE);

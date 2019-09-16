@@ -150,7 +150,10 @@ public class MainFwActivity extends AppCompatActivity
     public static boolean pdView=true;
     public static boolean offferShort=false;
     public static boolean savingsShort=false;
-    public static boolean offferShortClick=false;
+    public static boolean categoryShort=false;
+    public static boolean singleLable=false;
+    public static boolean multiLable=false;
+    public static boolean searchLable=false;
     public static boolean couponTile=true;
     public static boolean cdOddView=false;
     public static String UPCOddView="";
@@ -173,6 +176,7 @@ public class MainFwActivity extends AppCompatActivity
     public static JSONArray message;
     public static JSONArray morecouponlist;
     public static JSONArray message3;
+    public static JSONArray messageCategory;
     public static JSONArray shoppingId;
     private static RecyclerView rv_category,rv_shopping_list_items;
     private ArrayList<Category> categoryList;
@@ -413,7 +417,9 @@ public class MainFwActivity extends AppCompatActivity
                             participate=0;
                             searchLoad(search);
                             pdView=false;
+                            couponTile=false;
                             x=3;
+                            searchLable=true;
 
 
 
@@ -426,6 +432,7 @@ public class MainFwActivity extends AppCompatActivity
                             pdView=true;
                             fetchProduct();
                             x=0;
+                            searchLable=false;
                         }
                     }
                     return true;
@@ -451,11 +458,13 @@ public class MainFwActivity extends AppCompatActivity
                             participate=0;
                             searchLoad(search);
                             pdView=false;
+                            couponTile=false;
                             navigation.setVisibility(View.VISIBLE);
                             x=3;
                             header_title.setVisibility(View.GONE);
                             InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
                             imm.hideSoftInputFromWindow(edit_txt.getWindowToken(), 0);
+                            searchLable=true;
 
                         } else {
                             //
@@ -467,10 +476,15 @@ public class MainFwActivity extends AppCompatActivity
                             participate=1;
                             pdView=true;
                             couponTile=true;
+                            savingsShort=false;
+                            offferShort=false;
+                            categoryShort=false;
+                            tmp=0;
                             fetchProduct();
                             x=0;
                             //header_title visible
                             header_title.setVisibility(View.GONE);
+                            searchLable=false;
                         }
                     }
                 }
@@ -484,9 +498,17 @@ public class MainFwActivity extends AppCompatActivity
                 if (Integer.parseInt(imv_micro_recorder.getTag().toString())==0){
                     imv_micro_recorder.setImageResource(R.drawable.ic_clear_black_24dp);
                     imv_micro_recorder.setTag(1);
-                    participate=0;
+
+                    pdView=false;
+                    couponTile=false;
+                    navigation.setVisibility(View.VISIBLE);
+                    x=3;
+                    header_title.setVisibility(View.GONE);
+                    //
+
                     getSpeechInput(v);
                     navigation.setVisibility(View.VISIBLE);
+                    searchLable=true;
                 }else {
                     imv_micro_recorder.setImageResource(R.drawable.micro_recorder);
                     imv_micro_recorder.setTag(0);
@@ -495,6 +517,7 @@ public class MainFwActivity extends AppCompatActivity
                     navigation.setVisibility(View.VISIBLE);
                     fetchProduct();
                     x=0;
+                    searchLable=false;
                 }
             }
         });
@@ -865,6 +888,7 @@ public class MainFwActivity extends AppCompatActivity
 
                     rv_category.setVisibility(View.GONE);
                     rowLayout.setVisibility(View.GONE);
+                    rowLayoutShort.setVisibility(View.GONE);
 
                     x=1;
                     z=0;
@@ -914,8 +938,15 @@ public class MainFwActivity extends AppCompatActivity
 
                 }
                 else if(x==1 ) {
-                    x=0;
-                    z=0;
+                    if (searchLable==true){
+                        x=3;
+                        z=0;
+                    }else {
+                        x=0;
+                        z=0;
+                    }
+
+
                     shoppingArrayList.clear();
                     shoppingListAdapter.notifyDataSetChanged();
 
@@ -986,6 +1017,7 @@ public class MainFwActivity extends AppCompatActivity
                 navigation.getMenu().findItem(R.id.ShoppingList).setIcon(R.drawable.ic_view_list_black_24dp);
 
                 rv_items.setVisibility(View.INVISIBLE);
+                rowLayoutShort.setVisibility(View.GONE);
                 rowLayout.setVisibility(View.GONE);
                 rv_category.setVisibility(View.VISIBLE);
                 //OtherCoupon=0;
@@ -995,6 +1027,7 @@ public class MainFwActivity extends AppCompatActivity
             }
 
             else if (i2 == R.id.filter_by_all_offer) {
+                rowLayoutShort.setVisibility(View.GONE);
                 DetaileToolbar.setVisibility(View.GONE);
                 shopping_list_header.setVisibility(View.GONE);
                 rv_shopping_list_items.setVisibility(View.GONE);
@@ -1014,6 +1047,7 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout0.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            categoryShort=false;
                             if (savingsShort==true){
                                 pdView=false;
                                 couponTile=false;
@@ -1039,6 +1073,7 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout1.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            categoryShort=false;
                             if (savingsShort==true){
                                 pdView=false;
                                 couponTile=false;
@@ -1063,6 +1098,7 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout2.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            categoryShort=false;
                             if (savingsShort==true){
                                 pdView=false;
                                 couponTile=false;
@@ -1085,6 +1121,7 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout3.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            categoryShort=false;
                             if (savingsShort==true){
                                 pdView=false;
                                 couponTile=false;
@@ -1183,7 +1220,7 @@ public class MainFwActivity extends AppCompatActivity
             }
 
             else if (i2==R.id.filter_by_short){
-
+                    rowLayout.setVisibility(View.GONE);
                     DetaileToolbar.setVisibility(View.GONE);
                     shopping_list_header.setVisibility(View.GONE);
                     rv_shopping_list_items.setVisibility(View.GONE);
@@ -1203,11 +1240,12 @@ public class MainFwActivity extends AppCompatActivity
                         rowLayout0Short.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                pdView=true;
-                                couponTile=true;
+                                //pdView=true;
+                                //couponTile=true;
                                 offferShort=false;
                                 savingsShort=false;
-                                tmp=0;
+
+                                //tmp=0;
                                 fetchProduct();
                                 rv_category.setVisibility(View.GONE);
                                 rowLayoutShort.setVisibility(View.GONE);
@@ -1254,11 +1292,12 @@ public class MainFwActivity extends AppCompatActivity
                         rowLayout0Short.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                tmp=0;
+                                //tmp=0;
                                 pdView=false;
                                 couponTile=false;
-                                offferShort=false;
                                 savingsShort=false;
+                                offferShort=false;
+
                                 searchProduct();
                                 rv_category.setVisibility(View.GONE);
                                 rowLayoutShort.setVisibility(View.GONE);
@@ -1271,9 +1310,10 @@ public class MainFwActivity extends AppCompatActivity
                             public void onClick(View v) {
                                 //tmp=0;
                                 pdView=false;
+                                couponTile=false;
                                 savingsShort=true;
                                 offferShort=false;
-                                couponTile=false;
+
                                 searchProduct();
                                 rv_category.setVisibility(View.GONE);
                                 rowLayoutShort.setVisibility(View.GONE);
@@ -1286,9 +1326,10 @@ public class MainFwActivity extends AppCompatActivity
                             public void onClick(View v) {
                                 //tmp=0;
                                 pdView=false;
+                                couponTile=false;
                                 savingsShort=false;
                                 offferShort=true;
-                                couponTile=false;
+
                                 searchProduct();
                                 rv_category.setVisibility(View.GONE);
                                 rowLayoutShort.setVisibility(View.GONE);
@@ -1356,6 +1397,7 @@ public class MainFwActivity extends AppCompatActivity
                 progressDialog = new ProgressDialog(activity);
                 progressDialog.setMessage("Processing");
                 progressDialog.show();
+                progressDialog.setCanceledOnTouchOutside(false);
                 StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET,Constant.WEB_URL+Constant.SEARCH+"MemberId="+appUtil.getPrefrence("MemberId")+"&Plateform=2&StoreId="+appUtil.getPrefrence("StoreId")+"&SearchText="+s,
                         new Response.Listener<String>(){
                             @Override
@@ -1373,7 +1415,7 @@ public class MainFwActivity extends AppCompatActivity
                                         message=jsonParam;
                                         */
                                         message3=jsonParam;
-                                        tmp=0;
+                                        //tmp=0;
                                         searchProduct();
                                     } catch (Throwable e) {
                                         progressDialog.dismiss();
@@ -1454,6 +1496,7 @@ public class MainFwActivity extends AppCompatActivity
                 progressDialog = new ProgressDialog(activity);
                 progressDialog.setMessage("Processing");
                 progressDialog.show();
+                progressDialog.setCanceledOnTouchOutside(false);
                 StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET,Constant.WEB_URL + Constant.PRODUCTLIST+"?memberid="+appUtil.getPrefrence("MemberId")+"&Plateform=2",
                         new Response.Listener<String>(){
                             @Override
@@ -1810,7 +1853,7 @@ public class MainFwActivity extends AppCompatActivity
                                         }
                                     }
                                     Categoryid = message.getJSONObject(i).getInt("CategoryID");
-                                    strCategory += (strCategory == "" ? "{" + "\"CategoryID\":" + message.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message.getJSONObject(i).getString("CategoryName") + " (" + subcat + ")\"}" : "," + "{" + "\"CategoryID\":" + message.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message.getJSONObject(i).getString("CategoryName") + " (" + subcat + ")\"}");
+                                    strCategory += (strCategory == "" ? "{" + "\"CategoryID\":" + message.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message.getJSONObject(i).getString("CategoryName").replace("\n","") + " (" + subcat + ")\"}" : "," + "{" + "\"CategoryID\":" + message.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message.getJSONObject(i).getString("CategoryName").replace("\n","") + " (" + subcat + ")\"}");
                                 }
                             }
                         } catch (JSONException e) {
@@ -1826,53 +1869,121 @@ public class MainFwActivity extends AppCompatActivity
 
                     customAdapterPersonalPrices.notifyDataSetChanged();*/
                     //
-                if (offferShort==true){
-                    Log.i("if","sortOffer");
-                    List<Product> items = new Gson().fromJson(message.toString(), new TypeToken<List<Product>>() {
-                    }.getType());
-                    productList.clear();
-                    productList.addAll(items);
+                if (categoryShort==true){
+                    if (offferShort==true){
+                        Log.i("if","sortOffer");
+                        List<Product> items = new Gson().fromJson(messageCategory.toString(), new TypeToken<List<Product>>() {
+                        }.getType());
+                        productList.clear();
+                        productList.addAll(items);
 
-                    Collections.sort(productList, new Comparator<Product>() {
+                        Collections.sort(productList, new Comparator<Product>() {
 
-                        @Override
-                        public int compare(Product o2, Product o1) {
-                            return Integer.parseInt(String.valueOf(o1.getPrimaryOfferTypeId())) - Integer.parseInt(String.valueOf(o2.getPrimaryOfferTypeId()));
+                            @Override
+                            public int compare(Product o2, Product o1) {
+                                return Integer.parseInt(String.valueOf(o1.getPrimaryOfferTypeId())) - Integer.parseInt(String.valueOf(o2.getPrimaryOfferTypeId()));
+                            }
+
+                        });
+
+                        customAdapterPersonalPrices.notifyDataSetChanged();
+                        //rv_items.setAdapter(customAdapterPersonalPrices);
+                    }
+                    else  if (savingsShort==true){
+                        Log.i("if","sortSaving");
+                        List<Product> items = new Gson().fromJson(messageCategory.toString(), new TypeToken<List<Product>>() {
+                        }.getType());
+                        productList.clear();
+                        productList.addAll(items);
+
+                        Collections.sort(productList, new Comparator<Product>() {
+
+                            @Override
+                            public int compare(Product o2, Product o1) {
+                                return Float.valueOf(o1.getSavings()).compareTo(Float.valueOf(o2.getSavings()));
+                                // return Integer.parseInt(String.valueOf(o1.getSavings())) - Integer.parseInt(String.valueOf(o2.getSavings()));
+                            }
+
+                        });
+
+                        customAdapterPersonalPrices.notifyDataSetChanged();
+                        //rv_items.setAdapter(customAdapterPersonalPrices);
+                    }
+                    else {
+                        Log.i("else","sort");
+
+                        try {
+                            List<Product> items = new Gson().fromJson(messageCategory.toString(), new TypeToken<List<Product>>() {
+                            }.getType());
+                            // adding product to product list
+                            productList.clear();
+                            productList.addAll(items);
+
+                            customAdapterPersonalPrices.notifyDataSetChanged();
+                        }catch (Exception e){
+                            e.printStackTrace();
                         }
+                        /*List<Product> items = new Gson().fromJson(messageCategory.toString(), new TypeToken<List<Product>>() {
+                        }.getType());
+                        // adding product to product list
+                        productList.clear();
+                        productList.addAll(items);
 
-                    });
-
-                    customAdapterPersonalPrices.notifyDataSetChanged();
-                    //rv_items.setAdapter(customAdapterPersonalPrices);
-                }else  if (savingsShort==true){
-                    Log.i("if","sortSaving");
-                    List<Product> items = new Gson().fromJson(message.toString(), new TypeToken<List<Product>>() {
-                    }.getType());
-                    productList.clear();
-                    productList.addAll(items);
-
-                    Collections.sort(productList, new Comparator<Product>() {
-
-                        @Override
-                        public int compare(Product o2, Product o1) {
-                            return Float.valueOf(o1.getSavings()).compareTo(Float.valueOf(o2.getSavings()));
-                           // return Integer.parseInt(String.valueOf(o1.getSavings())) - Integer.parseInt(String.valueOf(o2.getSavings()));
-                        }
-
-                    });
-
-                    customAdapterPersonalPrices.notifyDataSetChanged();
-                    //rv_items.setAdapter(customAdapterPersonalPrices);
-                }else {
-                    Log.i("else","sort");
-                    List<Product> items = new Gson().fromJson(message.toString(), new TypeToken<List<Product>>() {
-                    }.getType());
-                    // adding product to product list
-                    productList.clear();
-                    productList.addAll(items);
-
-                    customAdapterPersonalPrices.notifyDataSetChanged();
+                        customAdapterPersonalPrices.notifyDataSetChanged();*/
+                    }
                 }
+                else {
+                    if (offferShort==true){
+                        Log.i("if","sortOffer");
+                        List<Product> items = new Gson().fromJson(message.toString(), new TypeToken<List<Product>>() {
+                        }.getType());
+                        productList.clear();
+                        productList.addAll(items);
+
+                        Collections.sort(productList, new Comparator<Product>() {
+
+                            @Override
+                            public int compare(Product o2, Product o1) {
+                                return Integer.parseInt(String.valueOf(o1.getPrimaryOfferTypeId())) - Integer.parseInt(String.valueOf(o2.getPrimaryOfferTypeId()));
+                            }
+
+                        });
+
+                        customAdapterPersonalPrices.notifyDataSetChanged();
+                        //rv_items.setAdapter(customAdapterPersonalPrices);
+                    }
+                    else  if (savingsShort==true){
+                        Log.i("if","sortSaving");
+                        List<Product> items = new Gson().fromJson(message.toString(), new TypeToken<List<Product>>() {
+                        }.getType());
+                        productList.clear();
+                        productList.addAll(items);
+
+                        Collections.sort(productList, new Comparator<Product>() {
+
+                            @Override
+                            public int compare(Product o2, Product o1) {
+                                return Float.valueOf(o1.getSavings()).compareTo(Float.valueOf(o2.getSavings()));
+                                // return Integer.parseInt(String.valueOf(o1.getSavings())) - Integer.parseInt(String.valueOf(o2.getSavings()));
+                            }
+
+                        });
+
+                        customAdapterPersonalPrices.notifyDataSetChanged();
+                        //rv_items.setAdapter(customAdapterPersonalPrices);
+                    }
+                    else {
+                        Log.i("else","sort");
+                        List<Product> items = new Gson().fromJson(message.toString(), new TypeToken<List<Product>>() {
+                        }.getType());
+                        // adding product to product list
+                        productList.clear();
+                        productList.addAll(items);
+
+                        customAdapterPersonalPrices.notifyDataSetChanged();
+                    }
+                }
+
 
                 //
 
@@ -1929,7 +2040,7 @@ public class MainFwActivity extends AppCompatActivity
                                                 }
                                             }
                                             Categoryid=message.getJSONObject(i).getInt("CategoryID");
-                                            strCategory +=(strCategory==""? "{" +"\"CategoryID\":"+message.getJSONObject(i).getInt("CategoryID")+","+"\"CategoryName\":\""+message.getJSONObject(i).getString("CategoryName")+" ("+subcat+")\"}":","+"{" +"\"CategoryID\":"+message.getJSONObject(i).getInt("CategoryID")+","+"\"CategoryName\":\""+message.getJSONObject(i).getString("CategoryName")+" ("+subcat+")\"}");
+                                            strCategory +=(strCategory==""? "{" +"\"CategoryID\":"+message.getJSONObject(i).getInt("CategoryID")+","+"\"CategoryName\":\""+message.getJSONObject(i).getString("CategoryName").replace("\n","")+" ("+subcat+")\"}":","+"{" +"\"CategoryID\":"+message.getJSONObject(i).getInt("CategoryID")+","+"\"CategoryName\":\""+message.getJSONObject(i).getString("CategoryName").replace("\n","")+" ("+subcat+")\"}");
                                         }
                                     }
                                 }
@@ -1943,53 +2054,104 @@ public class MainFwActivity extends AppCompatActivity
                         productList.clear();
                         productList.addAll(items1);
                         customAdapterPersonalPrices.notifyDataSetChanged();*/
-                    if (offferShort==true){
-                        Log.i("if","sort");
-                        List<Product> items = new Gson().fromJson("["+categorydata.toString()+"]", new TypeToken<List<Product>>() {
-                        }.getType());
-                        productList.clear();
-                        productList.addAll(items);
+                    if (categoryShort==true){
+                        if (offferShort==true){
+                            Log.i("if","sort");
+                            List<Product> items = new Gson().fromJson(messageCategory.toString(), new TypeToken<List<Product>>() {
+                            }.getType());
+                            productList.clear();
+                            productList.addAll(items);
 
-                        Collections.sort(productList, new Comparator<Product>() {
+                            Collections.sort(productList, new Comparator<Product>() {
 
-                            @Override
-                            public int compare(Product o2, Product o1) {
-                                return Integer.parseInt(String.valueOf(o1.getPrimaryOfferTypeId())) - Integer.parseInt(String.valueOf(o2.getPrimaryOfferTypeId()));
-                            }
+                                @Override
+                                public int compare(Product o2, Product o1) {
+                                    return Integer.parseInt(String.valueOf(o1.getPrimaryOfferTypeId())) - Integer.parseInt(String.valueOf(o2.getPrimaryOfferTypeId()));
+                                }
 
-                        });
+                            });
 
-                        customAdapterPersonalPrices.notifyDataSetChanged();
-                        //rv_items.setAdapter(customAdapterPersonalPrices);
-                    }else  if (savingsShort==true){
-                        Log.i("if","sort");
-                        List<Product> items = new Gson().fromJson("["+categorydata.toString()+"]", new TypeToken<List<Product>>() {
-                        }.getType());
-                        productList.clear();
-                        productList.addAll(items);
+                            customAdapterPersonalPrices.notifyDataSetChanged();
+                            //rv_items.setAdapter(customAdapterPersonalPrices);
+                        }else  if (savingsShort==true){
+                            Log.i("if","sort");
+                            List<Product> items = new Gson().fromJson(messageCategory.toString(), new TypeToken<List<Product>>() {
+                            }.getType());
+                            productList.clear();
+                            productList.addAll(items);
 
-                        Collections.sort(productList, new Comparator<Product>() {
+                            Collections.sort(productList, new Comparator<Product>() {
 
-                            @Override
-                            public int compare(Product o2, Product o1) {
-                                return Float.valueOf(o1.getSavings()).compareTo(Float.valueOf(o2.getSavings()));
-                                // return Integer.parseInt(String.valueOf(o1.getSavings())) - Integer.parseInt(String.valueOf(o2.getSavings()));
-                            }
+                                @Override
+                                public int compare(Product o2, Product o1) {
+                                    return Float.valueOf(o1.getSavings()).compareTo(Float.valueOf(o2.getSavings()));
+                                    // return Integer.parseInt(String.valueOf(o1.getSavings())) - Integer.parseInt(String.valueOf(o2.getSavings()));
+                                }
 
-                        });
+                            });
 
-                        customAdapterPersonalPrices.notifyDataSetChanged();
-                        //rv_items.setAdapter(customAdapterPersonalPrices);
+                            customAdapterPersonalPrices.notifyDataSetChanged();
+                            //rv_items.setAdapter(customAdapterPersonalPrices);
+                        }else {
+                            Log.i("else","sort");
+                            List<Product> items = new Gson().fromJson(messageCategory.toString(), new TypeToken<List<Product>>() {
+                            }.getType());
+                            // adding product to product list
+                            productList.clear();
+                            productList.addAll(items);
+
+                            customAdapterPersonalPrices.notifyDataSetChanged();
+                        }
                     }else {
-                        Log.i("else","sort");
-                        List<Product> items = new Gson().fromJson("["+categorydata.toString()+"]", new TypeToken<List<Product>>() {
-                        }.getType());
-                        // adding product to product list
-                        productList.clear();
-                        productList.addAll(items);
+                        if (offferShort==true){
+                            Log.i("if","sort");
+                            List<Product> items = new Gson().fromJson("["+categorydata.toString()+"]", new TypeToken<List<Product>>() {
+                            }.getType());
+                            productList.clear();
+                            productList.addAll(items);
 
-                        customAdapterPersonalPrices.notifyDataSetChanged();
+                            Collections.sort(productList, new Comparator<Product>() {
+
+                                @Override
+                                public int compare(Product o2, Product o1) {
+                                    return Integer.parseInt(String.valueOf(o1.getPrimaryOfferTypeId())) - Integer.parseInt(String.valueOf(o2.getPrimaryOfferTypeId()));
+                                }
+
+                            });
+
+                            customAdapterPersonalPrices.notifyDataSetChanged();
+                            //rv_items.setAdapter(customAdapterPersonalPrices);
+                        }else  if (savingsShort==true){
+                            Log.i("if","sort");
+                            List<Product> items = new Gson().fromJson("["+categorydata.toString()+"]", new TypeToken<List<Product>>() {
+                            }.getType());
+                            productList.clear();
+                            productList.addAll(items);
+
+                            Collections.sort(productList, new Comparator<Product>() {
+
+                                @Override
+                                public int compare(Product o2, Product o1) {
+                                    return Float.valueOf(o1.getSavings()).compareTo(Float.valueOf(o2.getSavings()));
+                                    // return Integer.parseInt(String.valueOf(o1.getSavings())) - Integer.parseInt(String.valueOf(o2.getSavings()));
+                                }
+
+                            });
+
+                            customAdapterPersonalPrices.notifyDataSetChanged();
+                            //rv_items.setAdapter(customAdapterPersonalPrices);
+                        }else {
+                            Log.i("else","sort");
+                            List<Product> items = new Gson().fromJson("["+categorydata.toString()+"]", new TypeToken<List<Product>>() {
+                            }.getType());
+                            // adding product to product list
+                            productList.clear();
+                            productList.addAll(items);
+
+                            customAdapterPersonalPrices.notifyDataSetChanged();
+                        }
                     }
+
 
                         strCategory ="{" +"\"CategoryID\":"+0+","+"\"CategoryName\":"+"\"All Category \"}," + strCategory;
 
@@ -2043,6 +2205,7 @@ public class MainFwActivity extends AppCompatActivity
                 int Categoryid = 0;
                 int category_count = 0;
                 int subcat = 0;
+
                 if (tmp == 0) {
                     for (int i = 0; i < message3.length(); i++) {
                         category_count = category_count + 1;
@@ -2058,7 +2221,7 @@ public class MainFwActivity extends AppCompatActivity
                                         }
                                     }
                                     Categoryid = message3.getJSONObject(i).getInt("CategoryID");
-                                    strCategory += (strCategory == "" ? "{" + "\"CategoryID\":" + message3.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message3.getJSONObject(i).getString("CategoryName") + " (" + subcat + ")\"}" : "," + "{" + "\"CategoryID\":" + message3.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message3.getJSONObject(i).getString("CategoryName") + " (" + subcat + ")\"}");
+                                    strCategory += (strCategory == "" ? "{" + "\"CategoryID\":" + message3.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message3.getJSONObject(i).getString("CategoryName").replace("\n","") + " (" + subcat + ")\"}" : "," + "{" + "\"CategoryID\":" + message3.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message3.getJSONObject(i).getString("CategoryName").replace("\n","") + " (" + subcat + ")\"}");
                                 }
                             }
                         } catch (JSONException e) {
@@ -2066,14 +2229,32 @@ public class MainFwActivity extends AppCompatActivity
                         }
                     }
                     // Log.i("meat seafood", String.valueOf(category_count));
-                    /*List<Product> items = new Gson().fromJson(message3.toString(), new TypeToken<List<Product>>() {
-                    }.getType());
+                /*List<Product> items = new Gson().fromJson(message3.toString(), new TypeToken<List<Product>>() {
+                }.getType());
 
-                    productList.clear();
-                    productList.addAll(items);
+                productList.clear();
+                productList.addAll(items);
 
-                    customAdapterPersonalPrices.notifyDataSetChanged();*/
-                    if (offferShort==true){
+                customAdapterPersonalPrices.notifyDataSetChanged();*/
+                    if (savingsShort==true){
+                        List<Product> items = new Gson().fromJson(message3.toString(), new TypeToken<List<Product>>() {
+                        }.getType());
+                        productList.clear();
+                        productList.addAll(items);
+
+                        Collections.sort(productList, new Comparator<Product>() {
+
+                            @Override
+                            public int compare(Product o2, Product o1) {
+                                return Float.valueOf(o1.getSavings()).compareTo(Float.valueOf(o2.getSavings()));
+                                // return Integer.parseInt(String.valueOf(o1.getSavings())) - Integer.parseInt(String.valueOf(o2.getSavings()));
+                            }
+
+                        });
+                        customAdapterPersonalPrices.notifyDataSetChanged();
+                        //rv_items.setAdapter(customAdapterPersonalPrices);
+                    }
+                    else  if (offferShort==true){
                         List<Product> items = new Gson().fromJson(message3.toString(), new TypeToken<List<Product>>() {
                         }.getType());
                         productList.clear();
@@ -2091,7 +2272,8 @@ public class MainFwActivity extends AppCompatActivity
 
                         customAdapterPersonalPrices.notifyDataSetChanged();
                         //rv_items.setAdapter(customAdapterPersonalPrices);
-                    }else {
+                    }
+                    else {
                         List<Product> items = new Gson().fromJson(message3.toString(), new TypeToken<List<Product>>() {
                         }.getType());
                         // adding product to product list
@@ -2129,7 +2311,6 @@ public class MainFwActivity extends AppCompatActivity
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-
                 }
                 else {
                     String categorydata = "";
@@ -2153,22 +2334,69 @@ public class MainFwActivity extends AppCompatActivity
                                             }
                                         }
                                         Categoryid = message3.getJSONObject(i).getInt("CategoryID");
-                                        strCategory += (strCategory == "" ? "{" + "\"CategoryID\":" + message3.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message3.getJSONObject(i).getString("CategoryName") + " (" + subcat + ")\"}" : "," + "{" + "\"CategoryID\":" + message3.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message3.getJSONObject(i).getString("CategoryName") + " (" + subcat + ")\"}");
+                                        strCategory += (strCategory == "" ? "{" + "\"CategoryID\":" + message3.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message3.getJSONObject(i).getString("CategoryName").replace("\n","") + " (" + subcat + ")\"}" : "," + "{" + "\"CategoryID\":" + message3.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message3.getJSONObject(i).getString("CategoryName").replace("\n","") + " (" + subcat + ")\"}");
                                     }
                                 }
+                            }else {
+                                Log.i("desk","desk");
                             }
                         } catch (JSONException e) {
                             e.printStackTrace();
                         }
                     }
+
                     List<Product> items1;
                     if (categorydata!="")
                     {
-                        items1 = new Gson().fromJson("[" + categorydata.toString() + "]", new TypeToken<List<Product>>() {
-                        }.getType());
-                        productList.clear();
-                        productList.addAll(items1);
-                        customAdapterPersonalPrices.notifyDataSetChanged();
+                    /*items1 = new Gson().fromJson("[" + categorydata.toString() + "]", new TypeToken<List<Product>>() {
+                    }.getType());
+                    productList.clear();
+                    productList.addAll(items1);
+                    customAdapterPersonalPrices.notifyDataSetChanged();*/
+                        if (offferShort==true){
+                            items1 = new Gson().fromJson("[" + categorydata.toString() + "]", new TypeToken<List<Product>>() {
+                            }.getType());
+                            productList.clear();
+                            productList.addAll(items1);
+
+                            Collections.sort(productList, new Comparator<Product>() {
+
+                                @Override
+                                public int compare(Product o2, Product o1) {
+                                    return Integer.parseInt(String.valueOf(o1.getPrimaryOfferTypeId())) - Integer.parseInt(String.valueOf(o2.getPrimaryOfferTypeId()));
+                                    //return o1.getPrimaryOfferTypeId().compareTo(o2.getPrimaryOfferTypeId());
+                                }
+
+                            });
+
+                            customAdapterPersonalPrices.notifyDataSetChanged();
+                            //rv_items.setAdapter(customAdapterPersonalPrices);
+                        }else if (savingsShort==true){
+                            items1 = new Gson().fromJson("[" + categorydata.toString() + "]", new TypeToken<List<Product>>() {
+                            }.getType());
+                            productList.clear();
+                            productList.addAll(items1);
+
+                            Collections.sort(productList, new Comparator<Product>() {
+
+                                @Override
+                                public int compare(Product o2, Product o1) {
+                                    return Float.valueOf(o1.getSavings()).compareTo(Float.valueOf(o2.getSavings()));
+                                    // return Integer.parseInt(String.valueOf(o1.getSavings())) - Integer.parseInt(String.valueOf(o2.getSavings()));
+                                }
+
+                            });
+                            customAdapterPersonalPrices.notifyDataSetChanged();
+                            //rv_items.setAdapter(customAdapterPersonalPrices);
+                        }else {
+                            items1 = new Gson().fromJson("[" + categorydata.toString() + "]", new TypeToken<List<Product>>() {
+                            }.getType());
+                            // adding product to product list
+                            productList.clear();
+                            productList.addAll(items1);
+
+                            customAdapterPersonalPrices.notifyDataSetChanged();
+                        }
                         strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category (" + category_count + ")\"}," + strCategory;
                     }
                     else {
@@ -2197,25 +2425,30 @@ public class MainFwActivity extends AppCompatActivity
                         }.getType());
                         categoryList.clear();
                         categoryList.addAll(items2);
-                        Collections.sort(categoryList, new Comparator<Category>() {
+                        try {
+                            Collections.sort(categoryList, new Comparator<Category>() {
 
-                            @Override
-                            public int compare(Category o1, Category o2) {
-                                return o1.getCategoryName().compareTo(o2.getCategoryName());
-                            }
+                                @Override
+                                public int compare(Category o1, Category o2) {
+                                    return o1.getCategoryName().compareTo(o2.getCategoryName());
+                                }
 
-                        });
+                            });
+                        }catch (Exception e){
+                            e.printStackTrace();
+                        }
+
                         customAdapterFilter.notifyDataSetChanged();
                         rv_category.setAdapter(customAdapterFilter);
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
 
+
+
+
                 }
                 //////
-
-
-
 
             }
 
@@ -2240,7 +2473,7 @@ public class MainFwActivity extends AppCompatActivity
                                     }
                                 }
                                 Categoryid = message3.getJSONObject(i).getInt("CategoryID");
-                                strCategory += (strCategory == "" ? "{" + "\"CategoryID\":" + message3.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message3.getJSONObject(i).getString("CategoryName") + " (" + subcat + ")\"}" : "," + "{" + "\"CategoryID\":" + message3.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message3.getJSONObject(i).getString("CategoryName") + " (" + subcat + ")\"}");
+                                strCategory += (strCategory == "" ? "{" + "\"CategoryID\":" + message3.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message3.getJSONObject(i).getString("CategoryName").replace("\n","") + " (" + subcat + ")\"}" : "," + "{" + "\"CategoryID\":" + message3.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message3.getJSONObject(i).getString("CategoryName").replace("\n","") + " (" + subcat + ")\"}");
                             }
                         }
                     } catch (JSONException e) {
@@ -2255,7 +2488,25 @@ public class MainFwActivity extends AppCompatActivity
                 productList.addAll(items);
 
                 customAdapterPersonalPrices.notifyDataSetChanged();*/
-                if (offferShort==true){
+                if (savingsShort==true){
+                    List<Product> items = new Gson().fromJson(message3.toString(), new TypeToken<List<Product>>() {
+                    }.getType());
+                    productList.clear();
+                    productList.addAll(items);
+
+                    Collections.sort(productList, new Comparator<Product>() {
+
+                        @Override
+                        public int compare(Product o2, Product o1) {
+                            return Float.valueOf(o1.getSavings()).compareTo(Float.valueOf(o2.getSavings()));
+                            // return Integer.parseInt(String.valueOf(o1.getSavings())) - Integer.parseInt(String.valueOf(o2.getSavings()));
+                        }
+
+                    });
+                    customAdapterPersonalPrices.notifyDataSetChanged();
+                    //rv_items.setAdapter(customAdapterPersonalPrices);
+                }
+                else  if (offferShort==true){
                     List<Product> items = new Gson().fromJson(message3.toString(), new TypeToken<List<Product>>() {
                     }.getType());
                     productList.clear();
@@ -2273,7 +2524,8 @@ public class MainFwActivity extends AppCompatActivity
 
                     customAdapterPersonalPrices.notifyDataSetChanged();
                     //rv_items.setAdapter(customAdapterPersonalPrices);
-                }else {
+                }
+                else {
                     List<Product> items = new Gson().fromJson(message3.toString(), new TypeToken<List<Product>>() {
                     }.getType());
                     // adding product to product list
@@ -2334,7 +2586,7 @@ public class MainFwActivity extends AppCompatActivity
                                         }
                                     }
                                     Categoryid = message3.getJSONObject(i).getInt("CategoryID");
-                                    strCategory += (strCategory == "" ? "{" + "\"CategoryID\":" + message3.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message3.getJSONObject(i).getString("CategoryName") + " (" + subcat + ")\"}" : "," + "{" + "\"CategoryID\":" + message3.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message3.getJSONObject(i).getString("CategoryName") + " (" + subcat + ")\"}");
+                                    strCategory += (strCategory == "" ? "{" + "\"CategoryID\":" + message3.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message3.getJSONObject(i).getString("CategoryName").replace("\n","") + " (" + subcat + ")\"}" : "," + "{" + "\"CategoryID\":" + message3.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message3.getJSONObject(i).getString("CategoryName").replace("\n","") + " (" + subcat + ")\"}");
                                 }
                             }
                         }else {
@@ -2348,11 +2600,55 @@ public class MainFwActivity extends AppCompatActivity
                 List<Product> items1;
                 if (categorydata!="")
                 {
-                    items1 = new Gson().fromJson("[" + categorydata.toString() + "]", new TypeToken<List<Product>>() {
+                    /*items1 = new Gson().fromJson("[" + categorydata.toString() + "]", new TypeToken<List<Product>>() {
                     }.getType());
                     productList.clear();
                     productList.addAll(items1);
-                    customAdapterPersonalPrices.notifyDataSetChanged();
+                    customAdapterPersonalPrices.notifyDataSetChanged();*/
+                    if (offferShort==true){
+                        items1 = new Gson().fromJson("[" + categorydata.toString() + "]", new TypeToken<List<Product>>() {
+                        }.getType());
+                        productList.clear();
+                        productList.addAll(items1);
+
+                        Collections.sort(productList, new Comparator<Product>() {
+
+                            @Override
+                            public int compare(Product o2, Product o1) {
+                                return Integer.parseInt(String.valueOf(o1.getPrimaryOfferTypeId())) - Integer.parseInt(String.valueOf(o2.getPrimaryOfferTypeId()));
+                                //return o1.getPrimaryOfferTypeId().compareTo(o2.getPrimaryOfferTypeId());
+                            }
+
+                        });
+
+                        customAdapterPersonalPrices.notifyDataSetChanged();
+                        //rv_items.setAdapter(customAdapterPersonalPrices);
+                    }else if (savingsShort==true){
+                        items1 = new Gson().fromJson("[" + categorydata.toString() + "]", new TypeToken<List<Product>>() {
+                        }.getType());
+                        productList.clear();
+                        productList.addAll(items1);
+
+                        Collections.sort(productList, new Comparator<Product>() {
+
+                            @Override
+                            public int compare(Product o2, Product o1) {
+                                return Float.valueOf(o1.getSavings()).compareTo(Float.valueOf(o2.getSavings()));
+                                // return Integer.parseInt(String.valueOf(o1.getSavings())) - Integer.parseInt(String.valueOf(o2.getSavings()));
+                            }
+
+                        });
+                        customAdapterPersonalPrices.notifyDataSetChanged();
+                        //rv_items.setAdapter(customAdapterPersonalPrices);
+                    }else {
+                        items1 = new Gson().fromJson("[" + categorydata.toString() + "]", new TypeToken<List<Product>>() {
+                        }.getType());
+                        // adding product to product list
+                        productList.clear();
+                        productList.addAll(items1);
+
+                        customAdapterPersonalPrices.notifyDataSetChanged();
+                    }
                     strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category (" + category_count + ")\"}," + strCategory;
                 }
                 else {
@@ -2427,7 +2723,7 @@ public class MainFwActivity extends AppCompatActivity
                                          String s1=  root.getJSONArray("message").toString();
                                            String s2=  message.toString();
                                            String s3="";
-                                           String s4="{\"oCouponShortDescription\":\"OSCAR MAYER GRILLED CHICKEN STRIPS\",\"CouponShortDescription\":\"OSCAR MAYER GRILLED CHICKEN STRIPS\",\"CouponLongDescription\":\"\",\"RewardType\":\"3\",\"RewardQty\":\"0\",\"Groupname\":\"\",\"oGroupname\":\"\",\"oDisplayPrice\":\"<sup>$</sup>2.84\",\"rewardGroupname\":\"\",\"Quantity\":1,\"inCircular\":1,\"RequiresActivation\":\"True\",\"IsMidWeek\":0,\"FreeOffer\":0,\"AltTitleBarImage\":\"\",\"LimitPerTransection\":0,\"TileNumber\":\"2\",\"MemberID\":41761,\"UPCRank\":\"0\",\"HasRelatedItems\":1,\"OriginatorID\":0,\"RelevantUPC\":\"4470002288\",\"IsEmployeeOffer\":false,\"BadgeId\":\"0\",\"RedeemLimit\":0,\"RequiredQty\":1,\"CategoryPriority\":1,\"PercentSavings\":\"28.82\",\"FinalPrice\":\"2.8400\",\"AdPrice\":\"0.0000\",\"CouponDiscount\":\"0.0000\",\"PersonalCircularID\":38477,\"LoyaltyCardNumber\":\"5155567152\",\"PersonalCircularItemId\":1029271,\"SectionNumber\":3,\"StoreID\":\"657\",\"RegularPrice\":\"3.99\",\"DisplayPrice\":\"<sup>$</sup>2.84\",\"Savings\":\"1.1500\",\"DateAdded\":\"7/20/2019 2:44:13 AM\",\"ValidityStartDate\":\"7/9/19\",\"BadgeName\":\"\",\"BadgeFileName\":\"\",\"ValidityEndDate\":\"7/24/19\",\"Description\":\"OSCAR MAYER GRILLED CHICKEN STRIPS\",\"PackagingSize\":\"5.5 OZ\",\"PricingMasterID\":0,\"CategoryID\":11,\"UPC\":\"4470002288\",\"CategoryName\":\"Meat & Seafood\",\"SmallImagePath\":\"https://images.immdemo.net/product/wlarge/00044700022887.png\",\"LargeImagePath\":\"https://images.immdemo.net/product/wlarge/00044700022887.png\",\"Isbadged\":\"False\",\"ListCount\":1,\"SpecialInformation\":\"\",\"TileTemplateID\":3,\"MinAmount\":0.0,\"PriceAssociationCode\":\"\",\"PrimaryOfferTypeName\":\"Personal Deals\",\"OfferTypeTagName\":\"My Personal Deal\",\"OfferDefinition\":\"New Price\",\"CPRPromoTypeName\":\"Individual\",\"RelevancyDetail\":\"Pushed\",\"PrimaryOfferTypeId\":0,\"OfferDetailId\":1,\"OfferDefinitionId\":2,\"CPRPromoTypeId\":1,\"RelevancyTypeD\":5,\"CouponID\":1111,\"RelatedItemCount\":2,\"ClickCount\":1,\"PageID\":1,\"BrandId\":1,\"BrandName\":\"Sally Hansen\",\"DietaryId\":0,\"DietaryName\":\"\",\"RewardValue\":\"2.84\",\"CouponImageURl\":\"http://images.immdemo.net/coupon/wlarge/couponImg.jpg\"}";
+                                           String s4="{\"oCouponShortDescription\":\"OSCAR MAYER GRILLED CHICKEN STRIPS\",\"CouponShortDescription\":\"OSCAR MAYER GRILLED CHICKEN STRIPS\",\"CouponLongDescription\":\"\",\"RewardType\":\"3\",\"RewardQty\":\"0\",\"Groupname\":\"\",\"oGroupname\":\"\",\"oDisplayPrice\":\"<sup>$</sup>2.84\",\"rewardGroupname\":\"\",\"Quantity\":1,\"inCircular\":1,\"RequiresActivation\":\"True\",\"IsMidWeek\":0,\"FreeOffer\":0,\"AltTitleBarImage\":\"\",\"LimitPerTransection\":0,\"TileNumber\":\"2\",\"MemberID\":41761,\"UPCRank\":\"0\",\"HasRelatedItems\":1,\"OriginatorID\":0,\"RelevantUPC\":\"4470002288\",\"IsEmployeeOffer\":false,\"BadgeId\":\"0\",\"RedeemLimit\":0,\"RequiredQty\":1,\"CategoryPriority\":1,\"PercentSavings\":\"28.82\",\"FinalPrice\":\"2.8400\",\"AdPrice\":\"0.0000\",\"CouponDiscount\":\"0.0000\",\"PersonalCircularID\":38477,\"LoyaltyCardNumber\":\"5155567152\",\"PersonalCircularItemId\":1029271,\"SectionNumber\":3,\"StoreID\":\"657\",\"RegularPrice\":\"3.99\",\"DisplayPrice\":\"<sup>$</sup>2.84\",\"Savings\":\"1.1500\",\"DateAdded\":\"7/20/2019 2:44:13 AM\",\"ValidityStartDate\":\"7/9/19\",\"BadgeName\":\"\",\"BadgeFileName\":\"\",\"ValidityEndDate\":\"7/24/19\",\"Description\":\"OSCAR MAYER GRILLED CHICKEN STRIPS\",\"PackagingSize\":\"5.5 OZ\",\"PricingMasterID\":0,\"CategoryID\":1000,\"UPC\":\"4470002288\",\"CategoryName\":\"z\",\"SmallImagePath\":\"https://images.immdemo.net/product/wlarge/00044700022887.png\",\"LargeImagePath\":\"https://images.immdemo.net/product/wlarge/00044700022887.png\",\"Isbadged\":\"False\",\"ListCount\":1,\"SpecialInformation\":\"\",\"TileTemplateID\":3,\"MinAmount\":0.0,\"PriceAssociationCode\":\"\",\"PrimaryOfferTypeName\":\"Personal Deals\",\"OfferTypeTagName\":\"My Personal Deal\",\"OfferDefinition\":\"New Price\",\"CPRPromoTypeName\":\"Individual\",\"RelevancyDetail\":\"Pushed\",\"PrimaryOfferTypeId\":0,\"OfferDetailId\":1,\"OfferDefinitionId\":2,\"CPRPromoTypeId\":1,\"RelevancyTypeD\":5,\"CouponID\":1111,\"RelatedItemCount\":2,\"ClickCount\":1,\"PageID\":1,\"BrandId\":1,\"BrandName\":\"Sally Hansen\",\"DietaryId\":0,\"DietaryName\":\"\",\"RewardValue\":\"2.84\",\"CouponImageURl\":\"http://images.immdemo.net/coupon/wlarge/couponImg.jpg\"}";
                                            s1=s1.substring(s1.indexOf("[")+1, s1.lastIndexOf("]"));
                                            s2=s2.substring(s2.indexOf("[")+1, s2.lastIndexOf("]"));
                                            int a=message.length()/2;
@@ -2780,7 +3076,7 @@ public class MainFwActivity extends AppCompatActivity
                                     Log.i("Fareway Related btn", response.toString());
                                     //product.setQuantity(String.valueOf((Integer.parseInt(product.getQuantity())+1)));
                                     SetProductActivateShopping(product.getUPC(), product.getPrimaryOfferTypeId(),product.getCouponID(),1,String.valueOf((Integer.parseInt(product.getQuantity())+0)));
-
+//
                                     if (product.getPrimaryOfferTypeId()==3 || product.getPrimaryOfferTypeId()==2){
 
                                         liner_all_Varieties_activate.setVisibility(View.VISIBLE);
@@ -4275,6 +4571,7 @@ public class MainFwActivity extends AppCompatActivity
                                             public void onClick(View v) {
                                                 //fetchShoppingListLoad();
                                                 qty=0;
+                                                Log.i("qtyback", String.valueOf(qty));
                                                 liner_all_Varieties_activate.setVisibility(View.GONE);
                                                 //header_title visible
                                                 header_title.setVisibility(View.GONE);
@@ -5221,6 +5518,14 @@ public class MainFwActivity extends AppCompatActivity
                     customAdapterPersonalPrices.notifyDataSetChanged();*/
                     if (offferShort==true){
                         Log.i("if","sortOffer");
+                        String response="["+test1.toString()+"]";
+                        JSONArray jsonParam = null;
+                        try {
+                            jsonParam = new JSONArray(response.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        messageCategory=jsonParam;
                         List<Product> items = new Gson().fromJson("["+test1.toString()+"]", new TypeToken<List<Product>>() {
                         }.getType());
                         productList.clear();
@@ -5239,6 +5544,14 @@ public class MainFwActivity extends AppCompatActivity
                         //rv_items.setAdapter(customAdapterPersonalPrices);
                     }else  if (savingsShort==true){
                         Log.i("if","sortSaving");
+                        String response="["+test1.toString()+"]";
+                        JSONArray jsonParam = null;
+                        try {
+                            jsonParam = new JSONArray(response.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        messageCategory=jsonParam;
                         List<Product> items = new Gson().fromJson("["+test1.toString()+"]", new TypeToken<List<Product>>() {
                         }.getType());
                         productList.clear();
@@ -5258,6 +5571,14 @@ public class MainFwActivity extends AppCompatActivity
                         //rv_items.setAdapter(customAdapterPersonalPrices);
                     }else {
                         Log.i("else","sort");
+                        String response="["+test1.toString()+"]";
+                        JSONArray jsonParam = null;
+                        try {
+                            jsonParam = new JSONArray(response.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        messageCategory=jsonParam;
                         List<Product> items = new Gson().fromJson("["+test1.toString()+"]", new TypeToken<List<Product>>() {
                         }.getType());
                         // adding product to product list
@@ -5318,6 +5639,14 @@ public class MainFwActivity extends AppCompatActivity
                     customAdapterPersonalPrices.notifyDataSetChanged();*/
                     if (offferShort==true){
                         Log.i("if","sortOffer");
+                        String response="["+test1.toString()+"]";
+                        JSONArray jsonParam = null;
+                        try {
+                            jsonParam = new JSONArray(response.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        messageCategory=jsonParam;
                         List<Product> items = new Gson().fromJson("["+test1.toString()+"]", new TypeToken<List<Product>>() {
                         }.getType());
                         productList.clear();
@@ -5336,6 +5665,14 @@ public class MainFwActivity extends AppCompatActivity
                         //rv_items.setAdapter(customAdapterPersonalPrices);
                     }else  if (savingsShort==true){
                         Log.i("if","sortSaving");
+                        String response="["+test1.toString()+"]";
+                        JSONArray jsonParam = null;
+                        try {
+                            jsonParam = new JSONArray(response.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        messageCategory=jsonParam;
                         List<Product> items = new Gson().fromJson("["+test1.toString()+"]", new TypeToken<List<Product>>() {
                         }.getType());
                         productList.clear();
@@ -5355,6 +5692,14 @@ public class MainFwActivity extends AppCompatActivity
                         //rv_items.setAdapter(customAdapterPersonalPrices);
                     }else {
                         Log.i("else","sort");
+                        String response="["+test1.toString()+"]";
+                        JSONArray jsonParam = null;
+                        try {
+                            jsonParam = new JSONArray(response.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        messageCategory=jsonParam;
                         List<Product> items = new Gson().fromJson("["+test1.toString()+"]", new TypeToken<List<Product>>() {
                         }.getType());
                         // adding product to product list
@@ -5366,7 +5711,8 @@ public class MainFwActivity extends AppCompatActivity
 
                 }
             }
-        }else if (x==3){
+        }
+        else if (x==3){
             if (message3.length() == 0) {
 
             }
@@ -5426,6 +5772,14 @@ public class MainFwActivity extends AppCompatActivity
                     customAdapterPersonalPrices.notifyDataSetChanged();*/
                     if (offferShort==true){
                         Log.i("if","sortOffer");
+                        String response="["+test1.toString()+"]";
+                        JSONArray jsonParam = null;
+                        try {
+                            jsonParam = new JSONArray(response.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        messageCategory=jsonParam;
                         List<Product> items = new Gson().fromJson("["+test1.toString()+"]", new TypeToken<List<Product>>() {
                         }.getType());
                         productList.clear();
@@ -5444,6 +5798,14 @@ public class MainFwActivity extends AppCompatActivity
                         //rv_items.setAdapter(customAdapterPersonalPrices);
                     }else  if (savingsShort==true){
                         Log.i("if","sortSaving");
+                        String response="["+test1.toString()+"]";
+                        JSONArray jsonParam = null;
+                        try {
+                            jsonParam = new JSONArray(response.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        messageCategory=jsonParam;
                         List<Product> items = new Gson().fromJson("["+test1.toString()+"]", new TypeToken<List<Product>>() {
                         }.getType());
                         productList.clear();
@@ -5463,6 +5825,14 @@ public class MainFwActivity extends AppCompatActivity
                         //rv_items.setAdapter(customAdapterPersonalPrices);
                     }else {
                         Log.i("else","sort");
+                        String response="["+test1.toString()+"]";
+                        JSONArray jsonParam = null;
+                        try {
+                            jsonParam = new JSONArray(response.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        messageCategory=jsonParam;
                         List<Product> items = new Gson().fromJson("["+test1.toString()+"]", new TypeToken<List<Product>>() {
                         }.getType());
                         // adding product to product list
@@ -5523,6 +5893,14 @@ public class MainFwActivity extends AppCompatActivity
                     customAdapterPersonalPrices.notifyDataSetChanged();*/
                     if (offferShort==true){
                         Log.i("if","sortOffer");
+                        String response="["+test1.toString()+"]";
+                        JSONArray jsonParam = null;
+                        try {
+                            jsonParam = new JSONArray(response.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        messageCategory=jsonParam;
                         List<Product> items = new Gson().fromJson("["+test1.toString()+"]", new TypeToken<List<Product>>() {
                         }.getType());
                         productList.clear();
@@ -5541,6 +5919,14 @@ public class MainFwActivity extends AppCompatActivity
                         //rv_items.setAdapter(customAdapterPersonalPrices);
                     }else  if (savingsShort==true){
                         Log.i("if","sortSaving");
+                        String response="["+test1.toString()+"]";
+                        JSONArray jsonParam = null;
+                        try {
+                            jsonParam = new JSONArray(response.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        messageCategory=jsonParam;
                         List<Product> items = new Gson().fromJson("["+test1.toString()+"]", new TypeToken<List<Product>>() {
                         }.getType());
                         productList.clear();
@@ -5560,6 +5946,14 @@ public class MainFwActivity extends AppCompatActivity
                         //rv_items.setAdapter(customAdapterPersonalPrices);
                     }else {
                         Log.i("else","sort");
+                        String response="["+test1.toString()+"]";
+                        JSONArray jsonParam = null;
+                        try {
+                            jsonParam = new JSONArray(response.toString());
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
+                        messageCategory=jsonParam;
                         List<Product> items = new Gson().fromJson("["+test1.toString()+"]", new TypeToken<List<Product>>() {
                         }.getType());
                         // adding product to product list
@@ -5742,6 +6136,42 @@ public class MainFwActivity extends AppCompatActivity
 
                     }
                 }
+                if (messageCategory!=null){
+                    for (int i = 0; i < messageCategory.length(); i++) {
+
+                        if(PrimaryOfferTypeID ==1)
+                        {
+
+                            if (messageCategory.getJSONObject(i).getString("UPC").equalsIgnoreCase(upc)) {
+
+                                messageCategory.getJSONObject(i).put("ListCount", 1);
+                                messageCategory.getJSONObject(i).put("ClickCount", 1);
+                                messageCategory.getJSONObject(i).put("Quantity", quantity);
+
+                            }
+
+                        }
+                        else
+                        {
+
+                            if (messageCategory.getJSONObject(i).getString("CouponID").equalsIgnoreCase(UPC)) {
+                                messageCategory.getJSONObject(i).put("ClickCount", 1);
+                                messageCategory.getJSONObject(i).put("ListCount", 1);
+                                Log.i("qut", String.valueOf(qty));
+                                messageCategory.getJSONObject(i).put("TotalQuantity", qty);
+
+                            }
+                            if (messageCategory.getJSONObject(i).getString("UPC").equalsIgnoreCase(upc)) {
+                                messageCategory.getJSONObject(i).put("Quantity", quantity);
+                                Log.i("qut", String.valueOf(qty));
+
+                            }
+
+                        }
+                    }
+                }
+
+
                 fetchProduct();
                 shoppingListLoad();
 
@@ -5820,7 +6250,77 @@ public class MainFwActivity extends AppCompatActivity
 
                     }
                 }
-                fetchProduct();
+                if (message3!=null){
+                    for (int i = 0; i < message3.length(); i++) {
+
+                        if(PrimaryOfferTypeID ==1)
+                        {
+                            if (message3.getJSONObject(i).getString("UPC").equalsIgnoreCase(upc)) {
+                                message3.getJSONObject(i).put("ListCount", 1);
+                                message3.getJSONObject(i).put("ClickCount", 1);
+                                message3.getJSONObject(i).put("Quantity", quantity);
+                                message3.getJSONObject(i).put("TotalQuantity", qty);
+                            }
+                        }
+                        else
+                        {
+
+                            if (message3.getJSONObject(i).getString("CouponID").equalsIgnoreCase(UPC)) {
+                                message3.getJSONObject(i).put("ClickCount", 1);
+                                message3.getJSONObject(i).put("ListCount", 1);
+                                Log.i("qut", String.valueOf(qty));
+                                message3.getJSONObject(i).put("TotalQuantity", qty);
+
+                            }
+                            if (message3.getJSONObject(i).getString("UPC").equalsIgnoreCase(upc)) {
+                                message3.getJSONObject(i).put("Quantity", quantity);
+                                Log.i("qut", String.valueOf(qty));
+
+                            }
+
+                        }
+                    }
+                }
+                if (messageCategory!=null){
+                    for (int i = 0; i < messageCategory.length(); i++) {
+
+                        if(PrimaryOfferTypeID ==1)
+                        {
+
+                            if (messageCategory.getJSONObject(i).getString("UPC").equalsIgnoreCase(upc)) {
+
+                                messageCategory.getJSONObject(i).put("ListCount", 1);
+                                messageCategory.getJSONObject(i).put("ClickCount", 1);
+                                messageCategory.getJSONObject(i).put("Quantity", quantity);
+
+                            }
+
+                        }
+                        else
+                        {
+
+                            if (messageCategory.getJSONObject(i).getString("CouponID").equalsIgnoreCase(UPC)) {
+                                messageCategory.getJSONObject(i).put("ClickCount", 1);
+                                messageCategory.getJSONObject(i).put("ListCount", 1);
+                                Log.i("qut", String.valueOf(qty));
+                                messageCategory.getJSONObject(i).put("TotalQuantity", qty);
+
+                            }
+                            if (messageCategory.getJSONObject(i).getString("UPC").equalsIgnoreCase(upc)) {
+                                messageCategory.getJSONObject(i).put("Quantity", quantity);
+                                Log.i("qut", String.valueOf(qty));
+
+                            }
+
+                        }
+                    }
+                }
+                if (searchLable==true){
+                   searchProduct();
+                }else {
+                    fetchProduct();
+                }
+
 
                 shoppingListLoad();
 
@@ -5995,6 +6495,51 @@ public class MainFwActivity extends AppCompatActivity
 
                         }
 
+                    }
+                }
+                if (messageCategory!=null){
+                    for (int i = 0; i < messageCategory.length(); i++) {
+
+                        if(PrimaryOfferTypeID ==1)
+                        {
+                            if (messageCategory.getJSONObject(i).getString("UPC").contains(UPC)) {
+                                messageCategory.getJSONObject(i).put("ListCount", 1);
+                                messageCategory.getJSONObject(i).put("ClickCount", 1);
+                                messageCategory.getJSONObject(i).put("Quantity", quantity);
+
+                            }else {
+                                if (messageCategory.getJSONObject(i).getString("CouponID").equalsIgnoreCase(CouponID)) {
+                                    messageCategory.getJSONObject(i).put("ClickCount", 1);
+                                    messageCategory.getJSONObject(i).put("ListCount", 1);
+                                    //message.getJSONObject(i).put("Quantity", quantity);
+
+
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            if (messageCategory.getJSONObject(i).getString("UPC").contains(UPC)) {
+                                messageCategory.getJSONObject(i).put("ClickCount", 1);
+                                messageCategory.getJSONObject(i).put("ListCount", 1);
+                                messageCategory.getJSONObject(i).put("Quantity", quantity);
+                                messageCategory.getJSONObject(i).put("TotalQuantity", qty);
+                                Log.i("testqty", String.valueOf(qty));
+
+                            }
+                            if (messageCategory.getJSONObject(i).getString("CouponID").equalsIgnoreCase(CouponID)) {
+                                messageCategory.getJSONObject(i).put("ClickCount", 1);
+                                messageCategory.getJSONObject(i).put("ListCount", 1);
+                                //message.getJSONObject(i).put("Quantity", quantity);
+                                messageCategory.getJSONObject(i).put("TotalQuantity", qty);
+                                Log.i("Coupontestqty", String.valueOf(qty));
+
+
+
+                            }
+
+                        }
                     }
                 }
 
@@ -6771,7 +7316,8 @@ public class MainFwActivity extends AppCompatActivity
 
                         }
                     });
-                }else {
+                }
+                else {
                     scrollView.setVisibility(View.GONE);
                     DetaileToolbar.setVisibility(View.GONE);
                     rv_items_group.setVisibility(View.VISIBLE);
@@ -6808,6 +7354,8 @@ public class MainFwActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 liner_all_Varieties_activate.setVisibility(View.GONE);
+                qty=0;
+                Log.i("detailqty", String.valueOf(qty));
                 //messageLoadRefresh();
                 if (x==0){
                     rv_items_group.setVisibility(View.GONE);
@@ -6869,7 +7417,8 @@ public class MainFwActivity extends AppCompatActivity
                             z=0;
                         }
                     });
-                }else {
+                }
+                else {
                     rv_items_group.setVisibility(View.GONE);
                     rv_items_verite.setVisibility(View.GONE);
                     participateToolbar.setVisibility(View.GONE);
@@ -7329,18 +7878,20 @@ public class MainFwActivity extends AppCompatActivity
 
             if (relatedItem.getHasRelatedItems()==1){
                 if (relatedItem.getRelatedItemCount()>1){
+                    table_varieties.setVisibility(View.VISIBLE);
                     tv_varieties_detail.setVisibility(View.VISIBLE);
                     table_varieties_view.setVisibility(View.VISIBLE);
                     Spanned varietiesUnderline = Html.fromHtml("<u>"+relatedItem.getRelatedItemCount()+" Varieties"+"</u>");
                     tv_varieties_detail.setText(varietiesUnderline);
                 }else {
-                    tv_varieties_detail.setVisibility(View.GONE);
+                    table_varieties.setVisibility(View.VISIBLE);
                     table_varieties_view.setVisibility(View.GONE);
                 }
             }else if (relatedItem.getHasRelatedItems()==0){
-                tv_varieties_detail.setVisibility(View.GONE);
+                table_varieties.setVisibility(View.GONE);
                 table_varieties_view.setVisibility(View.GONE);
             }
+            //
 
         }
 
@@ -7450,16 +8001,17 @@ public class MainFwActivity extends AppCompatActivity
 
             if (relatedItem.getHasRelatedItems()==1){
                 if (relatedItem.getRelatedItemCount()>1){
+                    table_varieties.setVisibility(View.VISIBLE);
                     tv_varieties_detail.setVisibility(View.VISIBLE);
                     table_varieties_view.setVisibility(View.VISIBLE);
                     Spanned varietiesUnderline = Html.fromHtml("<u>"+"Participating Items"+"</u>");
                     tv_varieties_detail.setText(varietiesUnderline);
                 }else {
-                    tv_varieties_detail.setVisibility(View.GONE);
+                    table_varieties.setVisibility(View.GONE);
                     table_varieties_view.setVisibility(View.GONE);
                 }
             }else if (relatedItem.getHasRelatedItems()==0){
-                tv_varieties_detail.setVisibility(View.GONE);
+                table_varieties.setVisibility(View.GONE);
                 table_varieties_view.setVisibility(View.GONE);
             }
             tv_limit.setText(String.valueOf(relatedItem.getLimitPerTransection()));
@@ -7521,18 +8073,19 @@ public class MainFwActivity extends AppCompatActivity
 
             if (relatedItem.getHasRelatedItems()==1){
                 if (relatedItem.getRelatedItemCount()>1){
+                    table_varieties.setVisibility(View.VISIBLE);
                     tv_varieties_detail.setVisibility(View.VISIBLE);
                     table_varieties_view.setVisibility(View.VISIBLE);
                     Spanned varietiesUnderline = Html.fromHtml("<u>"+relatedItem.getRelatedItemCount()+" Varieties"+"</u>");
                     tv_varieties_detail.setText(varietiesUnderline);
                 }else {
-                    tv_varieties_detail.setVisibility(View.GONE);
+                    table_varieties.setVisibility(View.GONE);
                     table_varieties_view.setVisibility(View.GONE);
                     Spanned varietiesUnderline = Html.fromHtml("<u>"+relatedItem.getRelatedItemCount()+" Varieties"+"</u>");
                     tv_varieties_detail.setText(varietiesUnderline);
                 }
             }else if (relatedItem.getHasRelatedItems()==0){
-                tv_varieties_detail.setVisibility(View.GONE);
+                table_varieties.setVisibility(View.GONE);
                 table_varieties_view.setVisibility(View.GONE);
             }
 
@@ -9257,7 +9810,7 @@ public class MainFwActivity extends AppCompatActivity
                             @Override
                             public void onResponse(String response) {
                                 Log.i("Fareway response Main", response.toString());
-
+                                progressDialog.dismiss();
                                 try {
                                     JSONObject root = new JSONObject(response);
                                     root.getString("errorcode");
@@ -9324,10 +9877,35 @@ public class MainFwActivity extends AppCompatActivity
 
                                                 }
                                             }
+                                            if (messageCategory!=null){
+                                                for (int i = 0; i < messageCategory.length(); i++) {
+
+                                                    if (shoppingCouponID.equalsIgnoreCase(messageCategory.getJSONObject(i).getString("CouponID"))){
+
+                                                        messageCategory.getJSONObject(i).put("TotalQuantity", qtyShopping);
+
+                                                    }
+                                                }
+                                            }
+                                            if (message3!=null){
+                                                for (int i = 0; i < message3.length(); i++) {
+
+                                                    if (shoppingCouponID.equalsIgnoreCase(message3.getJSONObject(i).getString("CouponID"))){
+
+                                                        message3.getJSONObject(i).put("TotalQuantity", qtyShopping);
+
+                                                    }
+                                                }
+                                            }
                                             if (x==3){
 
                                             }else {
-                                                fetchProduct();
+                                                if (searchLable==true){
+                                                    searchProduct();
+                                                }else {
+                                                    fetchProduct();
+                                                }
+
                                             }
 
                                             Log.i("qut", String.valueOf(qtyShopping));
@@ -9412,6 +9990,7 @@ public class MainFwActivity extends AppCompatActivity
         progressDialog = new ProgressDialog(activity);
         progressDialog.setMessage("Processing");
         progressDialog.show();
+        progressDialog.setCanceledOnTouchOutside(false);
         Log.i("test",shopping.getDisplayUPC().replace("UPC: ",""));
 
         for (int i = 0; i < message.length(); i++) {
@@ -9430,6 +10009,24 @@ public class MainFwActivity extends AppCompatActivity
             }
 
         }
+        if (messageCategory!=null){
+            for (int i = 0; i < messageCategory.length(); i++) {
+
+
+                try {
+                    if (messageCategory.getJSONObject(i).getString("UPC").equalsIgnoreCase(shopping.getDisplayUPC().replace("UPC: ",""))) {
+                        messageCategory.getJSONObject(i).put("ListCount", 0);
+                        messageCategory.getJSONObject(i).put("ClickCount", 1);
+                        messageCategory.getJSONObject(i).put("Quantity", "0");
+                        //
+
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+            }
+        }
        // fetchProduct();
         //shoppingListLoad();
 
@@ -9443,6 +10040,7 @@ public class MainFwActivity extends AppCompatActivity
                         Log.i("success", String.valueOf(response));
                         //shoppingListLoad();
                         fetchShoppingListLoad();
+                        removeSingleOwnItem(shopping.getShoppingListItemID());
                         //
                         progressDialog.dismiss();
 
@@ -9497,6 +10095,7 @@ public class MainFwActivity extends AppCompatActivity
         progressDialog = new ProgressDialog(activity);
         progressDialog.setMessage("Processing");
         progressDialog.show();
+        progressDialog.setCanceledOnTouchOutside(false);
 
     if (shopping.getPrimaryOfferTypeId()==0){
         String url = "";
@@ -9512,7 +10111,7 @@ public class MainFwActivity extends AppCompatActivity
                             shopping.setQuantity(String.valueOf((Integer.parseInt(shopping.getQuantity())+1)));
                             tv_quantity_detail.setText(shopping.getQuantity());
 
-                            SetProductActivateShopping(shopping.getUPC(), shopping.getPrimaryOfferTypeId(),shopping.getCouponID(),1,String.valueOf((Integer.parseInt(shopping.getQuantity())+0)));
+                            //SetProductActivateShopping(shopping.getUPC(), shopping.getPrimaryOfferTypeId(),shopping.getCouponID(),1,String.valueOf((Integer.parseInt(shopping.getQuantity())+0)));
 
                             fetchShoppingListLoad();
                             progressDialog.dismiss();
@@ -9570,13 +10169,12 @@ public class MainFwActivity extends AppCompatActivity
     SimpleDateFormat dateformat2 = new SimpleDateFormat("ddMMMyyyy");
     String currentDate = dateformat2.format(c2.getTime());
     System.out.println(currentDate);
-    JSONObject ShoppingListItems = new JSONObject();
+    /*JSONObject ShoppingListItems = new JSONObject();
     try {
         ShoppingListItems.put("UPC", shopping.getDisplayUPC().replace("UPC","").replace(":",""));
         ShoppingListItems.put("Quantity", (Integer.parseInt(shopping.getQuantity())+1));
         ShoppingListItems.put("DateAddedOn", currentDate);
     } catch (JSONException e) {
-        // TODO Auto-generated catch block
         e.printStackTrace();
     }
     JSONArray jsonArray = new JSONArray();
@@ -9589,9 +10187,9 @@ public class MainFwActivity extends AppCompatActivity
     }
     final String mRequestBody = "'"+studentsObj.toString()+"'";
     Log.i("test",mRequestBody);
-    //String url = Constant.WEB_URL+Constant.SHOPPINGLIST+appUtil.getPrefrence("MemberId");
+    Log.i("testobject",mRequestBody);*/
+
     String url = "";
-    Log.i("testobject",mRequestBody);
 
     url = Constant.WEB_URL + Constant.SHOPPINGLISTUPDATE+"?MemberId="+appUtil.getPrefrence("MemberId")+"&UPC="+shopping.getDisplayUPC().replace("UPC","").replace(":","").replace(" ","")+"&Quantity="+(Integer.parseInt(shopping.getQuantity()) + 1)+"&DateAddedOn="+currentDate;
         Log.i("url", url);
@@ -9601,13 +10199,15 @@ public class MainFwActivity extends AppCompatActivity
                     new Response.Listener<String >() {
                         @Override
                         public void onResponse(String  response) {
+                            Log.i("quantityUpadte",shopping.getQuantity());
                             Log.i("shopping Res", String.valueOf(response));
                             shopping.setQuantity(String.valueOf((Integer.parseInt(shopping.getQuantity())+1)));
                             Log.i("success", shopping.getDisplayUPC().replace("UPC","").replace(":",""));
                             SetProductActivateShopping(shopping.getDisplayUPC().replace("UPC","").replace(":","").replace(" ",""), shopping.getPrimaryOfferTypeId(),shopping.getCouponID(),1,String.valueOf((Integer.parseInt(shopping.getQuantity()))));
+
                             fetchShoppingListLoad();
                             //
-                            progressDialog.dismiss();
+                           // progressDialog.dismiss();
 
                         }
                     }, new Response.ErrorListener() {
@@ -9672,6 +10272,7 @@ public class MainFwActivity extends AppCompatActivity
         progressDialog = new ProgressDialog(activity);
         progressDialog.setMessage("Processing");
         progressDialog.show();
+        progressDialog.setCanceledOnTouchOutside(false);
 
         if (shopping.getPrimaryOfferTypeId()==0){
 
@@ -9752,13 +10353,13 @@ public class MainFwActivity extends AppCompatActivity
                 SimpleDateFormat dateformat2 = new SimpleDateFormat("ddMMMyyyy");
                 String currentDate = dateformat2.format(c2.getTime());
                 System.out.println(currentDate);
-                JSONObject ShoppingListItems = new JSONObject();
+                /*JSONObject ShoppingListItems = new JSONObject();
                 try {
                     ShoppingListItems.put("UPC", shopping.getDisplayUPC().replace("UPC","").replace(":",""));
                     ShoppingListItems.put("Quantity", (Integer.parseInt(shopping.getQuantity())-1));
                     ShoppingListItems.put("DateAddedOn", currentDate);
                 } catch (JSONException e) {
-                    // TODO Auto-generated catch block
+
                     e.printStackTrace();
                 }
                 JSONArray jsonArray = new JSONArray();
@@ -9771,8 +10372,8 @@ public class MainFwActivity extends AppCompatActivity
                 }
                 final String mRequestBody = "'"+studentsObj.toString()+"'";
                 Log.i("test",mRequestBody);
+                Log.i("testobject",mRequestBody);*/
                 String url = null;
-                Log.i("testobject",mRequestBody);
 
                 url = Constant.WEB_URL + Constant.SHOPPINGLISTUPDATE+"?MemberId="+appUtil.getPrefrence("MemberId")+"&UPC="+shopping.getDisplayUPC().replace("UPC","").replace(":","").replace(" ","")+"&Quantity="+(Integer.parseInt(shopping.getQuantity()) - 1)+"&DateAddedOn="+currentDate;
 
@@ -9787,7 +10388,7 @@ public class MainFwActivity extends AppCompatActivity
                                     Log.i("success", shopping.getDisplayUPC().replace("UPC","").replace(":",""));
                                     SetProductActivateShopping(shopping.getDisplayUPC().replace("UPC","").replace(":","").replace(" ",""), shopping.getPrimaryOfferTypeId(),shopping.getCouponID(),1,String.valueOf((Integer.parseInt(shopping.getQuantity()))));
                                     fetchShoppingListLoad();
-                                    progressDialog.dismiss();
+                                    //progressDialog.dismiss();
                                 }
                             }, new Response.ErrorListener() {
                         @Override
@@ -10501,7 +11102,7 @@ public class MainFwActivity extends AppCompatActivity
                                                                     progressDialog.dismiss();
 
                                                                     fetchVeritesProduct();
-
+                                                                    //
                                                                     rv_items_group.setVisibility(View.GONE);
                                                                     rv_items_verite.setVisibility(View.VISIBLE);
                                                                     participateToolbar.setVisibility(View.VISIBLE);
@@ -12296,6 +12897,42 @@ Log.i("url",url);
                                 public void onResponse(String  response) {
                                     Log.i("ViewRemoveAllDialog", String.valueOf(response));
                                     //shoppingListLoad();
+                                    if (messageCategory!=null){
+                                        for (int i = 0; i < messageCategory.length(); i++) {
+
+
+                                            try {
+                                                messageCategory.getJSONObject(i).put("ListCount", 0);
+                                                messageCategory.getJSONObject(i).put("ClickCount", 0);
+                                                messageCategory.getJSONObject(i).put("Quantity", "0");
+                                                messageCategory.getJSONObject(i).put("TotalQuantity", "0");
+                                                    //
+
+
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+
+                                        }
+                                    }
+                                    if (message!=null){
+                                        for (int i = 0; i < message.length(); i++) {
+
+
+                                            try {
+                                                message.getJSONObject(i).put("ListCount", 0);
+                                                message.getJSONObject(i).put("ClickCount", 0);
+                                                message.getJSONObject(i).put("Quantity", "0");
+                                                message.getJSONObject(i).put("TotalQuantity", "0");
+                                                //
+
+
+                                            } catch (JSONException e) {
+                                                e.printStackTrace();
+                                            }
+
+                                        }
+                                    }
                                     removeOwnItem();
                                     activatedOffer=null;
                                     shoppingArrayList.clear();
@@ -12307,6 +12944,43 @@ Log.i("url",url);
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             Log.i("fail", String.valueOf(error));
+                            if (messageCategory!=null){
+                                for (int i = 0; i < messageCategory.length(); i++) {
+
+
+                                    try {
+                                        messageCategory.getJSONObject(i).put("ListCount", 0);
+                                        messageCategory.getJSONObject(i).put("ClickCount", 0);
+                                        messageCategory.getJSONObject(i).put("Quantity", "0");
+                                        messageCategory.getJSONObject(i).put("TotalQuantity", "0");
+
+                                        //
+
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                            }
+                            if (message!=null){
+                                for (int i = 0; i < message.length(); i++) {
+
+
+                                    try {
+                                        message.getJSONObject(i).put("ListCount", 0);
+                                        message.getJSONObject(i).put("ClickCount", 0);
+                                        message.getJSONObject(i).put("Quantity", "0");
+                                        message.getJSONObject(i).put("TotalQuantity", "0");
+                                        //
+
+
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                }
+                            }
                            // messageLoad();
                             activatedOffer=null;
                             shoppingArrayList.clear();
@@ -12851,7 +13525,7 @@ Log.i("url",url);
                         Log.i("removeOwnItemsuccess", String.valueOf(response));
                         fetchShoppingListLoad();
                         progressDialog.dismiss();
-                        messageLoad();
+                        //messageLoad();
                         //removeOwnItem();
                     }
                 }, new Response.ErrorListener() {
@@ -12897,7 +13571,7 @@ Log.i("url",url);
                 new Response.Listener<String >() {
                     @Override
                     public void onResponse(String  response) {
-                        Log.i("success", String.valueOf(response));
+                        Log.i("success12", String.valueOf(response));
                         //shoppingListLoad();
                         fetchShoppingListLoad();
                         progressDialog.dismiss();

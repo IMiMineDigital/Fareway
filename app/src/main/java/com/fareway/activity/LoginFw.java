@@ -187,7 +187,6 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
                                             JSONObject jsonParam= message.getJSONObject(i);
                                             appUtil.setPrefrence("GeoStatus", jsonParam.getString("GeoStatus"));
                                             appUtil.setPrefrence("ZipCode", jsonParam.getString("ZipCode"));
-                                            appUtil.setPrefrence("StoreId", jsonParam.getString("StoreId"));
                                             appUtil.setPrefrence("UserAccessToken", jsonParam.getString("UserAccessToken"));
                                             appUtil.setPrefrence("SecretQuestionID", jsonParam.getString("SecretQuestionID"));
                                             appUtil.setPrefrence("ErrorMessage", jsonParam.getString("ErrorMessage"));
@@ -198,6 +197,9 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
                                             appUtil.setPrefrence("LoyaltyCard", jsonParam.getString("LoyaltyCard"));
                                             appUtil.setPrefrence("ActivaStatus", jsonParam.getString("ActivaStatus"));
                                             appUtil.setPrefrence("ShopperID", jsonParam.getString("ShopperID"));
+                                            appUtil.setPrefrence("StoreId", jsonParam.getString("StoreId"));
+                                            appUtil.setPrefrence("BackupStoreId", jsonParam.getString("StoreId"));
+                                            appUtil.setPrefrence("StoreName", jsonParam.getString("storename"));
                                         }
                                         //appUtil.setPrefrence("comeFrom","mpp");
                                         appUtil.setPrefrence("isLogin", "yes");

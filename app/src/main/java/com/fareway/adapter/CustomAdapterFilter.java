@@ -60,7 +60,14 @@ public class CustomAdapterFilter extends RecyclerView.Adapter<CustomAdapterFilte
 
         }*/
        try {
-           holder.tv_type.setText(category.getCategoryName());
+           if (category.getCategoryID()==1000){
+               holder.tv_type.setText("");
+               holder.rowLayout.setVisibility(View.GONE);
+           }else {
+              holder.tv_type.setText(category.getCategoryName());
+               holder.rowLayout.setVisibility(View.VISIBLE);
+           }
+
        }catch (Exception e){
 
        }
@@ -73,13 +80,14 @@ public class CustomAdapterFilter extends RecyclerView.Adapter<CustomAdapterFilte
                 //activate.OtherCoupon=0;
                 //activate.OtherCouponmulti=0;
                 if (position==0){
-                    MainFwActivity.pdView=true;
+                    //MainFwActivity.pdView=true;
                 }else {
-                    MainFwActivity.pdView=false;
+                    //MainFwActivity.pdView=false;
                 }
 
                 try {
                     MainFwActivity.getDate(category.getCategoryID());
+                    MainFwActivity.categoryShort=true;
                 }catch (Exception e){
 
                 }

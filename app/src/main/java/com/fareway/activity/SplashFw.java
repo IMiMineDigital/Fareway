@@ -90,7 +90,7 @@ public class SplashFw extends AppCompatActivity {
 
                 if (appUtil.getPrefrence("isLogin").equalsIgnoreCase("yes")==true) {
                     // getTokenkey();
-                    if (currentDate.compareTo(saveDate) < 0) {
+                    if (currentDate.compareTo(saveDate) < 0 && appUtil.getPrefrence("StoreId").equalsIgnoreCase(appUtil.getPrefrence("BackupStoreId"))) {
                         //getTokenkey();
                         /*Intent i = new Intent(activity, LoginFw.class);
                         startActivity(i);

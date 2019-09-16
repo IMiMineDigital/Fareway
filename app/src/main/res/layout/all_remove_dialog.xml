@@ -39,6 +39,6 @@
             android:layout_gravity="center"
             android:layout_marginLeft="@dimen/_10sdp"
             android:background="@color/red"
-            android:text="Cancel?"/>
+            android:text="Cancel"/>
     </LinearLayout>
 </RelativeLayout>
