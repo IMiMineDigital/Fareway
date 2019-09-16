@@ -360,7 +360,7 @@ public class MainFwActivity extends AppCompatActivity
                 /*Intent browserIntent = new Intent(Intent.ACTION_VIEW, Uri.parse("https://fwstaging.immdemo.net/web/printshoppinglist.aspx?shopperid="+appUtil.getPrefrence("ShopperID")+"&memberid="+appUtil.getPrefrence("MemberId")));
                 startActivity(browserIntent);*/
 
-                String urlString = "https://fwstaging.immdemo.net/web/printshoppinglist.aspx?shopperid="+appUtil.getPrefrence("ShopperID")+"&memberid="+appUtil.getPrefrence("MemberId");
+                String urlString = "https://fwstaging.immdemo.net/web/printshoppinglist.aspx?shopperid="+appUtil.getPrefrence("ShopperID")+"&memberid="+appUtil.getPrefrence("MemberId")+"&StoreId="+appUtil.getPrefrence("StoreId");
                 Intent intent = new Intent(Intent.ACTION_VIEW,Uri.parse(urlString));
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.setPackage("com.android.chrome");
@@ -1246,6 +1246,12 @@ public class MainFwActivity extends AppCompatActivity
                                 savingsShort=false;
 
                                 //tmp=0;
+                                if (tmp==0){
+                                    pdView=true;
+                                    couponTile=true;
+                                }else {
+
+                                }
                                 fetchProduct();
                                 rv_category.setVisibility(View.GONE);
                                 rowLayoutShort.setVisibility(View.GONE);
@@ -2677,14 +2683,19 @@ public class MainFwActivity extends AppCompatActivity
                     }.getType());
                     categoryList.clear();
                     categoryList.addAll(items2);
-                    Collections.sort(categoryList, new Comparator<Category>() {
+                    try {
+                        Collections.sort(categoryList, new Comparator<Category>() {
 
-                        @Override
-                        public int compare(Category o1, Category o2) {
-                            return o1.getCategoryName().compareTo(o2.getCategoryName());
-                        }
+                            @Override
+                            public int compare(Category o1, Category o2) {
+                                return o1.getCategoryName().compareTo(o2.getCategoryName());
+                            }
 
-                    });
+                        });
+                    }catch (Exception e){
+                       e.printStackTrace();
+                    }
+
                     customAdapterFilter.notifyDataSetChanged();
                     rv_category.setAdapter(customAdapterFilter);
                 } catch (JSONException e) {
@@ -5469,6 +5480,7 @@ public class MainFwActivity extends AppCompatActivity
                 int category_count = 0;
                 int subcat=0;
                 if (tmp==0){
+
                     String test1="";
                     for (int i = 0; i < message.length(); i++) {
                         try {
@@ -9844,13 +9856,43 @@ public class MainFwActivity extends AppCompatActivity
                                                 if (shoppingCouponID.equalsIgnoreCase(message.getJSONObject(i).getString("CouponID"))){
 //
                                                     message.getJSONObject(i).put("TotalQuantity", 0);
+                                                    message.getJSONObject(i).put("Quantity", 0);
+                                                    message.getJSONObject(i).put("ClickCount", 0);
+
+                                                }
+                                            }
+                                            if (messageCategory!=null){
+                                                for (int i = 0; i < messageCategory.length(); i++) {
+
+
+
+                                                        messageCategory.getJSONObject(i).put("TotalQuantity", 0);
+                                                        messageCategory.getJSONObject(i).put("Quantity", 0);
+                                                        messageCategory.getJSONObject(i).put("ClickCount", 0);
+
+
+                                                }
+                                            }
+                                            if (message3!=null){
+                                                for (int i = 0; i < message3.length(); i++) {
+
+
+
+                                                        message3.getJSONObject(i).put("TotalQuantity", 0);
+                                                        message3.getJSONObject(i).put("Quantity", 0);
+                                                        message3.getJSONObject(i).put("ClickCount", 0);
+
 
                                                 }
                                             }
                                             if (x==3){
 
                                             }else {
-                                                fetchProduct();
+                                                if (searchLable==true){
+                                                    searchProduct();
+                                                }else {
+                                                    fetchProduct();
+                                                }
                                             }
                                             Log.i("qut", String.valueOf(0));
 
@@ -13524,6 +13566,7 @@ Log.i("url",url);
                     public void onResponse(String  response) {
                         Log.i("removeOwnItemsuccess", String.valueOf(response));
                         fetchShoppingListLoad();
+                        //
                         progressDialog.dismiss();
                         //messageLoad();
                         //removeOwnItem();

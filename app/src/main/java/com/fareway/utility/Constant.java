@@ -3,7 +3,7 @@ package com.fareway.utility;
 public class Constant {
 
 
-    public static final String WEB_URL="https://myfwstagingapi.immdemo.net/api/v1/";
+    public static final String WEB_URL="https://fwstagingapi.immdemo.net/api/v1/";
     public static final String GET_TOKEN="Token";
     public static final String LOGIN="Account/Login";
     public static final String PRODUCTLIST="Circular/Offers";
