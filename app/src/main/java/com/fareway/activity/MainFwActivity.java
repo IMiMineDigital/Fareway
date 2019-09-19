@@ -919,8 +919,11 @@ public class MainFwActivity extends AppCompatActivity
                     navigation.getMenu().findItem(R.id.ShoppingList).setIcon(R.drawable.account);
                     Log.i("ifbottom", String.valueOf(x)+comeFrom);
 
+                    //fetchActivatedOffer();
+                    //
                     activatedOffersListIdLoad();
-
+                    //
+                    //
                     imv_all_delete.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -934,7 +937,7 @@ public class MainFwActivity extends AppCompatActivity
                     DetaileToolbar.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-
+                            //
                             x=0;
                             z=0;
                             shoppingArrayList.clear();
@@ -11036,7 +11039,7 @@ public class MainFwActivity extends AppCompatActivity
                     if(shopping.getCouponid()==message.getJSONObject(i).getInt("CouponID")) {
                         Log.i("test","if");
 
-                        flag = 0;
+                        flag = 1;
                         message.getJSONObject(i).getString("Quantity");
                             ImageView imv_item_detaile = (ImageView) findViewById(R.id.imv_item_detaile);
 
