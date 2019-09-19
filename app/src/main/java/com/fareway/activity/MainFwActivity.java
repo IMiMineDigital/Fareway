@@ -919,11 +919,8 @@ public class MainFwActivity extends AppCompatActivity
                     navigation.getMenu().findItem(R.id.ShoppingList).setIcon(R.drawable.account);
                     Log.i("ifbottom", String.valueOf(x)+comeFrom);
 
-                    //fetchActivatedOffer();
-                    //
                     activatedOffersListIdLoad();
-                    //
-                    //
+
                     imv_all_delete.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -937,7 +934,7 @@ public class MainFwActivity extends AppCompatActivity
                     DetaileToolbar.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            //
+
                             x=0;
                             z=0;
                             shoppingArrayList.clear();
@@ -2760,9 +2757,11 @@ public class MainFwActivity extends AppCompatActivity
                                     Log.i("errorcode", root.getString("errorcode"));
                                     if (root.getString("errorcode").equals("0")){
                                         progressDialog.dismiss();
-                                       if(message!=null)
-                                       {
-                                         String s1=  root.getJSONArray("message").toString();
+                                       if(message!=null) {
+                                           if (root.getJSONArray("message").length() > 0) {
+                                               root.getJSONArray("message").getJSONObject(0).put("TileNumber", 998);
+                                            }
+                                           String s1=  root.getJSONArray("message").toString();
                                            String s2=  message.toString();
                                            String s3="";
                                            String s4="{\"oCouponShortDescription\":\"OSCAR MAYER GRILLED CHICKEN STRIPS\",\"CouponShortDescription\":\"OSCAR MAYER GRILLED CHICKEN STRIPS\",\"CouponLongDescription\":\"\",\"RewardType\":\"3\",\"RewardQty\":\"0\",\"Groupname\":\"\",\"oGroupname\":\"\",\"oDisplayPrice\":\"<sup>$</sup>2.84\",\"rewardGroupname\":\"\",\"Quantity\":1,\"inCircular\":1,\"RequiresActivation\":\"True\",\"IsMidWeek\":0,\"FreeOffer\":0,\"AltTitleBarImage\":\"\",\"LimitPerTransection\":0,\"TileNumber\":\"2\",\"MemberID\":41761,\"UPCRank\":\"0\",\"HasRelatedItems\":1,\"OriginatorID\":0,\"RelevantUPC\":\"4470002288\",\"IsEmployeeOffer\":false,\"BadgeId\":\"0\",\"RedeemLimit\":0,\"RequiredQty\":1,\"CategoryPriority\":1,\"PercentSavings\":\"28.82\",\"FinalPrice\":\"2.8400\",\"AdPrice\":\"0.0000\",\"CouponDiscount\":\"0.0000\",\"PersonalCircularID\":38477,\"LoyaltyCardNumber\":\"5155567152\",\"PersonalCircularItemId\":1029271,\"SectionNumber\":3,\"StoreID\":\"657\",\"RegularPrice\":\"3.99\",\"DisplayPrice\":\"<sup>$</sup>2.84\",\"Savings\":\"1.1500\",\"DateAdded\":\"7/20/2019 2:44:13 AM\",\"ValidityStartDate\":\"7/9/19\",\"BadgeName\":\"\",\"BadgeFileName\":\"\",\"ValidityEndDate\":\"7/24/19\",\"Description\":\"OSCAR MAYER GRILLED CHICKEN STRIPS\",\"PackagingSize\":\"5.5 OZ\",\"PricingMasterID\":0,\"CategoryID\":1000,\"UPC\":\"4470002288\",\"CategoryName\":\"z\",\"SmallImagePath\":\"https://images.immdemo.net/product/wlarge/00044700022887.png\",\"LargeImagePath\":\"https://images.immdemo.net/product/wlarge/00044700022887.png\",\"Isbadged\":\"False\",\"ListCount\":1,\"SpecialInformation\":\"\",\"TileTemplateID\":3,\"MinAmount\":0.0,\"PriceAssociationCode\":\"\",\"PrimaryOfferTypeName\":\"Personal Deals\",\"OfferTypeTagName\":\"My Personal Deal\",\"OfferDefinition\":\"New Price\",\"CPRPromoTypeName\":\"Individual\",\"RelevancyDetail\":\"Pushed\",\"PrimaryOfferTypeId\":0,\"OfferDetailId\":1,\"OfferDefinitionId\":2,\"CPRPromoTypeId\":1,\"RelevancyTypeD\":5,\"CouponID\":1111,\"RelatedItemCount\":2,\"ClickCount\":1,\"PageID\":1,\"BrandId\":1,\"BrandName\":\"Sally Hansen\",\"DietaryId\":0,\"DietaryName\":\"\",\"RewardValue\":\"2.84\",\"CouponImageURl\":\"http://images.immdemo.net/coupon/wlarge/couponImg.jpg\"}";
@@ -2803,7 +2802,7 @@ public class MainFwActivity extends AppCompatActivity
                     public void onErrorResponse(VolleyError error) {
                         Log.i("Volley error resp", "error----" + error.getMessage());
                         error.printStackTrace();
-                        progressDialog2.dismiss();
+                        progressDialog.dismiss();
                     }
                 })
                 {
@@ -11037,7 +11036,7 @@ public class MainFwActivity extends AppCompatActivity
                     if(shopping.getCouponid()==message.getJSONObject(i).getInt("CouponID")) {
                         Log.i("test","if");
 
-                        flag = 1;
+                        flag = 0;
                         message.getJSONObject(i).getString("Quantity");
                             ImageView imv_item_detaile = (ImageView) findViewById(R.id.imv_item_detaile);
 

@@ -1384,17 +1384,22 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     @Override
                     public void onClick(View v) {
                         if (product.getPrimaryOfferTypeId()==3){
+                            activateListener.onProductActivate(productListFiltered.get(position));
+                            product.setClickCount(1);
+                            product.setListCount(1);
                             holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
                             holder.imv_status.setVisibility(View.VISIBLE);
                             holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
                             holder.tv_status.setText("Activated");
-                            activateListener.onProductActivate(productListFiltered.get(position));
+
                         }else if (product.getPrimaryOfferTypeId()==2){
+                            activateListener.onProductActivate(productListFiltered.get(position));
+                            product.setClickCount(1);
+                            product.setListCount(1);
                             holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
                             holder.imv_status.setVisibility(View.VISIBLE);
                             holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
                             holder.tv_status.setText("Activated");
-                            activateListener.onProductActivate(productListFiltered.get(position));
                         }else   if (product.getPrimaryOfferTypeId()==1){
                             holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
                             holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
@@ -1976,7 +1981,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
 
                     }
-                    else if (product.getTileNumber().equalsIgnoreCase("999")){
+                    else if (product.getTileNumber().equalsIgnoreCase("998")){
                         Log.i("puperxdf", String.valueOf(MainFwActivity.couponTile));
                         Log.i("puperxdf", String.valueOf(MainFwActivity.pdView));
                         if (MainFwActivity.couponTile==true && MainFwActivity.pdView==true){
@@ -2018,7 +2023,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                      }
                     else {
                         Log.i("linear_multi","test");
-                        holder.additional_offers.setVisibility(View.GONE);
+                        //holder.additional_offers.setVisibility(View.GONE);
                         holder.linear_personal_ad_lable.setVisibility(View.GONE);
                         holder.linear_multi_personal_ad_lable.setVisibility(View.GONE);
                         //holder.additional_offers.setVisibility(View.GONE);
