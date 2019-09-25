@@ -61,9 +61,11 @@ public class CustomAdapterFilter extends RecyclerView.Adapter<CustomAdapterFilte
         }*/
        try {
            if (category.getCategoryID()==1000){
+               Log.i("ifcat","test");
                holder.tv_type.setText("");
                holder.rowLayout.setVisibility(View.GONE);
            }else {
+               Log.i("elsecat",category.getCategoryName());
                holder.tv_type.setText(category.getCategoryName());
                holder.rowLayout.setVisibility(View.VISIBLE);
            }
@@ -80,7 +82,7 @@ public class CustomAdapterFilter extends RecyclerView.Adapter<CustomAdapterFilte
                 //activate.OtherCoupon=0;
                 //activate.OtherCouponmulti=0;
                 if (position==0){
-                    if (MainFwActivity.tmp==0){
+                    if (MainFwActivity.tmp==0 && MainFwActivity.searchLable==false){
                         MainFwActivity.pdView=true;
                     }
                     //MainFwActivity.pdView=true;

@@ -1,5 +1,6 @@
 package com.fareway.activity;
 
+import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.Dialog;
@@ -12,8 +13,15 @@ import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
+import android.location.Location;
+import android.location.LocationListener;
+import android.location.LocationManager;
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
 import android.net.Uri;
+import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
+import android.os.Build;
 import android.os.Bundle;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
@@ -29,6 +37,7 @@ import android.support.v7.widget.SearchView;
 import android.support.v7.widget.helper.ItemTouchHelper;*/
 import android.text.Html;
 import android.text.Spanned;
+import android.text.format.Formatter;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -60,6 +69,7 @@ import android.widget.Toast;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -110,6 +120,8 @@ import org.json.JSONObject;
 
 import java.io.InputStream;
 import java.io.UnsupportedEncodingException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.net.URI;
 import java.text.DecimalFormat;
 import java.text.ParseException;
@@ -119,6 +131,7 @@ import java.util.Calendar;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
@@ -129,7 +142,7 @@ import java.util.regex.Pattern;
 public class MainFwActivity extends AppCompatActivity
         implements CustomAdapterPersonalPrices.CustomAdapterPersonalPricesListener,
         CustomAdapterParticipateItems.CustomAdapterParticipateItemsListener,CustomGroupAdapter.CustomAdapterGroupItemsListener,
-        ShoppingListAdapter.ShoppingListAdapterListener{
+        ShoppingListAdapter.ShoppingListAdapterListener, LocationListener {
 
     private DrawerLayout drawer;
     public static Toolbar toolbar;
@@ -158,7 +171,8 @@ public class MainFwActivity extends AppCompatActivity
     public static boolean cdOddView=false;
     public static String UPCOddView="";
     private BottomNavigationView navigation;
-    private RelativeLayout main,search_message;
+    RelativeLayout main;
+    static RelativeLayout search_message;
     private PopupWindow popupWindow;
     public static String comeFrom;
     AppUtilFw appUtil;
@@ -210,6 +224,9 @@ public class MainFwActivity extends AppCompatActivity
     RelativeLayout relative_main;
     int qty=0;
     String shoppingCouponID="";
+    String IPaddress;
+    Boolean IPValue;
+    LocationManager locationManager;
 
 
 
@@ -226,7 +243,19 @@ public class MainFwActivity extends AppCompatActivity
         appUtil2=new AppUtilFw(activity);
         comeFrom=getIntent().getStringExtra("comeFrom");
         Log.i("test",comeFrom+" singh");
+        /*
+        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+        getLocation();*/
         linkUIElements();
+        /*String osName= Build.VERSION_CODES.class.getFields()[android.os.Build.VERSION.SDK_INT].getName();
+        Log.i("osName",osName);*/
+        /*String myVersion = android.os.Build.VERSION.RELEASE;
+        int sdkVersion = android.os.Build.VERSION.SDK_INT;
+        Log.i("myVersion",myVersion);
+        Log.i("sdkVersion", String.valueOf(sdkVersion));*/
+        //NetwordDetect();
+        /*String DeviceId =  android.provider.Settings.Secure.getString(getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
+        Log.i("device",DeviceId);*/
 
         imv_status_verities=findViewById(R.id.imv_status_verities);
         tv_fareway_flag=findViewById(R.id.tv_fareway_flag);
@@ -378,26 +407,64 @@ public class MainFwActivity extends AppCompatActivity
         btn_return_pd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.i("btn_return_pd","true");
+                /*rv_items.setVisibility(View.VISIBLE);
                 search_message.setVisibility(View.GONE);
                 navigation.setVisibility(View.VISIBLE);
                 submit_btn.setImageResource(R.drawable.ic_search_black_24dp);
                 submit_btn.setTag(0);
                 edit_txt.getText().clear();
                 fetchProduct();
+                x=0;*/
+                search_message.setVisibility(View.GONE);
+                navigation.setVisibility(View.VISIBLE);
+                submit_btn.setImageResource(R.drawable.ic_search_black_24dp);
+                submit_btn.setTag(0);
+                edit_txt.getText().clear();
+                pdView=true;
+                couponTile=true;
+                savingsShort=false;
+                offferShort=false;
+                categoryShort=false;
+
+                participate=1;
+                tmp=0;
                 x=0;
+                searchLable=false;
+                header_title.setVisibility(View.GONE);
+                fetchProduct();
             }
         });
         btn_try_another_search=findViewById(R.id.btn_try_another_search);
         btn_try_another_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Log.i("btn_try_another_search","true");
+                /*rv_items.setVisibility(View.VISIBLE);
                 search_message.setVisibility(View.GONE);
                 navigation.setVisibility(View.VISIBLE);
                 submit_btn.setImageResource(R.drawable.ic_search_black_24dp);
                 submit_btn.setTag(0);
                 edit_txt.getText().clear();
                 fetchProduct();
+                x=0;*/
+                search_message.setVisibility(View.GONE);
+                navigation.setVisibility(View.VISIBLE);
+                submit_btn.setImageResource(R.drawable.ic_search_black_24dp);
+                submit_btn.setTag(0);
+                edit_txt.getText().clear();
+                pdView=true;
+                couponTile=true;
+                savingsShort=false;
+                offferShort=false;
+                categoryShort=false;
+
+                participate=1;
+                tmp=0;
                 x=0;
+                searchLable=false;
+                header_title.setVisibility(View.GONE);
+                fetchProduct();
             }
         });
 
@@ -1006,7 +1073,28 @@ public class MainFwActivity extends AppCompatActivity
         }
     };
 
+    @Override
+    public void onLocationChanged(Location location) {
+        //locationText.setText("Current Location: " + location.getLatitude() + ", " + location.getLongitude());
+        Log.i("Current Location",location.getLatitude() + ", " + location.getLongitude());
 
+    }
+
+    @Override
+    public void onStatusChanged(String provider, int status, Bundle extras) {
+        Toast.makeText(activity, "Please Enable GPS and Internet", Toast.LENGTH_SHORT).show();
+
+    }
+
+    @Override
+    public void onProviderEnabled(String provider) {
+
+    }
+
+    @Override
+    public void onProviderDisabled(String provider) {
+
+    }
 
 
     private class OnDismissListener implements PopupMenu.OnDismissListener {
@@ -1030,6 +1118,8 @@ public class MainFwActivity extends AppCompatActivity
 
             if (i2 == R.id.filter_by_categories) {
                 //pdView=false;
+
+                search_message.setVisibility(View.GONE);
                 DetaileToolbar.setVisibility(View.GONE);
                 shopping_list_header.setVisibility(View.GONE);
                 rv_shopping_list_items.setVisibility(View.GONE);
@@ -1052,6 +1142,7 @@ public class MainFwActivity extends AppCompatActivity
             }
 
             else if (i2 == R.id.filter_by_all_offer) {
+                search_message.setVisibility(View.GONE);
                 rowLayoutShort.setVisibility(View.GONE);
                 DetaileToolbar.setVisibility(View.GONE);
                 shopping_list_header.setVisibility(View.GONE);
@@ -1177,6 +1268,7 @@ public class MainFwActivity extends AppCompatActivity
                         public void onClick(View v) {
                             tmp=0;
                             searchProduct();
+                            //
                             rv_category.setVisibility(View.GONE);
                             rowLayout.setVisibility(View.GONE);
                             rv_items.setVisibility(View.VISIBLE);
@@ -1271,7 +1363,7 @@ public class MainFwActivity extends AppCompatActivity
                                 savingsShort=false;
 
                                 //tmp=0;
-                                if (tmp==0){
+                                if (tmp==0 && categoryShort==false){
                                     pdView=true;
                                     couponTile=true;
                                 }else {
@@ -2195,15 +2287,20 @@ public class MainFwActivity extends AppCompatActivity
                             }.getType());
                             categoryList.clear();
                             categoryList.addAll(items2);
+                            try {
+                                Collections.sort(categoryList, new Comparator<Category>() {
 
-                            Collections.sort(categoryList, new Comparator<Category>() {
+                                    @Override
+                                    public int compare(Category o1, Category o2) {
+                                        return o1.getCategoryName().compareTo(o2.getCategoryName());
+                                    }
 
-                                @Override
-                                public int compare(Category o1, Category o2) {
-                                    return o1.getCategoryName().compareTo(o2.getCategoryName());
-                                }
+                                });
+                            }catch (Exception e){
+                                e.printStackTrace();
+                            }
 
-                            });
+
 
                             customAdapterFilter.notifyDataSetChanged();
                             rv_category.setAdapter(customAdapterFilter);
@@ -2225,12 +2322,12 @@ public class MainFwActivity extends AppCompatActivity
             Log.i("obj", String.valueOf(message3.length()));
 
             if (message3.length() < 5) {
-                search_message.setVisibility(View.VISIBLE);
-                /*if (participate==0){
+
+                if (participate==0){
                     search_message.setVisibility(View.VISIBLE);
                 }else if (participate==1){
                     search_message.setVisibility(View.GONE);
-                }*/
+                }
 
                 String strCategory = "";
                 String strCategoryCheck = "";
@@ -2315,7 +2412,7 @@ public class MainFwActivity extends AppCompatActivity
                         customAdapterPersonalPrices.notifyDataSetChanged();
                     }
 
-                    strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category (" + category_count + ")\"}," + strCategory;
+                    strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category \"}," + strCategory;
                     //Log.i("text", "["+String.valueOf(strCategory)+"]");
                     String data = "[" + String.valueOf(strCategory) + "]";
                     // categoryList.clear();
@@ -2434,13 +2531,13 @@ public class MainFwActivity extends AppCompatActivity
 
                             customAdapterPersonalPrices.notifyDataSetChanged();
                         }
-                        strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category (" + category_count + ")\"}," + strCategory;
+                        strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category\"}," + strCategory;
                     }
                     else {
                         Toast.makeText(activity, "no data", Toast.LENGTH_SHORT).show();
                         productList.clear();
                         customAdapterPersonalPrices.notifyDataSetChanged();
-                        strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category (" + category_count + ")\"}";
+                        strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category\"}";
                     }
 
                     // adding product to product list
@@ -2572,7 +2669,7 @@ public class MainFwActivity extends AppCompatActivity
                     customAdapterPersonalPrices.notifyDataSetChanged();
                 }
 
-                strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category (" + category_count + ")\"}," + strCategory;
+                strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category\"}," + strCategory;
                 //Log.i("text", "["+String.valueOf(strCategory)+"]");
                 String data = "[" + String.valueOf(strCategory) + "]";
                 // categoryList.clear();
@@ -2686,13 +2783,13 @@ public class MainFwActivity extends AppCompatActivity
 
                         customAdapterPersonalPrices.notifyDataSetChanged();
                     }
-                    strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category (" + category_count + ")\"}," + strCategory;
+                    strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category\"}," + strCategory;
                 }
                 else {
                     Toast.makeText(activity, "no data", Toast.LENGTH_SHORT).show();
                     productList.clear();
                     customAdapterPersonalPrices.notifyDataSetChanged();
-                    strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category (" + category_count + ")\"}";
+                    strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category\"}";
                 }
 
                 // adding product to product list
@@ -3933,6 +4030,8 @@ public class MainFwActivity extends AppCompatActivity
                 progressDialog = new ProgressDialog(activity);
                 progressDialog.setMessage("Processing");
                 progressDialog.show();
+                progressDialog.setCanceledOnTouchOutside(false);
+                //
                 Calendar c2 = Calendar.getInstance();
                 SimpleDateFormat dateformat2 = new SimpleDateFormat("ddMMMyyyy");
                 String currentDate = dateformat2.format(c2.getTime());
@@ -3970,9 +4069,10 @@ public class MainFwActivity extends AppCompatActivity
                                         product.setQuantity(String.valueOf((Integer.parseInt(product.getQuantity()) + 1)));
                                         tv_quantity_detail.setText(product.getQuantity());
                                         qty = Integer.parseInt(product.getTotalQuantity()) + 1;
-                                        fetchShoppingListLoad();
+
                                         SetProductActivateDetaile(product.getPrimaryOfferTypeId(), product.getCouponID(), product.getUPC(), product.getRequiresActivation(), 1, String.valueOf((Integer.parseInt(product.getQuantity()) + 0)));
-                                        progressDialog.dismiss();
+                                        fetchShoppingListLoad();
+                                        //progressDialog.dismiss();
                                     }
                                 }, new Response.ErrorListener() {
                             @Override
@@ -4072,10 +4172,11 @@ public class MainFwActivity extends AppCompatActivity
                                         imv_status_detaile.setVisibility(View.VISIBLE);
                                         imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.tick));
                                         tv_status_detaile.setText("Activated");
-                                        fetchShoppingListLoad();
+
                                         //
                                         SetProductActivateDetaile(product.getPrimaryOfferTypeId(), product.getCouponID(), product.getUPC(), product.getRequiresActivation(), 1, String.valueOf((Integer.parseInt(product.getQuantity()) + 0)));
-                                        progressDialog.dismiss();
+                                        fetchShoppingListLoad();
+                                        //progressDialog.dismiss();
 
                                         liner_all_Varieties_activate.setVisibility(View.VISIBLE);
                                         liner_all_Varieties_activate.setBackground(getResources().getDrawable(R.drawable.circular_mehrune_bg));
@@ -4180,7 +4281,7 @@ public class MainFwActivity extends AppCompatActivity
 
                                         SetProductActivateDetaile(product.getPrimaryOfferTypeId(), product.getCouponID(), product.getUPC(), product.getRequiresActivation(), 1, String.valueOf((Integer.parseInt(product.getQuantity()) + 0)));
                                         fetchShoppingListLoad();
-                                        progressDialog.dismiss();
+                                        //progressDialog.dismiss();
                                     }
                                 }, new Response.ErrorListener() {
                             @Override
@@ -4231,6 +4332,7 @@ public class MainFwActivity extends AppCompatActivity
                 progressDialog = new ProgressDialog(activity);
                 progressDialog.setMessage("Processing");
                 progressDialog.show();
+                progressDialog.setCanceledOnTouchOutside(false);
                 if (Integer.parseInt(product.getQuantity())>1){
                     Calendar c2 = Calendar.getInstance();
                     SimpleDateFormat dateformat2 = new SimpleDateFormat("ddMMMyyyy");
@@ -4262,18 +4364,31 @@ public class MainFwActivity extends AppCompatActivity
                                 new Response.Listener<String >() {
                                     @Override
                                     public void onResponse(String  response) {
-                                        Log.i("success", String.valueOf(response));
+                                        /*Log.i("success", String.valueOf(response));
                                         product.setQuantity(String.valueOf((Integer.parseInt(product.getQuantity())-1)));
                                         qty= Integer.parseInt(product.getTotalQuantity())-1;
                                         tv_quantity_detail.setText(product.getQuantity());
-                                        //.setText(product.getQuantity());
                                         fetchShoppingListLoad();
                                         SetProductActivateDetaile(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1,String.valueOf((Integer.parseInt(product.getQuantity())-0)));
-                                        progressDialog.dismiss();
+                                        progressDialog.dismiss();*/
+
+
+                                        product.setQuantity(String.valueOf((Integer.parseInt(product.getQuantity()) - 1)));
+                                        product.setTotalQuantity(String.valueOf((Integer.parseInt(product.getTotalQuantity()) - 1)));
+                                        tv_quantity_detail.setText(product.getQuantity());
+                                        Log.i("testqty", String.valueOf(qty));
+                                        qty = Integer.parseInt(product.getTotalQuantity());
+                                        Log.i("testqty", String.valueOf(qty));
+
+                                        SetProductActivateDetaile(product.getPrimaryOfferTypeId(), product.getCouponID(), product.getUPC(), product.getRequiresActivation(), 1, String.valueOf((Integer.parseInt(product.getQuantity()) - 0)));
+
+                                        fetchShoppingListLoad();
+                                        //progressDialog.dismiss();
                                     }
                                 }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
+                                progressDialog.dismiss();
                                 Log.i("fail", String.valueOf(error));
                             }
                         }){
@@ -4327,7 +4442,7 @@ public class MainFwActivity extends AppCompatActivity
                     }
                 }
 
-                else {
+                else if (Integer.parseInt(product.getQuantity())==1){
                     Log.i("remove","remove");
                     String url = Constant.WEB_URL+Constant.REMOVE+product.getUPC()+"&"+"MemberId="+appUtil.getPrefrence("MemberId");
                     try {
@@ -4336,17 +4451,19 @@ public class MainFwActivity extends AppCompatActivity
                                     @Override
                                     public void onResponse(String  response) {
                                         Log.i("success", String.valueOf(response));
-                                        fetchShoppingListLoad();
+
                                         qty= Integer.parseInt(product.getTotalQuantity())-1;
 
                                         tv_quantity_detail.setText("0");
 
                                         SetRemoveActivateDetail(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
-                                        progressDialog.dismiss();
+                                        fetchShoppingListLoad();
+                                        //progressDialog.dismiss();
                                     }
                                 }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
+                                progressDialog.dismiss();
                                 Log.i("fail", String.valueOf(error));
                             }
                         }){
@@ -4381,6 +4498,9 @@ public class MainFwActivity extends AppCompatActivity
                     }
 
                 }
+                else {
+                    progressDialog.dismiss();
+                }
             }
         });
 
@@ -4404,7 +4524,7 @@ public class MainFwActivity extends AppCompatActivity
                                                 imv_status_detaile.setVisibility(View.VISIBLE);
                                                 imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.tick));
                                                 tv_status_detaile.setText("Activated");
-                                                SetProductActivateDetaile(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1,String.valueOf((Integer.parseInt(product.getQuantity())+1)));
+                                                SetProductActivateDetaile(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1,String.valueOf(0));
 
                                                 liner_all_Varieties_activate.setVisibility(View.VISIBLE);
                                                 liner_all_Varieties_activate.setBackground(getResources().getDrawable(R.drawable.circular_mehrune_bg));
@@ -5762,6 +5882,11 @@ public class MainFwActivity extends AppCompatActivity
 
             }
             else {
+                if (message3.length() < 5) {
+                    search_message.setVisibility(View.VISIBLE);
+                }else {
+                    search_message.setVisibility(View.GONE);
+                }
                 String strCategory="";
                 int Categoryid=0;
                 int category_count = 0;
@@ -6219,6 +6344,7 @@ public class MainFwActivity extends AppCompatActivity
 
                 fetchProduct();
                 shoppingListLoad();
+                //
 
                 if (jsonParam == null) {
 
@@ -6588,7 +6714,7 @@ public class MainFwActivity extends AppCompatActivity
                     }
                 }
 
-                fetchProduct();
+                //fetchProduct();
                 if (jsonParam == null) {
                     Log.i("testtttt", String.valueOf(jsonParam));
                     //no students
@@ -8261,6 +8387,7 @@ public class MainFwActivity extends AppCompatActivity
                 progressDialog = new ProgressDialog(activity);
                 progressDialog.setMessage("Processing");
                 progressDialog.show();
+                progressDialog.setCanceledOnTouchOutside(false);
                 if (Integer.parseInt(relatedItem.getQuantity())>1){
                     Calendar c2 = Calendar.getInstance();
                     SimpleDateFormat dateformat2 = new SimpleDateFormat("ddMMMyyyy");
@@ -8297,10 +8424,11 @@ public class MainFwActivity extends AppCompatActivity
                                         tv_quantity_detail.setText(relatedItem.getQuantity());
                                         //.setText(product.getQuantity());
                                         qty=qty-1;
-                                        fetchShoppingListLoad();
+
                                         //
                                         SetProductActivateDetaile(relatedItem.getPrimaryOfferTypeId(),relatedItem.getCouponID(),relatedItem.getUPC(),relatedItem.getRequiresActivation(),1,String.valueOf((Integer.parseInt(relatedItem.getQuantity())-0)));
-                                        progressDialog.dismiss();
+                                        fetchShoppingListLoad();
+                                        //progressDialog.dismiss();
                                     }
                                 }, new Response.ErrorListener() {
                             @Override
@@ -8355,7 +8483,7 @@ public class MainFwActivity extends AppCompatActivity
 
                 }
 
-                else {
+                else  if (Integer.parseInt(relatedItem.getQuantity())==1){
                     //product.setQuantity(String.valueOf((Integer.parseInt(product.getQuantity())-1)));
 
                     Log.i("remove","remove");
@@ -8366,15 +8494,26 @@ public class MainFwActivity extends AppCompatActivity
                                     @Override
                                     public void onResponse(String  response) {
                                         Log.i("success", String.valueOf(response));
-                                        fetchShoppingListLoad();
+
+                                        qty= qty-1;
                                         tv_quantity_detail.setText("0");
 
                                         SetRemoveActivateDetail(relatedItem.getPrimaryOfferTypeId(),relatedItem.getCouponID(),relatedItem.getUPC(),relatedItem.getRequiresActivation(),1);
-                                        progressDialog.dismiss();
+                                        fetchShoppingListLoad();
+                                        //progressDialog.dismiss();
+                                        ///
+                                        /*fetchShoppingListLoad();
+                                        qty= Integer.parseInt(product.getTotalQuantity())-1;
+
+                                        tv_quantity_detail.setText("0");
+
+                                        SetRemoveActivateDetail(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
+                                        progressDialog.dismiss();*/
                                     }
                                 }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
+                                progressDialog.dismiss();
                                 Log.i("fail", String.valueOf(error));
                             }
                         }){
@@ -8409,6 +8548,10 @@ public class MainFwActivity extends AppCompatActivity
                     }
 
                 }
+
+                else {
+                    progressDialog.dismiss();
+                }
             }
         });
 
@@ -8418,6 +8561,7 @@ public class MainFwActivity extends AppCompatActivity
                 progressDialog = new ProgressDialog(activity);
                 progressDialog.setMessage("Processing");
                 progressDialog.show();
+                progressDialog.setCanceledOnTouchOutside(false);
                 Calendar c2 = Calendar.getInstance();
                 SimpleDateFormat dateformat2 = new SimpleDateFormat("ddMMMyyyy");
                 String currentDate = dateformat2.format(c2.getTime());
@@ -8576,7 +8720,7 @@ public class MainFwActivity extends AppCompatActivity
                                         qty=qty+1;
                                         SetProductActivateDetaile(relatedItem.getPrimaryOfferTypeId(),relatedItem.getCouponID(),relatedItem.getUPC(),relatedItem.getRequiresActivation(),1,String.valueOf((Integer.parseInt(relatedItem.getQuantity())+0)));
                                         fetchShoppingListLoad();
-                                        progressDialog.dismiss();
+                                        //progressDialog.dismiss();
 
                                         liner_all_Varieties_activate.setVisibility(View.VISIBLE);
                                         liner_all_Varieties_activate.setBackground(getResources().getDrawable(R.drawable.circular_mehrune_bg));
@@ -8680,10 +8824,11 @@ public class MainFwActivity extends AppCompatActivity
                                         //
                                         Log.i("qty", String.valueOf(qty));
                                         qty=qty+1;
-                                        fetchShoppingListLoad();
+
                                         ////
                                         SetProductActivateDetaile(relatedItem.getPrimaryOfferTypeId(),relatedItem.getCouponID(),relatedItem.getUPC(),relatedItem.getRequiresActivation(),1,String.valueOf((Integer.parseInt(relatedItem.getQuantity())+0)));
-                                        progressDialog.dismiss();
+                                        fetchShoppingListLoad();
+                                        //progressDialog.dismiss();
                                     }
                                 }, new Response.ErrorListener() {
                             @Override
@@ -8750,6 +8895,7 @@ public class MainFwActivity extends AppCompatActivity
         progressDialog = new ProgressDialog(activity);
         progressDialog.setMessage("Processing");
         progressDialog.show();
+        progressDialog.setCanceledOnTouchOutside(false);
         JSONObject json = new JSONObject();
         Calendar c2 = Calendar.getInstance();
         SimpleDateFormat dateformat2 = new SimpleDateFormat("ddMMMyyyy");
@@ -8809,7 +8955,7 @@ public class MainFwActivity extends AppCompatActivity
                                     all_Varieties_activate.setVisibility(View.GONE);
                                     imv_status_verities.setVisibility(View.GONE);
                                 }
-                                progressDialog.dismiss();
+                                //progressDialog.dismiss();
 
                             }
                         }, new Response.ErrorListener() {
@@ -8910,11 +9056,10 @@ public class MainFwActivity extends AppCompatActivity
                                 relatedItem.setQuantity(String.valueOf((Integer.parseInt(relatedItem.getQuantity())+1)));
                                 Log.i("qtytest", String.valueOf(qty));
                                 qty=qty+1;
-
                                 //
                                 Log.i("qtytest2", String.valueOf(qty));
                                 SetProductActivateShopping(relatedItem.getUPC(),relatedItem.getPrimaryOfferTypeId(),relatedItem.getCouponID(),1,String.valueOf((Integer.parseInt(relatedItem.getQuantity())+0)));
-                                progressDialog.dismiss();
+                                //progressDialog.dismiss();
                             }
                         }, new Response.ErrorListener() {
                     @Override
@@ -8972,6 +9117,7 @@ public class MainFwActivity extends AppCompatActivity
         progressDialog = new ProgressDialog(activity);
         progressDialog.setMessage("Processing");
         progressDialog.show();
+        progressDialog.setCanceledOnTouchOutside(false);
         if (Integer.parseInt(relatedItem.getQuantity())>1) {
 
             JSONObject json = new JSONObject();
@@ -9017,7 +9163,7 @@ public class MainFwActivity extends AppCompatActivity
                                 qty=qty-1;
 
                                 SetProductActivateShopping(relatedItem.getUPC(), relatedItem.getPrimaryOfferTypeId(), relatedItem.getCouponID(), 1, String.valueOf((Integer.parseInt(relatedItem.getQuantity()) - 0)));
-                                progressDialog.dismiss();
+                                //progressDialog.dismiss();
                             }
                         }, new Response.ErrorListener() {
                     @Override
@@ -9058,7 +9204,7 @@ public class MainFwActivity extends AppCompatActivity
 
         }
 
-        else {
+        else if (Integer.parseInt(relatedItem.getQuantity())==1){
             Log.i("remove","remove");
             String url = Constant.WEB_URL+Constant.REMOVE+relatedItem.getUPC()+"&"+"MemberId="+appUtil.getPrefrence("MemberId");
             try {
@@ -9068,7 +9214,7 @@ public class MainFwActivity extends AppCompatActivity
                             public void onResponse(String  response) {
                                 Log.i("success", String.valueOf(response));
 
-                                progressDialog.dismiss();
+                                //progressDialog.dismiss();
                                 qty=qty-1;
 
                                 //
@@ -9117,6 +9263,10 @@ public class MainFwActivity extends AppCompatActivity
                 progressDialog.dismiss();
             }
 
+        }
+
+        else {
+            progressDialog.dismiss();
         }
 
     }
@@ -9746,6 +9896,7 @@ public class MainFwActivity extends AppCompatActivity
                             @Override
                             public void onResponse(String response) {
                                 Log.i("shoppingList Response", response.toString());
+                                progressDialog.dismiss();
 
                                 try {
                                     JSONObject root = new JSONObject(response);
@@ -9867,7 +10018,7 @@ public class MainFwActivity extends AppCompatActivity
                             @Override
                             public void onResponse(String response) {
                                 Log.i("Fareway response Main", response.toString());
-                                progressDialog.dismiss();
+
                                 try {
                                     JSONObject root = new JSONObject(response);
                                     root.getString("errorcode");
@@ -9901,8 +10052,8 @@ public class MainFwActivity extends AppCompatActivity
                                                 if (shoppingCouponID.equalsIgnoreCase(message.getJSONObject(i).getString("CouponID"))){
 //
                                                     message.getJSONObject(i).put("TotalQuantity", 0);
-                                                    message.getJSONObject(i).put("Quantity", 0);
-                                                    message.getJSONObject(i).put("ClickCount", 0);
+                                                    //message.getJSONObject(i).put("Quantity", 0);
+                                                    //message.getJSONObject(i).put("ClickCount", 0);
 
                                                 }
                                             }
@@ -9912,8 +10063,8 @@ public class MainFwActivity extends AppCompatActivity
 
 
                                                         messageCategory.getJSONObject(i).put("TotalQuantity", 0);
-                                                        messageCategory.getJSONObject(i).put("Quantity", 0);
-                                                        messageCategory.getJSONObject(i).put("ClickCount", 0);
+                                                        //messageCategory.getJSONObject(i).put("Quantity", 0);
+                                                        //messageCategory.getJSONObject(i).put("ClickCount", 0);
 
 
                                                 }
@@ -9924,8 +10075,8 @@ public class MainFwActivity extends AppCompatActivity
 
 
                                                         message3.getJSONObject(i).put("TotalQuantity", 0);
-                                                        message3.getJSONObject(i).put("Quantity", 0);
-                                                        message3.getJSONObject(i).put("ClickCount", 0);
+                                                        //message3.getJSONObject(i).put("Quantity", 0);
+                                                        //message3.getJSONObject(i).put("ClickCount", 0);
 
 
                                                 }
@@ -9940,6 +10091,7 @@ public class MainFwActivity extends AppCompatActivity
                                                 }
                                             }
                                             Log.i("qut", String.valueOf(0));
+                                            progressDialog.dismiss();
 
                                         }else {
                                             Log.i("shopping", String.valueOf(shopping));
@@ -10008,6 +10160,7 @@ public class MainFwActivity extends AppCompatActivity
                                                 shoppingArrayList.addAll(items);
                                                 shoppingListAdapter.notifyDataSetChanged();
                                             }
+                                            progressDialog.dismiss();
 
                                         }
                                     }
@@ -10020,7 +10173,7 @@ public class MainFwActivity extends AppCompatActivity
                     public void onErrorResponse(VolleyError error) {
                         Log.i("Volley error resp", "error----" + error.getMessage());
                         error.printStackTrace();
-                        //progressDialog.dismiss();
+                        progressDialog.dismiss();
                     }
                 })
                 {
@@ -10085,7 +10238,7 @@ public class MainFwActivity extends AppCompatActivity
 
             try {
                 if (message.getJSONObject(i).getString("UPC").equalsIgnoreCase(shopping.getDisplayUPC().replace("UPC: ",""))) {
-                    message.getJSONObject(i).put("ListCount", 0);
+                    message.getJSONObject(i).put("ListCount", 1);
                     message.getJSONObject(i).put("ClickCount", 1);
                     message.getJSONObject(i).put("Quantity", "0");
                     //
@@ -10102,7 +10255,7 @@ public class MainFwActivity extends AppCompatActivity
 
                 try {
                     if (messageCategory.getJSONObject(i).getString("UPC").equalsIgnoreCase(shopping.getDisplayUPC().replace("UPC: ",""))) {
-                        messageCategory.getJSONObject(i).put("ListCount", 0);
+                        messageCategory.getJSONObject(i).put("ListCount", 1);
                         messageCategory.getJSONObject(i).put("ClickCount", 1);
                         messageCategory.getJSONObject(i).put("Quantity", "0");
                         //
@@ -10119,58 +10272,52 @@ public class MainFwActivity extends AppCompatActivity
 
         Log.i("remove","remove"+shopping.getPrimaryOfferTypeId());
         //https://fwstagingapi.immdemo.net/api/v1/ShoppingList/List/MyOwnItem?ShoppingListOwnItemID=404
-        String url = Constant.WEB_URL+Constant.SHOPPINGLISTSINGAL+shopping.getShoppingListItemID()+"&MemberId="+appUtil.getPrefrence("MemberId");
-        StringRequest  jsonObjectRequest = new StringRequest (Request.Method.DELETE, url,
-                new Response.Listener<String >() {
-                    @Override
-                    public void onResponse(String  response) {
-                        Log.i("success", String.valueOf(response));
-                        //shoppingListLoad();
-                        fetchShoppingListLoad();
-                        removeSingleOwnItem(shopping.getShoppingListItemID());
-                        //
-                        progressDialog.dismiss();
+        if (shopping.getPrimaryOfferTypeId()==0){
+            removeSingleOwnItem(shopping.getShoppingListItemID());
+        }else {
+            String url = Constant.WEB_URL+Constant.SHOPPINGLISTSINGAL+shopping.getShoppingListItemID()+"&MemberId="+appUtil.getPrefrence("MemberId");
+            StringRequest  jsonObjectRequest = new StringRequest (Request.Method.DELETE, url,
+                    new Response.Listener<String >() {
+                        @Override
+                        public void onResponse(String  response) {
+                            Log.i("success", String.valueOf(response));
+                            fetchShoppingListLoad();
+                            progressDialog.dismiss();
 
-                        //    count_product_number_detail.setVisibility(View.GONE);
-                       // product.setClickCount(1);
-                       // tv_status_detaile.setText("Add");
-                       // circular_layout_detaile.setBackground(getResources().getDrawable(R.drawable.circular_red_bg));
-                      //  imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.addwhite));
-                        //remove quantity
-                      //  SetRemoveActivateDetail(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    //removeSingleOwnItem(shopping.getShoppingListItemID());
+                    Log.i("fail", String.valueOf(error));
+                }
+            }){
+                @Override
+                public String getBodyContentType() {
+                    return "application/json; charset=utf-8";
+                }
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                    params.put("Content-Type", "application/json ;charset=utf-8");
+                    return params;
+                }
+            };
+            RetryPolicy policy = new DefaultRetryPolicy
+                    (5000,
+                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+            jsonObjectRequest.setRetryPolicy(policy);
+            try {
+                mQueue.add(jsonObjectRequest);
+            }
+            catch (Exception e)
+            {
+                e.printStackTrace();
+            }
+        }
 
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                removeSingleOwnItem(shopping.getShoppingListItemID());
-                Log.i("fail", String.valueOf(error));
-            }
-        }){
-            @Override
-            public String getBodyContentType() {
-                return "application/json; charset=utf-8";
-            }
-            @Override
-            public Map<String, String> getHeaders() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
-                params.put("Content-Type", "application/json ;charset=utf-8");
-                return params;
-            }
-        };
-        RetryPolicy policy = new DefaultRetryPolicy
-                (5000,
-                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        jsonObjectRequest.setRetryPolicy(policy);
-        try {
-            mQueue.add(jsonObjectRequest);
-        }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
 
 
     }
@@ -11262,8 +11409,8 @@ public class MainFwActivity extends AppCompatActivity
                                                             }
                                                             else{
                                                                 progressDialog.dismiss();
-                                                                alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.incorrect_credentials),
-                                                                        getString(R.string.ok),getString(R.string.alert));
+                                                                /*alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.incorrect_credentials),
+                                                                        getString(R.string.ok),getString(R.string.alert));*/
                                                                 alertDialog.show();
 
                                                             }
@@ -11898,8 +12045,8 @@ public class MainFwActivity extends AppCompatActivity
                                                                 }
 
                                                                 else {
-                                                                    alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
-                                                                            getString(R.string.ok),getString(R.string.alert));
+                                                                    /*alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                                                                            getString(R.string.ok),getString(R.string.alert));*/
                                                                     alertDialog.show();
                                                                 }
                                                             }
@@ -13807,6 +13954,94 @@ Log.i("url",url);
     public void hideKeyboard(View view) {
         InputMethodManager inputMethodManager =(InputMethodManager)getSystemService(Activity.INPUT_METHOD_SERVICE);
         inputMethodManager.hideSoftInputFromWindow(view.getWindowToken(), 0);
+    }
+
+    //Check the internet connection.
+    private void NetwordDetect() {
+
+        boolean WIFI = false;
+
+        boolean MOBILE = false;
+
+        ConnectivityManager CM = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo[] networkInfo = CM.getAllNetworkInfo();
+
+        for (NetworkInfo netInfo : networkInfo) {
+
+            if (netInfo.getTypeName().equalsIgnoreCase("WIFI"))
+
+                if (netInfo.isConnected())
+
+                    WIFI = true;
+
+            if (netInfo.getTypeName().equalsIgnoreCase("MOBILE"))
+
+                if (netInfo.isConnected())
+
+                    MOBILE = true;
+        }
+
+        if(WIFI == true)
+
+        {
+            IPaddress = GetDeviceipWiFiData();
+            Log.i("ip",IPaddress);
+            //textview.setText(IPaddress);
+
+
+        }
+
+        if(MOBILE == true)
+        {
+
+            IPaddress = GetDeviceipMobileData();
+            Log.i("mobileip",IPaddress);
+           // textview.setText(IPaddress);
+
+        }
+
+    }
+
+
+    public String GetDeviceipMobileData(){
+        try {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces();
+                 en.hasMoreElements();) {
+                NetworkInterface networkinterface = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = networkinterface.getInetAddresses(); enumIpAddr.hasMoreElements();) {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+                    if (!inetAddress.isLoopbackAddress()) {
+                        return inetAddress.getHostAddress().toString();
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            Log.e("Current IP", ex.toString());
+        }
+        return null;
+    }
+
+    public String GetDeviceipWiFiData()
+    {
+
+        WifiManager wm = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+
+        @SuppressWarnings("deprecation")
+
+        String ip = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
+
+        return ip;
+
+    }
+    void getLocation() {
+        try {
+            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
+            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, this);
+        }
+        catch(SecurityException e) {
+            e.printStackTrace();
+        }
     }
 
 }

@@ -598,58 +598,53 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
     @Override
     public void onShoppingItemSelected(final Shopping shopping) {
         //shoppingListLoad();
-
         Log.i("remove","remove");
-        //https://fwstagingapi.immdemo.net/api/v1/ShoppingList/List/MyOwnItem?ShoppingListOwnItemID=404
-        String url = Constant.WEB_URL+Constant.SHOPPINGLISTSINGAL+shopping.getShoppingListItemID()+"&MemberId="+appUtil.getPrefrence("MemberId");
-        StringRequest  jsonObjectRequest = new StringRequest (Request.Method.DELETE, url,
-                new Response.Listener<String >() {
-                    @Override
-                    public void onResponse(String  response) {
-                        Log.i("success", String.valueOf(response));
-                        //shoppingListLoad();
-                        fetchShoppingListLoad();
-                        // remove_layout_detail.setVisibility(View.GONE);
-                        //    count_product_number_detail.setVisibility(View.GONE);
-                        // product.setClickCount(1);
-                        // tv_status_detaile.setText("Add");
-                        // circular_layout_detaile.setBackground(getResources().getDrawable(R.drawable.circular_red_bg));
-                        //  imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.addwhite));
-                        //remove quantity
-                        //  SetRemoveActivateDetail(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
+        if (shopping.getPrimaryOfferTypeId()==0){
+            removeSingleOwnItem(shopping.getShoppingListItemID());
+        }else{
+            String url = Constant.WEB_URL+Constant.SHOPPINGLISTSINGAL+shopping.getShoppingListItemID()+"&MemberId="+appUtil.getPrefrence("MemberId");
+            StringRequest  jsonObjectRequest = new StringRequest (Request.Method.DELETE, url,
+                    new Response.Listener<String >() {
+                        @Override
+                        public void onResponse(String  response) {
+                            Log.i("success", String.valueOf(response));
+                            fetchShoppingListLoad();
 
-                    }
-                }, new Response.ErrorListener() {
-            @Override
-            public void onErrorResponse(VolleyError error) {
-                removeSingleOwnItem(shopping.getShoppingListItemID());
-                Log.i("fail", String.valueOf(error));
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+
+                    Log.i("fail", String.valueOf(error));
+                }
+            }){
+                @Override
+                public String getBodyContentType() {
+                    return "application/x-www-form-urlencoded";
+                }
+                @Override
+                public Map<String, String> getHeaders() {
+                    Map<String, String> params = new HashMap<String, String>();
+                    params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                    params.put("Content-Type", "application/x-www-form-urlencoded");
+                    return params;
+                }
+            };
+            RetryPolicy policy = new DefaultRetryPolicy
+                    (5000,
+                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+            jsonObjectRequest.setRetryPolicy(policy);
+            try {
+                mQueue.add(jsonObjectRequest);
             }
-        }){
-            @Override
-            public String getBodyContentType() {
-                return "application/x-www-form-urlencoded";
+            catch (Exception e)
+            {
+                e.printStackTrace();
             }
-            @Override
-            public Map<String, String> getHeaders() {
-                Map<String, String> params = new HashMap<String, String>();
-                params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
-                params.put("Content-Type", "application/x-www-form-urlencoded");
-                return params;
-            }
-        };
-        RetryPolicy policy = new DefaultRetryPolicy
-                (5000,
-                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-        jsonObjectRequest.setRetryPolicy(policy);
-        try {
-            mQueue.add(jsonObjectRequest);
         }
-        catch (Exception e)
-        {
-            e.printStackTrace();
-        }
+
+
 
 
     }

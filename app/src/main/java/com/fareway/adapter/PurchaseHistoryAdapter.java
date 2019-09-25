@@ -2,6 +2,8 @@ package com.fareway.adapter;
 
 import android.content.Context;
 //import android.support.v7.widget.RecyclerView;
+import android.text.SpannableString;
+import android.text.style.UnderlineSpan;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -94,7 +96,12 @@ public class PurchaseHistoryAdapter extends RecyclerView.Adapter<PurchaseHistory
     public void onBindViewHolder(final PurchaseHistoryAdapter.MyViewHolder holder, final int position) {
         final Purchase purchase = purchaseArrayList.get(position);
         Log.i("purchase", String.valueOf(purchase.getStorelocation()));
-        holder.tv_date.setText(purchase.getPurchasedate());
+        //holder.tv_date.setText(purchase.getPurchasedate());
+
+        SpannableString content = new SpannableString(purchase.getPurchasedate());
+        content.setSpan(new UnderlineSpan(), 0, content.length(), 0);
+        holder.tv_date.setText(content);
+
         holder.tv_location.setText(purchase.getStorelocation());
 
         try {

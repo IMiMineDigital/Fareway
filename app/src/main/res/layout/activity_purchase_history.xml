@@ -40,7 +40,6 @@
                 android:id="@+id/tv_total_spent"
                 android:textStyle="bold"
                 android:textColor="#000"
-                android:textAlignment="center"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Spent"
@@ -50,10 +49,9 @@
                 android:id="@+id/tv_total_save"
                 android:textStyle="bold"
                 android:textColor="#000"
-                android:textAlignment="center"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Saving"
+                android:text="Savings"
                 android:layout_weight=".15"
                 android:inputType="textMultiLine"/>
 

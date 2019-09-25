@@ -213,19 +213,21 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 @Override
                 public void onClick(View v) {
                     if (product.getPrimaryOfferTypeId()==3){
+                        activateListener.onProductActivate(productListFiltered.get(position));
+                        product.setClickCount(1);
+                        product.setListCount(1);
                         holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
                         holder.imv_status.setVisibility(View.VISIBLE);
                         holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
                         holder.tv_status.setText("Activated");
-
-                        activateListener.onProductActivate(productListFiltered.get(position));
                     }else if (product.getPrimaryOfferTypeId()==2){
+                        activateListener.onProductActivate(productListFiltered.get(position));
+                        product.setClickCount(1);
+                        product.setListCount(1);
                         holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
                         holder.imv_status.setVisibility(View.VISIBLE);
                         holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
                         holder.tv_status.setText("Activated");
-
-                        activateListener.onProductActivate(productListFiltered.get(position));
                     }else   if (product.getPrimaryOfferTypeId()==1){
                         holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
                         holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
@@ -328,7 +330,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         String c = "MM/dd";
                         spf = new SimpleDateFormat(c);
                         saveDate = spf.format(newDate);
-                        System.out.println(saveDate);
+
 
 
                     }
@@ -461,7 +463,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         String c = "MM/dd";
                         spf = new SimpleDateFormat(c);
                         saveDate = spf.format(newDate);
-                        System.out.println(saveDate);
+
 
 
                     }
@@ -726,7 +728,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         String c = "MM/dd";
                         spf = new SimpleDateFormat(c);
                         saveDate = spf.format(newDate);
-                        System.out.println(saveDate);
+
 
 
                     }
@@ -912,7 +914,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         String c = "MM/dd";
                         spf = new SimpleDateFormat(c);
                         saveDate = spf.format(newDate);
-                        System.out.println(saveDate);
+
 
 
                     }
@@ -1005,7 +1007,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         String c = "MM/dd";
                         spf = new SimpleDateFormat(c);
                         saveDate = spf.format(newDate);
-                        System.out.println(saveDate);
+
 
 
                     }
@@ -1270,7 +1272,6 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         String c = "MM/dd";
                         spf = new SimpleDateFormat(c);
                         saveDate = spf.format(newDate);
-                        System.out.println(saveDate);
 
 
                     }
@@ -1517,7 +1518,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             String c = "MM/dd";
                             spf = new SimpleDateFormat(c);
                             saveDate = spf.format(newDate);
-                            System.out.println(saveDate);
+
 
 
                         }
@@ -1610,7 +1611,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             String c = "MM/dd";
                             spf = new SimpleDateFormat(c);
                             saveDate = spf.format(newDate);
-                            System.out.println(saveDate);
+
 
 
                         }
@@ -1875,7 +1876,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             String c = "MM/dd";
                             spf = new SimpleDateFormat(c);
                             saveDate = spf.format(newDate);
-                            System.out.println(saveDate);
+
 
 
                         }
@@ -2069,7 +2070,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             String c = "MM/dd";
                             spf = new SimpleDateFormat(c);
                             saveDate = spf.format(newDate);
-                            System.out.println(saveDate);
+
 
 
                         }
@@ -2161,7 +2162,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             String c = "MM/dd";
                             spf = new SimpleDateFormat(c);
                             saveDate = spf.format(newDate);
-                            System.out.println(saveDate);
+
 
 
                         }
@@ -2417,7 +2418,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             String c = "MM/dd";
                             spf = new SimpleDateFormat(c);
                             saveDate = spf.format(newDate);
-                            System.out.println(saveDate);
+
 
 
                         }
@@ -2592,7 +2593,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 Calendar c2 = Calendar.getInstance();
                 SimpleDateFormat dateformat2 = new SimpleDateFormat("dd MMM yyyy");
                 String currentDate = dateformat2.format(c2.getTime());
-                System.out.println(currentDate);
+
                 RequestQueue mQueue;
                 mQueue=FarewayApplication.getmInstance(mContext).getmRequestQueue();
 

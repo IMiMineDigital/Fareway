@@ -123,7 +123,7 @@ public class PurchaseHistoryDetail extends AppCompatActivity {
                                         purchasemessage= root.getJSONArray("purchasemessage");
                                         for (int i = 0; i < 1; i++) {
                                             tv_bottom_bar1.setText(purchasemessage.getJSONObject(i).getString("totalquantity"));
-                                            tv_bottom_bar2.setText(purchasemessage.getJSONObject(i).getString("remainamount"));
+                                            tv_bottom_bar2.setText("$"+purchasemessage.getJSONObject(i).getString("remainamount"));
                                             tv_bottom_bar3.setText(purchasemessage.getJSONObject(i).getString("totalamount"));
                                         }
 

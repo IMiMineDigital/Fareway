@@ -32,14 +32,15 @@
                 android:lines="1" />
             <ImageView
                 android:id="@+id/imv_location"
-                android:layout_gravity="center|left"
+                android:layout_gravity="center"
                 android:src="@drawable/ic_location_on_black_24dp"
                 android:layout_weight=".05"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:layout_gravity="center|left"
+                android:gravity="center|left"
+                android:layout_gravity="center"
                 android:id="@+id/tv_location"
                 android:textSize="10sp"
                 android:layout_weight=".45"
@@ -49,7 +50,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="430 NW 2nd Ave, Faribault"
-                android:lines="1" />
+                android:lines="2" />
 
 
         </LinearLayout>
@@ -71,6 +72,7 @@
             android:layout_height="wrap_content" />
 
         <TextView
+            android:gravity="center|left"
             android:layout_gravity="center|left"
             android:id="@+id/tv_location_multi"
             android:textSize="10sp"
@@ -81,7 +83,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="430 NW 2nd Ave, Faribault"
-            android:lines="1" />
+            android:lines="2" />
 
 
     </LinearLayout>

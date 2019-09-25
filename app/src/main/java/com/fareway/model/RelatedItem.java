@@ -56,6 +56,7 @@ public class RelatedItem {
     private String RewardQty;
     private String RewardType;
     private String CouponShortDescription;
+    private String TotalQuantity;
 
     public String getName() {
         return name;
@@ -487,5 +488,13 @@ public class RelatedItem {
 
     public void setCouponShortDescription(String couponShortDescription) {
         CouponShortDescription = couponShortDescription;
+    }
+
+    public String getTotalQuantity() {
+        return TotalQuantity;
+    }
+
+    public void setTotalQuantity(String totalQuantity) {
+        TotalQuantity = totalQuantity;
     }
 }
