@@ -358,19 +358,19 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     //holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.white));
                     //holder.liner_save.setBackground(mContext.getResources().getDrawable(R.drawable.red_strip));
                     holder.liner_save.setBackgroundColor(mContext.getResources().getColor(R.color.white));
-
-                    try {
+                    holder.tv_saving_pri_fix.setText("Everyday Price ");
+                    float myFloatRegularPrice = Float.parseFloat(product.getRegularPrice()+"f");
+                    String formattedString = String.format("%.02f", myFloatRegularPrice);
+                    holder.tv_saving.setText("$" + formattedString);
+                    /*try {
                         DecimalFormat dF = new DecimalFormat("00.00");
                         Number num = dF.parse(product.getRegularPrice());
-                           /* Spanned varietiesUnderline = Html.fromHtml("Everyday Price "+"<strike>"+"$"+new DecimalFormat("##.##").format(num)+"</strike>");
-                            holder.tv_saving.setText(varietiesUnderline);*/
                         holder.tv_saving_pri_fix.setText("Everyday Price ");
-                        //holder.tv_saving.setPaintFlags(holder.tv_saving.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                         holder.tv_saving.setText("$"+new DecimalFormat("##.##").format(num));
 
                     } catch (Exception e) {
 
-                    }
+                    }*/
                     if (product.getHasRelatedItems()==1){
                         if (product.getRelatedItemCount()>1){
                             holder.tv_varieties.setVisibility(View.VISIBLE);
@@ -762,20 +762,18 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     /*Spanned result = Html.fromHtml(product.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
                     holder.tv_price.setText(result);*/
 
-
-                    try {
+                    holder.tv_saving_pri_fix.setText("Everyday Price ");
+                    float myFloatRegularPrice = Float.parseFloat(product.getRegularPrice()+"f");
+                    String formattedString = String.format("%.02f", myFloatRegularPrice);
+                    holder.tv_saving.setText("$" + formattedString);
+                    /*try {
                         DecimalFormat dF = new DecimalFormat("00.00");
                         Number num = dF.parse(product.getRegularPrice());
-                        /*Spanned varietiesUnderline = Html.fromHtml("Every Day Price "+"<strike>"+"$"+new DecimalFormat("##.##").format(num)+"</strike>");
-                        holder.tv_saving.setText(varietiesUnderline);*/
                         holder.tv_saving_pri_fix.setText("Everyday Price ");
-                        //holder.tv_saving.setPaintFlags(holder.tv_saving.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                         holder.tv_saving.setText("$"+new DecimalFormat("##.##").format(num));
-
-
                     } catch (Exception e) {
 
-                    }
+                    }*/
 
                     if (product.getHasRelatedItems()==1){
                         if (product.getRelatedItemCount()>1){
@@ -943,18 +941,19 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     //holder.liner_save.setBackground(mContext.getResources().getDrawable(R.drawable.red_strip));
                     holder.liner_save.setBackgroundColor(mContext.getResources().getColor(R.color.white));
 
-                    try {
+                    holder.tv_saving_pri_fix.setText("Everyday Price ");
+                    float myFloatRegularPrice = Float.parseFloat(product.getRegularPrice()+"f");
+                    String formattedString = String.format("%.02f", myFloatRegularPrice);
+                    holder.tv_saving.setText("$" + formattedString);
+                    /*try {
                         DecimalFormat dF = new DecimalFormat("00.00");
                         Number num = dF.parse(product.getRegularPrice());
-                           /* Spanned varietiesUnderline = Html.fromHtml("Everyday Price "+"<strike>"+"$"+new DecimalFormat("##.##").format(num)+"</strike>");
-                            holder.tv_saving.setText(varietiesUnderline);*/
-                           holder.tv_saving_pri_fix.setText("Everyday Price ");
-                           //holder.tv_saving.setPaintFlags(holder.tv_saving.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
-                           holder.tv_saving.setText("$"+new DecimalFormat("##.##").format(num));
+                        holder.tv_saving_pri_fix.setText("Everyday Price ");
+                        holder.tv_saving.setText("$"+new DecimalFormat("##.##").format(num));
 
                     } catch (Exception e) {
 
-                    }
+                    }*/
                     if (product.getHasRelatedItems()==1){
                         if (product.getRelatedItemCount()>1){
                             holder.tv_varieties.setVisibility(View.VISIBLE);
@@ -1305,20 +1304,18 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     /*Spanned result = Html.fromHtml(product.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
                     holder.tv_price.setText(result);*/
 
-
-                    try {
+                    holder.tv_saving_pri_fix.setText("Everyday Price ");
+                    float myFloatRegularPrice = Float.parseFloat(product.getRegularPrice()+"f");
+                    String formattedString = String.format("%.02f", myFloatRegularPrice);
+                    holder.tv_saving.setText("$" + formattedString);
+                    /*try {
                         DecimalFormat dF = new DecimalFormat("00.00");
                         Number num = dF.parse(product.getRegularPrice());
-                        /*Spanned varietiesUnderline = Html.fromHtml("Every Day Price "+"<strike>"+"$"+new DecimalFormat("##.##").format(num)+"</strike>");
-                        holder.tv_saving.setText(varietiesUnderline);*/
                         holder.tv_saving_pri_fix.setText("Everyday Price ");
-                        //holder.tv_saving.setPaintFlags(holder.tv_saving.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                         holder.tv_saving.setText("$"+new DecimalFormat("##.##").format(num));
-
-
                     } catch (Exception e) {
 
-                    }
+                    }*/
 
                     if (product.getHasRelatedItems()==1){
                         if (product.getRelatedItemCount()>1){
@@ -1546,19 +1543,19 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         //holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.white));
                         //holder.liner_save.setBackground(mContext.getResources().getDrawable(R.drawable.red_strip));
                         //holder.liner_save.setBackgroundColor(mContext.getResources().getColor(R.color.white));
-
-                        try {
+                        holder.tv_saving_pri_fix.setText("Everyday Price ");
+                        float myFloatRegularPrice = Float.parseFloat(product.getRegularPrice()+"f");
+                        String formattedString = String.format("%.02f", myFloatRegularPrice);
+                        holder.tv_saving.setText("$" + formattedString);
+                        /*try {
                             DecimalFormat dF = new DecimalFormat("00.00");
                             Number num = dF.parse(product.getRegularPrice());
-                           /* Spanned varietiesUnderline = Html.fromHtml("Everyday Price "+"<strike>"+"$"+new DecimalFormat("##.##").format(num)+"</strike>");
-                            holder.tv_saving.setText(varietiesUnderline);*/
                             holder.tv_saving_pri_fix.setText("Everyday Price ");
-                            //holder.tv_saving.setPaintFlags(holder.tv_saving.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                             holder.tv_saving.setText("$"+new DecimalFormat("##.##").format(num));
 
                         } catch (Exception e) {
 
-                        }
+                        }*/
                         if (product.getHasRelatedItems()==1){
                             if (product.getRelatedItemCount()>1){
                                 holder.tv_varieties.setVisibility(View.VISIBLE);
@@ -1910,20 +1907,18 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     /*Spanned result = Html.fromHtml(product.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
                     holder.tv_price.setText(result);*/
 
-
-                        try {
+                        holder.tv_saving_pri_fix.setText("Everyday Price ");
+                        float myFloatRegularPrice = Float.parseFloat(product.getRegularPrice()+"f");
+                        String formattedString = String.format("%.02f", myFloatRegularPrice);
+                        holder.tv_saving.setText("$" + formattedString);
+                        /*try {
                             DecimalFormat dF = new DecimalFormat("00.00");
                             Number num = dF.parse(product.getRegularPrice());
-                            /*Spanned varietiesUnderline = Html.fromHtml("Every Day Price "+"<strike>"+"$"+new DecimalFormat("##.##").format(num)+"</strike>");
-                            holder.tv_saving.setText(varietiesUnderline);*/
                             holder.tv_saving_pri_fix.setText("Everyday Price ");
-                            //holder.tv_saving.setPaintFlags(holder.tv_saving.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                             holder.tv_saving.setText("$"+new DecimalFormat("##.##").format(num));
-
-
                         } catch (Exception e) {
 
-                        }
+                        }*/
 
                         if (product.getHasRelatedItems()==1){
                             if (product.getRelatedItemCount()>1){
@@ -2098,8 +2093,11 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         //holder.tv_saving.setTextColor(mContext.getResources().getColor(R.color.white));
                         //holder.liner_save.setBackground(mContext.getResources().getDrawable(R.drawable.red_strip));
                         //holder.liner_save.setBackgroundColor(mContext.getResources().getColor(R.color.white));
-
-                        try {
+                        holder.tv_saving_pri_fix.setText("Everyday Price ");
+                        float myFloatRegularPrice = Float.parseFloat(product.getRegularPrice()+"f");
+                        String formattedString = String.format("%.02f", myFloatRegularPrice);
+                        holder.tv_saving.setText("$" + formattedString);
+                        /*try {
                             DecimalFormat dF = new DecimalFormat("00.00");
                             Number num = dF.parse(product.getRegularPrice());
                             holder.tv_saving_pri_fix.setText("Everyday Price ");
@@ -2107,7 +2105,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
                         } catch (Exception e) {
 
-                        }
+                        }*/
                         if (product.getHasRelatedItems()==1){
                             if (product.getRelatedItemCount()>1){
                                 holder.tv_varieties.setVisibility(View.VISIBLE);
@@ -2452,20 +2450,19 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     /*Spanned result = Html.fromHtml(product.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
                     holder.tv_price.setText(result);*/
 
-
-                        try {
+                        holder.tv_saving_pri_fix.setText("Everyday Price ");
+                        float myFloatRegularPrice = Float.parseFloat(product.getRegularPrice()+"f");
+                        String formattedString = String.format("%.02f", myFloatRegularPrice);
+                        holder.tv_saving.setText("$" + formattedString);
+                        /*try {
                             DecimalFormat dF = new DecimalFormat("00.00");
                             Number num = dF.parse(product.getRegularPrice());
-                            /*Spanned varietiesUnderline = Html.fromHtml("Every Day Price "+"<strike>"+"$"+new DecimalFormat("##.##").format(num)+"</strike>");
-                            holder.tv_saving.setText(varietiesUnderline);*/
                             holder.tv_saving_pri_fix.setText("Everyday Price ");
-                            //holder.tv_saving.setPaintFlags(holder.tv_saving.getPaintFlags() | Paint.STRIKE_THRU_TEXT_FLAG);
                             holder.tv_saving.setText("$"+new DecimalFormat("##.##").format(num));
-
 
                         } catch (Exception e) {
 
-                        }
+                        }*/
 
                         if (product.getHasRelatedItems()==1){
                             if (product.getRelatedItemCount()>1){

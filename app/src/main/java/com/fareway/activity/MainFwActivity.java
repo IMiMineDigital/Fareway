@@ -3772,14 +3772,18 @@ public class MainFwActivity extends AppCompatActivity
             tv_detail_detail.setText(chars+" "+product.getPackagingSize());
 
             tv_reg_price_detail.setText("$"+product.getRegularPrice());
-            try {
+
+            float myFloatSaving = Float.parseFloat(product.getSavings()+"f");
+            String formattedString = String.format("%.02f", myFloatSaving);
+            tv_save_detail.setText("$" + formattedString);
+           /* try {
                 DecimalFormat dF = new DecimalFormat("0.00");
                 Number num = dF.parse(product.getSavings());
                 tv_save_detail.setText("$" + new DecimalFormat("##.##").format(num));
 
             } catch (Exception e) {
 
-            }
+            }*/
 
             tv_upc_detail.setText(product.getUPC());
             tv_deal_type_detaile.setText(product.getOfferTypeTagName());
@@ -3942,14 +3946,17 @@ public class MainFwActivity extends AppCompatActivity
             tv_coupon_detail_detail.setText("\n"+chars2);
 
             tv_reg_price_detail.setText("$"+product.getRegularPrice());
-            try {
+            float myFloatSaving = Float.parseFloat(product.getSavings()+"f");
+            String formattedString = String.format("%.02f", myFloatSaving);
+            tv_save_detail.setText("$" + formattedString);
+            /*try {
                 DecimalFormat dF = new DecimalFormat("0.00");
                 Number num = dF.parse(product.getSavings());
                 tv_save_detail.setText("$" + new DecimalFormat("##.##").format(num));
 
             } catch (Exception e) {
 
-            }
+            }*/
             tv_limit.setText(String.valueOf(product.getLimitPerTransection()));
             tv_upc_detail.setText(product.getUPC());
             tv_deal_type_detaile.setText(product.getOfferTypeTagName());
@@ -3990,14 +3997,17 @@ public class MainFwActivity extends AppCompatActivity
             tv_detail_detail.setText(chars+" "+product.getPackagingSize());
 
             tv_reg_price_detail.setText("$"+product.getRegularPrice());
-            try {
+            float myFloatSaving = Float.parseFloat(product.getSavings()+"f");
+            String formattedString = String.format("%.02f", myFloatSaving);
+            tv_save_detail.setText("$" + formattedString);
+            /*try {
                 DecimalFormat dF = new DecimalFormat("0.00");
                 Number num = dF.parse(product.getSavings());
                 tv_save_detail.setText("$" + new DecimalFormat("##.##").format(num));
 
             } catch (Exception e) {
 
-            }
+            }*/
 
             tv_upc_detail.setText(product.getUPC());
 
@@ -4524,8 +4534,8 @@ public class MainFwActivity extends AppCompatActivity
                                                 imv_status_detaile.setVisibility(View.VISIBLE);
                                                 imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.tick));
                                                 tv_status_detaile.setText("Activated");
-                                                SetProductActivateDetaile(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1,String.valueOf(0));
-
+                                                SetProductActivateDetaile1(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1,String.valueOf(0));
+                                                //
                                                 liner_all_Varieties_activate.setVisibility(View.VISIBLE);
                                                 liner_all_Varieties_activate.setBackground(getResources().getDrawable(R.drawable.circular_mehrune_bg));
                                                 all_Varieties_activate.setText("Activated");
@@ -6615,6 +6625,303 @@ public class MainFwActivity extends AppCompatActivity
             }
         }
     }
+    public void  SetProductActivateDetaile1(int PrimaryOfferTypeID, String CouponID, String UPC, String RequireActivation, int ActivateType, String quantity)
+    {
+
+
+        Log.i("primary ", String.valueOf(PrimaryOfferTypeID));
+        Log.i("morecoupan ", String.valueOf(x));
+        if (x==0){
+            try {
+
+                for (int i = 0; i < message.length(); i++) {
+
+                    if(PrimaryOfferTypeID ==1)
+                    {
+                        if (message.getJSONObject(i).getString("UPC").contains(UPC)) {
+                            message.getJSONObject(i).put("ListCount", 1);
+                            message.getJSONObject(i).put("ClickCount", 1);
+                            message.getJSONObject(i).put("Quantity", quantity);
+
+                        }else {
+                            if (message.getJSONObject(i).getString("CouponID").equalsIgnoreCase(CouponID)) {
+                                message.getJSONObject(i).put("ClickCount", 1);
+                                message.getJSONObject(i).put("ListCount", 1);
+                                //message.getJSONObject(i).put("Quantity", quantity);
+
+
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        if (message.getJSONObject(i).getString("UPC").contains(UPC)) {
+                            message.getJSONObject(i).put("ClickCount", 1);
+                            message.getJSONObject(i).put("ListCount", 1);
+                            message.getJSONObject(i).put("Quantity", quantity);
+                            message.getJSONObject(i).put("TotalQuantity", qty);
+                            Log.i("testqty", String.valueOf(qty));
+
+                        }
+                        if (message.getJSONObject(i).getString("CouponID").equalsIgnoreCase(CouponID)) {
+                            message.getJSONObject(i).put("ClickCount", 1);
+                            message.getJSONObject(i).put("ListCount", 1);
+                            //message.getJSONObject(i).put("Quantity", quantity);
+                            message.getJSONObject(i).put("TotalQuantity", qty);
+                            Log.i("Coupontestqty", String.valueOf(qty));
+
+
+
+                        }
+
+                    }
+                }
+                if (messageCategory!=null){
+                    for (int i = 0; i < messageCategory.length(); i++) {
+
+                        if(PrimaryOfferTypeID ==1)
+                        {
+                            if (messageCategory.getJSONObject(i).getString("UPC").contains(UPC)) {
+                                messageCategory.getJSONObject(i).put("ListCount", 1);
+                                messageCategory.getJSONObject(i).put("ClickCount", 1);
+                                messageCategory.getJSONObject(i).put("Quantity", quantity);
+
+                            }else {
+                                if (messageCategory.getJSONObject(i).getString("CouponID").equalsIgnoreCase(CouponID)) {
+                                    messageCategory.getJSONObject(i).put("ClickCount", 1);
+                                    messageCategory.getJSONObject(i).put("ListCount", 1);
+                                    //message.getJSONObject(i).put("Quantity", quantity);
+
+
+                                }
+                            }
+
+                        }
+                        else
+                        {
+                            if (messageCategory.getJSONObject(i).getString("UPC").contains(UPC)) {
+                                messageCategory.getJSONObject(i).put("ClickCount", 1);
+                                messageCategory.getJSONObject(i).put("ListCount", 1);
+                                messageCategory.getJSONObject(i).put("Quantity", quantity);
+                                messageCategory.getJSONObject(i).put("TotalQuantity", qty);
+                                Log.i("testqty", String.valueOf(qty));
+
+                            }
+                            if (messageCategory.getJSONObject(i).getString("CouponID").equalsIgnoreCase(CouponID)) {
+                                messageCategory.getJSONObject(i).put("ClickCount", 1);
+                                messageCategory.getJSONObject(i).put("ListCount", 1);
+                                //message.getJSONObject(i).put("Quantity", quantity);
+                                messageCategory.getJSONObject(i).put("TotalQuantity", qty);
+                                Log.i("Coupontestqty", String.valueOf(qty));
+
+
+
+                            }
+
+                        }
+                    }
+                }
+
+                fetchProduct();
+                if (jsonParam == null) {
+                    Log.i("testtttt", String.valueOf(jsonParam));
+                    //no students
+                }else {
+                    for (int j = 0; j < jsonParam.length(); j++) {
+                        if (jsonParam.getJSONObject(j).getString("UPC").contains(UPC)) {
+                            jsonParam.getJSONObject(j).put("ListCount", 1);
+                            jsonParam.getJSONObject(j).put("ClickCount", 1);
+                            jsonParam.getJSONObject(j).put("Quantity", quantity);
+
+                            Log.i("testttt", String.valueOf(jsonParam.getJSONObject(j).getString("UPC").contains(UPC)));
+                        }else {
+                            //  jsonParam.getJSONObject(j).put("ListCount", 0);
+                            jsonParam.getJSONObject(j).put("ClickCount", 1);
+                            Log.i("elsetestttt", String.valueOf(jsonParam.getJSONObject(j).getString("UPC").contains(UPC)));
+
+                        }
+                        Log.i("test", String.valueOf(jsonParam.getJSONObject(j)));
+                    }
+                    // jsonParam.getJSONObject(i).put("ClickCount", 1);
+                    // jsonParam.getJSONObject(i).put("ListCount", 1);
+                    fetchVeritesProduct();
+                }
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        else if (x==1){
+            try {
+
+                for (int i = 0; i < message.length(); i++) {
+
+                    if(PrimaryOfferTypeID ==1)
+                    {
+
+                        if (message.getJSONObject(i).getString("UPC").contains(UPC)) {
+                            message.getJSONObject(i).put("ListCount", 1);
+                            message.getJSONObject(i).put("ClickCount", 1);
+                            message.getJSONObject(i).put("Quantity", quantity);
+
+                        }
+
+                    }
+                    else
+                    {
+                        if (message.getJSONObject(i).getString("UPC").contains(UPC)) {
+                            message.getJSONObject(i).put("ClickCount", 1);
+                            message.getJSONObject(i).put("ListCount", 1);
+                            message.getJSONObject(i).put("Quantity", quantity);
+                            message.getJSONObject(i).put("TotalQuantity", qty);
+
+                        }
+                        if (message.getJSONObject(i).getString("CouponID").equalsIgnoreCase(CouponID)) {
+                            message.getJSONObject(i).put("ClickCount", 1);
+                            message.getJSONObject(i).put("ListCount", 1);
+                            //message.getJSONObject(i).put("Quantity", quantity);
+                            message.getJSONObject(i).put("TotalQuantity", qty);
+                        }
+
+                    }
+                }
+                fetchProduct();
+                if (jsonParam == null) {
+                    Log.i("testtttt", String.valueOf(jsonParam));
+                    //no students
+                }else {
+                    for (int j = 0; j < jsonParam.length(); j++) {
+                        if (jsonParam.getJSONObject(j).getString("UPC").contains(UPC)) {
+                            jsonParam.getJSONObject(j).put("ListCount", 1);
+                            jsonParam.getJSONObject(j).put("ClickCount", 1);
+                            jsonParam.getJSONObject(j).put("Quantity", quantity);
+
+                            Log.i("testttt", String.valueOf(jsonParam.getJSONObject(j).getString("UPC").contains(UPC)));
+                        }else {
+                            //  jsonParam.getJSONObject(j).put("ListCount", 0);
+                            jsonParam.getJSONObject(j).put("ClickCount", 1);
+                            Log.i("elsetestttt", String.valueOf(jsonParam.getJSONObject(j).getString("UPC").contains(UPC)));
+
+                        }
+                        Log.i("test", String.valueOf(jsonParam.getJSONObject(j)));
+                    }
+                    // jsonParam.getJSONObject(i).put("ClickCount", 1);
+                    // jsonParam.getJSONObject(i).put("ListCount", 1);
+                    fetchVeritesProduct();
+                }
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+
+        }
+
+        else if (x==3){
+            try {
+
+                for (int i = 0; i < message.length(); i++) {
+
+                    if(PrimaryOfferTypeID ==1)
+                    {
+                        if (message.getJSONObject(i).getString("UPC").contains(UPC)) {
+                            message.getJSONObject(i).put("ListCount", 1);
+                            message.getJSONObject(i).put("ClickCount", 1);
+                            message.getJSONObject(i).put("Quantity", quantity);
+
+                        }else {
+                            if (message.getJSONObject(i).getString("CouponID").equalsIgnoreCase(CouponID)) {
+                                message.getJSONObject(i).put("ClickCount", 1);
+                                message.getJSONObject(i).put("ListCount", 1);
+                                //message.getJSONObject(i).put("Quantity", quantity);
+
+
+                            }
+                        }
+
+                    }
+                    else
+                    {
+                        if (message.getJSONObject(i).getString("UPC").contains(UPC)) {
+                            //message.getJSONObject(i).put("ClickCount", 1);
+                            //message.getJSONObject(i).put("ListCount", 1);
+                            message.getJSONObject(i).put("Quantity", quantity);
+                            //message.getJSONObject(i).put("TotalQuantity", qty);
+                            Log.i("testqty", String.valueOf(qty));
+
+                        }
+                        if (message.getJSONObject(i).getString("CouponID").equalsIgnoreCase(CouponID)) {
+                            message.getJSONObject(i).put("ClickCount", 1);
+                            message.getJSONObject(i).put("ListCount", 1);
+                            //message.getJSONObject(i).put("Quantity", quantity);
+                            message.getJSONObject(i).put("TotalQuantity", qty);
+                            Log.i("Coupontestqty", String.valueOf(qty));
+                        }
+
+                    }
+                }
+
+                for (int i = 0; i < message3.length(); i++) {
+
+                    if(PrimaryOfferTypeID ==1)
+                    {
+
+                        if (message3.getJSONObject(i).getString("UPC").contains(UPC)) {
+                            message3.getJSONObject(i).put("ListCount", 1);
+                            message3.getJSONObject(i).put("ClickCount", 1);
+                            message3.getJSONObject(i).put("Quantity", quantity);
+                        }
+
+                    }
+                    else
+                    {
+                        if (message3.getJSONObject(i).getString("UPC").contains(UPC)) {
+                            message3.getJSONObject(i).put("ClickCount", 1);
+                            message3.getJSONObject(i).put("ListCount", 1);
+                            message3.getJSONObject(i).put("Quantity", quantity);
+                            message3.getJSONObject(i).put("TotalQuantity", qty);
+                            Log.i("testqty", String.valueOf(qty));
+
+                        }
+                        else if (message3.getJSONObject(i).getString("CouponID").equalsIgnoreCase(CouponID)) {
+                            message3.getJSONObject(i).put("ClickCount", 1);
+                            message3.getJSONObject(i).put("ListCount", 1);
+                            //message3.getJSONObject(i).put("Quantity", quantity);
+                            message3.getJSONObject(i).put("TotalQuantity", qty);
+                            Log.i("Coupontestqty", String.valueOf(qty));
+                        }
+
+                    }
+                }
+                searchProduct();
+                if (jsonParam == null) {
+                    Log.i("testtttt", String.valueOf(jsonParam));
+                    //no students
+                }else {
+                    for (int j = 0; j < jsonParam.length(); j++) {
+                        if (jsonParam.getJSONObject(j).getString("UPC").contains(UPC)) {
+                            jsonParam.getJSONObject(j).put("ListCount", 1);
+                            jsonParam.getJSONObject(j).put("ClickCount", 1);
+                            jsonParam.getJSONObject(j).put("Quantity", quantity);
+                            Log.i("testttt", String.valueOf(jsonParam.getJSONObject(j).getString("UPC").contains(UPC)));
+                        }else {
+                            jsonParam.getJSONObject(j).put("ClickCount", 1);
+                            Log.i("elsetestttt", String.valueOf(jsonParam.getJSONObject(j).getString("UPC").contains(UPC)));
+
+                        }
+                        Log.i("test", String.valueOf(jsonParam.getJSONObject(j)));
+                    }
+
+                    fetchVeritesProduct();
+                }
+            }
+            catch (JSONException e) {
+                e.printStackTrace();
+            }
+        }
+    }
 
     public void  SetProductActivateDetaile(int PrimaryOfferTypeID, String CouponID, String UPC, String RequireActivation, int ActivateType, String quantity)
     {
@@ -8048,14 +8355,17 @@ public class MainFwActivity extends AppCompatActivity
             tv_detail_detail.setText(chars);
 
             tv_reg_price_detail.setText("$ "+relatedItem.getRegularPrice());
-            try {
+            float myFloatSaving = Float.parseFloat(relatedItem.getSavings()+"f");
+            String formattedString = String.format("%.02f", myFloatSaving);
+            tv_save_detail.setText("$" + formattedString);
+            /*try {
                 DecimalFormat dF = new DecimalFormat("0.00");
                 Number num = dF.parse(relatedItem.getSavings());
                 tv_save_detail.setText("$ " + new DecimalFormat("##.##").format(num));
 
             } catch (Exception e) {
 
-            }
+            }*/
             tv_upc_detail.setText(relatedItem.getUPC());
             tv_deal_type_detaile.setText(relatedItem.getOfferTypeTagName());
 
@@ -8173,14 +8483,17 @@ public class MainFwActivity extends AppCompatActivity
 
 
             tv_reg_price_detail.setText("$ "+relatedItem.getRegularPrice());
-            try {
+            float myFloatSaving = Float.parseFloat(relatedItem.getSavings()+"f");
+            String formattedString = String.format("%.02f", myFloatSaving);
+            tv_save_detail.setText("$" + formattedString);
+            /*try {
                 DecimalFormat dF = new DecimalFormat("0.00");
                 Number num = dF.parse(relatedItem.getSavings());
                 tv_save_detail.setText("$ " + new DecimalFormat("##.##").format(num));
 
             } catch (Exception e) {
 
-            }
+            }*/
 
             if (relatedItem.getHasRelatedItems()==1){
                 if (relatedItem.getRelatedItemCount()>1){
@@ -8242,14 +8555,17 @@ public class MainFwActivity extends AppCompatActivity
             tv_detail_detail.setText(chars);
 
             tv_reg_price_detail.setText("$ "+relatedItem.getRegularPrice());
-            try {
+            float myFloatSaving = Float.parseFloat(relatedItem.getSavings()+"f");
+            String formattedString = String.format("%.02f", myFloatSaving);
+            tv_save_detail.setText("$" + formattedString);
+            /*try {
                 DecimalFormat dF = new DecimalFormat("0.00");
                 Number num = dF.parse(relatedItem.getSavings());
                 tv_save_detail.setText("$ " + new DecimalFormat("##.##").format(num));
 
             } catch (Exception e) {
 
-            }
+            }*/
 
             tv_upc_detail.setText(relatedItem.getUPC());
             tv_deal_type_detaile.setText(relatedItem.getOfferTypeTagName());
@@ -11538,14 +11854,18 @@ public class MainFwActivity extends AppCompatActivity
                                 tv_detail_detail.setText(chars+" "+message.getJSONObject(i).getString("PackagingSize"));
 
                                 tv_reg_price_detail.setText("$"+message.getJSONObject(i).getString("RegularPrice"));
-                                try {
+
+                                float myFloatSavings = Float.parseFloat(message.getJSONObject(i).getString("Savings")+"f");
+                                String formattedString = String.format("%.02f", myFloatSavings);
+                                tv_save_detail.setText("$" + formattedString);
+                                /*try {
                                     DecimalFormat dF = new DecimalFormat("0.00");
                                     Number num = dF.parse(message.getJSONObject(i).getString("Savings"));
                                     tv_save_detail.setText("$" + new DecimalFormat("##.##").format(num));
 
                                 } catch (Exception e) {
 
-                                }
+                                }*/
                                 tv_upc_detail.setText(message.getJSONObject(i).getString("UPC"));
                                 tv_deal_type_detaile.setText(message.getJSONObject(i).getString("OfferTypeTagName"));
                                 if (message.getJSONObject(i).getInt("HasRelatedItems")==1){
@@ -11709,14 +12029,18 @@ public class MainFwActivity extends AppCompatActivity
                                 tv_coupon_detail_detail.setText("\n"+chars2);
 
                                 tv_reg_price_detail.setText("$"+message.getJSONObject(i).getString("RegularPrice"));
-                                try {
+
+                                float myFloatSavings = Float.parseFloat(message.getJSONObject(i).getString("Savings")+"f");
+                                String formattedString = String.format("%.02f", myFloatSavings);
+                                tv_save_detail.setText("$" + formattedString);
+                                /*try {
                                     DecimalFormat dF = new DecimalFormat("0.00");
                                     Number num = dF.parse(message.getJSONObject(i).getString("Savings"));
                                     tv_save_detail.setText("$" + new DecimalFormat("##.##").format(num));
 
                                 } catch (Exception e) {
 
-                                }
+                                }*/
                                 tv_limit.setText(String.valueOf(message.getJSONObject(i).getInt("LimitPerTransection")));
                                 tv_upc_detail.setText(message.getJSONObject(i).getString("UPC"));
                                 tv_deal_type_detaile.setText(message.getJSONObject(i).getString("OfferTypeTagName"));
@@ -12095,14 +12419,18 @@ public class MainFwActivity extends AppCompatActivity
                                                             tv_detail_detail.setText(chars+" "+jsonShoppingParam.getJSONObject(i).getString("PackagingSize"));
 
                                                             tv_reg_price_detail.setText("$"+jsonShoppingParam.getJSONObject(i).getString("RegularPrice"));
-                                                            try {
+
+                                                            float myFloatSavings = Float.parseFloat(message.getJSONObject(i).getString("Savings")+"f");
+                                                            String formattedString = String.format("%.02f", myFloatSavings);
+                                                            tv_save_detail.setText("$" + formattedString);
+                                                            /*try {
                                                                 DecimalFormat dF = new DecimalFormat("0.00");
                                                                 Number num = dF.parse(jsonShoppingParam.getJSONObject(i).getString("Savings"));
                                                                 tv_save_detail.setText("$" + new DecimalFormat("##.##").format(num));
 
                                                             } catch (Exception e) {
 
-                                                            }
+                                                            }*/
                                                             tv_upc_detail.setText(jsonShoppingParam.getJSONObject(i).getString("UPC"));
                                                             tv_deal_type_detaile.setText(jsonShoppingParam.getJSONObject(i).getString("OfferTypeTagName"));
                                                             if (jsonShoppingParam.getJSONObject(i).getInt("HasRelatedItems")==1){
@@ -12235,14 +12563,18 @@ public class MainFwActivity extends AppCompatActivity
                                                             tv_coupon_detail_detail.setText("\n"+chars2);
 
                                                             tv_reg_price_detail.setText("$"+jsonShoppingParam.getJSONObject(i).getString("RegularPrice"));
-                                                            try {
+
+                                                            float myFloatSavings = Float.parseFloat(message.getJSONObject(i).getString("Savings")+"f");
+                                                            String formattedString = String.format("%.02f", myFloatSavings);
+                                                            tv_save_detail.setText("$" + formattedString);
+                                                            /*try {
                                                                 DecimalFormat dF = new DecimalFormat("0.00");
                                                                 Number num = dF.parse(jsonShoppingParam.getJSONObject(i).getString("Savings"));
                                                                 tv_save_detail.setText("$" + new DecimalFormat("##.##").format(num));
 
                                                             } catch (Exception e) {
 
-                                                            }
+                                                            }*/
                                                             tv_limit.setText(String.valueOf(jsonShoppingParam.getJSONObject(i).getInt("LimitPerTransection")));
                                                             tv_upc_detail.setText(jsonShoppingParam.getJSONObject(i).getString("UPC"));
                                                             tv_deal_type_detaile.setText(jsonShoppingParam.getJSONObject(i).getString("OfferTypeTagName"));
