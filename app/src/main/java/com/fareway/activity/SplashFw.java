@@ -90,25 +90,30 @@ public class SplashFw extends AppCompatActivity {
 
                 if (appUtil.getPrefrence("isLogin").equalsIgnoreCase("yes")==true) {
                     // getTokenkey();
-                    if (currentDate.compareTo(saveDate) < 0 && appUtil.getPrefrence("StoreId").equalsIgnoreCase(appUtil.getPrefrence("BackupStoreId"))) {
+                    if (currentDate.compareTo(saveDate) < 0) {
                         //getTokenkey();
                         /*Intent i = new Intent(activity, LoginFw.class);
                         startActivity(i);
                         finish();*/
+                        if (appUtil.getPrefrence("StoreId").equalsIgnoreCase(appUtil.getPrefrence("BackupStoreId"))){
+                            Intent i = new Intent(activity, MainFwActivity.class);
 
-                        Intent i = new Intent(activity, MainFwActivity.class);
+                            if (appUtil.getPrefrence("comeFrom").equalsIgnoreCase("mpp")) {
+                                i.putExtra("comeFrom", "mpp");
+                            } else if (appUtil.getPrefrence("comeFrom").equalsIgnoreCase("moreOffer")) {
+                                i.putExtra("comeFrom", "moreOffer");
+                            }
 
-                        if (appUtil.getPrefrence("comeFrom").equalsIgnoreCase("mpp")) {
-                            i.putExtra("comeFrom", "mpp");
-                        } else if (appUtil.getPrefrence("comeFrom").equalsIgnoreCase("moreOffer")) {
-                            i.putExtra("comeFrom", "moreOffer");
+                            startActivity(i);
+                            finish();
+                        }else {
+                            getTokenkey();
                         }
 
-                        startActivity(i);
-                        finish();
+
 
                     } else {
-                        getTokenkey();
+                        getTokenkey2();
                     }
 
                 } else {
@@ -220,6 +225,118 @@ public class SplashFw extends AppCompatActivity {
                 try {
                     mQueue.add(jsonObjectRequest);
                   //  FarewayApplication.getInstance().addToRequestQueue(jsonObjectRequest);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+                //  progressDialog.dismiss();
+//                displayAlert();
+            }
+
+        } else {
+            alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                    getString(R.string.ok),getString(R.string.alert));
+            alertDialog.show();
+//            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void getTokenkey2() {
+        if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+            try {
+                // progressDialog = new ProgressDialog(activity);
+                //  progressDialog.setMessage("Processing");
+                //  progressDialog.show();
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST,Constant.WEB_URL + Constant.GET_TOKEN,
+                        new Response.Listener<String>(){
+                            @Override
+                            public void onResponse(String response) {
+                                try {
+                                    Log.i("Fareway text", response.toString());
+                                    JSONObject jsonParam = new JSONObject(response.toString());
+                                    appUtil.setPrefrence("access_token", jsonParam.getString("access_token"));
+                                    appUtil.setPrefrence("token_type", jsonParam.getString("token_type"));
+                                    appUtil.setPrefrence("expires_in", jsonParam.getString("expires_in"));
+                                    appUtil.setPrefrence(".issued", jsonParam.getString(".issued"));
+                                    appUtil.setPrefrence(".expires", jsonParam.getString(".expires"));
+                                    //  progressDialog.dismiss();
+                                    /*Intent i = new Intent(activity, LoginFw.class);
+                                    startActivity(i);
+                                    finish();*/
+                                    Intent i = new Intent(activity, MainFwActivity.class);
+
+                                    if (appUtil.getPrefrence("comeFrom").equalsIgnoreCase("mpp")) {
+                                        i.putExtra("comeFrom", "mpp");
+                                    } else if (appUtil.getPrefrence("comeFrom").equalsIgnoreCase("moreOffer")) {
+                                        i.putExtra("comeFrom", "moreOffer");
+                                    }
+
+                                    startActivity(i);
+                                    finish();
+                                } catch (Throwable e) {
+                                    //  progressDialog.dismiss();
+                                    Log.i("Excep", "error----" + e.getMessage());
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Volley error resp", "error----" + error.getMessage());
+                        error.printStackTrace();
+                        // progressDialog.dismiss();
+                        if (error.networkResponse == null) {
+                            //  progressDialog.dismiss();
+                            if (error.getClass().equals(TimeoutError.class)) {
+//                                Toast.makeText(activity, "Time out error", Toast.LENGTH_LONG).show();
+                                alertDialog=userAlertDialog.createPositiveAlert("Time out error",
+                                        getString(R.string.ok),"Fail");
+                                alertDialog.show();
+
+                            }
+                        }
+                    }
+                })
+                {
+
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/x-www-form-urlencoded";
+                    }
+
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("grant_type", "password");
+                        return params;
+                    }
+
+                    //this is the part, that adds the header to the request
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/x-www-form-urlencoded");
+//                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                        params.put("username", "imemine@usa.com");
+                        params.put("password", "123456");
+                        params.put("ClientID", "1");
+//                        params.put("Content-Type", "application/json ;charset=utf-8");
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (5000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    mQueue.add(jsonObjectRequest);
+                    //  FarewayApplication.getInstance().addToRequestQueue(jsonObjectRequest);
                 }
                 catch (Exception e)
                 {

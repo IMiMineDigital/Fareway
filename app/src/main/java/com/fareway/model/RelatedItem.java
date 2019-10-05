@@ -57,6 +57,7 @@ public class RelatedItem {
     private String RewardType;
     private String CouponShortDescription;
     private String TotalQuantity;
+    private String Isbadged;
 
     public String getName() {
         return name;
@@ -496,5 +497,13 @@ public class RelatedItem {
 
     public void setTotalQuantity(String totalQuantity) {
         TotalQuantity = totalQuantity;
+    }
+
+    public String getIsbadged() {
+        return Isbadged;
+    }
+
+    public void setIsbadged(String isbadged) {
+        Isbadged = isbadged;
     }
 }

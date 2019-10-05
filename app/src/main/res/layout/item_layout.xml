@@ -147,19 +147,21 @@
 
 
             <RelativeLayout
+                android:background="@android:color/transparent"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
                 <RelativeLayout
                     android:id="@+id/imv_layout"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/_170sdp">
+                    android:layout_height="@dimen/_170sdp"
+                    android:background="@android:color/transparent">
 
                     <ImageView
                         android:id="@+id/imv_item"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="@dimen/_10sdp"
+                        android:layout_marginTop="@dimen/_30sdp"
                         android:src="@drawable/item" />
 
 
@@ -512,6 +514,7 @@
                         android:textSize="38sp"/>
 
                     <LinearLayout
+                        android:layout_gravity="right"
                         android:orientation="horizontal"
                         android:id="@+id/liner_save"
                         android:layout_width="wrap_content"
@@ -540,6 +543,7 @@
                     </LinearLayout>
 
                     <LinearLayout
+                        android:layout_gravity="right"
                         android:orientation="horizontal"
                         android:id="@+id/liner_promo_price"
                         android:layout_width="wrap_content"

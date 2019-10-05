@@ -7,6 +7,7 @@ public class Constant {
     public static final String PRINT_WEB_URL="https://fwstaging.immdemo.net/web/printshoppinglist.aspx?";
     public static final String GET_TOKEN="Token";
     public static final String LOGIN="Account/Login";
+    public static final String LOGINSAVE="Account/SaveLogLogin?FileName=LoginLog";
     public static final String PRODUCTLIST="Circular/Offers";
     public static final String RELATEDITEMLIST="Circular/RelatedItems";
     public static final String SIGNUP="Account/SignUp";
@@ -28,8 +29,11 @@ public class Constant {
     public static final String REMOVESHOPPINGOWMITEM = "ShoopingList/AllownItems?Memberid=";
     public static final String PRISHOPPERID = "45";
     public static final String SHOPPINGLISTUPDATE = "ShoppingList/List/ParmItem";
+    public static final String CHANGESTORE = "Account/StoresByMemberId";
 
 
+    //https://fwstagingapi.immdemo.net/api/v1/Account/SaveLogLogin?FileName=LoginLog&Information=prajput@juno.com|123456|DeviceTypeId|jscd.os|jscd.osVersion|jscd.browser|jscd.browserVersion|document.URL.toString() |latitude.toString()|longitude.toString()|1
+    //https://fwstagingapi.immdemo.net/api/v1/Account/SaveLogLogin?FileName=LoginLog&Information=prajput@juno.com|123456|mobile      |testos| 8.0.0|          test|       test|               test|                    37.521998333333336| -123.08499833333332
    // https://fwstagingapi.immdemo.net
 
 

@@ -75,7 +75,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
         private TextView add_item_flag,add_plus,add_minus,tv_quantity,limit,tv_status, tv_price, tv_unit, tv_saving,tv_coupon_type_1,
                 tv_saving_pri_fix,tv_promo_price__pri_fix,tv_promo_price,tv_deal_type,tv_detail,tv_varieties,tv_coupon_flag;
         private ImageView imv_item, imv_info, imv_more, imv_status;
-        private LinearLayout circular_layout, bottomLayout,liner_save,liner_item_add,linear_tab_button;
+        private LinearLayout circular_layout, bottomLayout,liner_save,liner_item_add,linear_tab_button,liner_promo_price;
         private CardView card_view;
         private RelativeLayout imv_layout,layoutforprofileimage,relative_badge;
         //private Button all_Varieties_activate;
@@ -120,6 +120,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
             liner_save = (LinearLayout)view.findViewById(R.id.liner_save);
             liner_item_add = (LinearLayout)view.findViewById(R.id.liner_item_add);
             linear_tab_button = (LinearLayout)view.findViewById(R.id.linear_tab_button);
+            liner_promo_price = (LinearLayout) view.findViewById(R.id.liner_promo_price);
 
 
             limit = view.findViewById(R.id.limit);
@@ -216,8 +217,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
             holder.add_item_flag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
 
             if (relatedItem.getPrimaryOfferTypeId() == 3) {
-                holder.tv_promo_price__pri_fix.setText("");
-                holder.tv_promo_price.setText("");
+
                 String saveDate = relatedItem.getValidityEndDate();
                 if (saveDate.length()==0){
                     // getTokenkey();
@@ -252,6 +252,18 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 float myFloatRegularPrice = Float.parseFloat(relatedItem.getRegularPrice()+"f");
                 String formattedString = String.format("%.02f", myFloatRegularPrice);
                 holder.tv_saving.setText("$" + formattedString);
+
+                holder.liner_promo_price.setVisibility(View.VISIBLE);
+                holder.tv_promo_price__pri_fix.setText("Promo Price ");
+                float myFloatAdPrice = Float.parseFloat(relatedItem.getAdPrice()+"f");
+                String formattedAdPriceString = String.format("%.02f", myFloatAdPrice);
+                holder.tv_promo_price.setText("$"+formattedAdPriceString);
+                if (formattedString.equalsIgnoreCase(formattedAdPriceString)){
+                    holder.liner_promo_price.setVisibility(View.GONE);
+                }
+                if (formattedAdPriceString.equalsIgnoreCase("0.00")){
+                    holder.liner_promo_price.setVisibility(View.GONE);
+                }
                 /*try {
                     DecimalFormat dF = new DecimalFormat("00.00");
                     Number num = dF.parse(relatedItem.getRegularPrice());
@@ -273,6 +285,10 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
             }
 
             else if (relatedItem.getPrimaryOfferTypeId() == 2) {
+                holder.liner_save.setVisibility(View.GONE);
+                holder.liner_promo_price.setVisibility(View.GONE);
+                holder.tv_coupon_type_1.setVisibility(View.GONE);
+
                 String saveDate = relatedItem.getValidityEndDate();
                 if (saveDate.length()==0){
                     // getTokenkey();
@@ -353,6 +369,13 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                     holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
                     holder.tv_status.setText("Activate");
 
+                }
+                if (relatedItem.getIsbadged().equalsIgnoreCase("True")){
+                    holder.liner_save.setVisibility(View.VISIBLE);
+                    holder.liner_promo_price.setVisibility(View.VISIBLE);
+                }else {
+                    holder.liner_save.setVisibility(View.GONE);
+                    holder.liner_promo_price.setVisibility(View.GONE);
                 }
             }
 
@@ -465,8 +488,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
             holder.add_item_flag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 7);
 
             if (relatedItem.getPrimaryOfferTypeId() == 3) {
-                holder.tv_promo_price__pri_fix.setText("");
-                holder.tv_promo_price.setText("");
+
                 String saveDate = relatedItem.getValidityEndDate();
                 if (saveDate.length()==0){
 
@@ -502,6 +524,18 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 float myFloatRegularPrice = Float.parseFloat(relatedItem.getRegularPrice()+"f");
                 String formattedString = String.format("%.02f", myFloatRegularPrice);
                 holder.tv_saving.setText("$" + formattedString);
+
+                holder.liner_promo_price.setVisibility(View.VISIBLE);
+                holder.tv_promo_price__pri_fix.setText("Promo Price ");
+                float myFloatAdPrice = Float.parseFloat(relatedItem.getAdPrice()+"f");
+                String formattedAdPriceString = String.format("%.02f", myFloatAdPrice);
+                holder.tv_promo_price.setText("$"+formattedAdPriceString);
+                if (formattedString.equalsIgnoreCase(formattedAdPriceString)){
+                    holder.liner_promo_price.setVisibility(View.GONE);
+                }
+                if (formattedAdPriceString.equalsIgnoreCase("0.00")){
+                    holder.liner_promo_price.setVisibility(View.GONE);
+                }
                 /*try {
                     DecimalFormat dF = new DecimalFormat("00.00");
                     Number num = dF.parse(relatedItem.getRegularPrice());
@@ -604,6 +638,13 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                     holder.tv_status.setText("Activate");
 
 
+                }
+                if (relatedItem.getIsbadged().equalsIgnoreCase("True")){
+                    holder.liner_save.setVisibility(View.VISIBLE);
+                    holder.liner_promo_price.setVisibility(View.VISIBLE);
+                }else {
+                    holder.liner_save.setVisibility(View.GONE);
+                    holder.liner_promo_price.setVisibility(View.GONE);
                 }
             }
 

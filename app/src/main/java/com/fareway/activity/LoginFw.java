@@ -3,6 +3,7 @@ package com.fareway.activity;
 import android.Manifest;
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -17,6 +18,7 @@ import android.net.NetworkInfo;
 import android.net.wifi.WifiManager;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.TextPaint;
@@ -85,6 +87,7 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener, 
     double diagonalInches;
     String deviceType="";
     public static boolean locationGet=true;
+    private ProgressDialog progressDialog;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,10 +103,10 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener, 
         //ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         //getLocation();
 
-        /*osName= Build.VERSION_CODES.class.getFields()[android.os.Build.VERSION.SDK_INT].getName();
+        osName= Build.VERSION_CODES.class.getFields()[android.os.Build.VERSION.SDK_INT].getName();
         myVersion = android.os.Build.VERSION.RELEASE;
         sdkVersion = android.os.Build.VERSION.SDK_INT;
-        NetwordDetect();*/
+        NetwordDetect();
         /*Log.i("myVersion",myVersion);
         Log.i("sdkVersion", String.valueOf(sdkVersion));*/
 
@@ -117,6 +120,9 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener, 
         /*String DeviceId =  android.provider.Settings.Secure.getString(getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
         Log.i("device",DeviceId);*/
 
+
+        /*appUtil.setPrefrence("Email", "prajput@juno.com");
+        appUtil.setPrefrence("Password", "123456");*/
         linkUIElements();
         //checkLocationPermission();
         login();
@@ -254,13 +260,14 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener, 
                                             appUtil.setPrefrence("BackupStoreId", jsonParam.getString("StoreId"));
                                             appUtil.setPrefrence("StoreName", jsonParam.getString("storename"));
                                         }
+                                        appUtil.setPrefrence("SaveLogin", "no");
 
                                         appUtil.setPrefrence("isLogin", "yes");
                                         Intent i = new Intent(activity, MainFwActivity.class);
                                         i.putExtra("comeFrom","mpp");
                                         startActivity(i);
                                         finish();
-                                        /*
+
                                         Log.i("IPaddress",IPaddress);
                                         Log.i("osName",osName);
                                         Log.i("myVersion",myVersion);
@@ -277,7 +284,8 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener, 
                                             Log.i("Longitude", Longitude);
                                         }catch (Exception e){
                                             e.printStackTrace();
-                                        }*/
+                                        }
+                                        //saveLogin();
 
                                     }else if (root.getString("errorcode").equals("200")){
                                         finish();
@@ -320,10 +328,14 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener, 
                         Map<String, String> params = new HashMap<String, String>();
 
 
-                        //params.put("UserName", et_email.getText().toString());
-                        //params.put("password", et_pwd.getText().toString());
+                        params.put("UserName", et_email.getText().toString());
+                        params.put("password", et_pwd.getText().toString());
+                        //appUtil.setPrefrence("Email", et_email.getText().toString());
+                        //appUtil.setPrefrence("Password", et_pwd.getText().toString());
                         params.put("UserName", appUtil.getPrefrence("Email"));
                         params.put("password", appUtil.getPrefrence("Password"));
+                        //params.put("UserName", "gns@epsilonium.com");
+                        //params.put("password", "shukla");
 
                         //test
                         params.put("Device", "5");
@@ -376,11 +388,12 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener, 
         Latitude= String.valueOf(location.getLatitude());
         Longitude= String.valueOf(location.getLongitude());
         if (Latitude!="" && Longitude!="" && locationGet==true){
+            Log.i("test","ifget");
 
-            login();
+            //login();
             locationGet=false;
         }else {
-           Log.i("test","get");
+           Log.i("test","elseget");
         }
 
 
@@ -393,16 +406,19 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener, 
 
     @Override
     public void onProviderEnabled(String provider) {
-        Log.i("pro",provider);
+        Log.i("pro1",provider);
+        login();
     }
 
     @Override
     public void onProviderDisabled(String provider) {
-        Log.i("pro",provider);
+        Log.i("pro2",provider);
+        login();
     }
 
     void getLocation() {
         try {
+            login();
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, this);
 
@@ -497,12 +513,8 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener, 
                 // progressDialog = new ProgressDialog(activity);
                 // progressDialog.setMessage("Processing");
                 //progressDialog.show();
-                if (diagonalInches>=6.80){
 
-                }else {
-
-                }
-                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST,Constant.WEB_URL + Constant.LOGIN,
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST,Constant.WEB_URL + Constant.LOGINSAVE+"&Information="+appUtil.getPrefrence("Email")+"|"+appUtil.getPrefrence("Password")+"|"+deviceType+"|"+osName+"|"+myVersion+"|"+""+"|"+""+"|"+""+"|"+Latitude+"|"+Longitude+"|6.1",
                         new Response.Listener<String>(){
                             @Override
                             public void onResponse(String response) {
@@ -513,38 +525,11 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener, 
                                     Log.i("errorcode", root.getString("errorcode"));
                                     if (root.getString("errorcode").equals("0")){
 
-                                        JSONArray message= root.getJSONArray("message");
-                                        for(int i=0;i<message.length();i++)
-                                        {
-                                            JSONObject jsonParam= message.getJSONObject(i);
-                                            appUtil.setPrefrence("GeoStatus", jsonParam.getString("GeoStatus"));
-                                            appUtil.setPrefrence("ZipCode", jsonParam.getString("ZipCode"));
-                                            appUtil.setPrefrence("UserAccessToken", jsonParam.getString("UserAccessToken"));
-                                            appUtil.setPrefrence("SecretQuestionID", jsonParam.getString("SecretQuestionID"));
-                                            appUtil.setPrefrence("ErrorMessage", jsonParam.getString("ErrorMessage"));
-                                            appUtil.setPrefrence("MemberId", jsonParam.getString("MemberId"));
-                                            appUtil.setPrefrence("IsEmployee", jsonParam.getString("IsEmployee"));
-                                            appUtil.setPrefrence("FName", jsonParam.getString("FName"));
-                                            appUtil.setPrefrence("LName", jsonParam.getString("LName"));
-                                            appUtil.setPrefrence("LoyaltyCard", jsonParam.getString("LoyaltyCard"));
-                                            appUtil.setPrefrence("ActivaStatus", jsonParam.getString("ActivaStatus"));
-                                            appUtil.setPrefrence("ShopperID", jsonParam.getString("ShopperID"));
-                                            appUtil.setPrefrence("StoreId", jsonParam.getString("StoreId"));
-                                            appUtil.setPrefrence("BackupStoreId", jsonParam.getString("StoreId"));
-                                            appUtil.setPrefrence("StoreName", jsonParam.getString("storename"));
-                                        }
+
                                         //appUtil.setPrefrence("comeFrom","mpp");
                                         appUtil.setPrefrence("isLogin", "yes");
                                         Intent i = new Intent(activity, MainFwActivity.class);
                                         i.putExtra("comeFrom","mpp");
-                                        //i.putExtra("comeFrom", "mpp");
-                                    /*  if (appUtil.getPrefrence("comeFrom").equalsIgnoreCase("mpp")){
-                                            i.putExtra("comeFrom","mpp");
-                                        }else if (appUtil.getPrefrence("comeFrom").equalsIgnoreCase("moreOffer")){
-                                            i.putExtra("comeFrom","moreOffer");
-                                        }
-                                        i.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);*/
-                                        // progressDialog.dismiss();
                                         startActivity(i);
                                         finish();
                                     }else if (root.getString("errorcode").equals("200")){
@@ -588,8 +573,8 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener, 
                         Map<String, String> params = new HashMap<String, String>();
 
 
-                        params.put("UserName", et_email.getText().toString());
-                        params.put("password", et_pwd.getText().toString());
+                        //params.put("UserName", et_email.getText().toString());
+                        //params.put("password", et_pwd.getText().toString());
                         //params.put("UserName", appUtil.getPrefrence("Email"));
                         //params.put("password", appUtil.getPrefrence("Password"));
 
@@ -653,8 +638,8 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener, 
                 // this thread waiting for the user's response! After the user
                 // sees the explanation, try again to request the permission.
                 new AlertDialog.Builder(this)
-                        .setTitle("title_location_permission")
-                        .setMessage("text_location_permission")
+                        .setTitle("Allow")
+                        .setMessage("Location")
                         .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialogInterface, int i) {
@@ -677,6 +662,8 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener, 
             }
             return false;
         } else {
+            Log.i("test","else");
+            login();
             return true;
         }
     }
@@ -695,6 +682,9 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener, 
                     if (ContextCompat.checkSelfPermission(this,
                             Manifest.permission.ACCESS_FINE_LOCATION)
                             == PackageManager.PERMISSION_GRANTED) {
+
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(intent);
                         ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
                         getLocation();
                         //login();
@@ -705,6 +695,7 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener, 
                     }
 
                 } else {
+                    login();
                     Toast.makeText(this, "Denied", Toast.LENGTH_LONG).show();
 
                     // permission denied, boo! Disable the

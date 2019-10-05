@@ -10,6 +10,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.pm.ActivityInfo;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
@@ -23,6 +24,7 @@ import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.provider.Settings;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 /*
@@ -224,9 +226,18 @@ public class MainFwActivity extends AppCompatActivity
     RelativeLayout relative_main;
     int qty=0;
     String shoppingCouponID="";
-    String IPaddress;
+
     Boolean IPValue;
     LocationManager locationManager;
+    String IPaddress;
+    String osName;
+    String myVersion;
+    String Latitude="";
+    String Longitude="";
+    int sdkVersion;
+    double diagonalInches;
+    String deviceType="";
+    public static boolean locationGet=true;
 
 
 
@@ -243,9 +254,10 @@ public class MainFwActivity extends AppCompatActivity
         appUtil2=new AppUtilFw(activity);
         comeFrom=getIntent().getStringExtra("comeFrom");
         Log.i("test",comeFrom+" singh");
-        /*
-        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+
+        /*ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
         getLocation();*/
+        changeStore();
         linkUIElements();
         /*String osName= Build.VERSION_CODES.class.getFields()[android.os.Build.VERSION.SDK_INT].getName();
         Log.i("osName",osName);*/
@@ -256,6 +268,10 @@ public class MainFwActivity extends AppCompatActivity
         //NetwordDetect();
         /*String DeviceId =  android.provider.Settings.Secure.getString(getContentResolver(), android.provider.Settings.Secure.ANDROID_ID);
         Log.i("device",DeviceId);*/
+        osName= Build.VERSION_CODES.class.getFields()[android.os.Build.VERSION.SDK_INT].getName();
+        myVersion = android.os.Build.VERSION.RELEASE;
+        sdkVersion = android.os.Build.VERSION.SDK_INT;
+        NetwordDetect();
 
         imv_status_verities=findViewById(R.id.imv_status_verities);
         tv_fareway_flag=findViewById(R.id.tv_fareway_flag);
@@ -625,6 +641,7 @@ public class MainFwActivity extends AppCompatActivity
                 liner_add_sub_button.setVisibility(View.VISIBLE);
             }
         });
+        checkLocationPermission();
 
         //
     }
@@ -1077,6 +1094,22 @@ public class MainFwActivity extends AppCompatActivity
     public void onLocationChanged(Location location) {
         //locationText.setText("Current Location: " + location.getLatitude() + ", " + location.getLongitude());
         Log.i("Current Location",location.getLatitude() + ", " + location.getLongitude());
+        Latitude= String.valueOf(location.getLatitude());
+        Longitude= String.valueOf(location.getLongitude());
+        if (Latitude!="" && Longitude!="" && locationGet==true && appUtil.getPrefrence("SaveLogin").equalsIgnoreCase("no")){
+
+            //login();
+            if (diagonalInches>=6.80){
+                deviceType="tablet";
+            }else {
+                deviceType="mobile";
+            }
+            saveLogin();
+            locationGet=false;
+            Log.i("Maintestif","get");
+        }else {
+            Log.i("Maintestelase","get");
+        }
 
     }
 
@@ -3721,6 +3754,7 @@ public class MainFwActivity extends AppCompatActivity
 
         if (product.getPrimaryOfferTypeId()==3){
           //  tv_quantity_detail.setText(product.getQuantity());
+            tv_detail_detail.setVisibility(View.VISIBLE);
             tv_coupon_detail_detail.setVisibility(View.GONE);
             tv_fareway_flag.setText("With MyFareway");
             table_limit.setVisibility(View.GONE);
@@ -3897,8 +3931,8 @@ public class MainFwActivity extends AppCompatActivity
                 Number num = dF.parse(product.getCouponDiscount());
                 Number num2 = dF.parse(product.getAdPrice());
                 Number num3 = dF.parse(product.getRegularPrice());
-                tv_coupon_detail.setText("$ " + new DecimalFormat("##.##").format(num));
-                tv_promo_price_detail.setText("$ " + new DecimalFormat("##.##").format(num2));
+                tv_coupon_detail.setText("$" + new DecimalFormat("##.##").format(num));
+                tv_promo_price_detail.setText("$" + new DecimalFormat("##.##").format(num2));
                 if (new DecimalFormat("##.##").format(num2).equalsIgnoreCase(new DecimalFormat("##.##").format(num3))){
                     table_promo.setVisibility(View.GONE);
                     table_promo_view.setVisibility(View.GONE);
@@ -3940,7 +3974,12 @@ public class MainFwActivity extends AppCompatActivity
             //
 
             String chars = capitalize(product.getDescription());
-            tv_detail_detail.setText(chars+" "+product.getPackagingSize());
+            if (product.getIsbadged().equalsIgnoreCase("True")){
+                tv_detail_detail.setVisibility(View.VISIBLE);
+                tv_detail_detail.setText(chars+" "+product.getPackagingSize());
+            }else {
+                tv_detail_detail.setVisibility(View.GONE);
+            }
 
             String chars2 = capitalize(product.getCouponShortDescription());
             tv_coupon_detail_detail.setText("\n"+chars2);
@@ -3964,6 +4003,7 @@ public class MainFwActivity extends AppCompatActivity
         }
 
         else if(product.getPrimaryOfferTypeId()==1){
+            tv_detail_detail.setVisibility(View.VISIBLE);
             tv_coupon_detail_detail.setVisibility(View.GONE);
             tv_fareway_flag.setText(" ");
             table_limit.setVisibility(View.GONE);
@@ -8307,6 +8347,7 @@ public class MainFwActivity extends AppCompatActivity
 
         if (relatedItem.getPrimaryOfferTypeId()==3){
             tv_coupon_detail_detail.setVisibility(View.GONE);
+            tv_detail_detail.setVisibility(View.VISIBLE);
             tv_fareway_flag.setText("With MyFareway");
             circular_layout_detaile.setVisibility(View.VISIBLE);
             table_limit.setVisibility(View.GONE);
@@ -8352,7 +8393,7 @@ public class MainFwActivity extends AppCompatActivity
             Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
             tv_price_detaile.setText(result);
             String chars = capitalize(relatedItem.getDescription());
-            tv_detail_detail.setText(chars);
+            tv_detail_detail.setText(chars+" "+relatedItem.getPackagingSize());
 
             tv_reg_price_detail.setText("$ "+relatedItem.getRegularPrice());
             float myFloatSaving = Float.parseFloat(relatedItem.getSavings()+"f");
@@ -8389,7 +8430,8 @@ public class MainFwActivity extends AppCompatActivity
         }
 
         else if(relatedItem.getPrimaryOfferTypeId()==2){
-            tv_coupon_detail_detail.setVisibility(View.VISIBLE);
+            tv_coupon_detail_detail.setVisibility(View.GONE);
+            tv_detail_detail.setVisibility(View.VISIBLE);
             tv_fareway_flag.setText("With Coupon");
             circular_layout_detaile.setVisibility(View.VISIBLE);
 
@@ -8477,7 +8519,8 @@ public class MainFwActivity extends AppCompatActivity
             tv_price_detaile.setText(result);
 
             String chars = capitalize(relatedItem.getDescription());
-            tv_detail_detail.setText(chars);
+            tv_detail_detail.setText(chars+" "+relatedItem.getPackagingSize());
+
             String chars2 = capitalize(relatedItem.getCouponShortDescription());
             tv_coupon_detail_detail.setText("\n"+chars2);
 
@@ -8518,6 +8561,7 @@ public class MainFwActivity extends AppCompatActivity
 
         else if(relatedItem.getPrimaryOfferTypeId()==1){
             tv_coupon_detail_detail.setVisibility(View.GONE);
+            tv_detail_detail.setVisibility(View.VISIBLE);
             tv_fareway_flag.setText(" ");
             circular_layout_detaile.setVisibility(View.INVISIBLE);
 
@@ -8552,7 +8596,7 @@ public class MainFwActivity extends AppCompatActivity
             tv_price_detaile.setText(result);
 
             String chars = capitalize(relatedItem.getDescription());
-            tv_detail_detail.setText(chars);
+            tv_detail_detail.setText(chars+" "+relatedItem.getPackagingSize());
 
             tv_reg_price_detail.setText("$ "+relatedItem.getRegularPrice());
             float myFloatSaving = Float.parseFloat(relatedItem.getSavings()+"f");
@@ -12023,7 +12067,13 @@ public class MainFwActivity extends AppCompatActivity
 
                                 }
                                 String chars = capitalize(message.getJSONObject(i).getString("Description"));
-                                tv_detail_detail.setText(chars+" "+message.getJSONObject(i).getString("PackagingSize"));
+
+                                if (message.getJSONObject(i).getString("Isbadged").equalsIgnoreCase("True")){
+                                    tv_detail_detail.setVisibility(View.VISIBLE);
+                                    tv_detail_detail.setText(chars+" "+message.getJSONObject(i).getString("PackagingSize"));
+                                }else {
+                                    tv_detail_detail.setVisibility(View.GONE);
+                                }
 
                                 String chars2 = capitalize(message.getJSONObject(i).getString("CouponShortDescription"));
                                 tv_coupon_detail_detail.setText("\n"+chars2);
@@ -14373,6 +14423,317 @@ Log.i("url",url);
         }
         catch(SecurityException e) {
             e.printStackTrace();
+        }
+    }
+
+    private void saveLogin() {
+        if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+            try {
+                // progressDialog = new ProgressDialog(activity);
+                // progressDialog.setMessage("Processing");
+                //progressDialog.show();
+
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST,Constant.WEB_URL + Constant.LOGINSAVE+"&Information="+appUtil.getPrefrence("Email")+"|"+appUtil.getPrefrence("Password")+"|"+deviceType+"|Android "+osName+"|"+myVersion+"|"+""+"|"+""+"|"+""+"|"+Latitude+"|"+Longitude+"|6.1",
+                        new Response.Listener<String>(){
+                            @Override
+                            public void onResponse(String response) {
+                                Log.i("Fareway", response.toString());
+                                try {
+                                    JSONObject root = new JSONObject(response);
+                                    root.getString("errorcode");
+                                    Log.i("errorcode", root.getString("errorcode"));
+                                    appUtil.setPrefrence("SaveLogin", "yes");
+                                    /*if (root.getString("errorcode").equals("0")){
+
+                                        appUtil.setPrefrence("isLogin", "yes");
+                                        Intent i = new Intent(activity, MainFwActivity.class);
+                                        i.putExtra("comeFrom","mpp");
+                                        startActivity(i);
+                                        finish();
+                                    }else if (root.getString("errorcode").equals("200")){
+                                        finish();
+                                        Toast.makeText(activity, root.getString("message"), Toast.LENGTH_LONG).show();
+                                    }*/
+                                } catch (JSONException e) {
+                                    finish();
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Volley error resp", "error----" + error.getMessage());
+                        error.printStackTrace();
+                        //  progressDialog.dismiss();
+                        if (error.networkResponse == null) {
+                            //      progressDialog.dismiss();
+                            if (error.getClass().equals(TimeoutError.class)) {
+//                                Toast.makeText(activity, "Time out error", Toast.LENGTH_LONG).show();
+                                alertDialog=userAlertDialog.createPositiveAlert("Time out error",
+                                        getString(R.string.ok),"Fail");
+                                alertDialog.show();
+
+                            }
+                        }
+                        finish();
+                    }
+                })
+                {
+
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/x-www-form-urlencoded";
+                    }
+
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+
+
+                        //params.put("UserName", et_email.getText().toString());
+                        //params.put("password", et_pwd.getText().toString());
+                        //params.put("UserName", appUtil.getPrefrence("Email"));
+                        //params.put("password", appUtil.getPrefrence("Password"));
+
+                        //test
+                        params.put("Device", "5");
+                        return params;
+                    }
+
+                    //this is the part, that adds the header to the request
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/x-www-form-urlencoded");
+                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (5000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    // FarewayApplication.getInstance().addToRequestQueue(jsonObjectRequest);
+                    mQueue.add(jsonObjectRequest);
+                }
+                catch (Exception e)
+                {
+                    finish();
+                    e.printStackTrace();
+                }
+
+            } catch (Exception e) {
+                finish();
+                e.printStackTrace();
+                //  progressDialog.dismiss();
+//                displayAlert();
+            }
+
+        } else {
+            finish();
+            alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                    getString(R.string.ok),getString(R.string.alert));
+            alertDialog.show();
+//            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
+
+    public boolean checkLocationPermission() {
+        if (ContextCompat.checkSelfPermission(this,
+                Manifest.permission.ACCESS_FINE_LOCATION)
+                != PackageManager.PERMISSION_GRANTED) {
+
+            // Should we show an explanation?
+            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
+                    Manifest.permission.ACCESS_FINE_LOCATION)) {
+
+                // Show an explanation to the user *asynchronously* -- don't block
+                // this thread waiting for the user's response! After the user
+                // sees the explanation, try again to request the permission.
+                new AlertDialog.Builder(this)
+                        .setTitle("Allow")
+                        .setMessage("Location")
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                //Prompt the user once explanation has been shown
+                                ActivityCompat.requestPermissions(MainFwActivity.this,
+                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                                        MY_PERMISSIONS_REQUEST_LOCATION);
+                            }
+                        })
+                        .create()
+                        .show();
+
+
+            } else {
+                // No explanation needed, we can request the permission.
+                ActivityCompat.requestPermissions(this,
+                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
+                        MY_PERMISSIONS_REQUEST_LOCATION);
+
+            }
+            return false;
+        } else {
+            Log.i("test","else");
+            //login();
+            return true;
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode,
+                                           String permissions[], int[] grantResults) {
+        switch (requestCode) {
+            case MY_PERMISSIONS_REQUEST_LOCATION: {
+                // If request is cancelled, the result arrays are empty.
+                if (grantResults.length > 0
+                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+
+                    // permission was granted, yay! Do the
+                    // location-related task you need to do.
+                    if (ContextCompat.checkSelfPermission(this,
+                            Manifest.permission.ACCESS_FINE_LOCATION)
+                            == PackageManager.PERMISSION_GRANTED) {
+
+                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
+                        startActivity(intent);
+                        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
+                        getLocation();
+                        //login();
+                        //
+
+                        //Request location updates:
+                        // locationManager.requestLocationUpdates(provider, 400, 1, this);
+                    }
+
+                } else {
+                    //login();
+                    Toast.makeText(this, "Denied", Toast.LENGTH_LONG).show();
+
+                    // permission denied, boo! Disable the
+                    // functionality that depends on this permission.
+
+                }
+                return;
+            }
+
+        }
+    }
+
+    private void changeStore() {
+        if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+            try {
+                // progressDialog = new ProgressDialog(activity);
+                // progressDialog.setMessage("Processing");
+                //progressDialog.show();
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET,Constant.WEB_URL + Constant.CHANGESTORE+"?MemberId="+appUtil.getPrefrence("MemberId"),
+                        new Response.Listener<String>(){
+                            @Override
+                            public void onResponse(String response) {
+                                Log.i("Fareway", response.toString());
+                                try {
+                                    JSONObject root = new JSONObject(response);
+                                    root.getString("errorcode");
+                                    Log.i("errorcode", root.getString("errorcode"));
+                                    if (root.getString("errorcode").equals("0")){
+
+                                        JSONArray message= root.getJSONArray("message");
+                                        for(int i=0;i<message.length();i++)
+                                        {
+                                            JSONObject jsonParam= message.getJSONObject(i);
+                                            appUtil.setPrefrence("StoreId", jsonParam.getString("StoreID"));
+                                            appUtil.setPrefrence("BackupStoreId", jsonParam.getString("StoreID"));
+                                            appUtil.setPrefrence("StoreName", jsonParam.getString("StoreAddress")+","+jsonParam.getString("StoreCity")+", "+jsonParam.getString("StoreState"));
+                                        }
+
+                                    }else if (root.getString("errorcode").equals("200")){
+                                        finish();
+                                        Toast.makeText(activity, root.getString("message"), Toast.LENGTH_LONG).show();
+                                    }
+                                } catch (JSONException e) {
+                                    finish();
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Volley error resp", "error----" + error.getMessage());
+                        error.printStackTrace();
+                        //  progressDialog.dismiss();
+                        if (error.networkResponse == null) {
+                            //      progressDialog.dismiss();
+                            if (error.getClass().equals(TimeoutError.class)) {
+//                                Toast.makeText(activity, "Time out error", Toast.LENGTH_LONG).show();
+                                alertDialog=userAlertDialog.createPositiveAlert("Time out error",
+                                        getString(R.string.ok),"Fail");
+                                alertDialog.show();
+
+                            }
+                        }
+                        finish();
+                    }
+                })
+                {
+
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/x-www-form-urlencoded";
+                    }
+
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+
+                        //test
+                        params.put("Device", "5");
+                        return params;
+                    }
+
+                    //this is the part, that adds the header to the request
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/x-www-form-urlencoded");
+                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (5000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    // FarewayApplication.getInstance().addToRequestQueue(jsonObjectRequest);
+                    mQueue.add(jsonObjectRequest);
+                }
+                catch (Exception e)
+                {
+                    finish();
+                    e.printStackTrace();
+                }
+
+            } catch (Exception e) {
+                finish();
+                e.printStackTrace();
+                //  progressDialog.dismiss();
+//                displayAlert();
+            }
+
+        } else {
+            finish();
+            alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                    getString(R.string.ok),getString(R.string.alert));
+            alertDialog.show();
+//            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
         }
     }
 
