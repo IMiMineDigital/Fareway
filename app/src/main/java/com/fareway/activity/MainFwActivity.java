@@ -3927,13 +3927,25 @@ public class MainFwActivity extends AppCompatActivity
                 tv_coupon_detail_detail.setVisibility(View.GONE);
             }
             try {
-                DecimalFormat dF = new DecimalFormat("0.00");
+                float myFloatCouponDiscount = Float.parseFloat(product.getCouponDiscount()+"f");
+                String formattedStringCouponDiscount = String.format("%.02f", myFloatCouponDiscount);
+                tv_coupon_detail.setText("$" + formattedStringCouponDiscount);
+
+                float myFloatAdPrice = Float.parseFloat(product.getAdPrice()+"f");
+                String formattedStringAdPrice = String.format("%.02f", myFloatAdPrice);
+                tv_promo_price_detail.setText("$" + formattedStringAdPrice);
+
+                float myFloatRegularPrice = Float.parseFloat(product.getRegularPrice()+"f");
+                String formattedStringRegularPrice = String.format("%.02f", myFloatRegularPrice);
+
+                /*DecimalFormat dF = new DecimalFormat("0.00");
                 Number num = dF.parse(product.getCouponDiscount());
                 Number num2 = dF.parse(product.getAdPrice());
+
                 Number num3 = dF.parse(product.getRegularPrice());
                 tv_coupon_detail.setText("$" + new DecimalFormat("##.##").format(num));
-                tv_promo_price_detail.setText("$" + new DecimalFormat("##.##").format(num2));
-                if (new DecimalFormat("##.##").format(num2).equalsIgnoreCase(new DecimalFormat("##.##").format(num3))){
+                tv_promo_price_detail.setText("$" + new DecimalFormat("##.##").format(num2));*/
+                if (formattedStringAdPrice.equalsIgnoreCase(formattedStringRegularPrice)){
                     table_promo.setVisibility(View.GONE);
                     table_promo_view.setVisibility(View.GONE);
                 }
@@ -3953,6 +3965,7 @@ public class MainFwActivity extends AppCompatActivity
 
             Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
             tv_price_detaile.setText(result);
+            //
             //Log.i("anshu", String.valueOf(result));
             if (product.getRewardType().equalsIgnoreCase("2") && product.getOfferDefinitionId()==4){
                 tv_price_detaile.setText("Buy "+product.getRequiredQty()+"\n"+"Get "+product.getRewardQty()+" "+result+"*");
@@ -3984,7 +3997,17 @@ public class MainFwActivity extends AppCompatActivity
             String chars2 = capitalize(product.getCouponShortDescription());
             tv_coupon_detail_detail.setText("\n"+chars2);
 
-            tv_reg_price_detail.setText("$"+product.getRegularPrice());
+            if (product.getRequiredQty()>1){
+                String chars3 = capitalize(product.getCouponShortDescription());
+                tv_coupon_detail_detail.setText("\n"+"*"+chars3);
+            }
+
+            //tv_reg_price_detail.setText("$"+product.getRegularPrice());
+
+            float myFloatRegularPrice = Float.parseFloat(product.getRegularPrice()+"f");
+            String formattedStringRegularPrice = String.format("%.02f", myFloatRegularPrice);
+            tv_reg_price_detail.setText("$" + formattedStringRegularPrice);
+
             float myFloatSaving = Float.parseFloat(product.getSavings()+"f");
             String formattedString = String.format("%.02f", myFloatSaving);
             tv_save_detail.setText("$" + formattedString);
@@ -8486,13 +8509,26 @@ public class MainFwActivity extends AppCompatActivity
 
 
             try {
-                DecimalFormat dF = new DecimalFormat("0.00");
+                float myFloatCouponDiscount = Float.parseFloat(relatedItem.getCouponDiscount()+"f");
+                String formattedStringCouponDiscount = String.format("%.02f", myFloatCouponDiscount);
+                tv_coupon_detail.setText("$" + formattedStringCouponDiscount);
+
+                float myFloatAdPrice = Float.parseFloat(relatedItem.getAdPrice()+"f");
+                String formattedStringAdPrice = String.format("%.02f", myFloatAdPrice);
+                tv_promo_price_detail.setText("$" + formattedStringAdPrice);
+
+                float myFloatRegularPrice = Float.parseFloat(relatedItem.getRegularPrice()+"f");
+                String formattedStringRegularPrice = String.format("%.02f", myFloatRegularPrice);
+
+
+
+                /*DecimalFormat dF = new DecimalFormat("0.00");
                 Number num = dF.parse(relatedItem.getCouponDiscount());
                 Number num2 = dF.parse(relatedItem.getAdPrice());
                 Number num3 = dF.parse(relatedItem.getRegularPrice());
                 tv_coupon_detail.setText("$ " + new DecimalFormat("##.##").format(num));
-                tv_promo_price_detail.setText("$ " + new DecimalFormat("##.##").format(num2));
-                if (new DecimalFormat("##.##").format(num2).equalsIgnoreCase(new DecimalFormat("##.##").format(num3))){
+                tv_promo_price_detail.setText("$ " + new DecimalFormat("##.##").format(num2));*/
+                if (formattedStringAdPrice.equalsIgnoreCase(formattedStringRegularPrice)){
                     table_promo.setVisibility(View.GONE);
                     table_promo_view.setVisibility(View.GONE);
                 }
@@ -8515,7 +8551,16 @@ public class MainFwActivity extends AppCompatActivity
             }
 
             bottomLayout_detaile.setBackgroundColor(getResources().getColor(R.color.green));
-            Spanned result = Html.fromHtml(relatedItem.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
+            /*Spanned result = Html.fromHtml(relatedItem.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
+            tv_price_detaile.setText(result);*/
+            //
+            String displayPrice=relatedItem.getDisplayPrice().toString();
+            Log.i("OfferDefinitionId", String.valueOf(relatedItem.getOfferDefinitionId()));
+            Log.i("RewardType",relatedItem.getRewardType());
+            if(relatedItem.getDisplayPrice().toString().split("\\.").length>1)
+                displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ relatedItem.getDisplayPrice().split("\\.")[1]+"<sup>";
+
+            Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
             tv_price_detaile.setText(result);
 
             String chars = capitalize(relatedItem.getDescription());
@@ -8525,7 +8570,12 @@ public class MainFwActivity extends AppCompatActivity
             tv_coupon_detail_detail.setText("\n"+chars2);
 
 
-            tv_reg_price_detail.setText("$ "+relatedItem.getRegularPrice());
+            //tv_reg_price_detail.setText("$ "+relatedItem.getRegularPrice());
+
+            float myFloatRegularPrice = Float.parseFloat(relatedItem.getRegularPrice()+"f");
+            String formattedStringRegularPrice = String.format("%.02f", myFloatRegularPrice);
+            tv_reg_price_detail.setText("$" + formattedStringRegularPrice);
+
             float myFloatSaving = Float.parseFloat(relatedItem.getSavings()+"f");
             String formattedString = String.format("%.02f", myFloatSaving);
             tv_save_detail.setText("$" + formattedString);
@@ -12020,13 +12070,26 @@ public class MainFwActivity extends AppCompatActivity
                                     tv_coupon_detail_detail.setVisibility(View.GONE);
                                 }
                                 try {
-                                    DecimalFormat dF = new DecimalFormat("0.00");
+                                    float myFloatCouponDiscount = Float.parseFloat(message.getJSONObject(i).getString("CouponDiscount")+"f");
+                                    String formattedStringCouponDiscount = String.format("%.02f", myFloatCouponDiscount);
+                                    tv_coupon_detail.setText("$" + formattedStringCouponDiscount);
+
+                                    float myFloatAdPrice = Float.parseFloat(message.getJSONObject(i).getString("AdPrice")+"f");
+                                    String formattedStringAdPrice = String.format("%.02f", myFloatAdPrice);
+                                    tv_promo_price_detail.setText("$" + formattedStringAdPrice);
+
+                                    float myFloatRegularPrice = Float.parseFloat(message.getJSONObject(i).getString("RegularPrice")+"f");
+                                    String formattedStringRegularPrice = String.format("%.02f", myFloatRegularPrice);
+
+
+                                    /*DecimalFormat dF = new DecimalFormat("0.00");
                                     Number num = dF.parse(message.getJSONObject(i).getString("CouponDiscount"));
                                     Number num2 = dF.parse(message.getJSONObject(i).getString("AdPrice"));
                                     Number num3 = dF.parse(message.getJSONObject(i).getString("RegularPrice"));
                                     tv_coupon_detail.setText("$ " + new DecimalFormat("##.##").format(num));
-                                    tv_promo_price_detail.setText("$ " + new DecimalFormat("##.##").format(num2));
-                                    if (new DecimalFormat("##.##").format(num2).equalsIgnoreCase(new DecimalFormat("##.##").format(num3))){
+                                    tv_promo_price_detail.setText("$ " + new DecimalFormat("##.##").format(num2));*/
+
+                                    if (formattedStringAdPrice.equalsIgnoreCase(formattedStringRegularPrice)){
                                         table_promo.setVisibility(View.GONE);
                                         table_promo_view.setVisibility(View.GONE);
                                     }
@@ -12078,7 +12141,16 @@ public class MainFwActivity extends AppCompatActivity
                                 String chars2 = capitalize(message.getJSONObject(i).getString("CouponShortDescription"));
                                 tv_coupon_detail_detail.setText("\n"+chars2);
 
-                                tv_reg_price_detail.setText("$"+message.getJSONObject(i).getString("RegularPrice"));
+                                if (message.getJSONObject(i).getInt("RequiredQty")>1){
+                                    String chars3 = capitalize(message.getJSONObject(i).getString("CouponShortDescription"));
+                                    tv_coupon_detail_detail.setText("\n"+"*"+chars3);
+                                }
+
+                                //tv_reg_price_detail.setText("$"+message.getJSONObject(i).getString("RegularPrice"));
+
+                                float myFloatRegularPrice = Float.parseFloat(message.getJSONObject(i).getString("RegularPrice")+"f");
+                                String formattedStringRegularPrice = String.format("%.02f", myFloatRegularPrice);
+                                tv_reg_price_detail.setText("$" + formattedStringRegularPrice);
 
                                 float myFloatSavings = Float.parseFloat(message.getJSONObject(i).getString("Savings")+"f");
                                 String formattedString = String.format("%.02f", myFloatSavings);
@@ -12573,13 +12645,26 @@ public class MainFwActivity extends AppCompatActivity
                                                                 table_varieties_view.setVisibility(View.GONE);
                                                             }
                                                             try {
-                                                                DecimalFormat dF = new DecimalFormat("0.00");
+                                                                float myFloatCouponDiscount = Float.parseFloat(jsonShoppingParam.getJSONObject(i).getString("CouponDiscount")+"f");
+                                                                String formattedStringCouponDiscount = String.format("%.02f", myFloatCouponDiscount);
+                                                                tv_coupon_detail.setText("$" + formattedStringCouponDiscount);
+
+                                                                float myFloatAdPrice = Float.parseFloat(jsonShoppingParam.getJSONObject(i).getString("AdPrice")+"f");
+                                                                String formattedStringAdPrice = String.format("%.02f", myFloatAdPrice);
+                                                                tv_promo_price_detail.setText("$" + formattedStringAdPrice);
+
+                                                                float myFloatRegularPrice = Float.parseFloat(jsonShoppingParam.getJSONObject(i).getString("RegularPrice")+"f");
+                                                                String formattedStringRegularPrice = String.format("%.02f", myFloatRegularPrice);
+
+
+
+                                                                /*DecimalFormat dF = new DecimalFormat("0.00");
                                                                 Number num = dF.parse(jsonShoppingParam.getJSONObject(i).getString("CouponDiscount"));
                                                                 Number num2 = dF.parse(jsonShoppingParam.getJSONObject(i).getString("AdPrice"));
                                                                 Number num3 = dF.parse(jsonShoppingParam.getJSONObject(i).getString("RegularPrice"));
                                                                 tv_coupon_detail.setText("$ " + new DecimalFormat("##.##").format(num));
-                                                                tv_promo_price_detail.setText("$ " + new DecimalFormat("##.##").format(num2));
-                                                                if (new DecimalFormat("##.##").format(num2).equalsIgnoreCase(new DecimalFormat("##.##").format(num3))){
+                                                                tv_promo_price_detail.setText("$ " + new DecimalFormat("##.##").format(num2));*/
+                                                                if (formattedStringAdPrice.equalsIgnoreCase(formattedStringRegularPrice)){
                                                                     table_promo.setVisibility(View.GONE);
                                                                     table_promo_view.setVisibility(View.GONE);
                                                                 }
@@ -12612,9 +12697,13 @@ public class MainFwActivity extends AppCompatActivity
                                                             String chars2 = capitalize(jsonShoppingParam.getJSONObject(i).getString("CouponShortDescription"));
                                                             tv_coupon_detail_detail.setText("\n"+chars2);
 
-                                                            tv_reg_price_detail.setText("$"+jsonShoppingParam.getJSONObject(i).getString("RegularPrice"));
+                                                            //tv_reg_price_detail.setText("$"+jsonShoppingParam.getJSONObject(i).getString("RegularPrice"));
 
-                                                            float myFloatSavings = Float.parseFloat(message.getJSONObject(i).getString("Savings")+"f");
+                                                            float myFloatRegularPrice = Float.parseFloat(jsonShoppingParam.getJSONObject(i).getString("RegularPrice")+"f");
+                                                            String formattedStringRegularPrice = String.format("%.02f", myFloatRegularPrice);
+                                                            tv_reg_price_detail.setText("$" + formattedStringRegularPrice);
+
+                                                            float myFloatSavings = Float.parseFloat(jsonShoppingParam.getJSONObject(i).getString("Savings")+"f");
                                                             String formattedString = String.format("%.02f", myFloatSavings);
                                                             tv_save_detail.setText("$" + formattedString);
                                                             /*try {
