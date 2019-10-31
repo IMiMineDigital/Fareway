@@ -34,8 +34,56 @@
             android:visibility="gone"
             android:id="@+id/toolbar3"
             android:layout_width="match_parent"
-            android:layout_height="?attr/actionBarSize"
-            app:navigationIcon="?attr/homeAsUpIndicator" />
+            android:layout_height="60dp"
+            app:navigationIcon="?attr/homeAsUpIndicator">
+
+            <RelativeLayout
+                android:id="@+id/top_container"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginRight="20dp">
+
+                <TextView
+                    android:textSize="18sp"
+                    android:textColor="@color/black"
+                    android:textStyle="bold"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Participating Items"
+                    android:gravity="center_vertical|left"
+                    android:layout_marginTop="20dp"/>
+
+            <LinearLayout
+                android:visibility="visible"
+                android:id="@+id/liner_all_Varieties_activate"
+                android:layout_width="60dp"
+                android:layout_height="60dp"
+                android:background="@drawable/circular_mehrune_bg"
+                android:layout_alignParentRight="true"
+                android:gravity="center"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/all_Varieties_activate"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:text="Activated"
+                    android:textSize="5pt"
+                    android:textColor="@color/white"
+                    android:textStyle="bold" />
+                <!-- -->
+
+                <ImageView
+                    android:id="@+id/imv_status_verities"
+                    android:layout_width="20dp"
+                    android:layout_height="20dp"
+                    android:src="@drawable/tick" />
+
+            </LinearLayout>
+            </RelativeLayout>
+
+        </androidx.appcompat.widget.Toolbar>
 
     </com.google.android.material.appbar.AppBarLayout>
 

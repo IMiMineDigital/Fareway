@@ -13,7 +13,7 @@
 
 
 
-    <LinearLayout
+    <!--<LinearLayout
         android:visibility="gone"
         android:id="@+id/liner_all_Varieties_activate"
         android:layout_width="@dimen/_70sdp"
@@ -37,7 +37,7 @@
             android:text="Activated"
             android:textColor="@color/white"
             android:textStyle="bold" />
-        <!-- -->
+
 
         <ImageView
             android:id="@+id/imv_status_verities"
@@ -45,7 +45,7 @@
             android:layout_height="@dimen/_16sdp"
             android:src="@drawable/tick" />
 
-    </LinearLayout>
+    </LinearLayout>-->
 
     <TextView
         android:layout_below="@+id/liner_all_Varieties_activate"
@@ -184,7 +184,42 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+        <LinearLayout
 
+            android:id="@+id/rowLayoutClearFilter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/_10sdp"
+            >
+            <TextView
+                android:fontFamily="@font/roboto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Clear Filter"
+                android:scrollHorizontally="false"
+                style="@style/label_tx"
+                android:layout_weight="1"
+                />
+
+            <ImageView
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:layout_gravity="center"
+                android:layout_weight="0"
+                android:src="@drawable/go"
+                />
+
+        </LinearLayout>
+
+        <View android:id="@+id/separator0"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:background="#acaaaa"
+            android:layout_width = "fill_parent"
+            android:layout_height="1dip"
+            android:layout_centerVertical ="true"
+            android:layout_alignParentTop="true"/>
         <LinearLayout
 
             android:id="@+id/rowLayout0"
@@ -342,6 +377,43 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical">
+
+        <LinearLayout
+
+            android:id="@+id/ShortClearFilter"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:padding="@dimen/_10sdp"
+            >
+            <TextView
+                android:fontFamily="@font/roboto"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="Clear Filter"
+                android:scrollHorizontally="false"
+                style="@style/label_tx"
+                android:layout_weight="1"
+                />
+
+            <ImageView
+                android:layout_width="@dimen/_15sdp"
+                android:layout_height="@dimen/_15sdp"
+                android:layout_gravity="center"
+                android:layout_weight="0"
+                android:src="@drawable/go"
+                />
+
+        </LinearLayout>
+
+        <View android:id="@+id/separator0Short"
+            android:layout_marginLeft="12dp"
+            android:layout_marginRight="12dp"
+            android:background="#acaaaa"
+            android:layout_width = "fill_parent"
+            android:layout_height="1dip"
+            android:layout_centerVertical ="true"
+            android:layout_alignParentTop="true"/>
 
         <LinearLayout
 

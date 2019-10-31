@@ -94,8 +94,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
         private TextView tv_coupon_type_1,add_item_flag,tv_status,tv_remove,tv_price,tv_unit,tv_saving,tv_saving_pri_fix,tv_promo_price__pri_fix,tv_promo_price,tv_detail,tv_deal_type,
                 tv_coupon_flag,tv_varieties,limit,must,add_plus,add_minus,tv_quantity,additional_offers,personal_offers,tv_location,
                 tv_personal_lable,tv_location_multi;
-        public ImageView imv_item, imv_info,imv_status,coupon_badge,imv_location;
-        private LinearLayout circular_layout,bottomLayout,liner_save,count_product_number,liner_promo_price,
+        public ImageView imv_item, imv_info,imv_status,coupon_badge,imv_location,circular_layout;
+        private LinearLayout bottomLayout,liner_save,count_product_number,liner_promo_price,
                 item_layout_tile,linear_personal_ad_lable,linear_multi_personal_ad_lable;
         private CardView card_view;
         private RelativeLayout imv_layout,relative_badge;
@@ -106,7 +106,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             relative_badge = (RelativeLayout) view.findViewById(R.id.relative_badge);
 
             card_view=(CardView) view.findViewById(R.id.card_view);
-            tv_status = (TextView) view.findViewById(R.id.tv_status);
+         /*   tv_status = (TextView) view.findViewById(R.id.tv_status);*/
             //tv_status_mul = (TextView) view.findViewById(R.id.tv_status_mul);
 
             //tv_remove_mul = (TextView) view.findViewById(R.id.tv_remove_mul);
@@ -152,9 +152,9 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
             limit = view.findViewById(R.id.limit);
 
-            imv_status = (ImageView) view.findViewById(R.id.imv_status);
+            /*imv_status = (ImageView) view.findViewById(R.id.imv_status);*/
 
-            circular_layout= (LinearLayout) view.findViewById(R.id.circular_layout);
+            circular_layout= (ImageView) view.findViewById(R.id.circular_layout);
 
             bottomLayout= (LinearLayout) view.findViewById(R.id.bottomLayout);
 
@@ -216,22 +216,22 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         activateListener.onProductActivate(productListFiltered.get(position));
                         product.setClickCount(1);
                         product.setListCount(1);
-                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                        holder.imv_status.setVisibility(View.VISIBLE);
+                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.activated));
+                        /*holder.imv_status.setVisibility(View.VISIBLE);
                         holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
-                        holder.tv_status.setText("Activated");
+                        holder.tv_status.setText("Activated");*/
                     }else if (product.getPrimaryOfferTypeId()==2){
                         activateListener.onProductActivate(productListFiltered.get(position));
                         product.setClickCount(1);
                         product.setListCount(1);
-                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                        holder.imv_status.setVisibility(View.VISIBLE);
+                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.activated));
+                        /*holder.imv_status.setVisibility(View.VISIBLE);
                         holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
-                        holder.tv_status.setText("Activated");
+                        holder.tv_status.setText("Activated");*/
                     }else   if (product.getPrimaryOfferTypeId()==1){
-                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                        holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
-                        holder.tv_status.setText("Added");
+                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.activated));
+                       /* holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                        holder.tv_status.setText("Added");*/
 
                         activateListener.onProductActivate(productListFiltered.get(position));
                     }
@@ -241,7 +241,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
             holder.circular_layout.setVisibility(View.VISIBLE);
 
-            holder.tv_status.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            /*holder.tv_status.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);*/
             //holder.imv_status
 
             holder.tv_varieties.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
@@ -402,56 +402,16 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         holder.tv_varieties.setText("");
                     }
                     if (product.getClickCount()>0){
-                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                        holder.imv_status.setVisibility(View.VISIBLE);
+                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.activated));
+                        /*holder.imv_status.setVisibility(View.VISIBLE);
                         holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
-                        holder.tv_status.setText("Activated");
+                        holder.tv_status.setText("Activated");*/
 
                     }else if (product.getClickCount()==0){
-                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
-                        holder.imv_status.setVisibility(View.GONE);
-                        holder.tv_status.setText("Activate");
+                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.activate));
+                        /*holder.imv_status.setVisibility(View.GONE);
+                        holder.tv_status.setText("Activate");*/
                     }
-                    /*if (product.getClickCount()>0){
-                        if (product.getListCount()>0){
-                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                            holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
-                            if (product.getRequiresActivation().contains("True")){
-                                holder.tv_status.setText("Added");
-                                holder.remove_layout.setVisibility(View.VISIBLE);
-
-                            }else if(product.getRequiresActivation().contains("False")){
-                                holder.tv_status.setText("Added");
-                                holder.remove_layout.setVisibility(View.VISIBLE);
-                            }
-                        }else {
-                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
-                            holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
-                            if (product.getRequiresActivation().contains("True")){
-                                if (product.getClickCount()>0){
-                                    holder.tv_status.setText("Add");
-                                    holder.remove_layout.setVisibility(View.GONE);
-                                }else {
-                                    holder.tv_status.setText("Add");
-                                    holder.remove_layout.setVisibility(View.GONE);
-                            }
-                            }else if (product.getRequiresActivation().contains("False")){
-                                holder.tv_status.setText("Add");
-                                holder.remove_layout.setVisibility(View.GONE);
-                            }
-                        }
-                    }else if (product.getClickCount()==0){
-                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
-                        holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
-                        if (product.getRequiresActivation().contains("True")){
-                            holder.tv_status.setText("Activate");
-                            holder.remove_layout.setVisibility(View.GONE);
-                        }else if (product.getRequiresActivation().contains("False")){
-                            holder.remove_layout.setVisibility(View.GONE);
-                            holder.tv_status.setText("Add");
-                        }
-
-                    }*/
 
                 }
 
@@ -550,7 +510,11 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             if(product.getDisplayPrice().toString().split("\\.").length>1)
                                 displayPrice= product.getDisplayPrice().split("\\.")[0]+"<sup>"+ product.getDisplayPrice().split("\\.")[1]+"<sup>";
                             Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
+                            Spanned result2 = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>")+"<sup><small> *</small></sup>");
                             holder.tv_price.setText(result);
+                            if (product.getRequiredQty()>1){
+                                holder.tv_price.setText(result2);
+                            }
                         }
                     }
                     holder.coupon_badge.setVisibility(View.VISIBLE);
@@ -703,15 +667,15 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }
 
                     if (product.getClickCount()>0){
-                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                        holder.imv_status.setVisibility(View.VISIBLE);
+                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.activated));
+                     /*   holder.imv_status.setVisibility(View.VISIBLE);
                         holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
-                        holder.tv_status.setText("Activated");
+                        holder.tv_status.setText("Activated");*/
 
                     }else if (product.getClickCount()==0){
-                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
-                        holder.imv_status.setVisibility(View.GONE);
-                        holder.tv_status.setText("Activate");
+                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.activate));
+                    /*    holder.imv_status.setVisibility(View.GONE);
+                        holder.tv_status.setText("Activate");*/
                     }
 
                 }
@@ -809,20 +773,6 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         holder.tv_varieties.setText("");
                     }
 
-
-                   /* if (product.getListCount()>0){
-                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                        holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
-                        holder.tv_status.setText("Added");
-                        holder.remove_layout.setVisibility(View.VISIBLE);
-
-                    }else if (product.getListCount()==0){
-                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
-                        holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
-                        holder.tv_status.setText("Add");
-                        holder.remove_layout.setVisibility(View.GONE);
-
-                    }*/
 
                 }
 
@@ -1000,15 +950,15 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         holder.tv_varieties.setText("");
                     }
                     if (product.getClickCount()>0){
-                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                        holder.imv_status.setVisibility(View.VISIBLE);
+                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.activated));
+                      /*  holder.imv_status.setVisibility(View.VISIBLE);
                         holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
-                        holder.tv_status.setText("Activated");
+                        holder.tv_status.setText("Activated");*/
 
                     }else if (product.getClickCount()==0){
-                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
-                        holder.imv_status.setVisibility(View.GONE);
-                        holder.tv_status.setText("Activate");
+                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.activate));
+                        /*holder.imv_status.setVisibility(View.GONE);
+                        holder.tv_status.setText("Activate");*/
                     }
 
                 }
@@ -1110,7 +1060,11 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             if(product.getDisplayPrice().toString().split("\\.").length>1)
                                 displayPrice= product.getDisplayPrice().split("\\.")[0]+"<sup>"+ product.getDisplayPrice().split("\\.")[1]+"<sup>";
                             Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
+                            Spanned result2 = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>")+"<sup><small> *</small></sup>");
                             holder.tv_price.setText(result);
+                            if (product.getRequiredQty()>1){
+                                holder.tv_price.setText(result2);
+                            }
                         }
                     }
                     holder.coupon_badge.setVisibility(View.VISIBLE);
@@ -1263,15 +1217,15 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }
 
                     if (product.getClickCount()>0){
-                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                        holder.imv_status.setVisibility(View.VISIBLE);
+                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.activated));
+                     /*   holder.imv_status.setVisibility(View.VISIBLE);
                         holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
-                        holder.tv_status.setText("Activated");
+                        holder.tv_status.setText("Activated");*/
 
                     }else if (product.getClickCount()==0){
-                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
-                        holder.imv_status.setVisibility(View.GONE);
-                        holder.tv_status.setText("Activate");
+                        holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.activate));
+                       /* holder.imv_status.setVisibility(View.GONE);
+                        holder.tv_status.setText("Activate");*/
                     }
 
                 }
@@ -1417,23 +1371,23 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             activateListener.onProductActivate(productListFiltered.get(position));
                             product.setClickCount(1);
                             product.setListCount(1);
-                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                            holder.imv_status.setVisibility(View.VISIBLE);
+                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.activated));
+                            /*holder.imv_status.setVisibility(View.VISIBLE);
                             holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
-                            holder.tv_status.setText("Activated");
+                            holder.tv_status.setText("Activated");*/
 
                         }else if (product.getPrimaryOfferTypeId()==2){
                             activateListener.onProductActivate(productListFiltered.get(position));
                             product.setClickCount(1);
                             product.setListCount(1);
-                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                            holder.imv_status.setVisibility(View.VISIBLE);
+                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.activated));
+                         /*   holder.imv_status.setVisibility(View.VISIBLE);
                             holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
-                            holder.tv_status.setText("Activated");
+                            holder.tv_status.setText("Activated");*/
                         }else   if (product.getPrimaryOfferTypeId()==1){
-                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                            holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
-                            holder.tv_status.setText("Activated");
+                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.activated));
+                       /*     holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
+                            holder.tv_status.setText("Activated");*/
                             activateListener.onProductActivate(productListFiltered.get(position));
                         }else {
 
@@ -1447,7 +1401,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 //holder.imv_status
 
 
-            holder.tv_status.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);
+            /*holder.tv_status.setTextSize(TypedValue.COMPLEX_UNIT_SP, 16);*/
             holder.tv_varieties.setTextSize(TypedValue.COMPLEX_UNIT_SP, 8);
             holder.tv_coupon_flag.setTextSize(TypedValue.COMPLEX_UNIT_SP, 8);
             holder.tv_price.setTextSize(TypedValue.COMPLEX_UNIT_SP, 18);
@@ -1463,7 +1417,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
             holder.tv_deal_type.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
             holder.limit.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
 
-            holder.tv_status.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
+            /*holder.tv_status.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);*/
             holder.circular_layout.getLayoutParams().height = 200;
             holder.circular_layout.getLayoutParams().width = 200;
 
@@ -1619,15 +1573,15 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             holder.tv_varieties.setText("");
                         }
                         if (product.getClickCount()>0){
-                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                            holder.imv_status.setVisibility(View.VISIBLE);
+                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.activated));
+                           /* holder.imv_status.setVisibility(View.VISIBLE);
                             holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
-                            holder.tv_status.setText("Activated");
+                            holder.tv_status.setText("Activated");*/
 
                         }else if (product.getClickCount()==0){
-                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
-                            holder.imv_status.setVisibility(View.GONE);
-                            holder.tv_status.setText("Activate");
+                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.activate));
+                           /* holder.imv_status.setVisibility(View.GONE);
+                            holder.tv_status.setText("Activate");*/
                         }
 
                     }
@@ -1730,7 +1684,11 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                                 if(product.getDisplayPrice().toString().split("\\.").length>1)
                                     displayPrice= product.getDisplayPrice().split("\\.")[0]+"<sup>"+ product.getDisplayPrice().split("\\.")[1]+"<sup>";
                                 Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
+                                Spanned result2 = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>")+"<sup><small> *</small></sup>");
                                 holder.tv_price.setText(result);
+                                if (product.getRequiredQty()>1){
+                                    holder.tv_price.setText(result2);
+                                }
                             }
                         }
                         holder.coupon_badge.setVisibility(View.VISIBLE);
@@ -1883,15 +1841,15 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         }
 
                         if (product.getClickCount()>0){
-                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                            holder.imv_status.setVisibility(View.VISIBLE);
+                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.activated));
+                           /* holder.imv_status.setVisibility(View.VISIBLE);
                             holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
-                            holder.tv_status.setText("Activated");
+                            holder.tv_status.setText("Activated");*/
 
                         }else if (product.getClickCount()==0){
-                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
-                            holder.imv_status.setVisibility(View.GONE);
-                            holder.tv_status.setText("Activate");
+                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.activate));
+                         /*   holder.imv_status.setVisibility(View.GONE);
+                            holder.tv_status.setText("Activate");*/
                         }
 
                     }
@@ -2001,7 +1959,6 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 }
 
             else {
-                Log.i("test","else");
                 Log.i("elseincircular", String.valueOf(product.getInCircular()));
 
                 if (MainFwActivity.singleLable==true){
@@ -2188,15 +2145,15 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             holder.tv_varieties.setText("");
                         }
                         if (product.getClickCount()>0){
-                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                            holder.imv_status.setVisibility(View.VISIBLE);
+                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.activated));
+                            /*holder.imv_status.setVisibility(View.VISIBLE);
                             holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
-                            holder.tv_status.setText("Activated");
+                            holder.tv_status.setText("Activated");*/
 
                         }else if (product.getClickCount()==0){
-                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
-                            holder.imv_status.setVisibility(View.GONE);
-                            holder.tv_status.setText("Activate");
+                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.activate));
+                          /*  holder.imv_status.setVisibility(View.GONE);
+                            holder.tv_status.setText("Activate");*/
                         }
 
 
@@ -2256,29 +2213,27 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         }
                         if(product.getLimitPerTransection()>0)
                         {
-                            if(headerContent != "")
-                            {
+                            if(headerContent != "") {
                                 if (product.getLimitPerTransection()>1){
                                     headerContent = headerContent + "\nLimit : " + product.getLimitPerTransection();
                                 }
                             }
-                            else
-                            {
+                            else {
                                 if (product.getLimitPerTransection()>1){
                                     headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection())+", Exp "+saveDate;
                                 }
                             }
-                            if (product.getRewardType().equalsIgnoreCase("3")&&product.getPrimaryOfferTypeId()==2)
-                            {
+
+                            if (product.getRewardType().equalsIgnoreCase("3")&&product.getPrimaryOfferTypeId()==2) {
                                 String displayPrice=product.getDisplayPrice().toString();
                                 if(product.getDisplayPrice().toString().split("\\.").length>1)
                                     displayPrice= product.getDisplayPrice().split("\\.")[0]+"<sup>"+ product.getDisplayPrice().split("\\.")[1]+"<sup>";
 
                                 Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
-                                Log.i("anshu", String.valueOf(result));
                                 holder.tv_price.setText(result);
 
-                            }else if(product.getRewardType().equalsIgnoreCase("2")&&product.getPrimaryOfferTypeId()==2){
+                            }
+                            else if(product.getRewardType().equalsIgnoreCase("2")&&product.getPrimaryOfferTypeId()==2){
                                 DecimalFormat dF = new DecimalFormat("00.00");
                                 try {
                                     Number rewardValue = dF.parse(product.getRewardValue());
@@ -2295,12 +2250,17 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                                 } catch (ParseException e) {
                                     e.printStackTrace();
                                 }
-                            }else {
+                            }
+                            else {
                                 String displayPrice=product.getDisplayPrice().toString();
                                 if(product.getDisplayPrice().toString().split("\\.").length>1)
                                     displayPrice= product.getDisplayPrice().split("\\.")[0]+"<sup>"+ product.getDisplayPrice().split("\\.")[1]+"<sup>";
                                 Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
+                                Spanned result2 = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>")+"<sup><small> *</small></sup>");
                                 holder.tv_price.setText(result);
+                                if (product.getRequiredQty()>1){
+                                    holder.tv_price.setText(result2);
+                                }
                             }
                         }
                         holder.coupon_badge.setVisibility(View.VISIBLE);
@@ -2447,15 +2407,15 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         }
 
                         if (product.getClickCount()>0){
-                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                            holder.imv_status.setVisibility(View.VISIBLE);
+                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.activated));
+                           /* holder.imv_status.setVisibility(View.VISIBLE);
                             holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
-                            holder.tv_status.setText("Activated");
+                            holder.tv_status.setText("Activated");*/
 
                         }else if (product.getClickCount()==0){
-                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
-                            holder.imv_status.setVisibility(View.GONE);
-                            holder.tv_status.setText("Activate");
+                            holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.activate));
+                          /*  holder.imv_status.setVisibility(View.GONE);
+                            holder.tv_status.setText("Activate");*/
                         }
 
                     }
@@ -2588,164 +2548,6 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
 
             }
-
-
-        ///////////////////////
-
-      /*  holder.remove_layout_mul.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-
-                Log.i("remove","remove");
-
-                RequestQueue mQueue;
-                mQueue=FarewayApplication.getmInstance(mContext).getmRequestQueue();
-
-
-
-                String url = Constant.WEB_URL+Constant.REMOVE+product.getUPC()+"&"+"MemberId="+appUtil.getPrefrence("MemberId");
-                StringRequest  jsonObjectRequest = new StringRequest (Request.Method.DELETE, url,
-                        new Response.Listener<String >() {
-                            @Override
-                            public void onResponse(String  response) {
-                                Log.i("success", String.valueOf(response));
-                                holder.remove_layout_mul.setVisibility(View.GONE);
-
-                                product.setListCount(0);
-                                product.setQuantity("0");
-                                holder.tv_status_mul.setText("Add");
-                                holder.circular_layout_mul.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
-                                holder.imv_status_mul.setImageDrawable(mContext.getResources().getDrawable(R.drawable.addwhite));
-
-                            }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.i("fail", String.valueOf(error));
-
-                    }
-                }){
-
-                    @Override
-                    public String getBodyContentType() {
-                        return "application/json; charset=utf-8";
-                    }
-
-                    @Override
-                    public Map<String, String> getHeaders() {
-                        Map<String, String> params = new HashMap<String, String>();
-                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
-                        params.put("Content-Type", "application/json ;charset=utf-8");
-                        return params;
-                    }
-                };
-                RetryPolicy policy = new DefaultRetryPolicy
-                        (50000,
-                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-                jsonObjectRequest.setRetryPolicy(policy);
-                try {
-                    mQueue.add(jsonObjectRequest);
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-            }
-        });*/
-
-       /* holder.add_plus.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                JSONObject json = new JSONObject();
-                Calendar c2 = Calendar.getInstance();
-                SimpleDateFormat dateformat2 = new SimpleDateFormat("dd MMM yyyy");
-                String currentDate = dateformat2.format(c2.getTime());
-
-                RequestQueue mQueue;
-                mQueue=FarewayApplication.getmInstance(mContext).getmRequestQueue();
-
-                JSONObject ShoppingListItems = new JSONObject();
-                try {
-                    ShoppingListItems.put("UPC", product.getUPC());
-                    ShoppingListItems.put("Quantity", (Integer.parseInt(product.getQuantity())+1));
-                    ShoppingListItems.put("DateAddedOn", currentDate);
-
-                } catch (JSONException e) {
-
-                    e.printStackTrace();
-                }
-
-                JSONArray jsonArray = new JSONArray();
-
-                jsonArray.put(ShoppingListItems);
-
-                JSONObject studentsObj = new JSONObject();
-                try {
-                    studentsObj.put("ShoppingListItems", jsonArray);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                final String mRequestBody = "'"+studentsObj.toString()+"'";
-                Log.i("test",mRequestBody);
-                String url = Constant.WEB_URL+Constant.SHOPPINGLIST+appUtil.getPrefrence("MemberId");
-                StringRequest  jsonObjectRequest = new StringRequest (Request.Method.PUT, url,
-                        new Response.Listener<String >() {
-                            @Override
-                            public void onResponse(String  response) {
-                                Log.i("success", String.valueOf(response));
-                                product.setQuantity(String.valueOf((Integer.parseInt(product.getQuantity())+1)));
-                                holder.tv_quantity.setText(product.getQuantity());
-                                holder.circular_layout.setBackground(mContext.getResources().getDrawable(R.drawable.circular_mehrune_bg));
-                                holder.imv_status.setImageDrawable(mContext.getResources().getDrawable(R.drawable.tick));
-                                holder.tv_status.setText("Activated");
-
-                          }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
-                        Log.i("fail", String.valueOf(error));
-                   }
-                }){
-
-                    @Override
-                    public String getBodyContentType() {
-                        return "application/json; charset=utf-8";
-                    }
-
-                    @Override
-                    public byte[] getBody() throws AuthFailureError {
-                        try {
-                            return mRequestBody == null ? null : mRequestBody.getBytes("utf-8");
-                        } catch (UnsupportedEncodingException uee) {
-                            VolleyLog.wtf("Unsupported Encoding while trying to get the bytes of %s using %s", mRequestBody, "utf-8");
-                            return null;
-                        }
-                    }
-
-                  @Override
-                    public Map<String, String> getHeaders() {
-                        Map<String, String> params = new HashMap<String, String>();
-                        params.put("Content-Type", "application/json");
-                        return params;
-                    }
-                };
-                RetryPolicy policy = new DefaultRetryPolicy
-                        (50000,
-                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
-                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
-                jsonObjectRequest.setRetryPolicy(policy);
-                try {
-                    mQueue.add(jsonObjectRequest);
-                }
-                catch (Exception e)
-                {
-                    e.printStackTrace();
-                }
-
-            }
-        });*/
 
 
     }
