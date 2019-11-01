@@ -698,11 +698,6 @@ public class MainFwActivity extends AppCompatActivity
             Longitude = String.valueOf(longitude);
             if (Latitude != "" && Longitude != "" && locationGet == true && appUtil.getPrefrence("SaveLogin").equalsIgnoreCase("no")) {
                 //login();
-                if (diagonalInches >= 6.80) {
-                    deviceType = "tablet";
-                } else {
-                    deviceType = "mobile";
-                }
                 saveLogin();
                 locationGet = false;
 
@@ -824,7 +819,7 @@ public class MainFwActivity extends AppCompatActivity
                     getMyLocation();
 
                 } else {
-
+                    saveLogin();
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
                     //Toast.makeText(getApplicationContext(), "Permission denied", Toast.LENGTH_SHORT).show();
@@ -1106,6 +1101,11 @@ public class MainFwActivity extends AppCompatActivity
             rv_items.setLayoutManager(mLayoutManager);
             singleView = false;
 
+        }
+        if (diagonalInches >= 6.80) {
+            deviceType = "tablet";
+        } else {
+            deviceType = "mobile";
         }
 
         messageLoad();
@@ -6289,7 +6289,8 @@ public class MainFwActivity extends AppCompatActivity
                     Log.d(TAG, " >> location setting is ON");
                 } else {
                     Log.d(TAG, " >> location setting is OFF finish activity ");
-                    finish();
+                    saveLogin();
+                    //finish();
                 }
                 break;
         }
@@ -14087,7 +14088,7 @@ public class MainFwActivity extends AppCompatActivity
                 // progressDialog.setMessage("Processing");
                 //progressDialog.show();
 
-                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android " + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|6.8",
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android " + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|6.9",
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {

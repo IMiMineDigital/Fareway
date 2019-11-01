@@ -66,7 +66,7 @@ import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
 
-public class LoginFw extends AppCompatActivity implements View.OnClickListener, LocationListener {
+public class LoginFw extends AppCompatActivity implements View.OnClickListener {
     private TextView tv_signUp,tv_forgot;
     private EditText et_email,et_pwd;
     private Button btn_signin;
@@ -77,7 +77,7 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener, 
     private RequestQueue mQueue;
     // private ProgressDialog progressDialog;
     Boolean IPValue;
-    LocationManager locationManager;
+
     String IPaddress;
     String osName;
     String myVersion;
@@ -88,6 +88,8 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener, 
     String deviceType="";
     public static boolean locationGet=true;
     private ProgressDialog progressDialog;
+
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -258,6 +260,7 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener, 
                                             appUtil.setPrefrence("StoreId", jsonParam.getString("StoreId"));
                                             appUtil.setPrefrence("BackupStoreId", jsonParam.getString("StoreId"));
                                             appUtil.setPrefrence("StoreName", jsonParam.getString("storename"));
+
                                         }
                                         appUtil.setPrefrence("SaveLogin", "no");
 
@@ -328,10 +331,10 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener, 
 
                         //params.put("UserName", et_email.getText().toString());
                         //params.put("password", et_pwd.getText().toString());
-                        //appUtil.setPrefrence("Email", et_email.getText().toString());
-                        //appUtil.setPrefrence("Password", et_pwd.getText().toString());
                         params.put("UserName", appUtil.getPrefrence("Email"));
                         params.put("password", appUtil.getPrefrence("Password"));
+                        //params.put("UserName", "kprajapati@epsilonium.com");
+                        //params.put("password", "123456");
 
                         //test
                         params.put("Device", "5");
@@ -375,52 +378,6 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener, 
                     getString(R.string.ok),getString(R.string.alert));
             alertDialog.show();
 //            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
-        }
-    }
-
-    @Override
-    public void onLocationChanged(Location location) {
-        Log.i("Current Location",location.getLatitude() + ", " + location.getLongitude());
-        Latitude= String.valueOf(location.getLatitude());
-        Longitude= String.valueOf(location.getLongitude());
-        if (Latitude!="" && Longitude!="" && locationGet==true){
-            Log.i("test","ifget");
-
-            //login();
-            locationGet=false;
-        }else {
-           Log.i("test","elseget");
-        }
-
-
-    }
-
-    @Override
-    public void onStatusChanged(String provider, int status, Bundle extras) {
-        //Toast.makeText(activity, "Please Enable GPS and Internet", Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onProviderEnabled(String provider) {
-        Log.i("pro1",provider);
-        login();
-    }
-
-    @Override
-    public void onProviderDisabled(String provider) {
-        Log.i("pro2",provider);
-        login();
-    }
-
-    void getLocation() {
-        try {
-            login();
-            locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
-            locationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 5000, 5, this);
-
-        }
-        catch(SecurityException e) {
-            e.printStackTrace();
         }
     }
 
@@ -619,88 +576,5 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener, 
         }
     }
 
-    public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
 
-    public boolean checkLocationPermission() {
-        if (ContextCompat.checkSelfPermission(this,
-                Manifest.permission.ACCESS_FINE_LOCATION)
-                != PackageManager.PERMISSION_GRANTED) {
-
-            // Should we show an explanation?
-            if (ActivityCompat.shouldShowRequestPermissionRationale(this,
-                    Manifest.permission.ACCESS_FINE_LOCATION)) {
-
-                // Show an explanation to the user *asynchronously* -- don't block
-                // this thread waiting for the user's response! After the user
-                // sees the explanation, try again to request the permission.
-                new AlertDialog.Builder(this)
-                        .setTitle("Allow")
-                        .setMessage("Location")
-                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                //Prompt the user once explanation has been shown
-                                ActivityCompat.requestPermissions(LoginFw.this,
-                                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                                        MY_PERMISSIONS_REQUEST_LOCATION);
-                            }
-                        })
-                        .create()
-                        .show();
-
-
-            } else {
-                // No explanation needed, we can request the permission.
-                ActivityCompat.requestPermissions(this,
-                        new String[]{Manifest.permission.ACCESS_FINE_LOCATION},
-                        MY_PERMISSIONS_REQUEST_LOCATION);
-
-            }
-            return false;
-        } else {
-            Log.i("test","else");
-            login();
-            return true;
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode,
-                                           String permissions[], int[] grantResults) {
-        switch (requestCode) {
-            case MY_PERMISSIONS_REQUEST_LOCATION: {
-                // If request is cancelled, the result arrays are empty.
-                if (grantResults.length > 0
-                        && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-
-                    // permission was granted, yay! Do the
-                    // location-related task you need to do.
-                    if (ContextCompat.checkSelfPermission(this,
-                            Manifest.permission.ACCESS_FINE_LOCATION)
-                            == PackageManager.PERMISSION_GRANTED) {
-
-                        Intent intent = new Intent(Settings.ACTION_LOCATION_SOURCE_SETTINGS);
-                        startActivity(intent);
-                        ActivityCompat.requestPermissions(this,new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, 1);
-                        getLocation();
-                        //login();
-                        //
-
-                        //Request location updates:
-                        // locationManager.requestLocationUpdates(provider, 400, 1, this);
-                    }
-
-                } else {
-                    login();
-                    Toast.makeText(this, "Denied", Toast.LENGTH_LONG).show();
-
-                    // permission denied, boo! Disable the
-                    // functionality that depends on this permission.
-
-                }
-                return;
-            }
-
-        }
-    }
 }
