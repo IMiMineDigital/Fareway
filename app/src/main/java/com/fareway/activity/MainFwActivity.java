@@ -675,6 +675,7 @@ public class MainFwActivity extends AppCompatActivity
     public void onConnected(@Nullable Bundle bundle) {
         Log.d(TAG, " >> onconnected");
         checkPermissions();
+        //getMyLocation();
     }
 
     @Override
@@ -733,8 +734,9 @@ public class MainFwActivity extends AppCompatActivity
                     locationRequest.setInterval(300000);
                     locationRequest.setFastestInterval(300000);
                     locationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+
                     LocationSettingsRequest.Builder builder = new LocationSettingsRequest.Builder().addLocationRequest(locationRequest);
-                    builder.setAlwaysShow(true);
+                    builder.setAlwaysShow(false);
                     LocationServices.FusedLocationApi.requestLocationUpdates(googleApiClient, locationRequest, this);
                     PendingResult<LocationSettingsResult> result = LocationServices.SettingsApi.checkLocationSettings(googleApiClient, builder.build());
                     result.setResultCallback(new ResultCallback<LocationSettingsResult>() {
@@ -774,7 +776,7 @@ public class MainFwActivity extends AppCompatActivity
                                     // However, we have no way
                                     // to fix the
                                     // settings so we won't show the dialog.
-                                    finish();
+                                    //finish();
                                     break;
                                 case LocationSettingsStatusCodes.CANCELED:
                                     Log.d(TAG, ">> cancled");
@@ -800,7 +802,7 @@ public class MainFwActivity extends AppCompatActivity
             }
         } else {
             getMyLocation();
-            Toast.makeText(this, "Permission Already GRANTED", Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "Permission Already GRANTED", Toast.LENGTH_SHORT).show();
         }
     }
 
@@ -818,15 +820,15 @@ public class MainFwActivity extends AppCompatActivity
 
                     // permission was granted, yay! Do the
                     // contacts-related task you need to do.
-                    Toast.makeText(getApplicationContext(), "Permission granted", Toast.LENGTH_SHORT).show();
+                    //Toast.makeText(getApplicationContext(), "Permission granted", Toast.LENGTH_SHORT).show();
                     getMyLocation();
 
                 } else {
 
                     // permission denied, boo! Disable the
                     // functionality that depends on this permission.
-                    Toast.makeText(getApplicationContext(), "Permission denied", Toast.LENGTH_SHORT).show();
-                    finish();
+                    //Toast.makeText(getApplicationContext(), "Permission denied", Toast.LENGTH_SHORT).show();
+                    //finish();
                 }
                 return;
             }
@@ -14085,7 +14087,7 @@ public class MainFwActivity extends AppCompatActivity
                 // progressDialog.setMessage("Processing");
                 //progressDialog.show();
 
-                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android " + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|6.6",
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android " + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|6.7",
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {

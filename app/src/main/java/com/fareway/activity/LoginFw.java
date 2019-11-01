@@ -125,7 +125,7 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener, 
         appUtil.setPrefrence("Password", "123456");*/
         linkUIElements();
         //checkLocationPermission();
-        login();
+        //login();
 
     }
     private void linkUIElements()
@@ -326,8 +326,8 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener, 
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> params = new HashMap<String, String>();
 
-                        params.put("UserName", et_email.getText().toString());
-                        params.put("password", et_pwd.getText().toString());
+                        //params.put("UserName", et_email.getText().toString());
+                        //params.put("password", et_pwd.getText().toString());
                         //appUtil.setPrefrence("Email", et_email.getText().toString());
                         //appUtil.setPrefrence("Password", et_pwd.getText().toString());
                         params.put("UserName", appUtil.getPrefrence("Email"));
