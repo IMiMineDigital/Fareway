@@ -125,7 +125,7 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener, 
         appUtil.setPrefrence("Password", "123456");*/
         linkUIElements();
         //checkLocationPermission();
-        //login();
+        login();
 
     }
     private void linkUIElements()
