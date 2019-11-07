@@ -223,4 +223,8 @@
     <string name="print_complete">print_complete</string>
     <string name="print_failed">print_failed</string>
 
+    <!--for fcm push notification-->
+    <string name="channel_name">fareway_fcm</string>
+    <string name="channel_description">fareway_notification</string>
+
 </resources>
