@@ -15,6 +15,7 @@
             android:layout_height="wrap_content"
             android:textStyle="bold"
             android:text="Get Coca cola at discounted price (Only for you!)"
+            style="@style/TextAppearance.Compat.Notification.Info"
             android:textColor="@color/black"/>
 
         <ImageView
@@ -22,7 +23,7 @@
             android:layout_width="170dp"
             android:layout_height="170dp"
             android:scaleType="fitStart"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:layout_below="@id/msg_detail_text"/>
 
         <LinearLayout
@@ -30,7 +31,8 @@
             android:layout_height="wrap_content"
             android:orientation="vertical"
             android:layout_below="@id/msg_detail_text"
-            android:padding="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginLeft="10dp"
             android:layout_toRightOf="@id/noti_image">
 
             <TextView
@@ -39,6 +41,7 @@
                 android:layout_height="wrap_content"
                 android:text="Coca cola"
                 android:layout_marginTop="10dp"
+                style="@style/TextAppearance.Compat.Notification.Line2"
                 android:textStyle="bold"
                 android:textColor="@color/black"/>
 
@@ -47,6 +50,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="Your Price: $2.90"
+                style="@style/TextAppearance.Compat.Notification.Line2"
                 android:layout_marginTop="15dp"
                 android:textStyle="bold"
                 android:textColor="@color/black"/>
@@ -57,6 +61,7 @@
                 android:layout_height="wrap_content"
                 android:text="Validity: 12-12-2019"
                 android:textStyle="bold"
+                style="@style/TextAppearance.Compat.Notification.Line2"
                 android:layout_marginTop="15dp"
                 android:textColor="@color/black"/>
         </LinearLayout>
