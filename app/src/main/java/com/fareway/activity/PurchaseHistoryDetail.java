@@ -94,7 +94,7 @@ public class PurchaseHistoryDetail extends AppCompatActivity {
        /* Drawable dividerDrawableShoppingList = ContextCompat.getDrawable(activity, R.drawable.divider);
         rv_purchase_history.addItemDecoration(new DividerRVDecoration(dividerDrawableShoppingList));*/
 
-        getSupportActionBar().setTitle("Past Purchase Detail");
+        getSupportActionBar().setTitle("Purchase History");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 

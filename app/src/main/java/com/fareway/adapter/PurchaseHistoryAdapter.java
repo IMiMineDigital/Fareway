@@ -46,13 +46,13 @@ public class PurchaseHistoryAdapter extends RecyclerView.Adapter<PurchaseHistory
 
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
-        private TextView tv_date,tv_location,tv_total_spent,tv_total_save;
+        private TextView tv_date,tv_location,tv_total_save;
 
         public MyViewHolder(View view) {
             super(view);
             tv_date = (TextView) view.findViewById(R.id.tv_date);
             tv_location = (TextView) view.findViewById(R.id.tv_location);
-            tv_total_spent = (TextView) view.findViewById(R.id.tv_total_spent);
+            //tv_total_spent = (TextView) view.findViewById(R.id.tv_total_spent);
             tv_total_save = (TextView) view.findViewById(R.id.tv_total_save);
 
             tv_date.setOnClickListener(new View.OnClickListener() {
@@ -108,7 +108,7 @@ public class PurchaseHistoryAdapter extends RecyclerView.Adapter<PurchaseHistory
             DecimalFormat dF = new DecimalFormat("00.00");
             Number num = dF.parse(purchase.getTotalamount());
             Number num2 = dF.parse(purchase.getRemainamount());
-            holder.tv_total_spent.setText("$" + new DecimalFormat("##.##").format(num));
+            //holder.tv_total_spent.setText("$" + new DecimalFormat("##.##").format(num));
             holder.tv_total_save.setText("$" + new DecimalFormat("##.##").format(num2));
 
         } catch (Exception e) {

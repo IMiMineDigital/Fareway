@@ -179,6 +179,8 @@ public class PurchaseHistory extends AppCompatActivity implements PurchaseHistor
                                         purchaseArrayList.addAll(items);
                                         purchaseListAdapter.notifyDataSetChanged();
                                         progressDialog.dismiss();
+                                    }else {
+                                        progressDialog.dismiss();
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();

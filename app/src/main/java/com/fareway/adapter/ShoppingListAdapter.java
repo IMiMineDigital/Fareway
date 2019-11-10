@@ -2,6 +2,7 @@ package com.fareway.adapter;
 
 import android.content.Context;
 //import android.support.v7.widget.RecyclerView;
+import android.content.Intent;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -25,7 +26,9 @@ import com.fareway.activity.MainFwActivity;
 import com.fareway.controller.FarewayApplication;
 import com.fareway.model.Shopping;
 import com.fareway.utility.AppUtilFw;
+import com.fareway.utility.ConnectivityReceiver;
 import com.fareway.utility.Constant;
+import com.fareway.utility.NetworkUtils;
 import com.squareup.picasso.Picasso;
 
 import org.json.JSONException;
@@ -34,6 +37,7 @@ import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -189,6 +193,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             holder.tv_qty_shopping.setText(shopping.getQuantity());
 
             holder.shopping_flag_dot.setBackground(mContext.getResources().getDrawable(R.drawable.circular_red_bg));
+
             holder.shopping_flag_dot.setVisibility(View.VISIBLE);
             holder.tv_header_title.setVisibility(View.GONE);
             holder.shopping_flag_dot.setOnClickListener(new View.OnClickListener() {
@@ -439,6 +444,62 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                 }
             });
         }
+
+        if (shopping.getPrimaryOfferTypeId()==3||shopping.getPrimaryOfferTypeId()==2||shopping.getPrimaryOfferTypeId()==1)
+        {
+            String saveDate2 = shopping.getExpirationDate();
+            Log.i("saveDatenew", saveDate2);
+
+            if (saveDate2 != null) {
+
+                if (saveDate2.length()==0){
+                    // getTokenkey();
+                }else {
+                    SimpleDateFormat spf = new SimpleDateFormat("MM/dd/yyyy");
+                    Date newDate = null;
+                    try {
+                        newDate = spf.parse(saveDate2);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    String c = "yyyy-MM-dd";
+                    spf = new SimpleDateFormat(c);
+                    saveDate2 = spf.format(newDate);
+                    System.out.println(saveDate2);
+                    holder.tv_expire_end.setText(saveDate2);
+
+                    Date c3 = Calendar.getInstance().getTime();
+                    System.out.println("Current time => " + c3);
+
+                    SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+                    String formattedDate = df.format(c3);
+
+
+                    if (formattedDate.compareTo(saveDate2) < 0) {
+                        holder.shopping_flag_dot.setVisibility(View.VISIBLE);
+                    } else {
+                        holder.shopping_flag_dot.setVisibility(View.GONE);
+                    }
+
+
+                }
+
+            }
+
+            else {
+
+            }
+        }
+
+
+/*        Date c = Calendar.getInstance().getTime();
+        System.out.println("Current time1 => " + c);
+
+        SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+        String formattedDate = df.format(c);
+        System.out.println("Current time2 => " + formattedDate);*/
+
+
 
     }
     @Override

@@ -44,17 +44,18 @@
                 android:layout_marginRight="20dp">
 
                 <TextView
+                    android:layout_marginTop="@dimen/_10sdp"
                     android:textSize="18sp"
                     android:textColor="@color/black"
                     android:textStyle="bold"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Participating Items"
-                    android:gravity="center_vertical|left"
-                    android:layout_marginTop="20dp"/>
+                    android:gravity="center"
+                    />
 
             <LinearLayout
-                android:visibility="visible"
+                android:visibility="invisible"
                 android:id="@+id/liner_all_Varieties_activate"
                 android:layout_width="60dp"
                 android:layout_height="60dp"
@@ -72,7 +73,6 @@
                     android:textSize="5pt"
                     android:textColor="@color/white"
                     android:textStyle="bold" />
-                <!-- -->
 
                 <ImageView
                     android:id="@+id/imv_status_verities"

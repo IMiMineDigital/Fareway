@@ -65,6 +65,7 @@ public class Product {
     private String Isbadged;
     private String BadgeFileName;
     private String CouponShortDescription;
+    private int CPRPromoTypeId;
 
 
 
@@ -566,6 +567,14 @@ public class Product {
 
     public void setCouponShortDescription(String couponShortDescription) {
         CouponShortDescription = couponShortDescription;
+    }
+
+    public int getCPRPromoTypeId() {
+        return CPRPromoTypeId;
+    }
+
+    public void setCPRPromoTypeId(int CPRPromoTypeId) {
+        this.CPRPromoTypeId = CPRPromoTypeId;
     }
 }
 

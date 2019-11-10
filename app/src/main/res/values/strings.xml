@@ -69,6 +69,7 @@
     <string name="input_item">Please enter item name.</string>
     <string name="item_added">Item has been added to your shopping list.</string>
     <string name="filter_by_categories">Filter By Categories</string>
+    <string name="filter_clear">Clear Filter</string>
     <string name="filter_by_offer">Filter By Offer</string>
     <string name="categories">Categories</string>
     <string name="offers">Offers</string>

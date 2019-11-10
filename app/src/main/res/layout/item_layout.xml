@@ -132,7 +132,19 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical">
-
+            <TextView
+                android:visibility="gone"
+                android:textStyle="bold"
+                android:gravity="center"
+                android:layout_marginRight="@dimen/_20sdp"
+                android:fontFamily="@font/roboto"
+                android:textColor="@color/red"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="*Must Buy 2"
+                android:lines="1"
+                android:id="@+id/must_buy"
+                />
 
             <TextView
                 android:gravity="center"
@@ -486,6 +498,7 @@
                 android:orientation="vertical">
 
                 <TextView
+                    android:ellipsize="end"
                     android:fontFamily="@font/roboto_condensed_bold"
                     android:id="@+id/tv_detail"
                     android:layout_width="match_parent"

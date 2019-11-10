@@ -206,6 +206,7 @@
             android:layout_weight=".54"
             android:orientation="vertical">
             <TextView
+                android:ellipsize="end"
                 android:maxLines="2"
                 android:fontFamily="@font/roboto_black"
                 android:id="@+id/tv_personal_description"
@@ -299,6 +300,7 @@
                 android:layout_weight=".75"
                 android:orientation="vertical">
                 <TextView
+                    android:ellipsize="end"
                     android:maxLines="2"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:fontFamily="@font/roboto_black"

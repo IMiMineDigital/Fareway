@@ -65,13 +65,15 @@ public class PurchaseHistoryDetailAdapter extends RecyclerView.Adapter<PurchaseH
     @Override
     public void onBindViewHolder(final PurchaseHistoryDetailAdapter.MyViewHolder holder, final int position) {
         final PurchaseModelHistory purchase = purchaseArrayList.get(position);
+        holder.tv_total_price.setVisibility(View.GONE);
+        holder.tv_sub_save.setVisibility(View.GONE);
         //Log.i("purchase", String.valueOf(purchase.getStorelocation()));
             holder.tv_item_description.setText(purchase.getvDescription()+"\nUPC:"+purchase.getvUPCCode());
             holder.tv_qty.setText(purchase.getiQuantity());
 
         try {
             DecimalFormat dF = new DecimalFormat("00.00");
-            Number num = dF.parse(purchase.getfUnitprice());
+            Number num = dF.parse(purchase.getSubsavingamount());
             holder.tv_unit_price.setText("$" + new DecimalFormat("##.##").format(num));
 
         } catch (Exception e) {

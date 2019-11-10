@@ -11,6 +11,7 @@ import android.text.Html;
 import android.text.Spanned;
 import android.util.Log;
 import android.util.TypedValue;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -307,9 +308,98 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
 
 
                 }
-                String headerContent = "";
+                /*String headerContent = "";
                 headerContent = ", Exp "+saveDate;
-                holder.limit.setText("\nLimit " + String.valueOf(relatedItem.getLimitPerTransection())+headerContent);
+                holder.limit.setText("\nLimit " + String.valueOf(relatedItem.getLimitPerTransection())+headerContent);*/
+
+                ///////////////
+
+                String headerContent = "";
+                if (relatedItem.getLimitPerTransection()>1){
+                    headerContent = "\nLimit " + String.valueOf(relatedItem.getLimitPerTransection())+", Exp "+saveDate;
+                    holder.limit.setText(headerContent);
+                }
+                else {
+                    headerContent = "\nExp "+saveDate;
+                    holder.limit.setText(headerContent);
+                }
+
+                if (relatedItem.getMinAmount()>0){
+                    headerContent = "* WITH $"+relatedItem.getMinAmount()+" PURCHASE"+"\nLimit "+relatedItem.getLimitPerTransection()+", Exp "+saveDate;
+                }
+                else if (relatedItem.getRequiredQty()>1){
+                    if (relatedItem.getLimitPerTransection()>1){
+                        headerContent = "* Must Buy " + relatedItem.getRequiredQty()+" | Limit "+relatedItem.getLimitPerTransection()+"\nExp "+saveDate;
+                        String charsStarCouponShort = capitalize(relatedItem.getCouponShortDescription());
+                        holder.tv_detail.setText("*"+charsStarCouponShort);
+                    }else {
+                        headerContent = "* Must Buy " + relatedItem.getRequiredQty()+"\nExp "+saveDate;
+                        String charsStarCouponShort = capitalize(relatedItem.getCouponShortDescription());
+                        holder.tv_detail.setText("*"+charsStarCouponShort);
+                    }
+                }
+                if(relatedItem.getLimitPerTransection()>0) {
+                    if(headerContent != "") {
+                        if (relatedItem.getLimitPerTransection()>1){
+                            headerContent = headerContent + "\nLimit : " + relatedItem.getLimitPerTransection();
+                        }
+                    }
+                    else {
+                        if (relatedItem.getLimitPerTransection()>1){
+                            headerContent = "\nLimit " + String.valueOf(relatedItem.getLimitPerTransection())+", Exp "+saveDate;
+                        }
+                    }
+
+                    if (relatedItem.getRewardType().equalsIgnoreCase("3")&&relatedItem.getPrimaryOfferTypeId()==2) {
+                        String displayPrice=relatedItem.getDisplayPrice().toString();
+                        if(relatedItem.getDisplayPrice().toString().split("\\.").length>1)
+                            displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ relatedItem.getDisplayPrice().split("\\.")[1]+"<sup>";
+
+                        Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
+                        holder.tv_price.setText(result);
+
+                    }
+
+                    else if(relatedItem.getRewardType().equalsIgnoreCase("2")&&relatedItem.getPrimaryOfferTypeId()==2){
+                        DecimalFormat dF = new DecimalFormat("00.00");
+                        try {
+                            Number rewardValue = dF.parse(relatedItem.getRewardValue());
+                            Spanned result = Html.fromHtml(new DecimalFormat("##.##").format(rewardValue)+"% OFF"+"<sup><small> *</small></sup>");
+                            if (relatedItem.getOfferDefinitionId()==3){
+                                holder.tv_price.setText("FREE");
+                            }else {
+                                        /*Log.i("test", String.valueOf(product.getOfferDefinitionId()));
+                                        holder.tv_price.setText(result);*/
+                                String displayPrice=relatedItem.getDisplayPrice().toString();
+                                if(relatedItem.getDisplayPrice().toString().split("\\.").length>1)
+                                    displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ relatedItem.getDisplayPrice().split("\\.")[1]+"<sup>";
+
+                                Spanned result2 = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
+                                holder.tv_price.setText(result2);
+                            }
+                            holder.tv_saving_pri_fix.setText("");
+                            holder.tv_saving.setText("");
+
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else {
+                        String displayPrice=relatedItem.getDisplayPrice().toString();
+                        if(relatedItem.getDisplayPrice().toString().split("\\.").length>1)
+                            displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ relatedItem.getDisplayPrice().split("\\.")[1]+"<sup>";
+                        Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
+                        Spanned result2 = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>")+"<sup><small> *</small></sup>");
+                        holder.tv_price.setText(result);
+                        if (relatedItem.getRequiredQty()>1){
+                            holder.tv_price.setText(result2);
+                        }
+                    }
+
+                }
+                holder.limit.setText(headerContent);
+
+                ///////////////
 
                 holder.tv_coupon_flag.setText("With Coupon");
                 holder.tv_deal_type.setText(relatedItem.getOfferTypeTagName());
@@ -350,7 +440,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 }
 
                 Spanned result = Html.fromHtml(relatedItem.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
-                holder.tv_price.setText(result);
+                //holder.tv_price.setText(result);
                 holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.green));
                 if (relatedItem.getClickCount()>0) {
                     if (relatedItem.getListCount()>0){
@@ -510,6 +600,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 String headerContent = "";
                 headerContent = "Exp "+saveDate;
                 holder.limit.setText("\n"+headerContent);
+
                 holder.liner_save.setVisibility(View.VISIBLE);
                 holder.tv_coupon_flag.setText("With MyFareway");
                 holder.tv_deal_type.setText(relatedItem.getOfferTypeTagName());
@@ -573,9 +664,98 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
 
 
                 }
-                String headerContent = "";
+                /*String headerContent = "";
                 headerContent = ", Exp "+saveDate;
-                holder.limit.setText("\nLimit " + String.valueOf(relatedItem.getLimitPerTransection())+headerContent);
+                holder.limit.setText("\nLimit " + String.valueOf(relatedItem.getLimitPerTransection())+headerContent);*/
+
+                ///////////////
+
+                String headerContent = "";
+                if (relatedItem.getLimitPerTransection()>1){
+                    headerContent = "\nLimit " + String.valueOf(relatedItem.getLimitPerTransection())+", Exp "+saveDate;
+                    holder.limit.setText(headerContent);
+                }
+                else {
+                    headerContent = "\nExp "+saveDate;
+                    holder.limit.setText(headerContent);
+                }
+
+                if (relatedItem.getMinAmount()>0){
+                    headerContent = "* WITH $"+relatedItem.getMinAmount()+" PURCHASE"+"\nLimit "+relatedItem.getLimitPerTransection()+", Exp "+saveDate;
+                }
+                else if (relatedItem.getRequiredQty()>1){
+                    if (relatedItem.getLimitPerTransection()>1){
+                        headerContent = "* Must Buy " + relatedItem.getRequiredQty()+" | Limit "+relatedItem.getLimitPerTransection()+"\nExp "+saveDate;
+                        String charsStarCouponShort = capitalize(relatedItem.getCouponShortDescription());
+                        holder.tv_detail.setText("*"+charsStarCouponShort);
+                    }else {
+                        headerContent = "* Must Buy " + relatedItem.getRequiredQty()+"\nExp "+saveDate;
+                        String charsStarCouponShort = capitalize(relatedItem.getCouponShortDescription());
+                        holder.tv_detail.setText("*"+charsStarCouponShort);
+                    }
+                }
+                if(relatedItem.getLimitPerTransection()>0) {
+                    if(headerContent != "") {
+                        if (relatedItem.getLimitPerTransection()>1){
+                            headerContent = headerContent + "\nLimit : " + relatedItem.getLimitPerTransection();
+                        }
+                    }
+                    else {
+                        if (relatedItem.getLimitPerTransection()>1){
+                            headerContent = "\nLimit " + String.valueOf(relatedItem.getLimitPerTransection())+", Exp "+saveDate;
+                        }
+                    }
+
+                    if (relatedItem.getRewardType().equalsIgnoreCase("3")&&relatedItem.getPrimaryOfferTypeId()==2) {
+                        String displayPrice=relatedItem.getDisplayPrice().toString();
+                        if(relatedItem.getDisplayPrice().toString().split("\\.").length>1)
+                            displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ relatedItem.getDisplayPrice().split("\\.")[1]+"<sup>";
+
+                        Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
+                        holder.tv_price.setText(result);
+
+                    }
+
+                    else if(relatedItem.getRewardType().equalsIgnoreCase("2")&&relatedItem.getPrimaryOfferTypeId()==2){
+                        DecimalFormat dF = new DecimalFormat("00.00");
+                        try {
+                            Number rewardValue = dF.parse(relatedItem.getRewardValue());
+                            Spanned result = Html.fromHtml(new DecimalFormat("##.##").format(rewardValue)+"% OFF"+"<sup><small> *</small></sup>");
+                            if (relatedItem.getOfferDefinitionId()==3){
+                                holder.tv_price.setText("FREE");
+                            }else {
+                                        /*Log.i("test", String.valueOf(product.getOfferDefinitionId()));
+                                        holder.tv_price.setText(result);*/
+                                String displayPrice=relatedItem.getDisplayPrice().toString();
+                                if(relatedItem.getDisplayPrice().toString().split("\\.").length>1)
+                                    displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ relatedItem.getDisplayPrice().split("\\.")[1]+"<sup>";
+
+                                Spanned result2 = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
+                                holder.tv_price.setText(result2);
+                            }
+                            holder.tv_saving_pri_fix.setText("");
+                            holder.tv_saving.setText("");
+
+                        } catch (ParseException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                    else {
+                        String displayPrice=relatedItem.getDisplayPrice().toString();
+                        if(relatedItem.getDisplayPrice().toString().split("\\.").length>1)
+                            displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ relatedItem.getDisplayPrice().split("\\.")[1]+"<sup>";
+                        Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
+                        Spanned result2 = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>")+"<sup><small> *</small></sup>");
+                        holder.tv_price.setText(result);
+                        if (relatedItem.getRequiredQty()>1){
+                            holder.tv_price.setText(result2);
+                        }
+                    }
+
+                }
+                holder.limit.setText(headerContent);
+
+                ///////////////
 
                 holder.tv_coupon_flag.setText("With Coupon");
                 holder.tv_deal_type.setText(relatedItem.getOfferTypeTagName());
@@ -616,8 +796,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                     displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ relatedItem.getDisplayPrice().split("\\.")[1]+"<sup>";
 
                 Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
-                Log.i("anshu", String.valueOf(result));
-                holder.tv_price.setText(result);
+                //holder.tv_price.setText(result);
                 holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.green));
                 if (relatedItem.getClickCount()>0) {
                     if (relatedItem.getListCount()>0){

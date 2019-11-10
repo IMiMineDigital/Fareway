@@ -70,7 +70,7 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:text="$00.00"
-            android:layout_weight=".15"
+            android:layout_weight=".30"
             android:inputType="textMultiLine"/>
         <TextView
             android:id="@+id/tv_total_price"
@@ -78,8 +78,8 @@
             android:textAlignment="center"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:text="$00.00"
-            android:layout_weight=".15"
+            android:text=""
+            android:layout_weight=".0"
             android:inputType="textMultiLine"/>
     </LinearLayout>
     <View

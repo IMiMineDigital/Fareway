@@ -111,14 +111,13 @@
                 android:layout_weight=".1"
                 android:inputType="textMultiLine"/>
             <TextView
-                android:id="@+id/tv_total_save"
                 android:textStyle="bold"
                 android:textColor="#000"
                 android:textAlignment="center"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Unit Price"
-                android:layout_weight=".15"
+                android:text="MyFareway Savings"
+                android:layout_weight=".30"
                 android:inputType="textMultiLine"/>
             <TextView
                 android:textStyle="bold"
@@ -126,8 +125,8 @@
                 android:textAlignment="center"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="Total Price"
-                android:layout_weight=".15"
+                android:text=""
+                android:layout_weight=".0"
                 android:inputType="textMultiLine"/>
 
         </LinearLayout>
@@ -185,7 +184,7 @@
                     android:textColor="@color/black"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Total Savings: "/>
+                    android:text="MyFareway Total Savings: "/>
                 <TextView
                     android:id="@+id/tv_bottom_bar2"
                     android:layout_width="wrap_content"
