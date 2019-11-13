@@ -65,6 +65,8 @@ import java.net.NetworkInterface;
 import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class LoginFw extends AppCompatActivity implements View.OnClickListener {
     private TextView tv_signUp,tv_forgot;
@@ -127,7 +129,7 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
         appUtil.setPrefrence("Password", "123456");*/
         linkUIElements();
         //checkLocationPermission();
-        login();
+        //login();
 
     }
     private void linkUIElements()
@@ -329,14 +331,12 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> params = new HashMap<String, String>();
 
-                        /*params.put("UserName", et_email.getText().toString());
-                        params.put("password", et_pwd.getText().toString());
-                        appUtil.setPrefrence("Email", et_email.getText().toString());
+                        /*appUtil.setPrefrence("Email", et_email.getText().toString());
                         appUtil.setPrefrence("Password", et_pwd.getText().toString());*/
-                        params.put("UserName", appUtil.getPrefrence("Email"));
+                        String charsLowerEmail =lowercase(appUtil.getPrefrence("Email"));
+                        appUtil.setPrefrence("Email", charsLowerEmail);
+                        params.put("UserName", charsLowerEmail);
                         params.put("password", appUtil.getPrefrence("Password"));
-                        //params.put("UserName", "kprajapati@epsilonium.com");
-                        //params.put("password", "123456");
 
                         //test
                         params.put("Device", "5");
@@ -576,6 +576,16 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
             alertDialog.show();
 //            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private String lowercase(String lowerString){
+        StringBuffer capBuffer = new StringBuffer();
+        Matcher capMatcher = Pattern.compile("([a-z])([a-z]*)", Pattern.CASE_INSENSITIVE).matcher(lowerString);
+        while (capMatcher.find()){
+            capMatcher.appendReplacement(capBuffer, capMatcher.group(1).toLowerCase() + capMatcher.group(2).toLowerCase());
+        }
+
+        return capMatcher.appendTail(capBuffer).toString();
     }
 
 

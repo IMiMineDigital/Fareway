@@ -82,12 +82,15 @@ public class PurchaseHistoryDetailAdapter extends RecyclerView.Adapter<PurchaseH
 
         holder.tv_total_price.setText("$"+purchase.getSubtotalamount());
 
-            if (purchase.getCouponflag().equalsIgnoreCase("My Sale Item")){
+            if (purchase.getPrimaryoffertypeid()==1){
                 holder.tv_coupon_flag.setBackgroundColor(mContext.getResources().getColor(R.color.blue));
-            }else if (purchase.getCouponflag().equalsIgnoreCase("Digital Coupon")){
+                holder.tv_coupon_flag.setText("SALE ITEM");
+            }else if (purchase.getPrimaryoffertypeid()==2){
                 holder.tv_coupon_flag.setBackgroundColor(mContext.getResources().getColor(R.color.green));
-            }else if(purchase.getCouponflag().equalsIgnoreCase("My Personal Deal")){
+                holder.tv_coupon_flag.setText("DIGITAL COUPON");
+            }else if(purchase.getPrimaryoffertypeid()==3){
                 holder.tv_coupon_flag.setBackgroundColor(mContext.getResources().getColor(R.color.red));
+                holder.tv_coupon_flag.setText("PERSONAL DEAL");
             }else {
                 holder.tv_coupon_flag.setVisibility(View.GONE);
             }

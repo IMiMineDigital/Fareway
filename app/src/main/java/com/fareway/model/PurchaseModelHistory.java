@@ -10,6 +10,8 @@ public class PurchaseModelHistory {
     private String couponflag;
     private String subsavingamount;
     private String remainamount;
+    private int PrimaryOfferTypeId;
+    private int primaryoffertypeid;
 
     public String getvDescription() {
         return vDescription;
@@ -81,5 +83,21 @@ public class PurchaseModelHistory {
 
     public void setRemainamount(String remainamount) {
         this.remainamount = remainamount;
+    }
+
+    public int getPrimaryOfferTypeId() {
+        return PrimaryOfferTypeId;
+    }
+
+    public void setPrimaryOfferTypeId(int primaryOfferTypeId) {
+        PrimaryOfferTypeId = primaryOfferTypeId;
+    }
+
+    public int getPrimaryoffertypeid() {
+        return primaryoffertypeid;
+    }
+
+    public void setPrimaryoffertypeid(int primaryoffertypeid) {
+        this.primaryoffertypeid = primaryoffertypeid;
     }
 }

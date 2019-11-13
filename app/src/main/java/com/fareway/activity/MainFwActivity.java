@@ -432,6 +432,7 @@ public class MainFwActivity extends AppCompatActivity
                 startActivity(browserIntent);*/
 
                 String urlString = Constant.PRINT_WEB_URL + "shopperid=" + appUtil.getPrefrence("ShopperID") + "&memberid=" + appUtil.getPrefrence("MemberId") + "&storename=" + appUtil.getPrefrence("StoreName");
+                Log.i("jg",urlString);
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlString));
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.setPackage("com.android.chrome");
@@ -3886,15 +3887,17 @@ public class MainFwActivity extends AppCompatActivity
 
             String displayPrice = product.getDisplayPrice().toString();
             if (product.getDisplayPrice().toString().split("\\.").length > 1)
-                displayPrice = product.getDisplayPrice().split("\\.")[0] + "<sup>" + product.getDisplayPrice().split("\\.")[1] + "<sup>";
+                displayPrice = product.getDisplayPrice().split("\\.")[0] +"<sup>"+ (product.getDisplayPrice().split("\\.")[1]).replace("<sup>","").replace("</sup>","")+"</sup>";
             Spanned result = Html.fromHtml(displayPrice.replace("<sup>", "<sup><small><small>").replace("</sup>", "</small></small></sup>"));
             tv_price_detaile.setText(result);
 
             //Spanned result = Html.fromHtml(product.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
             //tv_price_detaile.setText(result);
 
-            String chars = capitalize(product.getDescription());
-            tv_detail_detail.setText(chars + " " + product.getPackagingSize());
+            String chars = capitalize(product.getCouponShortDescription());
+            String charsPackaging =lowercase(product.getPackagingSize());
+            //tv_detail_detail.setText(chars + " " + charsPackaging);
+            tv_detail_detail.setText(chars);
 
             tv_reg_price_detail.setText("$" + product.getRegularPrice());
 
@@ -3946,7 +3949,7 @@ public class MainFwActivity extends AppCompatActivity
                     table_promo_view.setVisibility(View.GONE);
                 }
 
-                if (formattedStringAdPrice=="0.00" || formattedStringAdPrice.equalsIgnoreCase(formattedStringRegularPrice)){
+                if (formattedStringAdPrice.equalsIgnoreCase("0.00") || formattedStringAdPrice.equalsIgnoreCase(formattedStringRegularPrice)){
                     float myFloatSaving = Float.parseFloat(product.getSavings() + "f");
                     String formattedString = String.format("%.02f", myFloatSaving);
                     tv_save_detail.setText("$" + formattedString);
@@ -3955,6 +3958,9 @@ public class MainFwActivity extends AppCompatActivity
                     float saving = (myFloatAdPrice-FloatFinalPrice);
                     String formattedsaving = String.format("%.02f", saving);
                     tv_save_detail.setText("$" + formattedsaving);
+                    /*float myFloatSaving = Float.parseFloat(product.getSavings() + "f");
+                    String formattedString = String.format("%.02f", myFloatSaving);
+                    tv_save_detail.setText("$" + formattedString);*/
                 }
                 //
 
@@ -4076,10 +4082,10 @@ public class MainFwActivity extends AppCompatActivity
             bottomLayout_detaile.setBackgroundColor(getResources().getColor(R.color.green));
             String displayPrice = product.getDisplayPrice().toString();
             if (product.getDisplayPrice().toString().split("\\.").length > 1)
-                displayPrice = product.getDisplayPrice().split("\\.")[0] + "<sup>" + product.getDisplayPrice().split("\\.")[1] + "<sup>";
+                displayPrice = product.getDisplayPrice().split("\\.")[0] +"<sup>"+ (product.getDisplayPrice().split("\\.")[1]).replace("<sup>","").replace("</sup>","")+"</sup>";
 
             Spanned result = Html.fromHtml(displayPrice.replace("<sup>", "<sup><small><small>").replace("</sup>", "</small></small></sup>"));
-            Spanned result2 = Html.fromHtml(displayPrice.replace("<sup>", "<sup><small><small>").replace("</sup>", "</small></small></sup>")+"<sup><small> *</small></sup>");
+            Spanned result2 = Html.fromHtml(displayPrice.replace("<sup>", "<sup><small><small>").replace("</sup>", "</small></small></sup>")+"<sup><small><small> *</small></small></sup>");
 
             tv_price_detaile.setText(result);
             if (product.getRequiredQty()>1){
@@ -4106,7 +4112,8 @@ public class MainFwActivity extends AppCompatActivity
             String chars = capitalize(product.getDescription());
             if (product.getIsbadged().equalsIgnoreCase("True")) {
                 tv_detail_detail.setVisibility(View.VISIBLE);
-                tv_detail_detail.setText(chars + " " + product.getPackagingSize());
+                String charsPackaging =lowercase(product.getPackagingSize());
+                tv_detail_detail.setText(chars + " " + charsPackaging);
             } else {
                 tv_detail_detail.setVisibility(View.GONE);
             }
@@ -4166,7 +4173,7 @@ public class MainFwActivity extends AppCompatActivity
             // old display price
             String displayPrice = product.getDisplayPrice().toString();
             if (product.getDisplayPrice().toString().split("\\.").length > 1)
-                displayPrice = product.getDisplayPrice().split("\\.")[0] + "<sup>" + product.getDisplayPrice().split("\\.")[1] + "<sup>";
+                displayPrice = product.getDisplayPrice().split("\\.")[0] +"<sup>"+ (product.getDisplayPrice().split("\\.")[1]).replace("<sup>","").replace("</sup>","")+"</sup>";
             Spanned result = Html.fromHtml(displayPrice.replace("<sup>", "<sup><small><small>").replace("</sup>", "</small></small></sup>"));
             tv_price_detaile.setText(result);
 
@@ -4174,7 +4181,8 @@ public class MainFwActivity extends AppCompatActivity
             tv_price_detaile.setText(result);*/
 
             String chars = capitalize(product.getDescription());
-            tv_detail_detail.setText(chars + " " + product.getPackagingSize());
+            String charsPackaging =lowercase(product.getPackagingSize());
+            tv_detail_detail.setText(chars + " " + charsPackaging);
 
             tv_reg_price_detail.setText("$" + product.getRegularPrice());
             float myFloatSaving = Float.parseFloat(product.getSavings() + "f");
@@ -8015,11 +8023,13 @@ public class MainFwActivity extends AppCompatActivity
 
             String displayPrice = relatedItem.getDisplayPrice().toString();
             if (relatedItem.getDisplayPrice().toString().split("\\.").length > 1)
-                displayPrice = relatedItem.getDisplayPrice().split("\\.")[0] + "<sup>" + relatedItem.getDisplayPrice().split("\\.")[1] + "<sup>";
+                displayPrice = relatedItem.getDisplayPrice().split("\\.")[0] +"<sup>"+ (relatedItem.getDisplayPrice().split("\\.")[1]).replace("<sup>","").replace("</sup>","")+"</sup>";
             Spanned result = Html.fromHtml(displayPrice.replace("<sup>", "<sup><small><small>").replace("</sup>", "</small></small></sup>"));
             tv_price_detaile.setText(result);
+
             String chars = capitalize(relatedItem.getDescription());
-            tv_detail_detail.setText(chars + " " + relatedItem.getPackagingSize());
+            String charsPackaging =lowercase(relatedItem.getPackagingSize());
+            tv_detail_detail.setText(chars + " " + charsPackaging);
 
             tv_reg_price_detail.setText("$ " + relatedItem.getRegularPrice());
 
@@ -8192,13 +8202,21 @@ public class MainFwActivity extends AppCompatActivity
             Log.i("OfferDefinitionId", String.valueOf(relatedItem.getOfferDefinitionId()));
             Log.i("RewardType", relatedItem.getRewardType());
             if (relatedItem.getDisplayPrice().toString().split("\\.").length > 1)
-                displayPrice = relatedItem.getDisplayPrice().split("\\.")[0] + "<sup>" + relatedItem.getDisplayPrice().split("\\.")[1] + "<sup>";
+                displayPrice = relatedItem.getDisplayPrice().split("\\.")[0] +"<sup>"+ (relatedItem.getDisplayPrice().split("\\.")[1]).replace("<sup>","").replace("</sup>","")+"</sup>";
 
             Spanned result = Html.fromHtml(displayPrice.replace("<sup>", "<sup><small><small>").replace("</sup>", "</small></small></sup>"));
             tv_price_detaile.setText(result);
 
+            Spanned result2 = Html.fromHtml(displayPrice.replace("<sup>", "<sup><small><small>").replace("</sup>", "</small></small></sup>")+"<sup><small><small> *</small></small></sup>");
+
+            tv_price_detaile.setText(result);
+            if (relatedItem.getRequiredQty()>1){
+                tv_price_detaile.setText(result2);
+            }
+
             String chars = capitalize(relatedItem.getDescription());
-            tv_detail_detail.setText(chars + " " + relatedItem.getPackagingSize());
+            String charsPackaging =lowercase(relatedItem.getPackagingSize());
+            tv_detail_detail.setText(chars + " " + charsPackaging);
 
             String chars2 = capitalize(relatedItem.getCouponShortDescription());
             tv_coupon_detail_detail.setText("\n" + chars2);
@@ -8279,7 +8297,8 @@ public class MainFwActivity extends AppCompatActivity
             tv_price_detaile.setText(result);
 
             String chars = capitalize(relatedItem.getDescription());
-            tv_detail_detail.setText(chars + " " + relatedItem.getPackagingSize());
+            String charsPackaging =lowercase(relatedItem.getPackagingSize());
+            tv_detail_detail.setText(chars + " " + charsPackaging);
 
             tv_reg_price_detail.setText("$ " + relatedItem.getRegularPrice());
             float myFloatSaving = Float.parseFloat(relatedItem.getSavings() + "f");
@@ -10826,7 +10845,8 @@ public class MainFwActivity extends AppCompatActivity
 
                                                 String displayPrice = jsonShoppingParam.getJSONObject(i).getString("DisplayPrice");
                                                 if (jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").toString().split("\\.").length > 1)
-                                                    displayPrice = jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").split("\\.")[0] + "<sup>" + jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").split("\\.")[1] + "<sup>";
+                                                    displayPrice = jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").split("\\.")[0] + "<sup>" + (jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").split("\\.")[1]).replace("<sup>","").replace("</sup>","")+"</sup>";
+
                                                 Spanned result = Html.fromHtml(displayPrice.replace("<sup>", "<sup><small><small>").replace("</sup>", "</small></small></sup>"));
                                                 tv_price_detaile.setText(result);
 
@@ -10945,7 +10965,7 @@ public class MainFwActivity extends AppCompatActivity
 
                                                 String displayPrice = jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").toString();
                                                 if (jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").toString().split("\\.").length > 1)
-                                                    displayPrice = jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").split("\\.")[0] + "<sup>" + jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").split("\\.")[1] + "<sup>";
+                                                    displayPrice = jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").split("\\.")[0] + "<sup>" + (jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").split("\\.")[1]).replace("<sup>","").replace("</sup>","")+"</sup>";
 
                                                 Spanned result = Html.fromHtml(displayPrice.replace("<sup>", "<sup><small><small>").replace("</sup>", "</small></small></sup>"));
                                                 Log.i("anshu", String.valueOf(result));
@@ -11005,7 +11025,7 @@ public class MainFwActivity extends AppCompatActivity
 
                                                 String displayPrice = jsonShoppingParam.getJSONObject(i).getString("DisplayPrice");
                                                 if (jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").toString().split("\\.").length > 1)
-                                                    displayPrice = jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").split("\\.")[0] + "<sup>" + jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").split("\\.")[1] + "<sup>";
+                                                    displayPrice = jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").split("\\.")[0] + "<sup>" + (jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").split("\\.")[1]).replace("<sup>","").replace("</sup>","")+"</sup>";
                                                 Spanned result = Html.fromHtml(displayPrice.replace("<sup>", "<sup><small><small>").replace("</sup>", "</small></small></sup>"));
                                                 tv_price_detaile.setText(result);
 
@@ -11424,6 +11444,7 @@ public class MainFwActivity extends AppCompatActivity
                         });
 
                         if (shopping.getPrimaryOfferTypeid() == 3) {
+                            tv_detail_detail.setVisibility(View.VISIBLE);
                             if (message.getJSONObject(i).getString("LargeImagePath").contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")) {
                                 Picasso.get().load("https://platform.immdemo.net/web/images/GEnoimage.jpg").into(imv_item_detaile);
                             } else {
@@ -11458,7 +11479,7 @@ public class MainFwActivity extends AppCompatActivity
 
                             String displayPrice = message.getJSONObject(i).getString("DisplayPrice");
                             if (message.getJSONObject(i).getString("DisplayPrice").toString().split("\\.").length > 1)
-                                displayPrice = message.getJSONObject(i).getString("DisplayPrice").split("\\.")[0] + "<sup>" + message.getJSONObject(i).getString("DisplayPrice").split("\\.")[1] + "<sup>";
+                                displayPrice = message.getJSONObject(i).getString("DisplayPrice").split("\\.")[0] + "<sup>" + (message.getJSONObject(i).getString("DisplayPrice").split("\\.")[1]).replace("<sup>","").replace("</sup>","")+"</sup>";
                             Spanned result = Html.fromHtml(displayPrice.replace("<sup>", "<sup><small><small>").replace("</sup>", "</small></small></sup>"));
                             tv_price_detaile.setText(result);
                             /////////////
@@ -11493,9 +11514,12 @@ public class MainFwActivity extends AppCompatActivity
 
                             ///////////////
 
-                            String chars = capitalize(message.getJSONObject(i).getString("Description"));
+                            /*String chars = capitalize(message.getJSONObject(i).getString("Description"));
                             tv_detail_detail.setText(chars + " " + message.getJSONObject(i).getString("PackagingSize"));
-
+*/
+                            String chars = capitalize(message.getJSONObject(i).getString("Description"));
+                            String charsUnit =lowercase(message.getJSONObject(i).getString("PackagingSize"));
+                            tv_detail_detail.setText(chars + " " + charsUnit);
                             tv_reg_price_detail.setText("$" + message.getJSONObject(i).getString("RegularPrice"));
 
                             /*float myFloatSavings = Float.parseFloat(message.getJSONObject(i).getString("Savings") + "f");
@@ -11567,7 +11591,8 @@ public class MainFwActivity extends AppCompatActivity
 
 
 
-                        } else if (shopping.getPrimaryOfferTypeid() == 2) {
+                        }
+                        else if (shopping.getPrimaryOfferTypeid() == 2) {
 
                                /* if (message.getJSONObject(i).getString("LargeImagePath").contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
                                     Picasso.get().load("https://platform.immdemo.net/web/images/GEnoimage.jpg").into(imv_item_detaile);
@@ -11714,10 +11739,10 @@ public class MainFwActivity extends AppCompatActivity
                             }*/
                             String displayPrice = message.getJSONObject(i).getString("DisplayPrice");
                             if (message.getJSONObject(i).getString("DisplayPrice").toString().split("\\.").length > 1)
-                                displayPrice = message.getJSONObject(i).getString("DisplayPrice").split("\\.")[0] + "<sup>" + message.getJSONObject(i).getString("DisplayPrice").split("\\.")[1] + "<sup>";
+                                displayPrice = message.getJSONObject(i).getString("DisplayPrice").split("\\.")[0] + "<sup>" + (message.getJSONObject(i).getString("DisplayPrice").split("\\.")[1]).replace("<sup>","").replace("</sup>","")+"</sup>";
 
                             Spanned result = Html.fromHtml(displayPrice.replace("<sup>", "<sup><small><small>").replace("</sup>", "</small></small></sup>"));
-                            Spanned result2 = Html.fromHtml(displayPrice.replace("<sup>", "<sup><small><small>").replace("</sup>", "</small></small></sup>")+"<sup><small> *</small></sup>");
+                            Spanned result2 = Html.fromHtml(displayPrice.replace("<sup>", "<sup><small><small>").replace("</sup>", "</small></small></sup>")+"<sup><small><small> *</small></small></sup>");
 
                             tv_price_detaile.setText(result);
                             if (message.getJSONObject(i).getInt("RequiredQty")>1){
@@ -11789,6 +11814,7 @@ public class MainFwActivity extends AppCompatActivity
                 }
 
             }
+
             if (flag == 0) {
                 Log.i("test", "else");
                 try {
@@ -12098,6 +12124,7 @@ public class MainFwActivity extends AppCompatActivity
                                                 });
 
                                                 if (shopping.getPrimaryOfferTypeid() == 3) {
+                                                    tv_detail_detail.setVisibility(View.VISIBLE);
                                                     if (jsonShoppingParam.getJSONObject(i).getString("LargeImagePath").contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")) {
                                                         Picasso.get().load("https://platform.immdemo.net/web/images/GEnoimage.jpg").into(imv_item_detaile);
                                                     } else {
@@ -12132,12 +12159,13 @@ public class MainFwActivity extends AppCompatActivity
 
                                                     String displayPrice = jsonShoppingParam.getJSONObject(i).getString("DisplayPrice");
                                                     if (jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").toString().split("\\.").length > 1)
-                                                        displayPrice = jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").split("\\.")[0] + "<sup>" + jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").split("\\.")[1] + "<sup>";
+                                                        displayPrice = jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").split("\\.")[0] + "<sup>" + (jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").split("\\.")[1]).replace("<sup>","").replace("</sup>","")+"</sup>";
                                                     Spanned result = Html.fromHtml(displayPrice.replace("<sup>", "<sup><small><small>").replace("</sup>", "</small></small></sup>"));
                                                     tv_price_detaile.setText(result);
 
                                                     String chars = capitalize(jsonShoppingParam.getJSONObject(i).getString("Description"));
-                                                    tv_detail_detail.setText(chars + " " + jsonShoppingParam.getJSONObject(i).getString("PackagingSize"));
+                                                    String charsUnit =lowercase(jsonShoppingParam.getJSONObject(i).getString("PackagingSize"));
+                                                    tv_detail_detail.setText(chars + " " + charsUnit);
 
                                                     tv_reg_price_detail.setText("$" + jsonShoppingParam.getJSONObject(i).getString("RegularPrice"));
 
@@ -12277,7 +12305,7 @@ public class MainFwActivity extends AppCompatActivity
 
                                                     String displayPrice = jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").toString();
                                                     if (jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").toString().split("\\.").length > 1)
-                                                        displayPrice = jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").split("\\.")[0] + "<sup>" + jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").split("\\.")[1] + "<sup>";
+                                                        displayPrice = jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").split("\\.")[0] + "<sup>" + (jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").split("\\.")[1]).replace("<sup>","").replace("</sup>","")+"</sup>";
 
                                                     Spanned result = Html.fromHtml(displayPrice.replace("<sup>", "<sup><small><small>").replace("</sup>", "</small></small></sup>"));
                                                     //
@@ -12383,7 +12411,8 @@ public class MainFwActivity extends AppCompatActivity
                         progressDialog.dismiss();
                     }
 
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
 
                     e.printStackTrace();
                     progressDialog.dismiss();
@@ -12391,7 +12420,6 @@ public class MainFwActivity extends AppCompatActivity
 
                 }
             }
-            //
 
 
         }
@@ -14077,7 +14105,7 @@ public class MainFwActivity extends AppCompatActivity
                 // progressDialog.setMessage("Processing");
                 //progressDialog.show();
 
-                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android " + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|7.2",
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android " + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|7.3",
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
@@ -14372,6 +14400,16 @@ public class MainFwActivity extends AppCompatActivity
             alertDialog.show();
 //            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
         }
+    }
+
+    private String lowercase(String lowerString){
+        StringBuffer capBuffer = new StringBuffer();
+        Matcher capMatcher = Pattern.compile("([a-z])([a-z]*)", Pattern.CASE_INSENSITIVE).matcher(lowerString);
+        while (capMatcher.find()){
+            capMatcher.appendReplacement(capBuffer, capMatcher.group(1).toLowerCase() + capMatcher.group(2).toLowerCase());
+        }
+
+        return capMatcher.appendTail(capBuffer).toString();
     }
 
 }

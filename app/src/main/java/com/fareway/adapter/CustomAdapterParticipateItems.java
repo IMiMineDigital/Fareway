@@ -276,7 +276,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
 
                 String displayPrice=relatedItem.getDisplayPrice().toString();
                 if(relatedItem.getDisplayPrice().toString().split("\\.").length>1)
-                    displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ relatedItem.getDisplayPrice().split("\\.")[1]+"<sup>";
+                    displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ (relatedItem.getDisplayPrice().split("\\.")[1]).replace("<sup>","").replace("</sup>","")+"</sup>";
                 Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
                 holder.tv_price.setText(result);
 
@@ -329,11 +329,11 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 }
                 else if (relatedItem.getRequiredQty()>1){
                     if (relatedItem.getLimitPerTransection()>1){
-                        headerContent = "* Must Buy " + relatedItem.getRequiredQty()+" | Limit "+relatedItem.getLimitPerTransection()+"\nExp "+saveDate;
+                        headerContent = "*Must Buy " + relatedItem.getRequiredQty()+" | Limit "+relatedItem.getLimitPerTransection()+"\nExp "+saveDate;
                         String charsStarCouponShort = capitalize(relatedItem.getCouponShortDescription());
                         holder.tv_detail.setText("*"+charsStarCouponShort);
                     }else {
-                        headerContent = "* Must Buy " + relatedItem.getRequiredQty()+"\nExp "+saveDate;
+                        headerContent = "*Must Buy " + relatedItem.getRequiredQty()+"\nExp "+saveDate;
                         String charsStarCouponShort = capitalize(relatedItem.getCouponShortDescription());
                         holder.tv_detail.setText("*"+charsStarCouponShort);
                     }
@@ -353,7 +353,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                     if (relatedItem.getRewardType().equalsIgnoreCase("3")&&relatedItem.getPrimaryOfferTypeId()==2) {
                         String displayPrice=relatedItem.getDisplayPrice().toString();
                         if(relatedItem.getDisplayPrice().toString().split("\\.").length>1)
-                            displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ relatedItem.getDisplayPrice().split("\\.")[1]+"<sup>";
+                            displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ (relatedItem.getDisplayPrice().split("\\.")[1]).replace("<sup>","").replace("</sup>","")+"</sup>";
 
                         Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
                         holder.tv_price.setText(result);
@@ -364,7 +364,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                         DecimalFormat dF = new DecimalFormat("00.00");
                         try {
                             Number rewardValue = dF.parse(relatedItem.getRewardValue());
-                            Spanned result = Html.fromHtml(new DecimalFormat("##.##").format(rewardValue)+"% OFF"+"<sup><small> *</small></sup>");
+                            Spanned result = Html.fromHtml(new DecimalFormat("##.##").format(rewardValue)+"% OFF"+"<sup><small><small> *</small></small></sup>");
                             if (relatedItem.getOfferDefinitionId()==3){
                                 holder.tv_price.setText("FREE");
                             }else {
@@ -372,7 +372,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                                         holder.tv_price.setText(result);*/
                                 String displayPrice=relatedItem.getDisplayPrice().toString();
                                 if(relatedItem.getDisplayPrice().toString().split("\\.").length>1)
-                                    displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ relatedItem.getDisplayPrice().split("\\.")[1]+"<sup>";
+                                    displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ (relatedItem.getDisplayPrice().split("\\.")[1]).replace("<sup>","").replace("</sup>","")+"</sup>";
 
                                 Spanned result2 = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
                                 holder.tv_price.setText(result2);
@@ -387,9 +387,9 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                     else {
                         String displayPrice=relatedItem.getDisplayPrice().toString();
                         if(relatedItem.getDisplayPrice().toString().split("\\.").length>1)
-                            displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ relatedItem.getDisplayPrice().split("\\.")[1]+"<sup>";
+                            displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ (relatedItem.getDisplayPrice().split("\\.")[1]).replace("<sup>","").replace("</sup>","")+"</sup>";
                         Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
-                        Spanned result2 = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>")+"<sup><small> *</small></sup>");
+                        Spanned result2 = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>")+"<sup><small><small> *</small></small></sup>");
                         holder.tv_price.setText(result);
                         if (relatedItem.getRequiredQty()>1){
                             holder.tv_price.setText(result2);
@@ -638,7 +638,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
 
                 String displayPrice=relatedItem.getDisplayPrice().toString();
                 if(relatedItem.getDisplayPrice().toString().split("\\.").length>1)
-                    displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ relatedItem.getDisplayPrice().split("\\.")[1]+"<sup>";
+                    displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ (relatedItem.getDisplayPrice().split("\\.")[1]).replace("<sup>","").replace("</sup>","")+"</sup>";
                 Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
                 holder.tv_price.setText(result);
                 holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.mehrune));
@@ -685,11 +685,11 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 }
                 else if (relatedItem.getRequiredQty()>1){
                     if (relatedItem.getLimitPerTransection()>1){
-                        headerContent = "* Must Buy " + relatedItem.getRequiredQty()+" | Limit "+relatedItem.getLimitPerTransection()+"\nExp "+saveDate;
+                        headerContent = "*Must Buy " + relatedItem.getRequiredQty()+" | Limit "+relatedItem.getLimitPerTransection()+"\nExp "+saveDate;
                         String charsStarCouponShort = capitalize(relatedItem.getCouponShortDescription());
                         holder.tv_detail.setText("*"+charsStarCouponShort);
                     }else {
-                        headerContent = "* Must Buy " + relatedItem.getRequiredQty()+"\nExp "+saveDate;
+                        headerContent = "*Must Buy " + relatedItem.getRequiredQty()+"\nExp "+saveDate;
                         String charsStarCouponShort = capitalize(relatedItem.getCouponShortDescription());
                         holder.tv_detail.setText("*"+charsStarCouponShort);
                     }
@@ -709,7 +709,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                     if (relatedItem.getRewardType().equalsIgnoreCase("3")&&relatedItem.getPrimaryOfferTypeId()==2) {
                         String displayPrice=relatedItem.getDisplayPrice().toString();
                         if(relatedItem.getDisplayPrice().toString().split("\\.").length>1)
-                            displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ relatedItem.getDisplayPrice().split("\\.")[1]+"<sup>";
+                            displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ (relatedItem.getDisplayPrice().split("\\.")[1]).replace("<sup>","").replace("</sup>","")+"</sup>";
 
                         Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
                         holder.tv_price.setText(result);
@@ -720,7 +720,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                         DecimalFormat dF = new DecimalFormat("00.00");
                         try {
                             Number rewardValue = dF.parse(relatedItem.getRewardValue());
-                            Spanned result = Html.fromHtml(new DecimalFormat("##.##").format(rewardValue)+"% OFF"+"<sup><small> *</small></sup>");
+                            Spanned result = Html.fromHtml(new DecimalFormat("##.##").format(rewardValue)+"% OFF"+"<sup><small><small> *</small></small></sup>");
                             if (relatedItem.getOfferDefinitionId()==3){
                                 holder.tv_price.setText("FREE");
                             }else {
@@ -728,7 +728,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                                         holder.tv_price.setText(result);*/
                                 String displayPrice=relatedItem.getDisplayPrice().toString();
                                 if(relatedItem.getDisplayPrice().toString().split("\\.").length>1)
-                                    displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ relatedItem.getDisplayPrice().split("\\.")[1]+"<sup>";
+                                    displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ (relatedItem.getDisplayPrice().split("\\.")[1]).replace("<sup>","").replace("</sup>","")+"</sup>";
 
                                 Spanned result2 = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
                                 holder.tv_price.setText(result2);
@@ -743,9 +743,9 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                     else {
                         String displayPrice=relatedItem.getDisplayPrice().toString();
                         if(relatedItem.getDisplayPrice().toString().split("\\.").length>1)
-                            displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ relatedItem.getDisplayPrice().split("\\.")[1]+"<sup>";
+                            displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ (relatedItem.getDisplayPrice().split("\\.")[1]).replace("<sup>","").replace("</sup>","")+"</sup>";
                         Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
-                        Spanned result2 = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>")+"<sup><small> *</small></sup>");
+                        Spanned result2 = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>")+"<sup><small><small> *</small></small></sup>");
                         holder.tv_price.setText(result);
                         if (relatedItem.getRequiredQty()>1){
                             holder.tv_price.setText(result2);
@@ -793,7 +793,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 //Spanned result = Html.fromHtml(relatedItem.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
                 String displayPrice=relatedItem.getDisplayPrice().toString();
                 if(relatedItem.getDisplayPrice().toString().split("\\.").length>1)
-                    displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ relatedItem.getDisplayPrice().split("\\.")[1]+"<sup>";
+                    displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ (relatedItem.getDisplayPrice().split("\\.")[1]).replace("<sup>","").replace("</sup>","")+"</sup>";
 
                 Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
                 //holder.tv_price.setText(result);
@@ -878,7 +878,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
 
                 String displayPrice=relatedItem.getDisplayPrice().toString();
                 if(relatedItem.getDisplayPrice().toString().split("\\.").length>1)
-                    displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ relatedItem.getDisplayPrice().split("\\.")[1]+"<sup>";
+                    displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ (relatedItem.getDisplayPrice().split("\\.")[1]).replace("<sup>","").replace("</sup>","")+"</sup>";
                 Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
                 holder.tv_price.setText(result);
 
