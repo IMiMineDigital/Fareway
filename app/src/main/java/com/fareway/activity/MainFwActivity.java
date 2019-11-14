@@ -1210,11 +1210,8 @@ public class MainFwActivity extends AppCompatActivity
                     navigation.getMenu().findItem(R.id.ShoppingList).setTitle("Personal Ad");
                     navigation.getMenu().findItem(R.id.ShoppingList).setIcon(R.drawable.account);
 
-                    //fetchActivatedOffer();
-                    //
                     activatedOffersListIdLoad();
-                    //
-                    //
+
                     imv_all_delete.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
@@ -1246,7 +1243,8 @@ public class MainFwActivity extends AppCompatActivity
                         }
                     });
 
-                } else if (x == 1) {
+                }
+                else if (x == 1) {
                     if (searchLable == true) {
                         x = 3;
                         z = 0;
@@ -1255,7 +1253,8 @@ public class MainFwActivity extends AppCompatActivity
                         } else if (participate == 1) {
                             search_message.setVisibility(View.GONE);
                         }
-                    } else {
+                    }
+                    else {
                         x = 0;
                         z = 0;
                     }
@@ -3003,7 +3002,7 @@ public class MainFwActivity extends AppCompatActivity
                                             String s1 = root.getJSONArray("message").toString();
                                             String s2 = message.toString();
                                             String s3 = "";
-                                            String s4 = "{\"oCouponShortDescription\":\"OSCAR MAYER GRILLED CHICKEN STRIPS\",\"CouponShortDescription\":\"OSCAR MAYER GRILLED CHICKEN STRIPS\",\"CouponLongDescription\":\"\",\"RewardType\":\"3\",\"RewardQty\":\"0\",\"Groupname\":\"\",\"oGroupname\":\"\",\"oDisplayPrice\":\"<sup>$</sup>2.84\",\"rewardGroupname\":\"\",\"Quantity\":1,\"inCircular\":1,\"RequiresActivation\":\"True\",\"IsMidWeek\":0,\"FreeOffer\":0,\"AltTitleBarImage\":\"\",\"LimitPerTransection\":0,\"TileNumber\":\"2\",\"MemberID\":41761,\"UPCRank\":\"0\",\"HasRelatedItems\":1,\"OriginatorID\":0,\"RelevantUPC\":\"4470002288\",\"IsEmployeeOffer\":false,\"BadgeId\":\"0\",\"RedeemLimit\":0,\"RequiredQty\":1,\"CategoryPriority\":1,\"PercentSavings\":\"28.82\",\"FinalPrice\":\"2.8400\",\"AdPrice\":\"0.0000\",\"CouponDiscount\":\"0.0000\",\"PersonalCircularID\":38477,\"LoyaltyCardNumber\":\"5155567152\",\"PersonalCircularItemId\":1029271,\"SectionNumber\":3,\"StoreID\":\"657\",\"RegularPrice\":\"3.99\",\"DisplayPrice\":\"<sup>$</sup>2.84\",\"Savings\":\"1.1500\",\"DateAdded\":\"7/20/2019 2:44:13 AM\",\"ValidityStartDate\":\"7/9/19\",\"BadgeName\":\"\",\"BadgeFileName\":\"\",\"ValidityEndDate\":\"7/24/19\",\"Description\":\"OSCAR MAYER GRILLED CHICKEN STRIPS\",\"PackagingSize\":\"5.5 OZ\",\"PricingMasterID\":0,\"CategoryID\":1000,\"UPC\":\"4470002288\",\"CategoryName\":\"z\",\"SmallImagePath\":\"https://images.immdemo.net/product/wlarge/00044700022887.png\",\"LargeImagePath\":\"https://images.immdemo.net/product/wlarge/00044700022887.png\",\"Isbadged\":\"False\",\"ListCount\":1,\"SpecialInformation\":\"\",\"TileTemplateID\":3,\"MinAmount\":0.0,\"PriceAssociationCode\":\"\",\"PrimaryOfferTypeName\":\"Personal Deals\",\"OfferTypeTagName\":\"My Personal Deal\",\"OfferDefinition\":\"New Price\",\"CPRPromoTypeName\":\"Individual\",\"RelevancyDetail\":\"Pushed\",\"PrimaryOfferTypeId\":0,\"OfferDetailId\":1,\"OfferDefinitionId\":2,\"CPRPromoTypeId\":1,\"RelevancyTypeD\":5,\"CouponID\":1111,\"RelatedItemCount\":2,\"ClickCount\":1,\"PageID\":1,\"BrandId\":1,\"BrandName\":\"Sally Hansen\",\"DietaryId\":0,\"DietaryName\":\"\",\"RewardValue\":\"2.84\",\"CouponImageURl\":\"http://images.immdemo.net/coupon/wlarge/couponImg.jpg\"}";
+                                            String s4 = "{\"oCouponShortDescription\":\"OSCAR MAYER GRILLED CHICKEN STRIPS\",\"CouponShortDescription\":\"OSCAR MAYER GRILLED CHICKEN STRIPS\",\"CouponLongDescription\":\"\",\"RewardType\":\"3\",\"RewardQty\":\"0\",\"Groupname\":\"\",\"oGroupname\":\"\",\"oDisplayPrice\":\"<sup>$</sup>2.84\",\"rewardGroupname\":\"\",\"Quantity\":1,\"inCircular\":1,\"RequiresActivation\":\"True\",\"IsMidWeek\":0,\"FreeOffer\":0,\"AltTitleBarImage\":\"\",\"LimitPerTransection\":0,\"TileNumber\":\"2\",\"MemberID\":41761,\"UPCRank\":\"0\",\"HasRelatedItems\":1,\"OriginatorID\":0,\"RelevantUPC\":\"4470002288\",\"IsEmployeeOffer\":false,\"BadgeId\":\"0\",\"RedeemLimit\":0,\"RequiredQty\":1,\"CategoryPriority\":1,\"PercentSavings\":\"28.82\",\"FinalPrice\":\"2.8400\",\"AdPrice\":\"0.0000\",\"CouponDiscount\":\"0.0000\",\"PersonalCircularID\":38477,\"LoyaltyCardNumber\":\"5155567152\",\"PersonalCircularItemId\":1029271,\"SectionNumber\":3,\"StoreID\":\"657\",\"RegularPrice\":\"3.99\",\"DisplayPrice\":\"<sup>$</sup>2.84\",\"Savings\":\"1.1500\",\"DateAdded\":\"7/20/2019 2:44:13 AM\",\"ValidityStartDate\":\"7/9/19\",\"BadgeName\":\"\",\"BadgeFileName\":\"\",\"ValidityEndDate\":\"7/24/19\",\"Description\":\"OSCAR MAYER GRILLED CHICKEN STRIPS\",\"PackagingSize\":\"5.5 OZ\",\"PricingMasterID\":0,\"CategoryID\":1000,\"UPC\":\"4470002288\",\"CategoryName\":\"z\",\"SmallImagePath\":\"https://images.immdemo.net/product/wlarge/00044700022887.png\",\"LargeImagePath\":\"https://images.immdemo.net/product/wlarge/00044700022887.png\",\"Isbadged\":\"False\",\"ListCount\":1,\"SpecialInformation\":\"\",\"TileTemplateID\":3,\"MinAmount\":0.0,\"PriceAssociationCode\":\"\",\"PrimaryOfferTypeName\":\"Personal Deals\",\"OfferTypeTagName\":\"My Personal Deal\",\"OfferDefinition\":\"New Price\",\"CPRPromoTypeName\":\"Individual\",\"RelevancyDetail\":\"Pushed\",\"PrimaryOfferTypeId\":0,\"OfferDetailId\":1,\"OfferDefinitionId\":2,\"CPRPromoTypeId\":1,\"RelevancyTypeD\":5,\"CouponID\":11111111,\"RelatedItemCount\":2,\"ClickCount\":1,\"PageID\":1,\"BrandId\":1,\"BrandName\":\"Sally Hansen\",\"DietaryId\":0,\"DietaryName\":\"\",\"RewardValue\":\"2.84\",\"CouponImageURl\":\"http://images.immdemo.net/coupon/wlarge/couponImg.jpg\"}";
                                             s1 = s1.substring(s1.indexOf("[") + 1, s1.lastIndexOf("]"));
                                             s2 = s2.substring(s2.indexOf("[") + 1, s2.lastIndexOf("]"));
                                             int a = message.length() / 2;
@@ -4185,9 +4184,20 @@ public class MainFwActivity extends AppCompatActivity
             tv_detail_detail.setText(chars + " " + charsPackaging);
 
             tv_reg_price_detail.setText("$" + product.getRegularPrice());
-            float myFloatSaving = Float.parseFloat(product.getSavings() + "f");
-            String formattedString = String.format("%.02f", myFloatSaving);
-            tv_save_detail.setText("$" + formattedString);
+
+            String number = product.getPosMultiple();
+            int PosMultiple = Integer.parseInt(number);
+            if (PosMultiple>1){
+                float myFloatSaving = Float.parseFloat(product.getSavings() + "f");
+                String formattedString = String.format("%.02f", myFloatSaving);
+                tv_save_detail.setText("$" + formattedString+" on "+product.getPosMultiple());
+
+            }else {
+                float myFloatSaving = Float.parseFloat(product.getSavings() + "f");
+                String formattedString = String.format("%.02f", myFloatSaving);
+                tv_save_detail.setText("$" + formattedString);
+            }
+
             /*try {
                 DecimalFormat dF = new DecimalFormat("0.00");
                 Number num = dF.parse(product.getSavings());
@@ -8301,9 +8311,19 @@ public class MainFwActivity extends AppCompatActivity
             tv_detail_detail.setText(chars + " " + charsPackaging);
 
             tv_reg_price_detail.setText("$ " + relatedItem.getRegularPrice());
-            float myFloatSaving = Float.parseFloat(relatedItem.getSavings() + "f");
-            String formattedString = String.format("%.02f", myFloatSaving);
-            tv_save_detail.setText("$" + formattedString);
+            String number = relatedItem.getPosMultiple();
+            int PosMultiple = Integer.parseInt(number);
+            if (PosMultiple>1){
+                float myFloatSaving = Float.parseFloat(relatedItem.getSavings() + "f");
+                String formattedString = String.format("%.02f", myFloatSaving);
+                tv_save_detail.setText("$" + formattedString+" on "+relatedItem.getPosMultiple());
+
+            }else {
+                float myFloatSaving = Float.parseFloat(relatedItem.getSavings() + "f");
+                String formattedString = String.format("%.02f", myFloatSaving);
+                tv_save_detail.setText("$" + formattedString);
+            }
+
             /*try {
                 DecimalFormat dF = new DecimalFormat("0.00");
                 Number num = dF.parse(relatedItem.getSavings());
@@ -10850,8 +10870,9 @@ public class MainFwActivity extends AppCompatActivity
                                                 Spanned result = Html.fromHtml(displayPrice.replace("<sup>", "<sup><small><small>").replace("</sup>", "</small></small></sup>"));
                                                 tv_price_detaile.setText(result);
 
-                                                String chars = capitalize(jsonShoppingParam.getJSONObject(i).getString("Description"));
-                                                tv_detail_detail.setText(chars + " " + jsonShoppingParam.getJSONObject(i).getString("PackagingSize"));
+                                                String chars = capitalize(jsonShoppingParam.getJSONObject(i).getString("CouponShortDescription"));
+                                                //tv_detail_detail.setText(chars + " " + jsonShoppingParam.getJSONObject(i).getString("PackagingSize"));
+                                                tv_detail_detail.setText(chars);
 
                                                 tv_reg_price_detail.setText("$" + jsonShoppingParam.getJSONObject(i).getString("RegularPrice"));
                                                 try {
@@ -11515,11 +11536,12 @@ public class MainFwActivity extends AppCompatActivity
                             ///////////////
 
                             /*String chars = capitalize(message.getJSONObject(i).getString("Description"));
-                            tv_detail_detail.setText(chars + " " + message.getJSONObject(i).getString("PackagingSize"));
-*/
-                            String chars = capitalize(message.getJSONObject(i).getString("Description"));
-                            String charsUnit =lowercase(message.getJSONObject(i).getString("PackagingSize"));
-                            tv_detail_detail.setText(chars + " " + charsUnit);
+                            tv_detail_detail.setText(chars + " " + message.getJSONObject(i).getString("PackagingSize"));*/
+
+                            String chars = capitalize(message.getJSONObject(i).getString("CouponShortDescription"));
+                            //tv_detail_detail.setText(chars + " " + message.getJSONObject(i).getString("PackagingSize"));
+                            tv_detail_detail.setText(chars);
+
                             tv_reg_price_detail.setText("$" + message.getJSONObject(i).getString("RegularPrice"));
 
                             /*float myFloatSavings = Float.parseFloat(message.getJSONObject(i).getString("Savings") + "f");
@@ -12163,9 +12185,13 @@ public class MainFwActivity extends AppCompatActivity
                                                     Spanned result = Html.fromHtml(displayPrice.replace("<sup>", "<sup><small><small>").replace("</sup>", "</small></small></sup>"));
                                                     tv_price_detaile.setText(result);
 
-                                                    String chars = capitalize(jsonShoppingParam.getJSONObject(i).getString("Description"));
+                                                    /*String chars = capitalize(jsonShoppingParam.getJSONObject(i).getString("Description"));
                                                     String charsUnit =lowercase(jsonShoppingParam.getJSONObject(i).getString("PackagingSize"));
-                                                    tv_detail_detail.setText(chars + " " + charsUnit);
+                                                    tv_detail_detail.setText(chars + " " + charsUnit);*/
+
+                                                    String chars = capitalize(jsonShoppingParam.getJSONObject(i).getString("CouponShortDescription"));
+                                                    //tv_detail_detail.setText(chars + " " + jsonShoppingParam.getJSONObject(i).getString("PackagingSize"));
+                                                    tv_detail_detail.setText(chars);
 
                                                     tv_reg_price_detail.setText("$" + jsonShoppingParam.getJSONObject(i).getString("RegularPrice"));
 
@@ -14105,7 +14131,7 @@ public class MainFwActivity extends AppCompatActivity
                 // progressDialog.setMessage("Processing");
                 //progressDialog.show();
 
-                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android " + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|7.3",
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android " + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|7.4",
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {

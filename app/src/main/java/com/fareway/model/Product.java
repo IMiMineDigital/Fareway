@@ -66,6 +66,7 @@ public class Product {
     private String BadgeFileName;
     private String CouponShortDescription;
     private int CPRPromoTypeId;
+    private String PosMultiple;
 
 
 
@@ -575,6 +576,14 @@ public class Product {
 
     public void setCPRPromoTypeId(int CPRPromoTypeId) {
         this.CPRPromoTypeId = CPRPromoTypeId;
+    }
+
+    public String getPosMultiple() {
+        return PosMultiple;
+    }
+
+    public void setPosMultiple(String posMultiple) {
+        PosMultiple = posMultiple;
     }
 }
 

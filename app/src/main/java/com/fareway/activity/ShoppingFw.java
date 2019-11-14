@@ -146,6 +146,23 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                                         // edit text
                                         //result.setText(userInput.getText());
                                         addShoppingItem(userInput.getText().toString());
+                                        linear_shopping_list_tab.setVisibility(View.VISIBLE);
+                                        linear_coupon_tab.setVisibility(View.GONE);
+
+                                        if (z==0){
+                                            shopping_list_fragment.setBackground(getResources().getDrawable(R.color.white));
+                                            shopping_list_fragment.setTextColor(getResources().getColor(R.color.black));
+                                            activated_offer_fragment.setBackground(getResources().getDrawable(R.color.light_grey));
+                                            activated_offer_fragment.setTextColor(getResources().getColor(R.color.grey));
+                                            z=1;
+                                            fetchShopping();
+                                        }else {
+                                            shopping_list_fragment.setBackground(getResources().getDrawable(R.color.white));
+                                            shopping_list_fragment.setTextColor(getResources().getColor(R.color.black));
+                                            activated_offer_fragment.setBackground(getResources().getDrawable(R.color.light_grey));
+                                            activated_offer_fragment.setTextColor(getResources().getColor(R.color.grey));
+                                            z=1;
+                                        }
                                         //Log.i("text", String.valueOf(userInput.getText()));
                                     }
                                 })
@@ -1404,6 +1421,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                                 Log.i("Fareway", response.toString());
                                 progressDialog.dismiss();
                                 fetchShoppingListLoad();
+
                             }
                         }, new Response.ErrorListener() {
                     @Override

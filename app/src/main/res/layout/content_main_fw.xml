@@ -776,7 +776,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Description"
-                android:layout_weight=".4"
+                android:layout_weight=".2"
                 android:inputType="textMultiLine"/>
             <TextView
                 android:id="@+id/tv_location"
@@ -785,7 +785,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:layout_weight=".2"
+                android:layout_weight=".56"
                 android:inputType="textMultiLine"/>
             <TextView
                 android:id="@+id/tv_total_spent"
@@ -795,7 +795,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:layout_weight=".1"
+                android:layout_weight=".0"
                 android:inputType="textMultiLine"/>
             <TextView
                 android:id="@+id/tv_total_save"
@@ -804,8 +804,8 @@
                 android:textAlignment="center"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="QTY"
-                android:layout_weight=".23"
+                android:text="Qty"
+                android:layout_weight=".16"
                 android:inputType="textMultiLine"/>
             <TextView
                 android:textStyle="bold"
@@ -814,7 +814,7 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:layout_weight=".15"
+                android:layout_weight=".06"
                 android:inputType="textMultiLine"/>
 
         </LinearLayout>

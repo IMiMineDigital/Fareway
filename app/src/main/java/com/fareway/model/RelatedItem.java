@@ -58,6 +58,7 @@ public class RelatedItem {
     private String CouponShortDescription;
     private String TotalQuantity;
     private String Isbadged;
+    private String PosMultiple;
 
     public String getName() {
         return name;
@@ -505,5 +506,13 @@ public class RelatedItem {
 
     public void setIsbadged(String isbadged) {
         Isbadged = isbadged;
+    }
+
+    public String getPosMultiple() {
+        return PosMultiple;
+    }
+
+    public void setPosMultiple(String posMultiple) {
+        PosMultiple = posMultiple;
     }
 }

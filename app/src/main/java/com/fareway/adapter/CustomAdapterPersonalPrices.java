@@ -840,7 +840,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 Log.i("valuer", String.valueOf(r));
                 Log.i("values", String.valueOf(s));
 
-                if (r==position && r!=0 && MainFwActivity.pdView==true){
+                if ((r-1)==position && r!=0 && MainFwActivity.pdView==true){
                     holder.additional_offers.setVisibility(View.VISIBLE);
                     holder.additional_offers.setText("Additional Offers");
                 }else {
@@ -2038,7 +2038,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     MainFwActivity.couponTile=true;
                     MainFwActivity.singleLable=false;
                 }
-                if (product.getCouponID().equalsIgnoreCase("1111")){
+                if (product.getCouponID().equalsIgnoreCase("11111111")){
                         if (MainFwActivity.couponTile==true && MainFwActivity.pdView==true){
                             p=position+1;
                             q=position+2;
@@ -2070,9 +2070,10 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     holder.linear_personal_ad_lable.setVisibility(View.GONE);
                     holder.linear_multi_personal_ad_lable.setVisibility(View.GONE);
                     }
+
                     if (r==position && r!=0 && MainFwActivity.pdView==true){
                         holder.additional_offers.setVisibility(View.VISIBLE);
-                        holder.additional_offers.setText("Additional Offers");
+                        holder.additional_offers.setText("");
                     }
                     else if (s==position && s!=0 && MainFwActivity.pdView==true){
                         holder.additional_offers.setVisibility(View.VISIBLE);
