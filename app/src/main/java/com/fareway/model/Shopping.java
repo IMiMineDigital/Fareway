@@ -24,6 +24,7 @@ public class Shopping {
     private String Price;
     private String TotalQuantity;
     private String HasRelatedItems;
+    private String ValidityType;
 
 
 
@@ -193,5 +194,13 @@ public class Shopping {
 
     public void setCouponid(int couponid) {
         Couponid = couponid;
+    }
+
+    public String getValidityType() {
+        return ValidityType;
+    }
+
+    public void setValidityType(String validityType) {
+        ValidityType = validityType;
     }
 }

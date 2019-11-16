@@ -84,6 +84,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
     Button shopping_list_fragment,activated_offer_fragment;
     LinearLayout linear_shopping_list_tab,linear_coupon_tab;
     public static   int z=0;
+    private int count_activated_offer,count_shopping_list;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -398,7 +399,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                                             Log.i("shopping","test");
                                             shoppingArrayList.clear();
                                             shoppingListAdapter.notifyDataSetChanged();
-                                            tv_number_item.setText(String.valueOf(0));
+                                            //tv_number_item.setText(String.valueOf(0));
                                             //tv.setText(String.valueOf(0));
                                             activatedOffersListIdLoad();
 
@@ -407,7 +408,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
 
                                             for (int i = 0; i < shopping.length(); i++) {
                                             }
-                                            tv_number_item.setText(String.valueOf(shopping.length()));
+                                            //tv_number_item.setText(String.valueOf(shopping.length()));
                                             //tv.setText(String.valueOf(shopping.length()));
 
                                             /*shoppingArrayList.clear();
@@ -508,18 +509,16 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                                         }
 
                                         if (activatedOffer==null ){
-                                            Log.i("anshuman","test");
+
                                             shoppingArrayList.clear();
                                             shoppingListAdapter.notifyDataSetChanged();
-                                            // tv_number_item.setText(String.valueOf(0));
+                                            tv_number_item.setText(String.valueOf(0));
                                             // tv.setText(String.valueOf(0));
 
                                         }else {
-                                            Log.i("activatedOffer", String.valueOf(activatedOffer));
-
                                             for (int i = 0; i < activatedOffer.length(); i++) {
                                             }
-                                            // tv_number_item.setText(String.valueOf(shopping.length()));
+                                            tv_number_item.setText(String.valueOf(activatedOffer.length()));
                                             // tv.setText(String.valueOf(shopping.length()));
 
                                          /* shoppingArrayList.clear();
@@ -599,10 +598,13 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
         activated_offer_fragment.setTextColor(getResources().getColor(R.color.grey));
         z=1;
 
+
         if (shopping == null) {
             //no students
+            tv_number_item.setText(String.valueOf("0"));
             shoppingArrayList.clear();
         }else {
+            tv_number_item.setText(String.valueOf(shopping.length()));
             shoppingArrayList.clear();
             List<Shopping> items = new Gson().fromJson(shopping.toString(), new TypeToken<List<Shopping>>() {
             }.getType());
@@ -1617,9 +1619,11 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
         shopping_list_fragment.setTextColor(getResources().getColor(R.color.grey));
         z=0;
         if (activatedOffer == null) {
+            tv_number_item.setText(String.valueOf("0"));
             shoppingArrayList.clear();
             //no students
         }else {
+            tv_number_item.setText(String.valueOf(activatedOffer.length()));
             shoppingArrayList.clear();
             List<Shopping> items = new Gson().fromJson(activatedOffer.toString(), new TypeToken<List<Shopping>>() {
             }.getType());

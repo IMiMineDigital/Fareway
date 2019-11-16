@@ -445,15 +445,23 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             });
         }
 
+
+
         if (shopping.getPrimaryOfferTypeId()==3||shopping.getPrimaryOfferTypeId()==2||shopping.getPrimaryOfferTypeId()==1)
         {
-            String saveDate2 = shopping.getExpirationDate();
+            if (shopping.getValidityType().equalsIgnoreCase("1")){
+                holder.shopping_flag_dot.setVisibility(View.VISIBLE);
+            }else if (shopping.getValidityType().equalsIgnoreCase("0")){
+                holder.shopping_flag_dot.setVisibility(View.GONE);
+            }else {
+                holder.shopping_flag_dot.setVisibility(View.GONE);
+            }
+            /*String saveDate2 = shopping.getExpirationDate();
             Log.i("saveDatenew", saveDate2);
 
             if (saveDate2 != null) {
 
                 if (saveDate2.length()==0){
-                    // getTokenkey();
                 }else {
                     SimpleDateFormat spf = new SimpleDateFormat("MM/dd/yyyy");
                     Date newDate = null;
@@ -488,7 +496,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
 
             else {
 
-            }
+            }*/
         }
 
 
