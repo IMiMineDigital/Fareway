@@ -3857,6 +3857,8 @@ public class MainFwActivity extends AppCompatActivity
             table_promo_view.setVisibility(View.VISIBLE);
             table_coupon.setVisibility(View.GONE);
             table_coupon_view.setVisibility(View.GONE);
+            table_upc.setVisibility(View.VISIBLE);
+            table_upc_view.setVisibility(View.VISIBLE);
 
             if (product.getPackagingSize().equalsIgnoreCase("")) {
                 table_package.setVisibility(View.GONE);
@@ -4170,6 +4172,8 @@ public class MainFwActivity extends AppCompatActivity
             table_promo_view.setVisibility(View.GONE);
             table_coupon.setVisibility(View.GONE);
             table_coupon_view.setVisibility(View.GONE);
+            table_upc.setVisibility(View.VISIBLE);
+            table_upc_view.setVisibility(View.VISIBLE);
             tv_package_detail.setText(product.getPackagingSize());
             circular_layout_detaile.setVisibility(View.INVISIBLE);
 
@@ -8012,6 +8016,8 @@ public class MainFwActivity extends AppCompatActivity
             table_coupon_view.setVisibility(View.GONE);
             table_promo.setVisibility(View.VISIBLE);
             table_promo_view.setVisibility(View.VISIBLE);
+            table_upc.setVisibility(View.VISIBLE);
+            table_upc_view.setVisibility(View.VISIBLE);
             tv_package_detail.setText(relatedItem.getPackagingSize());
             Log.i("listCount", String.valueOf(relatedItem.getListCount()));
 
@@ -8096,7 +8102,7 @@ public class MainFwActivity extends AppCompatActivity
                     table_promo_view.setVisibility(View.GONE);
                 }
 
-                if (formattedStringAdPrice=="0.00" || formattedStringAdPrice.equalsIgnoreCase(formattedStringRegularPrice)){
+                if (formattedStringAdPrice.equalsIgnoreCase("0.00") || formattedStringAdPrice.equalsIgnoreCase(formattedStringRegularPrice)){
                     float myFloatSaving = Float.parseFloat(relatedItem.getSavings() + "f");
                     String formattedString = String.format("%.02f", myFloatSaving);
                     tv_save_detail.setText("$" + formattedString);
@@ -8294,6 +8300,8 @@ public class MainFwActivity extends AppCompatActivity
             table_coupon_view.setVisibility(View.GONE);
             table_promo.setVisibility(View.GONE);
             table_promo_view.setVisibility(View.GONE);
+            table_upc.setVisibility(View.VISIBLE);
+            table_upc_view.setVisibility(View.VISIBLE);
             tv_package_detail.setText(relatedItem.getPackagingSize());
            /* if (relatedItem.getListCount()>0){
                 Log.i("iflistCount", String.valueOf(relatedItem.getListCount()));
@@ -11158,10 +11166,11 @@ public class MainFwActivity extends AppCompatActivity
 
             }
         }
+
         else if (shopping.getPrimaryOfferTypeid() == 3 || shopping.getPrimaryOfferTypeid() == 2 ) {
             Log.i("CouponID", String.valueOf(shopping.getCouponid()));
-            scrollView.setVisibility(View.VISIBLE);
-            progressDialog.dismiss();
+            //scrollView.setVisibility(View.VISIBLE);
+
 
             int flag = 0;
             for (int i = 0; i < message.length(); i++) {
@@ -11169,7 +11178,8 @@ public class MainFwActivity extends AppCompatActivity
                 try {
                     if (shopping.getCouponid() == message.getJSONObject(i).getInt("CouponID")) {
                         Log.i("test", "if");
-
+                        scrollView.setVisibility(View.VISIBLE);
+                        progressDialog.dismiss();
                         flag = 1;
                         message.getJSONObject(i).getString("Quantity");
                         ImageView imv_item_detaile = (ImageView) findViewById(R.id.imv_item_detaile);
@@ -11492,6 +11502,8 @@ public class MainFwActivity extends AppCompatActivity
                             table_promo_view.setVisibility(View.VISIBLE);
                             table_coupon.setVisibility(View.GONE);
                             table_coupon_view.setVisibility(View.GONE);
+                            table_upc.setVisibility(View.VISIBLE);
+                            table_upc_view.setVisibility(View.VISIBLE);
 
 
                             if (message.getJSONObject(i).getString("PackagingSize").equalsIgnoreCase("")) {
@@ -11601,7 +11613,7 @@ public class MainFwActivity extends AppCompatActivity
                                     table_promo_view.setVisibility(View.GONE);
                                 }
 
-                                if (formattedStringAdPrice=="0.00" || formattedStringAdPrice.equalsIgnoreCase(formattedStringRegularPrice)){
+                                if (formattedStringAdPrice.equalsIgnoreCase("0.00") || formattedStringAdPrice.equalsIgnoreCase(formattedStringRegularPrice)){
                                     float myFloatSaving = Float.parseFloat(message.getJSONObject(i).getString("Savings") + "f");
                                     String formattedString = String.format("%.02f", myFloatSaving);
                                     tv_save_detail.setText("$" + formattedString);
@@ -11611,7 +11623,7 @@ public class MainFwActivity extends AppCompatActivity
                                     String formattedsaving = String.format("%.02f", saving);
                                     tv_save_detail.setText("$" + formattedsaving);
                                 }
-                                //
+                                /////
 
 
                             } catch (Exception e) {
@@ -11845,31 +11857,28 @@ public class MainFwActivity extends AppCompatActivity
 
 
                     }
+                    else {
 
-
+                    }
                 }
                 catch (JSONException e) {
+                    scrollView.setVisibility(View.GONE);
                     e.printStackTrace();
                 }
-
             }
-
             if (flag == 0) {
-                Log.i("test", "else");
-
                 try {
-
                     StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET, Constant.WEB_URL + "Circular/ItemDetails" + "?MemberId=" + appUtil.getPrefrence("MemberId") + "&StoreId=" + appUtil.getPrefrence("StoreId") + "&UPC=" + shopping.getUPC().replace("UPC", "").replace(":", "").replace(" ", "") + "&Plateform=2&PrimaryOfferTypeId=" + shopping.getPrimaryOfferTypeid() + "&CouponID=" + shopping.getCouponid() + "&CircularType=0",
                             new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
-                                    Log.i("Fareway Reated text", response.toString());
+                                    Log.i("Different Store", response.toString());
                                     scrollView.setVisibility(View.VISIBLE);
+                                    progressDialog.dismiss();
                                     if (!response.equals("[]")) {
                                         try {
                                             Log.i("url", Constant.WEB_URL + "Circular/ItemDetails" + "?MemberId=" + appUtil.getPrefrence("MemberId") + "&StoreId=" + appUtil.getPrefrence("StoreId") + "&UPC=" + shopping.getUPC().replace("UPC", "").replace(":", "").replace(" ", "") + "&Plateform=2&PrimaryOfferTypeId=" + shopping.getPrimaryOfferTypeid() + "&CouponID=" + shopping.getCouponid() + "&CircularType=0");
 
-                                            Log.i("Verites response", response.toString());
                                             jsonShoppingParam = new JSONArray(response.toString());
 
                                             for (int i = 0; i < jsonShoppingParam.length(); i++) {
@@ -12181,10 +12190,12 @@ public class MainFwActivity extends AppCompatActivity
                                                     table_regular_view.setVisibility(View.VISIBLE);
                                                     table_save.setVisibility(View.VISIBLE);
                                                     table_save_view.setVisibility(View.VISIBLE);
-                                                    table_promo.setVisibility(View.GONE);
-                                                    table_promo_view.setVisibility(View.GONE);
+                                                    table_promo.setVisibility(View.VISIBLE);
+                                                    table_promo_view.setVisibility(View.VISIBLE);
                                                     table_coupon.setVisibility(View.GONE);
                                                     table_coupon_view.setVisibility(View.GONE);
+                                                    table_upc.setVisibility(View.VISIBLE);
+                                                    table_upc_view.setVisibility(View.VISIBLE);
 
 
                                                     if (jsonShoppingParam.getJSONObject(i).getString("PackagingSize").equalsIgnoreCase("")) {
@@ -12214,7 +12225,7 @@ public class MainFwActivity extends AppCompatActivity
 
                                                     tv_reg_price_detail.setText("$" + jsonShoppingParam.getJSONObject(i).getString("RegularPrice"));
 
-                                                    String number = jsonShoppingParam.getJSONObject(i).getString("AdPrice");
+                                                    /*String number = jsonShoppingParam.getJSONObject(i).getString("AdPrice");
                                                     float adPrice = Float.parseFloat(number);
                                                     System.out.println(result);
                                                     if (adPrice>0){
@@ -12229,16 +12240,44 @@ public class MainFwActivity extends AppCompatActivity
                                                         float myFloatSavings = Float.parseFloat(jsonShoppingParam.getJSONObject(i).getString("Savings") + "f");
                                                         String formattedString = String.format("%.02f", myFloatSavings);
                                                         tv_save_detail.setText("$" + formattedString);
+                                                    }*/
+                                                    try {
+                                                        float myFloatCouponDiscount = Float.parseFloat(jsonShoppingParam.getJSONObject(i).getString("CouponDiscount") + "f");
+                                                        String formattedStringCouponDiscount = String.format("%.02f", myFloatCouponDiscount);
+                                                        tv_coupon_detail.setText("$" + formattedStringCouponDiscount);
+
+                                                        float myFloatAdPrice = Float.parseFloat(jsonShoppingParam.getJSONObject(i).getString("AdPrice") + "f");
+                                                        String formattedStringAdPrice = String.format("%.02f", myFloatAdPrice);
+                                                        tv_promo_price_detail.setText("$" + formattedStringAdPrice);
+
+                                                        float myFloatRegularPrice = Float.parseFloat(jsonShoppingParam.getJSONObject(i).getString("RegularPrice") + "f");
+                                                        String formattedStringRegularPrice = String.format("%.02f", myFloatRegularPrice);
+
+                                                        if (formattedStringAdPrice.equalsIgnoreCase(formattedStringRegularPrice)) {
+                                                            table_promo.setVisibility(View.GONE);
+                                                            table_promo_view.setVisibility(View.GONE);
+                                                        }else if (formattedStringAdPrice.equalsIgnoreCase("0.00")) {
+                                                            table_promo.setVisibility(View.GONE);
+                                                            table_promo_view.setVisibility(View.GONE);
+                                                        }
+
+                                                        if (formattedStringAdPrice.equalsIgnoreCase("0.00") || formattedStringAdPrice.equalsIgnoreCase(formattedStringRegularPrice)){
+                                                            float myFloatSaving = Float.parseFloat(jsonShoppingParam.getJSONObject(i).getString("Savings") + "f");
+                                                            String formattedString = String.format("%.02f", myFloatSaving);
+                                                            tv_save_detail.setText("$" + formattedString);
+                                                        }else {
+                                                            float FloatFinalPrice = Float.parseFloat(jsonShoppingParam.getJSONObject(i).getString("FinalPrice") + "f");
+                                                            float saving = (myFloatAdPrice-FloatFinalPrice);
+                                                            String formattedsaving = String.format("%.02f", saving);
+                                                            tv_save_detail.setText("$" + formattedsaving);
+                                                        }
+                                                        /////
+
+
+                                                    } catch (Exception e) {
+                                                        e.printStackTrace();
                                                     }
 
-                                                            /*try {
-                                                                DecimalFormat dF = new DecimalFormat("0.00");
-                                                                Number num = dF.parse(jsonShoppingParam.getJSONObject(i).getString("Savings"));
-                                                                tv_save_detail.setText("$" + new DecimalFormat("##.##").format(num));
-
-                                                            } catch (Exception e) {
-
-                                                            }*/
                                                     tv_upc_detail.setText(jsonShoppingParam.getJSONObject(i).getString("UPC"));
                                                     tv_deal_type_detaile.setText(jsonShoppingParam.getJSONObject(i).getString("OfferTypeTagName"));
                                                     if (jsonShoppingParam.getJSONObject(i).getInt("HasRelatedItems") == 1) {
@@ -14156,7 +14195,7 @@ public class MainFwActivity extends AppCompatActivity
                 // progressDialog.setMessage("Processing");
                 //progressDialog.show();
 
-                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android " + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|7.5",
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android " + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|7.6",
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {

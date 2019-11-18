@@ -206,7 +206,7 @@
             android:orientation="vertical">
             <TextView
                 android:ellipsize="end"
-                android:maxLines="4"
+                android:maxLines="2"
                 android:fontFamily="@font/roboto_black"
                 android:id="@+id/tv_personal_description"
                 android:textColor="#000"

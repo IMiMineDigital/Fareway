@@ -2,7 +2,7 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 group 'IMeMine'
-version '7.5'
+version '7.6'
 //when build need to remove comment in login page
 android {
     compileSdkVersion 28
