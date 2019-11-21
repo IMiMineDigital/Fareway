@@ -229,5 +229,6 @@
     <string name="channel_description">fareway_notification</string>
     <string name="pd">Personal Ad</string>
     <string name="add_ofr">Additional Offer</string>
+    <string name="change_store"><u>Change Store</u></string>
 
 </resources>

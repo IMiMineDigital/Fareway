@@ -271,6 +271,7 @@ public class MainFwActivity extends AppCompatActivity
 
     public static LinearLayout linearLayout;
 
+    private TextView changeStore;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -281,6 +282,7 @@ public class MainFwActivity extends AppCompatActivity
         appUtil = new AppUtilFw(activity);
         userAlertDialog = new UserAlertDialog(activity);
         linearLayout = findViewById(R.id.linear_personal_ad_lable_title);
+        changeStore = findViewById(R.id.change_store);
         offerTitle = findViewById(R.id.tv_personal_lable_title);
         tv_location_title = findViewById(R.id.tv_location_title);
 
@@ -691,6 +693,13 @@ public class MainFwActivity extends AppCompatActivity
         } else {
             Log.i("save","login");
         }
+
+        this.changeStore.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, ">> Change store");
+            }
+        });
     }
 
     @Override

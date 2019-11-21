@@ -102,7 +102,6 @@
                 android:visibility="visible"
                 android:layout_weight=".5"
                 android:gravity="left"
-                android:textStyle="bold"
                 android:fontFamily="@font/roboto"
                 android:textColor="@color/white"
                 android:layout_width="0dp"
@@ -118,7 +117,7 @@
                 android:layout_height="wrap_content" />
 
             <TextView
-                android:gravity="center|left"
+                android:gravity="center"
                 android:layout_gravity="center"
                 android:id="@+id/tv_location_title"
                 android:textSize="10sp"
@@ -127,9 +126,25 @@
                 android:fontFamily="@font/roboto"
                 android:textColor="@color/white"
                 android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+            <View
+                android:layout_width="1dp"
+                android:layout_height="15dp"
+                android:layout_gravity="center"
+                android:layout_marginRight="3dp"
+                android:background="@android:color/white"/>
+
+            <TextView
+                android:id="@+id/change_store"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="430 NW 2nd Ave, Faribault"
-                android:lines="2" />
+                android:text="@string/change_store"
+                android:layout_marginRight="5dp"
+                android:textSize="10sp"
+                android:textStyle="bold"
+                android:textColor="@android:color/white"
+                android:layout_gravity="center" />
 
 
         </LinearLayout>
