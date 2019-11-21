@@ -87,6 +87,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
     int r=0;
     int s=0;
     int blockTile=0;
+    private static final  String TAG = CustomAdapterPersonalPrices.class.getSimpleName();
 
     public class MyViewHolder extends RecyclerView.ViewHolder
     {
@@ -206,7 +207,9 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
+        Log.d(TAG, " Count >> " + position);
         final Product product = productListFiltered.get(position);
+        MainFwActivity.tv_location_title.setText(appUtil.getPrefrence("StoreName"));
 
         if(MainFwActivity.singleView) {
             holder.item_layout_tile.setVisibility(View.VISIBLE);
@@ -445,14 +448,14 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     //holder.tv_unit.setText(product.getPackagingSize());
                     holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.green));
                     holder.tv_deal_type.setText(product.getOfferTypeTagName());
-
+                    /////////////////////////
                     String headerContent = "";
                     if (product.getLimitPerTransection()>1){
-                        headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection())+", Exp "+saveDate;
+                        headerContent = "<br>Limit " + String.valueOf(product.getLimitPerTransection())+", Exp "+saveDate;
                         holder.limit.setText(headerContent);
                     }
                     else {
-                        headerContent = "\nExp "+saveDate;
+                        headerContent = "<br>Exp "+saveDate;
                         holder.limit.setText(headerContent);
                     }
 
@@ -461,11 +464,12 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }
                     else if (product.getRequiredQty()>1){
                         if (product.getLimitPerTransection()>1){
-                            headerContent = "*Must Buy " + product.getRequiredQty()+" | Limit "+product.getLimitPerTransection()+"\nExp "+saveDate;
+                            //<strong>must</strong></br><span>test</span>
+                            headerContent = "<strong>*Must Buy " + product.getRequiredQty()+" | Limit "+product.getLimitPerTransection()+"</strong><br><span>Exp "+saveDate+"</span>";
                             String charsStarCouponShort = capitalize(product.getCouponShortDescription());
                             holder.tv_detail.setText("*"+charsStarCouponShort);
                         }else {
-                            headerContent = "*Must Buy " + product.getRequiredQty()+"\nExp "+saveDate;
+                            headerContent = "<strong>*Must Buy " + product.getRequiredQty()+"</strong><br><span>Exp "+saveDate+"</span>";
                             String charsStarCouponShort = capitalize(product.getCouponShortDescription());
                             holder.tv_detail.setText("*"+charsStarCouponShort);
                         }
@@ -473,12 +477,12 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     if(product.getLimitPerTransection()>0) {
                         if(headerContent != "") {
                             if (product.getLimitPerTransection()>1){
-                                headerContent = headerContent + "\nLimit : " + product.getLimitPerTransection();
+                                headerContent = headerContent + "<br>Limit : " + product.getLimitPerTransection();
                             }
                         }
                         else {
                             if (product.getLimitPerTransection()>1){
-                                headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection())+", Exp "+saveDate;
+                                headerContent = "<br>Limit " + String.valueOf(product.getLimitPerTransection())+", Exp "+saveDate;
                             }
                         }
 
@@ -520,7 +524,10 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             String displayPrice=product.getDisplayPrice().toString();
                             if(product.getDisplayPrice().toString().split("\\.").length>1)
                                 displayPrice= product.getDisplayPrice().split("\\.")[0]+"<sup>"+ (product.getDisplayPrice().split("\\.")[1]).replace("<sup>","").replace("</sup>","")+"</sup>";
+
+
                             Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
+                            //Spanned result = Html.fromHtml("<sup><small><small>$</small></small></sup>1<sup><small><small>50</small></small></sup><sup><small><small>OFF</small></small></sup>");
                             Spanned result2 = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>")+"<sup><small><small> *</small></small></sup>");
                             holder.tv_price.setText(result);
                             if (product.getRequiredQty()>1){
@@ -529,21 +536,24 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         }
 
                     }
+
                     holder.coupon_badge.setVisibility(View.VISIBLE);
                     holder.limit.setGravity(Gravity.CENTER);
-                    holder.limit.setText(headerContent);
+                    Spanned headerHtml = Html.fromHtml(headerContent);
+                    holder.limit.setText(headerHtml);
 
                     if (product.getIsbadged().equalsIgnoreCase("True")){
                         Picasso.get().load(product.getBadgeFileName()).into(holder.coupon_badge);
                         if (product.getLimitPerTransection()>1){
-                            headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection())+", Exp "+saveDate;
+                            headerContent = "<br>Limit " + String.valueOf(product.getLimitPerTransection())+", Exp "+saveDate;
                             holder.limit.setGravity(Gravity.RIGHT);
                         }else {
-                            headerContent = "\nExp "+saveDate;
+                            headerContent = "<br>Exp "+saveDate;
                             holder.limit.setGravity(Gravity.CENTER);
                         }
+                        Spanned headerHtml2 = Html.fromHtml(headerContent);
 
-                        holder.limit.setText(headerContent);
+                        holder.limit.setText(headerHtml2);
 
 
                     }
@@ -552,6 +562,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             /*String chars = capitalize(product.getDescription());
                             holder.tv_detail.setText(chars);*/
                     }
+
+                    ///////////////
 
                     if (product.getOfferDefinitionId()==3 || product.getOfferDefinitionId()==2 || product.getOfferDefinitionId()==1 || product.getOfferDefinitionId()==4){
                         /*String chars = capitalize(product.getDescription());
@@ -840,6 +852,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 if (r==position && r!=0 && MainFwActivity.pdView==true){
                     holder.additional_offers.setVisibility(View.VISIBLE);
                     holder.additional_offers.setText("Additional Offers");
+                    Log.d(TAG, ">> Additional Offers");
+                    //MainFwActivity.offerTitle.setText("Additional Offers");
                 }else {
                     holder.additional_offers.setVisibility(View.GONE);
                     holder.linear_personal_ad_lable.setVisibility(View.GONE);
@@ -849,13 +863,16 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 Log.i("elseincircular", String.valueOf(product.getInCircular()));
 
                 if (product.getPrimaryOfferTypeId() == 3) {
+                    MainFwActivity.offerTitle.setText("Personal Ad");
                     if (position==0 && MainFwActivity.pdView==true){
+
                         holder.additional_offers.setVisibility(View.GONE);
                         holder.tv_personal_lable.setVisibility(View.VISIBLE);
                         holder.imv_location.setVisibility(View.VISIBLE);
                         holder.tv_location.setVisibility(View.VISIBLE);
-                        holder.linear_personal_ad_lable.setVisibility(View.VISIBLE);
-                        holder.tv_location.setText(appUtil.getPrefrence("StoreName"));
+                        holder.linear_personal_ad_lable.setVisibility(View.GONE);
+                        //holder.linear_personal_ad_lable.setVisibility(View.VISIBLE);
+                        //holder.tv_location.setText(appUtil.getPrefrence("StoreName"));
                     }else {
                         holder.additional_offers.setVisibility(View.GONE);
                         holder.linear_personal_ad_lable.setVisibility(View.GONE);
@@ -966,6 +983,22 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 }
 
                 else if (product.getPrimaryOfferTypeId() == 2) {
+                    /*if (product.getTileNumber().equalsIgnoreCase("998")||product.getTileNumber().equalsIgnoreCase("999")){
+                        MainFwActivity.offerTitle.setText("Additional Offers");
+                    }else {
+                        MainFwActivity.offerTitle.setText("Personal Ad");
+                    }*/
+                    Log.i("valuepadd", String.valueOf(p));
+                    Log.i("valueadd", String.valueOf(p-5));
+                    Log.i("valueradd", String.valueOf(r));
+                    Log.i("valuermin", String.valueOf(r+5));
+                    if((position)>=(r+2)&&product.getTileNumber().equalsIgnoreCase("999")) {
+                        if (r!=0){
+                            MainFwActivity.offerTitle.setText("Additional Offers");
+                        }
+
+                    }
+
                     holder.liner_save.setVisibility(View.GONE);
                     holder.liner_promo_price.setVisibility(View.GONE);
                     holder.tv_coupon_type_1.setVisibility(View.GONE);
@@ -1003,14 +1036,14 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     //holder.tv_unit.setText(product.getPackagingSize());
                     holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.green));
                     holder.tv_deal_type.setText(product.getOfferTypeTagName());
-
+/////////////////////////////
                     String headerContent = "";
                     if (product.getLimitPerTransection()>1){
-                        headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection())+", Exp "+saveDate;
+                        headerContent = "<br>Limit " + String.valueOf(product.getLimitPerTransection())+", Exp "+saveDate;
                         holder.limit.setText(headerContent);
                     }
                     else {
-                        headerContent = "\nExp "+saveDate;
+                        headerContent = "<br>Exp "+saveDate;
                         holder.limit.setText(headerContent);
                     }
 
@@ -1019,11 +1052,12 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }
                     else if (product.getRequiredQty()>1){
                         if (product.getLimitPerTransection()>1){
-                            headerContent = "*Must Buy " + product.getRequiredQty()+" | Limit "+product.getLimitPerTransection()+"\nExp "+saveDate;
+                            //<strong>must</strong></br><span>test</span>
+                            headerContent = "<strong>*Must Buy " + product.getRequiredQty()+" | Limit "+product.getLimitPerTransection()+"</strong><br><span>Exp "+saveDate+"</span>";
                             String charsStarCouponShort = capitalize(product.getCouponShortDescription());
                             holder.tv_detail.setText("*"+charsStarCouponShort);
                         }else {
-                            headerContent = "*Must Buy " + product.getRequiredQty()+"\nExp "+saveDate;
+                            headerContent = "<strong>*Must Buy " + product.getRequiredQty()+"</strong><br><span>Exp "+saveDate+"</span>";
                             String charsStarCouponShort = capitalize(product.getCouponShortDescription());
                             holder.tv_detail.setText("*"+charsStarCouponShort);
                         }
@@ -1031,12 +1065,12 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     if(product.getLimitPerTransection()>0) {
                         if(headerContent != "") {
                             if (product.getLimitPerTransection()>1){
-                                headerContent = headerContent + "\nLimit : " + product.getLimitPerTransection();
+                                headerContent = headerContent + "<br>Limit : " + product.getLimitPerTransection();
                             }
                         }
                         else {
                             if (product.getLimitPerTransection()>1){
-                                headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection())+", Exp "+saveDate;
+                                headerContent = "<br>Limit " + String.valueOf(product.getLimitPerTransection())+", Exp "+saveDate;
                             }
                         }
 
@@ -1078,7 +1112,10 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             String displayPrice=product.getDisplayPrice().toString();
                             if(product.getDisplayPrice().toString().split("\\.").length>1)
                                 displayPrice= product.getDisplayPrice().split("\\.")[0]+"<sup>"+ (product.getDisplayPrice().split("\\.")[1]).replace("<sup>","").replace("</sup>","")+"</sup>";
+
+
                             Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
+                            //Spanned result = Html.fromHtml("<sup><small><small>$</small></small></sup>1<sup><small><small>50</small></small></sup><sup><small><small>OFF</small></small></sup>");
                             Spanned result2 = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>")+"<sup><small><small> *</small></small></sup>");
                             holder.tv_price.setText(result);
                             if (product.getRequiredQty()>1){
@@ -1087,21 +1124,24 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         }
 
                     }
+
                     holder.coupon_badge.setVisibility(View.VISIBLE);
                     holder.limit.setGravity(Gravity.CENTER);
-                    holder.limit.setText(headerContent);
+                    Spanned headerHtml = Html.fromHtml(headerContent);
+                    holder.limit.setText(headerHtml);
 
                     if (product.getIsbadged().equalsIgnoreCase("True")){
                         Picasso.get().load(product.getBadgeFileName()).into(holder.coupon_badge);
                         if (product.getLimitPerTransection()>1){
-                            headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection())+", Exp "+saveDate;
-                            holder.limit.setGravity(Gravity.RIGHT);
+                            headerContent = "<br>Limit " + String.valueOf(product.getLimitPerTransection())+", Exp "+saveDate;
+                            holder.limit.setGravity(Gravity.CENTER);
                         }else {
-                            headerContent = "\nExp "+saveDate;
+                            headerContent = "<br>Exp "+saveDate;
                             holder.limit.setGravity(Gravity.CENTER);
                         }
+                        Spanned headerHtml2 = Html.fromHtml(headerContent);
 
-                        holder.limit.setText(headerContent);
+                        holder.limit.setText(headerHtml2);
 
 
                     }
@@ -1110,6 +1150,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             /*String chars = capitalize(product.getDescription());
                             holder.tv_detail.setText(chars);*/
                     }
+                    /////////////////////////////////
 
                     if (product.getOfferDefinitionId()==3 || product.getOfferDefinitionId()==2 || product.getOfferDefinitionId()==1 || product.getOfferDefinitionId()==4){
                         /*String chars = capitalize(product.getDescription());
@@ -1262,6 +1303,15 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 }
 
                 else if (product.getPrimaryOfferTypeId() == 1) {
+                    Log.i("valuep", String.valueOf(p));
+                    Log.i("valuemin", String.valueOf(p-5));
+                   if((position)<=(r-2)) {
+
+                        if (r!=0){
+                            MainFwActivity.offerTitle.setText("Personal Ad");
+                        }
+                    }
+                    //MainFwActivity.offerTitle.setText("Personal Ad");
                     if (product.getQuantity()==null){
                         holder.add_item_flag.setText("+");
                     }else if (product.getQuantity().equalsIgnoreCase("0")){
@@ -1358,6 +1408,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 }
 
                 else if (product.getPrimaryOfferTypeId()==0){
+                    MainFwActivity.offerTitle.setText(R.string.add_ofr);
                     holder.item_layout_tile.setVisibility(View.GONE);
                     // Gets linearlayout
                     //LinearLayout layout = findViewById(R.id.numberPadLayout);
@@ -1391,11 +1442,9 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
         else {
 
-
-                holder.item_layout_tile.setVisibility(View.VISIBLE);
-                holder.circular_layout.setVisibility(View.VISIBLE);
-
-                holder.circular_layout.setOnClickListener(new View.OnClickListener() {
+            holder.item_layout_tile.setVisibility(View.VISIBLE);
+            holder.circular_layout.setVisibility(View.VISIBLE);
+            holder.circular_layout.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
                         if (product.getPrimaryOfferTypeId()==3){
@@ -1669,13 +1718,15 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.green));
                         holder.tv_deal_type.setText(product.getOfferTypeTagName());
 
+                        /////////////
+
                         String headerContent = "";
                         if (product.getLimitPerTransection()>1){
-                            headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection())+", Exp "+saveDate;
+                            headerContent = "<br>Limit " + String.valueOf(product.getLimitPerTransection())+", Exp "+saveDate;
                             holder.limit.setText(headerContent);
                         }
                         else {
-                            headerContent = "\nExp "+saveDate;
+                            headerContent = "<br>Exp "+saveDate;
                             holder.limit.setText(headerContent);
                         }
 
@@ -1684,11 +1735,12 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         }
                         else if (product.getRequiredQty()>1){
                             if (product.getLimitPerTransection()>1){
-                                headerContent = "*Must Buy " + product.getRequiredQty()+" | Limit "+product.getLimitPerTransection()+"\nExp "+saveDate;
+                                //<strong>must</strong></br><span>test</span>
+                                headerContent = "<strong>*Must Buy " + product.getRequiredQty()+" | Limit "+product.getLimitPerTransection()+"</strong><br><span>Exp "+saveDate+"</span>";
                                 String charsStarCouponShort = capitalize(product.getCouponShortDescription());
                                 holder.tv_detail.setText("*"+charsStarCouponShort);
                             }else {
-                                headerContent = "*Must Buy " + product.getRequiredQty()+"\nExp "+saveDate;
+                                headerContent = "<strong>*Must Buy " + product.getRequiredQty()+"</strong><br><span>Exp "+saveDate+"</span>";
                                 String charsStarCouponShort = capitalize(product.getCouponShortDescription());
                                 holder.tv_detail.setText("*"+charsStarCouponShort);
                             }
@@ -1696,12 +1748,12 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         if(product.getLimitPerTransection()>0) {
                             if(headerContent != "") {
                                 if (product.getLimitPerTransection()>1){
-                                    headerContent = headerContent + "\nLimit : " + product.getLimitPerTransection();
+                                    headerContent = headerContent + "<br>Limit : " + product.getLimitPerTransection();
                                 }
                             }
                             else {
                                 if (product.getLimitPerTransection()>1){
-                                    headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection())+", Exp "+saveDate;
+                                    headerContent = "<br>Limit " + String.valueOf(product.getLimitPerTransection())+", Exp "+saveDate;
                                 }
                             }
 
@@ -1743,7 +1795,10 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                                 String displayPrice=product.getDisplayPrice().toString();
                                 if(product.getDisplayPrice().toString().split("\\.").length>1)
                                     displayPrice= product.getDisplayPrice().split("\\.")[0]+"<sup>"+ (product.getDisplayPrice().split("\\.")[1]).replace("<sup>","").replace("</sup>","")+"</sup>";
+
+
                                 Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
+                                //Spanned result = Html.fromHtml("<sup><small><small>$</small></small></sup>1<sup><small><small>50</small></small></sup><sup><small><small>OFF</small></small></sup>");
                                 Spanned result2 = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>")+"<sup><small><small> *</small></small></sup>");
                                 holder.tv_price.setText(result);
                                 if (product.getRequiredQty()>1){
@@ -1752,21 +1807,24 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             }
 
                         }
+
                         holder.coupon_badge.setVisibility(View.VISIBLE);
                         holder.limit.setGravity(Gravity.CENTER);
-                        holder.limit.setText(headerContent);
+                        Spanned headerHtml = Html.fromHtml(headerContent);
+                        holder.limit.setText(headerHtml);
 
                         if (product.getIsbadged().equalsIgnoreCase("True")){
                             Picasso.get().load(product.getBadgeFileName()).into(holder.coupon_badge);
                             if (product.getLimitPerTransection()>1){
-                                headerContent = "\nLimit " + String.valueOf(product.getLimitPerTransection())+", Exp "+saveDate;
+                                headerContent = "<br>Limit " + String.valueOf(product.getLimitPerTransection())+", Exp "+saveDate;
                                 holder.limit.setGravity(Gravity.RIGHT);
                             }else {
-                                headerContent = "\nExp "+saveDate;
+                                headerContent = "<br>Exp "+saveDate;
                                 holder.limit.setGravity(Gravity.CENTER);
                             }
+                            Spanned headerHtml2 = Html.fromHtml(headerContent);
 
-                            holder.limit.setText(headerContent);
+                            holder.limit.setText(headerHtml2);
 
 
                         }
@@ -1775,6 +1833,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             /*String chars = capitalize(product.getDescription());
                             holder.tv_detail.setText(chars);*/
                         }
+                        ///////////////
 
                         if (product.getOfferDefinitionId()==3 || product.getOfferDefinitionId()==2 || product.getOfferDefinitionId()==1 || product.getOfferDefinitionId()==4){
                             /*String chars = capitalize(product.getDescription());
@@ -2057,6 +2116,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
                         holder.additional_offers.setVisibility(View.VISIBLE);
                         holder.additional_offers.setText("Additional Offers");
+                        //MainFwActivity.offerTitle.setText("Additional Offers");
                     }
                 else if (q==position && q!=0 && MainFwActivity.pdView==true){
                         holder.additional_offers.setVisibility(View.VISIBLE);
@@ -2070,7 +2130,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
                 if (r==position && r!=0 && MainFwActivity.pdView==true){
                         holder.additional_offers.setVisibility(View.VISIBLE);
-                        holder.additional_offers.setText("Aditinoal offers");
+                        holder.additional_offers.setText("Additional Offers");
+                    //MainFwActivity.offerTitle.setText("Additional Offers");
                         //aditinoal offers
                     }
                 else if (s==position && s!=0 && MainFwActivity.pdView==true){
@@ -2087,19 +2148,21 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
 
                     if (product.getPrimaryOfferTypeId() == 3) {
+                        MainFwActivity.offerTitle.setText("Personal Ad");
                         if (position==0 && MainFwActivity.pdView==true){
                             holder.linear_multi_personal_ad_lable.setVisibility(View.GONE);
                             holder.linear_personal_ad_lable.setVisibility(View.GONE);
-                            holder.additional_offers.setVisibility(View.VISIBLE);
+                            holder.additional_offers.setVisibility(View.GONE);
                             holder.additional_offers.setText("Personal Ad");
+                            //MainFwActivity.offerTitle.setText("Personal Ad");
 
                             //holder.tv_location.setText(appUtil.getPrefrence("StoreName"));
                         }else if (position==1 && MainFwActivity.pdView==true){
                             holder.additional_offers.setVisibility(View.GONE);
                             holder.linear_personal_ad_lable.setVisibility(View.GONE);
 
-                            holder.linear_multi_personal_ad_lable.setVisibility(View.VISIBLE);
-                            holder.tv_location_multi.setVisibility(View.VISIBLE);
+                            holder.linear_multi_personal_ad_lable.setVisibility(View.GONE);
+                            holder.tv_location_multi.setVisibility(View.GONE);
                             holder.tv_location_multi.setText(appUtil.getPrefrence("StoreName"));
                             Log.i("storeidd","test");
                         }else {
@@ -2323,6 +2386,26 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }
 
                     else if (product.getPrimaryOfferTypeId() == 2) {
+                        /*if (product.getTileNumber().equalsIgnoreCase("999")||product.getTileNumber().equalsIgnoreCase("999")){
+                            MainFwActivity.offerTitle.setText("Additional Offers");
+                        }else if(p>position) {
+                            MainFwActivity.offerTitle.setText("Additional Offers");
+                        }*/
+                        Log.i("valuepadd", String.valueOf(p));
+                        Log.i("valueadd", String.valueOf(p-5));
+                        Log.i("valueradd", String.valueOf(r));
+                        Log.i("valuermin", String.valueOf(r+5));
+                        if((position)>=(p+4)&&product.getTileNumber().equalsIgnoreCase("999")&&r==0) {
+                            if (p!=0){
+                                MainFwActivity.offerTitle.setText("Additional Offers");
+                            }
+
+                        }else if((position)>=(r+4)&&product.getTileNumber().equalsIgnoreCase("999")) {
+                             if (r!=0){
+                                MainFwActivity.offerTitle.setText("Additional Offers");
+                            }
+
+                        }
 
                         holder.liner_save.setVisibility(View.GONE);
                         holder.liner_promo_price.setVisibility(View.GONE);
@@ -2362,7 +2445,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                         //holder.tv_unit.setText(product.getPackagingSize());
                         holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.green));
                         holder.tv_deal_type.setText(product.getOfferTypeTagName());
-
+//////////////////////////////////////
                         String headerContent = "";
                         if (product.getLimitPerTransection()>1){
                             headerContent = "<br>Limit " + String.valueOf(product.getLimitPerTransection())+", Exp "+saveDate;
@@ -2476,6 +2559,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                             /*String chars = capitalize(product.getDescription());
                             holder.tv_detail.setText(chars);*/
                         }
+                        //
 
                         if (product.getOfferDefinitionId()==3 || product.getOfferDefinitionId()==2 || product.getOfferDefinitionId()==1 || product.getOfferDefinitionId()==4){
                             String chars = capitalize(product.getDescription());
@@ -2619,6 +2703,21 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }
 
                     else if (product.getPrimaryOfferTypeId() == 1) {
+                        Log.i("valuep", String.valueOf(p));
+                        Log.i("valuemin", String.valueOf(p-5));
+                        if((position)<=(p-4)) {
+
+                            if (p!=0){
+                                MainFwActivity.offerTitle.setText("Personal Ad");
+                            }
+                        }else if((position)<=(r-4)) {
+
+                            if (r!=0){
+                                MainFwActivity.offerTitle.setText("Personal Ad");
+                            }
+                        }
+                        //MainFwActivity.offerTitle.setText("Personal Ad");
+
                         if (product.getQuantity()==null){
                             holder.add_item_flag.setText("+");
                         }else if (product.getQuantity().equalsIgnoreCase("0")){

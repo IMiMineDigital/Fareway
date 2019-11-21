@@ -15,21 +15,21 @@
             android:orientation="horizontal"
             android:background="@color/red"
             android:weightSum="1">
+        <TextView
+            android:id="@+id/tv_personal_lable"
+            android:padding="@dimen/_5sdp"
+            android:textSize="20sp"
+            android:visibility="visible"
+            android:layout_weight=".5"
+            android:gravity="left"
+            android:textStyle="bold"
+            android:fontFamily="@font/roboto"
+            android:textColor="@color/white"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:text="Personal Ad"
+            android:lines="1" />
 
-            <TextView
-                android:id="@+id/tv_personal_lable"
-                android:padding="@dimen/_5sdp"
-                android:textSize="20sp"
-                android:visibility="visible"
-                android:layout_weight=".5"
-                android:gravity="left"
-                android:textStyle="bold"
-                android:fontFamily="@font/roboto"
-                android:textColor="@color/white"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:text="Personal Ad"
-                android:lines="1" />
             <ImageView
                 android:id="@+id/imv_location"
                 android:layout_gravity="center"
@@ -49,7 +49,7 @@
                 android:textColor="@color/white"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="430 NW 2nd Ave, Faribault"
+                android:text=""
                 android:lines="2" />
 
 

@@ -84,10 +84,12 @@ public class CustomAdapterFilter extends RecyclerView.Adapter<CustomAdapterFilte
                 if (position==0){
                     if (MainFwActivity.tmp==0 && MainFwActivity.searchLable==false){
                         MainFwActivity.pdView=true;
+                        MainFwActivity.linearLayout.setVisibility(View.VISIBLE);
                     }
                     //MainFwActivity.pdView=true;
                 }else {
                     MainFwActivity.pdView=false;
+                    MainFwActivity.linearLayout.setVisibility(View.GONE);
                 }
 
                 try {

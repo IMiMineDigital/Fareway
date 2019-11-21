@@ -227,5 +227,7 @@
     <!--for fcm push notification-->
     <string name="channel_name">fareway_fcm</string>
     <string name="channel_description">fareway_notification</string>
+    <string name="pd">Personal Ad</string>
+    <string name="add_ofr">Additional Offer</string>
 
 </resources>

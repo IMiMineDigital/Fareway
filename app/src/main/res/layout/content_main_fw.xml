@@ -75,16 +75,65 @@
         android:scrollbars="vertical"
         android:visibility="gone"/>
 
-    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+   <!-- <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
 
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:fillViewport="true">
+        android:fillViewport="true">-->
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
+
+        <LinearLayout
+            android:visibility="visible"
+            android:id="@+id/linear_personal_ad_lable_title"
+            android:layout_width="match_parent"
+            android:layout_height="40dp"
+            android:orientation="horizontal"
+            android:background="@color/red"
+            android:weightSum="1">
+
+            <TextView
+                android:id="@+id/tv_personal_lable_title"
+                android:padding="@dimen/_5sdp"
+                android:textSize="20sp"
+                android:visibility="visible"
+                android:layout_weight=".5"
+                android:gravity="left"
+                android:textStyle="bold"
+                android:fontFamily="@font/roboto"
+                android:textColor="@color/white"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="Personal Ad"
+                android:lines="1" />
+            <ImageView
+                android:id="@+id/imv_location_title"
+                android:layout_gravity="center"
+                android:src="@drawable/ic_location_on_black_24dp"
+                android:layout_weight=".05"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content" />
+
+            <TextView
+                android:gravity="center|left"
+                android:layout_gravity="center"
+                android:id="@+id/tv_location_title"
+                android:textSize="10sp"
+                android:layout_weight=".45"
+                android:textStyle="bold"
+                android:fontFamily="@font/roboto"
+                android:textColor="@color/white"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:text="430 NW 2nd Ave, Faribault"
+                android:lines="2" />
+
+
+        </LinearLayout>
+
         <TextView
             android:visibility="gone"
             android:layout_width="match_parent"
@@ -94,6 +143,7 @@
             android:textColor="@color/white"
             android:textSize="24sp"
             android:id="@+id/header_title"/>
+
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_items"
             android:layout_width="match_parent"
@@ -175,7 +225,7 @@
 
     </LinearLayout>
 
-    </ScrollView>
+    <!--</ScrollView>-->
 
     <LinearLayout
         android:background="@color/white"
