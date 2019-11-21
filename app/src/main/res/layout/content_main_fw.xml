@@ -107,7 +107,8 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text="Personal Ad"
-                android:lines="1" />
+                android:lines="1"
+                android:textStyle="bold"/>
             <ImageView
                 android:id="@+id/imv_location_title"
                 android:layout_gravity="center"
@@ -133,7 +134,8 @@
                 android:layout_height="15dp"
                 android:layout_gravity="center"
                 android:layout_marginRight="3dp"
-                android:background="@android:color/white"/>
+                android:background="@android:color/white"
+                android:visibility="gone"/>
 
             <TextView
                 android:id="@+id/change_store"
@@ -144,7 +146,8 @@
                 android:textSize="10sp"
                 android:textStyle="bold"
                 android:textColor="@android:color/white"
-                android:layout_gravity="center" />
+                android:layout_gravity="center"
+                android:visibility="gone"/>
 
 
         </LinearLayout>
