@@ -863,6 +863,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 Log.i("elseincircular", String.valueOf(product.getInCircular()));
 
                 if (product.getPrimaryOfferTypeId() == 3) {
+                    holder.item_layout_tile.setVisibility(View.VISIBLE);
                     MainFwActivity.offerTitle.setText("Personal Ad");
                     if (position==0 && MainFwActivity.pdView==true){
 
@@ -983,6 +984,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 }
 
                 else if (product.getPrimaryOfferTypeId() == 2) {
+                    holder.item_layout_tile.setVisibility(View.VISIBLE);
                     /*if (product.getTileNumber().equalsIgnoreCase("998")||product.getTileNumber().equalsIgnoreCase("999")){
                         MainFwActivity.offerTitle.setText("Additional Offers");
                     }else {
@@ -1303,6 +1305,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 }
 
                 else if (product.getPrimaryOfferTypeId() == 1) {
+                    holder.item_layout_tile.setVisibility(View.VISIBLE);
                     Log.i("valuep", String.valueOf(p));
                     Log.i("valuemin", String.valueOf(p-5));
                    if((position)<=(r-2)) {
@@ -1408,13 +1411,13 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 }
 
                 else if (product.getPrimaryOfferTypeId()==0){
-                    MainFwActivity.offerTitle.setText(R.string.add_ofr);
+                    //MainFwActivity.offerTitle.setText(R.string.add_ofr);
                     holder.item_layout_tile.setVisibility(View.GONE);
                     // Gets linearlayout
                     //LinearLayout layout = findViewById(R.id.numberPadLayout);
 // Gets the layout params that will allow you to resize the layout
                     ViewGroup.LayoutParams params = holder.item_layout_tile.getLayoutParams();
-// Changes the height and width to the specified *pixels*
+
                     params.height = 30;
                     // params.width = 100;
                     holder.item_layout_tile.setLayoutParams(params);
@@ -1432,7 +1435,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(holder.imv_item);
                 }else if (product.getLargeImagePath().equalsIgnoreCase("")){
                     Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(holder.imv_item);
-                }else {
+                }else if (product.getPrimaryOfferTypeId()!=0){
                     Picasso.get().load(product.getLargeImagePath()).into(holder.imv_item);
                 }
             }

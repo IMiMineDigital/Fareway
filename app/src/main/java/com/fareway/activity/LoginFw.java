@@ -129,7 +129,7 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
         appUtil.setPrefrence("Password", "123456");*/
         linkUIElements();
         //checkLocationPermission();
-        //login();
+        login();
 
     }
     private void linkUIElements()
@@ -330,9 +330,12 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
                     @Override
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> params = new HashMap<String, String>();
-
+                        ///////
+                        /*appUtil.setPrefrence("Latitude", "0.00");
+                        appUtil.setPrefrence("Longitude", "0.00");
                         appUtil.setPrefrence("Email", et_email.getText().toString());
-                        appUtil.setPrefrence("Password", et_pwd.getText().toString());
+                        appUtil.setPrefrence("Password", et_pwd.getText().toString());*/
+                        ///////
                         String charsLowerEmail =lowercase(appUtil.getPrefrence("Email"));
                         appUtil.setPrefrence("Email", charsLowerEmail);
                         params.put("UserName", charsLowerEmail);

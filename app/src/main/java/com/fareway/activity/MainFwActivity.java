@@ -282,7 +282,7 @@ public class MainFwActivity extends AppCompatActivity
         appUtil = new AppUtilFw(activity);
         userAlertDialog = new UserAlertDialog(activity);
         linearLayout = findViewById(R.id.linear_personal_ad_lable_title);
-        changeStore = findViewById(R.id.change_store);
+        //changeStore = findViewById(R.id.change_store);
         offerTitle = findViewById(R.id.tv_personal_lable_title);
         tv_location_title = findViewById(R.id.tv_location_title);
 
@@ -688,18 +688,26 @@ public class MainFwActivity extends AppCompatActivity
         //
         if (appUtil.getPrefrence("SaveLogin").equalsIgnoreCase("no")) {
             //login();
-            saveLogin();
+            try {
+                Latitude = appUtil.getPrefrence("Latitude");
+                Longitude = appUtil.getPrefrence("Longitude");
+                saveLogin();
+            }catch (Exception e){
+                e.printStackTrace();
+                saveLogin();
+            }
+
 
         } else {
             Log.i("save","login");
         }
 
-        this.changeStore.setOnClickListener(new View.OnClickListener() {
+        /*this.changeStore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.d(TAG, ">> Change store");
             }
-        });
+        });*/
     }
 
     @Override
@@ -1110,6 +1118,7 @@ public class MainFwActivity extends AppCompatActivity
         customAdapterPersonalPrices = new CustomAdapterPersonalPrices(this, productList, this, this, this, this, this, this);
         //  RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(activity, 1);
         //  rv_items.setLayoutManager(mLayoutManager);
+
         rv_items.setAdapter(customAdapterPersonalPrices);
 
         if (diagonalInches >= 6.80) {
@@ -1881,6 +1890,7 @@ public class MainFwActivity extends AppCompatActivity
                                     if (root.getString("errorcode").equals("0")) {
                                         //progressDialog.dismiss();
                                         message = root.getJSONArray("message");
+                                        Log.i("pdlength", String.valueOf(message.length()));
                                         if (comeFrom.equalsIgnoreCase("moreOffer")) {
                                             // moreCouponLoad();
                                             x = 1;
@@ -14315,11 +14325,12 @@ public class MainFwActivity extends AppCompatActivity
                 // progressDialog.setMessage("Processing");
                 //progressDialog.show();
 
-                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android " + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|7.6",
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android " + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|7.7",
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
                                 Log.i("Fareway", response.toString());
+                                Log.i("url",Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android " + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|7.6");
                                 try {
                                     JSONObject root = new JSONObject(response);
                                     root.getString("errorcode");
