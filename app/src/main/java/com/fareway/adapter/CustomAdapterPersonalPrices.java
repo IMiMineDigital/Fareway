@@ -212,6 +212,7 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
         MainFwActivity.tv_location_title.setText(appUtil.getPrefrence("StoreName"));
 
         if(MainFwActivity.singleView) {
+            holder.card_view.setVisibility(View.VISIBLE);
             holder.item_layout_tile.setVisibility(View.VISIBLE);
 
             holder.circular_layout.setOnClickListener(new View.OnClickListener() {
@@ -1412,15 +1413,15 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
                 else if (product.getPrimaryOfferTypeId()==0){
                     //MainFwActivity.offerTitle.setText(R.string.add_ofr);
-                    holder.item_layout_tile.setVisibility(View.GONE);
+                    holder.card_view.setVisibility(View.GONE);
                     // Gets linearlayout
                     //LinearLayout layout = findViewById(R.id.numberPadLayout);
 // Gets the layout params that will allow you to resize the layout
-                    ViewGroup.LayoutParams params = holder.item_layout_tile.getLayoutParams();
+                    /*ViewGroup.LayoutParams params = holder.item_layout_tile.getLayoutParams();
 
                     params.height = 30;
                     // params.width = 100;
-                    holder.item_layout_tile.setLayoutParams(params);
+                    holder.item_layout_tile.setLayoutParams(params);*/
                 }
             }
 
