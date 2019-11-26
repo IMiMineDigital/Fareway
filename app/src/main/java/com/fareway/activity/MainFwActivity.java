@@ -272,6 +272,7 @@ public class MainFwActivity extends AppCompatActivity
     public static LinearLayout linearLayout;
 
     private TextView changeStore;
+    private boolean isMyFarewayList = false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
