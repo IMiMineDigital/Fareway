@@ -1,5 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/activity_main"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".activity.ShopperId"
+
+    android:gravity="center"
+    android:rotation="-90">
+    <ImageView
+
+        android:id="@+id/fw_barcode"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/_270sdp"
+        android:src="@drawable/logo_account"/>
+    <TextView
+        android:layout_centerInParent="true"
+        android:id="@+id/txt_shopper"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="96936976061478"
+        android:textSize="16pt"
+        android:layout_below="@+id/fw_barcode"
+        />
+
+</RelativeLayout>
+<!--<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 xmlns:app="http://schemas.android.com/apk/res-auto"
 xmlns:tools="http://schemas.android.com/tools"
 android:id="@+id/activity_main"
@@ -12,29 +40,7 @@ android:orientation="vertical"
 tools:context=".activity.ShopperId"
 android:weightSum="1"
     android:background="@color/white">
-<!--
-<TextView
-    android:text="Barcode Generator"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/textView2"
-    android:textAlignment="center"
-    android:layout_marginBottom="20dp" /> -->
-<!--
-<EditText
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:inputType="textPersonName"
-    android:ems="10"
-    android:hint="isi barcode"
-    android:id="@+id/input_isi" /> -->
-<!--
-<Button
-    android:text="Generate"
-    android:layout_width="match_parent"
-    android:layout_height="wrap_content"
-    android:id="@+id/btn_generate" />
-    -->
+
     <ImageView
         android:layout_gravity="center"
         android:padding="@dimen/_5sdp"
@@ -86,4 +92,4 @@ android:weightSum="1"
         android:layout_height="1dp"
         android:background="@color/grey" />
 
-</LinearLayout>
+</LinearLayout>-->

@@ -12,4 +12,9 @@
         android:orderInCategory="100"
         android:title="Purchase History"
         app:showAsAction="never" />
+    <item
+      android:id="@+id/by_saving"
+      android:orderInCategory="100"
+      android:title="Savings"
+      app:showAsAction="never" />
 </menu>

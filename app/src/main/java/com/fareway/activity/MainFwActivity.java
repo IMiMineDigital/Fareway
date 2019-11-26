@@ -1190,9 +1190,9 @@ public class MainFwActivity extends AppCompatActivity
                 participate = 1;
                 finish();
                 return true;
-            } else if (i == R.id.savings) {
+            } else if (i == R.id.barcode) {
                 // fetchProduct();
-                Intent i1 = new Intent(activity, SavingFw.class);
+                Intent i1 = new Intent(activity, ShopperId.class);
                 startActivity(i1);
                 return true;
             } else if (i == R.id.filter) {
@@ -1218,6 +1218,7 @@ public class MainFwActivity extends AppCompatActivity
             } else if (i == R.id.ShoppingList) {
                 //startActivity(new Intent(MainFwActivity.this,ShoppingFw.class));
                 if (x == 0 || x == 3) {
+                    isMyFarewayList=true;
                     linear_shopping_list_tab.setVisibility(View.GONE);
                     linear_coupon_tab.setVisibility(View.VISIBLE);
 
@@ -1281,6 +1282,7 @@ public class MainFwActivity extends AppCompatActivity
 
                 }
                 else if (x == 1) {
+                    isMyFarewayList=false;
                     if (searchLable == true) {
                         x = 3;
                         z = 0;
@@ -1301,7 +1303,7 @@ public class MainFwActivity extends AppCompatActivity
 
                     navigation.getMenu().findItem(R.id.ShoppingList).setTitle("MyFareway List");
                     navigation.getMenu().findItem(R.id.ShoppingList).setIcon(R.drawable.ic_view_list_black_24dp);
-                    tv.setVisibility(View.VISIBLE);
+                    tv.setVisibility(View.GONE);
                     tv2.setVisibility(View.VISIBLE);
                     shopping_list_header.setVisibility(View.GONE);
                     navigation.setVisibility(View.VISIBLE);
@@ -1725,6 +1727,7 @@ public class MainFwActivity extends AppCompatActivity
                 Intent i1 = new Intent(activity, PurchaseHistory.class);
                 startActivity(i1);
             }
+
             else if (i2 == R.id.filter_clear){
                 tmp=0;
                 pdView=true;
@@ -1740,6 +1743,12 @@ public class MainFwActivity extends AppCompatActivity
                 linearLayout.setVisibility(View.VISIBLE);
             }
 
+            else if (i2 == R.id.by_saving) {
+
+                Intent i1 = new Intent(activity, SavingFw.class);
+                startActivity(i1);
+            }
+
             return false;
         }
     }
@@ -1752,6 +1761,45 @@ public class MainFwActivity extends AppCompatActivity
             super.onBackPressed();
         }
     }*/
+   @Override
+   public void onBackPressed() {
+       if (isMyFarewayList==true){
+           isMyFarewayList=false;
+           if (searchLable == true) {
+               x = 3;
+               z = 0;
+               if (participate == 0) {
+                   search_message.setVisibility(View.VISIBLE);
+               } else if (participate == 1) {
+                   search_message.setVisibility(View.GONE);
+               }
+           }
+           else {
+               x = 0;
+               z = 0;
+           }
+
+
+           shoppingArrayList.clear();
+           shoppingListAdapter.notifyDataSetChanged();
+
+           navigation.getMenu().findItem(R.id.ShoppingList).setTitle("MyFareway List");
+           navigation.getMenu().findItem(R.id.ShoppingList).setIcon(R.drawable.ic_view_list_black_24dp);
+           tv.setVisibility(View.GONE);
+           tv2.setVisibility(View.VISIBLE);
+           shopping_list_header.setVisibility(View.GONE);
+           navigation.setVisibility(View.VISIBLE);
+           rv_shopping_list_items.setVisibility(View.GONE);
+
+           DetaileToolbar.setVisibility(View.GONE);
+           rv_items.setVisibility(View.VISIBLE);
+           toolbar.setVisibility(View.VISIBLE);
+       }else {
+           finish();
+       }
+
+       return;
+   }
 
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
@@ -14326,7 +14374,7 @@ public class MainFwActivity extends AppCompatActivity
                 // progressDialog.setMessage("Processing");
                 //progressDialog.show();
 
-                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|7.7",
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|7.8",
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {

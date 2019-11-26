@@ -9,6 +9,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -35,6 +36,7 @@ public class ShopperId extends AppCompatActivity {
     ImageView FwBarcode;
     TextView Shopper;
     Bitmap bitmap = null;
+    LinearLayout yourLayout;
 
     private static final int WHITE = 0xFFFFFFFF;
     private static final int BLACK = 0xFF000000;
@@ -49,12 +51,15 @@ public class ShopperId extends AppCompatActivity {
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
+        /*yourLayout  = (LinearLayout) findViewById(R.id.activity_main);
+        yourLayout.setRotation(270.0f);*/
+
         /** hubungkan objek di layout ke variabelnya */
         //textInput = (EditText) findViewById(R.id.input_isi);
 
        // tombolGenerate = (Button) findViewById(R.id.btn_generate);
         Log.i("shopper","start1");
-       // FwBarcode = (ImageView) findViewById(R.id.fw_barcode);
+        FwBarcode = (ImageView) findViewById(R.id.fw_barcode);
         Shopper = (TextView) findViewById(R.id.txt_shopper);
         Log.i("shopper","start2");
 
@@ -73,11 +78,11 @@ public class ShopperId extends AppCompatActivity {
             }
         });*/
         try {
-            //bitmap = encodeAsBitmap(appUtil.getPrefrence("ShopperID"), BarcodeFormat.CODE_128, 600, 300);
+            bitmap = encodeAsBitmap(appUtil.getPrefrence("ShopperID"), BarcodeFormat.CODE_128, 600, 300);
             bitmap = encodeAsBitmap(Constant.PRISHOPPERID+appUtil.getPrefrence("ShopperID"), BarcodeFormat.CODE_128, 800, 300);
 
-            //FwBarcode.setImageBitmap(bitmap);
-            Shopper.setText(appUtil.getPrefrence("ShopperID").toString());
+            FwBarcode.setImageBitmap(bitmap);
+            Shopper.setText(Constant.PRISHOPPERID+appUtil.getPrefrence("ShopperID").toString());
             Log.i("shopper","id");
         } catch (WriterException e) {
             e.printStackTrace();

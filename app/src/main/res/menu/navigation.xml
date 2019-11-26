@@ -28,12 +28,15 @@
         android:id="@+id/filter"
         android:icon="@drawable/filter"
         android:title="Filter" />
-
-
     <item
+        android:id="@+id/barcode"
+        android:icon="@drawable/barcode"
+        android:title="Shopper Id" />
+
+   <!-- <item
         android:id="@+id/savings"
         android:icon="@drawable/saveactive"
-        android:title="Savings" />
+        android:title="Savings" />-->
 
     <item
         android:id="@+id/ShopperID"
