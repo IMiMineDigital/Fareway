@@ -18,7 +18,7 @@
         <TextView
             android:id="@+id/tv_personal_lable"
             android:padding="@dimen/_5sdp"
-            android:textSize="20sp"
+            android:textSize="15sp"
             android:visibility="visible"
             android:layout_weight=".5"
             android:gravity="left"
@@ -90,7 +90,7 @@
 
     <TextView
         android:padding="@dimen/_5sdp"
-        android:textSize="20sp"
+        android:textSize="15sp"
         android:visibility="gone"
         android:background="@color/red"
         android:gravity="left"
