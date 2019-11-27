@@ -14,6 +14,8 @@ import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 
@@ -41,6 +43,8 @@ import android.support.v7.widget.helper.ItemTouchHelper;*/
 import android.text.Html;
 import android.text.Spanned;
 import android.text.format.Formatter;
+import android.transition.Explode;
+import android.transition.Transition;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -55,16 +59,21 @@ import android.support.v7.widget.Toolbar;*/
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.inputmethod.EditorInfo;
 import android.view.inputmethod.InputMethodManager;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.FrameLayout;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.PopupMenu;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
 import android.widget.ScrollView;
+import android.widget.Spinner;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -273,17 +282,19 @@ public class MainFwActivity extends AppCompatActivity
 
     private TextView changeStore;
     private boolean isMyFarewayList = false;
+    private Dialog changeStorePopup;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_fw);
         activity = MainFwActivity.this;
+        changeStorePopup = new Dialog(this);
         mQueue = FarewayApplication.getmInstance(this).getmRequestQueue();
         appUtil = new AppUtilFw(activity);
         userAlertDialog = new UserAlertDialog(activity);
         linearLayout = findViewById(R.id.linear_personal_ad_lable_title);
-        //changeStore = findViewById(R.id.change_store);
+        changeStore = findViewById(R.id.change_store);
         offerTitle = findViewById(R.id.tv_personal_lable_title);
         tv_location_title = findViewById(R.id.tv_location_title);
 
@@ -703,12 +714,55 @@ public class MainFwActivity extends AppCompatActivity
             Log.i("save","login");
         }
 
-        /*this.changeStore.setOnClickListener(new View.OnClickListener() {
+        this.changeStore.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.d(TAG, ">> Change store");
+                final List<String> categories = new ArrayList<String>();
+                categories.add("--Select Preffered Store--");
+                categories.add("Item 1");
+                categories.add("Item 2");
+                categories.add("Item 3");
+                categories.add("Item 4");
+                categories.add("Item 5");
+                categories.add("Item 6");
+                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(MainFwActivity.this,
+                        android.R.layout.simple_spinner_item, categories);
+                ImageView closePopUp;
+                Spinner stores;
+                Button find;
+                Window window = changeStorePopup.getWindow();
+                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+//                WindowManager.LayoutParams wlp = window.getAttributes();
+//                wlp.gravity = Gravity.RIGHT | Gravity.TOP;
+//                wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
+//                window.setAttributes(wlp);
+                changeStorePopup.setContentView(R.layout.change_store_popup);
+                closePopUp = changeStorePopup.findViewById(R.id.close_icon);
+                find = changeStorePopup.findViewById(R.id.find_btn);
+                stores = changeStorePopup.findViewById(R.id.store_spinner);
+                stores.setAdapter(dataAdapter);
+                stores.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        //Toast.makeText(MainFwActivity.this, categories.get(position), Toast.LENGTH_SHORT).show();
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) {
+
+                    }
+                });
+                closePopUp.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        changeStorePopup.dismiss();
+                    }
+                });
+
+
+                changeStorePopup.show();
             }
-        });*/
+        });
     }
 
     @Override
