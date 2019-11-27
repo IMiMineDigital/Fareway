@@ -14428,7 +14428,7 @@ public class MainFwActivity extends AppCompatActivity
                 // progressDialog.setMessage("Processing");
                 //progressDialog.show();
 
-                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|7.8",
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|7.9",
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
@@ -14641,7 +14641,7 @@ public class MainFwActivity extends AppCompatActivity
                                             JSONObject jsonParam = message.getJSONObject(i);
                                             appUtil.setPrefrence("StoreId", jsonParam.getString("StoreID"));
                                             appUtil.setPrefrence("BackupStoreId", jsonParam.getString("StoreID"));
-                                            appUtil.setPrefrence("StoreName", jsonParam.getString("StoreAddress") + "," + jsonParam.getString("StoreCity") + ", " + jsonParam.getString("StoreState"));
+                                            appUtil.setPrefrence("StoreName", jsonParam.getString("StoreAddress") + ", " + jsonParam.getString("StoreCity") + ", " + jsonParam.getString("StoreState"));
                                         }
 
                                     } else if (root.getString("errorcode").equals("200")) {

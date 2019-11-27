@@ -5,9 +5,8 @@ import android.graphics.Bitmap;
 //import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
-import android.view.View;
-import android.widget.Button;
-import android.widget.EditText;
+/*import android.widget.Button;
+import android.widget.EditText;*/
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -44,42 +43,20 @@ public class ShopperId extends AppCompatActivity {
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_shopper_id);
+        setContentView(R.layout.activity_shopper_id_fw);
         activity=ShopperId.this;
         appUtil=new AppUtilFw(activity);
         getSupportActionBar().setTitle("Shopper ID");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
 
-        /*yourLayout  = (LinearLayout) findViewById(R.id.activity_main);
-        yourLayout.setRotation(270.0f);*/
-
-        /** hubungkan objek di layout ke variabelnya */
-        //textInput = (EditText) findViewById(R.id.input_isi);
-
-       // tombolGenerate = (Button) findViewById(R.id.btn_generate);
         Log.i("shopper","start1");
         FwBarcode = (ImageView) findViewById(R.id.fw_barcode);
         Shopper = (TextView) findViewById(R.id.txt_shopper);
         Log.i("shopper","start2");
 
-        /** buat gambar barcode nya ketika tombol di tekan*/
-       /* tombolGenerate.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                try {
-                    bitmap = encodeAsBitmap(textInput.getText().toString(), BarcodeFormat.CODE_128, 600, 300);
-
-                    gambarBarcode.setImageBitmap(bitmap);
-                    textnya.setText(textInput.getText().toString());
-                } catch (WriterException e) {
-                    e.printStackTrace();
-                }
-            }
-        });*/
         try {
-            bitmap = encodeAsBitmap(appUtil.getPrefrence("ShopperID"), BarcodeFormat.CODE_128, 600, 300);
-            bitmap = encodeAsBitmap(Constant.PRISHOPPERID+appUtil.getPrefrence("ShopperID"), BarcodeFormat.CODE_128, 800, 300);
+            bitmap = encodeAsBitmap(Constant.PRISHOPPERID+appUtil.getPrefrence("ShopperID"), BarcodeFormat.CODE_128, 2000, 800);
 
             FwBarcode.setImageBitmap(bitmap);
             Shopper.setText(Constant.PRISHOPPERID+appUtil.getPrefrence("ShopperID").toString());
@@ -127,6 +104,7 @@ public class ShopperId extends AppCompatActivity {
         Bitmap bitmap = Bitmap.createBitmap(width, height,
                 Bitmap.Config.ARGB_8888);
         bitmap.setPixels(pixels, 0, width, 0, 0, width, height);
+        /*bitmap = encodeAsBitmap2(barcode1_data, BarcodeFormat.CODE_39, 800, 120);*/
         return bitmap;
     }
 
