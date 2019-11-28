@@ -60,6 +60,8 @@
                 android:hint="@string/zip_cod"
                 android:layout_centerVertical="true"
                 android:inputType="text"
+                android:includeFontPadding="true"
+                android:paddingLeft="10dp"
                 android:background="@drawable/edit_text_background"/>
 
             <Button
