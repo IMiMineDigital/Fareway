@@ -229,8 +229,14 @@
     <string name="channel_description">fareway_notification</string>
     <string name="pd">Personal Ad</string>
     <string name="add_ofr">Additional Offer</string>
+
+    <!--change store-->
     <string name="change_store"><u>Change Store</u></string>
     <string name="zip_cod">Zip Code or City, State</string>
     <string name="find">Find</string>
     <string name="update">Update</string>
+    <string name="error_msg1">You must enter your location.</string>
+    <string name="error_msg2">Please enter valid Zip Code or City, State.</string>
+    <!--google address api key-->
+    <string name="api_key">AIzaSyBl0wAaoHnYe2EN5AJWiT0t2QlkgWIlnvM</string>
 </resources>

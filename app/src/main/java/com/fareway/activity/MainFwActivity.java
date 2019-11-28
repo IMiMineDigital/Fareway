@@ -15,6 +15,7 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
+import android.graphics.Interpolator;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -110,10 +111,12 @@ import com.fareway.adapter.ShoppingListAdapter;
 import com.fareway.adapter.SwipeToDeleteCallback;
 import com.fareway.controller.FarewayApplication;
 import com.fareway.model.Category;
+import com.fareway.model.Geocoding;
 import com.fareway.model.Group;
 import com.fareway.model.Product;
 import com.fareway.model.RelatedItem;
 import com.fareway.model.Shopping;
+import com.fareway.model.Store;
 import com.fareway.utility.AppUtilFw;
 import com.fareway.utility.ConnectivityReceiver;
 import com.fareway.utility.Constant;
@@ -135,6 +138,7 @@ import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.google.gson.Gson;
+import com.google.gson.GsonBuilder;
 import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Picasso;
 
@@ -715,42 +719,50 @@ public class MainFwActivity extends AppCompatActivity
         }
 
         this.changeStore.setOnClickListener(new View.OnClickListener() {
+            ImageView closePopUp;
+            Spinner storeDropDown;
+            Button findBtn;
+            TextView errorMsgTxt1;
+            TextView errorMsgTxt2;
+            Button updateBtn;
+            EditText zipCodeEdt;
+            String zipCode = null;
+            String selectedStore = Constant.SELECT_STORE;
+            List<String> dropDownList = new ArrayList<>();
+            ArrayAdapter<String> dataAdapter;
+
             @Override
             public void onClick(View v) {
-                final List<String> categories = new ArrayList<String>();
-                categories.add("--Select Preffered Store--");
-                categories.add("Item 1");
-                categories.add("Item 2");
-                categories.add("Item 3");
-                categories.add("Item 4");
-                categories.add("Item 5");
-                categories.add("Item 6");
-                ArrayAdapter<String> dataAdapter = new ArrayAdapter<String>(MainFwActivity.this,
-                        android.R.layout.simple_spinner_item, categories);
-                ImageView closePopUp;
-                Spinner stores;
-                Button find;
                 Window window = changeStorePopup.getWindow();
                 window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                dropDownList.add(Constant.SELECT_STORE);
 //                WindowManager.LayoutParams wlp = window.getAttributes();
 //                wlp.gravity = Gravity.RIGHT | Gravity.TOP;
 //                wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
 //                window.setAttributes(wlp);
                 changeStorePopup.setContentView(R.layout.change_store_popup);
                 closePopUp = changeStorePopup.findViewById(R.id.close_icon);
-                find = changeStorePopup.findViewById(R.id.find_btn);
-                stores = changeStorePopup.findViewById(R.id.store_spinner);
-                stores.setAdapter(dataAdapter);
-                stores.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                zipCodeEdt = changeStorePopup.findViewById(R.id.zip_code_edt);
+                findBtn = changeStorePopup.findViewById(R.id.find_btn);
+                updateBtn = changeStorePopup.findViewById(R.id.update_btn);
+                updateBtn.setEnabled(false);
+                errorMsgTxt1 = changeStorePopup.findViewById(R.id.error_msg);
+                errorMsgTxt2 = changeStorePopup.findViewById(R.id.error_msg2);
+                storeDropDown = changeStorePopup.findViewById(R.id.store_spinner);
+                storeDropDown.setEnabled(false);
+                dataAdapter = new ArrayAdapter<String>(MainFwActivity.this,
+                        android.R.layout.simple_spinner_item, dropDownList);
+                storeDropDown.setAdapter(dataAdapter);
+                storeDropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                        //Toast.makeText(MainFwActivity.this, categories.get(position), Toast.LENGTH_SHORT).show();
+                        selectedStore = dropDownList.get(position);
+                        Log.d(TAG, " Selected Store >> " + selectedStore);
+                        //Toast.makeText(MainFwActivity.this, selectedStore, Toast.LENGTH_SHORT).show();
                     }
 
                     @Override
-                    public void onNothingSelected(AdapterView<?> parent) {
-
-                    }
+                    public void onNothingSelected(AdapterView<?> parent) { }
                 });
                 closePopUp.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -758,8 +770,123 @@ public class MainFwActivity extends AppCompatActivity
                         changeStorePopup.dismiss();
                     }
                 });
+                findBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String address = zipCodeEdt.getText().toString();
+                        if (address.matches("")) {
+                            errorMsgTxt1.setVisibility(View.VISIBLE);
+                            return;
+                        }
+                        String API_KEY = getResources().getString(R.string.api_key);
+                        StringRequest request = new StringRequest(Request.Method.GET, Constant.GEOCODER_API + address + "&key=" + API_KEY, new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                VolleyLog.wtf(response, "utf-8");
+                                Geocoding geocoding = new GsonBuilder().create().fromJson(response, Geocoding.class);
+                                if (! Constant.STATUS.equalsIgnoreCase(geocoding.getStatus())) {
+                                    errorMsgTxt1.setVisibility(View.VISIBLE);
+                                    errorMsgTxt1.setText(getResources().getString(R.string.error_msg2));
+                                    return;
+                                }
+                                errorMsgTxt1.setVisibility(View.GONE);
+                                Geocoding.Result result = geocoding.getResult().get(0);
+                                Geocoding.Geometry geometry = result.geometry;
+                                Geocoding.Location location = geometry.location;
+                                String lat = location.lat;
+                                String lng = location.lng;
+                                StringRequest findStoreReq = new StringRequest(Request.Method.GET, Constant.FINDSTORE
+                                        + lat + "&UserCurrentLongitude=" + lng, new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        VolleyLog.wtf(response, "utf-8");
+                                        try {
+                                            JSONObject root = new JSONObject(response);
+                                            String errorCode = root.getString("errorcode");
+                                            Log.d(TAG, "Store Api status >> " +errorCode);
+                                            if ("200".equals(errorCode)) {
+                                                errorMsgTxt1.setVisibility(View.VISIBLE);
+                                                errorMsgTxt1.setText(root.getString("message"));
+                                                return;
+                                            }
+                                        } catch (JSONException e) {
+                                            Log.d(TAG, " Exception >> " + e.getMessage());
+                                        }
+                                        Store store = new GsonBuilder().create().fromJson(response, Store.class);
+                                        if (! Constant.ERRORCODE.equalsIgnoreCase(store.getErrorcode())) {
+                                            Log.d(TAG, ">> Something went wrong");
+                                            errorMsgTxt2.setVisibility(View.VISIBLE);
+                                            errorMsgTxt2.setText("Some thing went wrong");
+                                            return;
+                                        }
+                                        errorMsgTxt2.setVisibility(View.GONE);
+                                        List<Store.Message> messages = store.getMessage();
+                                        for (Store.Message msg : messages) {
+                                            String distance = msg.getDistance();
+                                            Float litersOfPetrol=Float.parseFloat(distance);
+                                            DecimalFormat df = new DecimalFormat("0.00");
+                                            df.setMaximumFractionDigits(2);
+                                            distance = df.format(litersOfPetrol);
 
+                                            String address = msg.getStoreAddress() + "," +msg.getStoreCity() + "," +
+                                                    msg.getStoreState() + "(" + distance + " miles)";
+                                            dropDownList.add(address);
+                                        }
+                                        storeDropDown.setEnabled(true);
+                                        dataAdapter.notifyDataSetChanged();
+                                    }
+                                }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Log.d(TAG, " >> ERROR in Store Api"+ error.getMessage());
+                                    }
+                                }) {
 
+                                    @Override
+                                    public String getBodyContentType() {
+                                        return "application/x-www-form-urlencoded";
+                                    }
+                                    @Override
+                                    public Map<String, String> getHeaders() {
+                                        Map<String, String> params = new HashMap<String, String>();
+                                        params.put("Content-Type", "application/x-www-form-urlencoded");
+                                        params.put("Authorization", appUtil.getPrefrence("token_type") + " " + appUtil.getPrefrence("access_token"));
+                                        return params;
+                                    }
+                                };
+                                RetryPolicy policy = new DefaultRetryPolicy(5000,
+                                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                                findStoreReq.setRetryPolicy(policy);
+                                try {
+                                    Log.d(TAG, " Req Url >> " + findStoreReq.getUrl());
+                                    Log.d(TAG, " Req Header >> " + findStoreReq.getHeaders());
+                                    mQueue.add(findStoreReq);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                errorMsgTxt2.setVisibility(View.VISIBLE);
+                                errorMsgTxt2.setText(error.getMessage());
+                                Log.d(TAG, " >> ERROR "+ error.getLocalizedMessage());
+
+                            }
+                        });
+                        mQueue.add(request);
+
+                    }
+                });
+                updateBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        //TODO update store
+                        changeStorePopup.dismiss();
+
+                    }
+                });
                 changeStorePopup.show();
             }
         });
@@ -1987,6 +2114,7 @@ public class MainFwActivity extends AppCompatActivity
                                 Log.i("Fareway Personal Deal", response.toString());
 
                                 try {
+
                                     JSONObject root = new JSONObject(response);
                                     root.getString("errorcode");
                                     Log.i("errorcode", root.getString("errorcode"));
