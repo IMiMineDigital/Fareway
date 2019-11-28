@@ -940,6 +940,7 @@ public class MainFwActivity extends AppCompatActivity
                             Log.d(TAG, " Exception >> " + e.getMessage());
                         }
                         changeStorePopup.dismiss();
+                        startActivity(getIntent());
 
                     }
                 });
