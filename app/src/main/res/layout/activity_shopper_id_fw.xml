@@ -1,9 +1,32 @@
 <?xml version="1.0" encoding="utf-8"?>
+<!--<RelativeLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:layout_alignParentTop="true">
+    <ImageView
+        android:layout_gravity="center"
+        android:id="@+id/fw_barcode"
+        android:padding="16dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_toLeftOf="@+id/txt_shopper"
+        android:layout_alignParentLeft="true"/>
+
+    <com.fareway.utility.VerticalTextView
+        android:textSize="40sp"
+        android:gravity="center"
+        android:id="@+id/txt_shopper"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_alignParentRight="true"/>
+</RelativeLayout>-->
 
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/activity_main"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".activity.ShopperId"
@@ -14,7 +37,7 @@
 
         android:id="@+id/fw_barcode"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_270sdp"
+        android:layout_height="wrap_content"
         android:src="@drawable/logo_account"/>
     <TextView
         android:layout_centerInParent="true"
@@ -41,14 +64,7 @@ tools:context=".activity.ShopperId"
 android:weightSum="1"
     android:background="@color/white">
 
-    <ImageView
-        android:layout_gravity="center"
-        android:padding="@dimen/_5sdp"
-        android:layout_width="@dimen/_200sdp"
-        android:layout_height="@dimen/_50sdp"
-        android:src="@drawable/logo_account"
-        android:layout_weight="0.10"
-        />
+
     <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
@@ -63,33 +79,15 @@ android:weightSum="1"
     android:layout_weight="0.10" />
 
 
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/grey" />
-    <TextView
-        android:padding="@dimen/_10sdp"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:textAlignment="center"
-        android:text="Enter number if it won't scan" />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/grey" />
     <TextView
         android:textSize="18sp"
         android:textStyle="bold"
         android:textColor="@color/red"
-        android:padding="@dimen/_10sdp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:id="@+id/txt_shopper"
         android:textAlignment="center"
         android:text="text" />
-    <View
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:background="@color/grey" />
+
 
 </LinearLayout>-->

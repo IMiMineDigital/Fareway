@@ -96,6 +96,7 @@ public class SavingFw extends AppCompatActivity {
                                         message= root.getJSONArray("message");
                                         //fetchProduct();
                                         for (int i = 0; i < message.length(); i++) {
+
                                             tv_pty_lbl.setText(message.getJSONObject(i).names().getString(0).replace("PersonalDealSaving","My Personal Deals"));
                                             tv_pty.setText("$"+message.getJSONObject(i).getString("PersonalDealSaving"));
                                             tv_tyc_lbl.setText(message.getJSONObject(i).names().getString(1).replace("CouponSaving","Digital Coupons"));
@@ -104,6 +105,15 @@ public class SavingFw extends AppCompatActivity {
                                             tv_pc.setText("$"+message.getJSONObject(i).getString("TPRSaving"));
                                             tv_total_save_lbl.setText(message.getJSONObject(i).names().getString(3).replace("TotalSaving","Total Savings"));
                                             tv_total_save.setText("$"+message.getJSONObject(i).getString("TotalSaving"));
+                                            if (message.getJSONObject(i).getString("PersonalDealSaving").equalsIgnoreCase("")){
+                                                tv_pty.setText("$0.00");
+                                            }
+                                            if (message.getJSONObject(i).getString("CouponSaving").equalsIgnoreCase("")){
+                                                tv_tyc.setText("$0.00");
+                                            }
+                                            if (message.getJSONObject(i).getString("TotalSaving").equalsIgnoreCase("")){
+                                                tv_total_save.setText("$0.00");
+                                            }
 
                                         }
                                     }else  if (root.getString("errorcode").equals("400")){

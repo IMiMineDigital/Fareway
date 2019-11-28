@@ -118,6 +118,7 @@
                 android:layout_height="wrap_content" />
 
             <TextView
+                android:ellipsize="end"
                 android:gravity="center|left"
                 android:layout_gravity="center"
                 android:id="@+id/tv_location_title"
@@ -129,9 +130,10 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:text=""
-                android:lines="2" />
+                android:lines="1" />
 
             <View
+                android:visibility="gone"
                 android:layout_width="1dp"
                 android:layout_height="20dp"
                 android:layout_gravity="center"
@@ -140,6 +142,7 @@
                 android:layout_marginLeft="5dp"/>
 
             <TextView
+                android:visibility="gone"
                 android:id="@+id/change_store"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
