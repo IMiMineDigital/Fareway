@@ -237,6 +237,7 @@
     <string name="update">Update</string>
     <string name="error_msg1">You must enter your location.</string>
     <string name="error_msg2">Please enter valid Zip Code or City, State.</string>
+    <string name="error_msg3">Please select your preferred store</string>
     <!--google address api key-->
     <string name="api_key">AIzaSyBl0wAaoHnYe2EN5AJWiT0t2QlkgWIlnvM</string>
 </resources>

@@ -117,6 +117,7 @@ import com.fareway.model.Product;
 import com.fareway.model.RelatedItem;
 import com.fareway.model.Shopping;
 import com.fareway.model.Store;
+import com.fareway.model.UpdateStore;
 import com.fareway.utility.AppUtilFw;
 import com.fareway.utility.ConnectivityReceiver;
 import com.fareway.utility.Constant;
@@ -161,6 +162,7 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -730,12 +732,16 @@ public class MainFwActivity extends AppCompatActivity
             String selectedStore = Constant.SELECT_STORE;
             List<String> dropDownList = new ArrayList<>();
             ArrayAdapter<String> dataAdapter;
+            List<Store.Message> messages = new ArrayList<>();
+            List<String> storeIds = new ArrayList<>();
+            String storeId = null;
 
             @Override
             public void onClick(View v) {
                 Window window = changeStorePopup.getWindow();
                 window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 dropDownList.add(Constant.SELECT_STORE);
+                storeIds.add("0");
 //                WindowManager.LayoutParams wlp = window.getAttributes();
 //                wlp.gravity = Gravity.RIGHT | Gravity.TOP;
 //                wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
@@ -758,6 +764,8 @@ public class MainFwActivity extends AppCompatActivity
                     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
                         selectedStore = dropDownList.get(position);
                         Log.d(TAG, " Selected Store >> " + selectedStore);
+                        Log.d(TAG, "Store Id >> " + storeIds.get(position));
+                        storeId = storeIds.get(position);
                         //Toast.makeText(MainFwActivity.this, selectedStore, Toast.LENGTH_SHORT).show();
                     }
 
@@ -820,20 +828,21 @@ public class MainFwActivity extends AppCompatActivity
                                             return;
                                         }
                                         errorMsgTxt2.setVisibility(View.GONE);
-                                        List<Store.Message> messages = store.getMessage();
+                                        messages = store.getMessage();
                                         for (Store.Message msg : messages) {
                                             String distance = msg.getDistance();
-                                            Float litersOfPetrol=Float.parseFloat(distance);
+                                            Float dis = Float.parseFloat(distance);
                                             DecimalFormat df = new DecimalFormat("0.00");
                                             df.setMaximumFractionDigits(2);
-                                            distance = df.format(litersOfPetrol);
-
+                                            distance = df.format(dis);
                                             String address = msg.getStoreAddress() + "," +msg.getStoreCity() + "," +
                                                     msg.getStoreState() + "(" + distance + " miles)";
                                             dropDownList.add(address);
+                                            storeIds.add(msg.getStoreID());
                                         }
                                         storeDropDown.setEnabled(true);
                                         dataAdapter.notifyDataSetChanged();
+                                        updateBtn.setEnabled(true);
                                     }
                                 }, new Response.ErrorListener() {
                                     @Override
@@ -863,7 +872,7 @@ public class MainFwActivity extends AppCompatActivity
                                     Log.d(TAG, " Req Header >> " + findStoreReq.getHeaders());
                                     mQueue.add(findStoreReq);
                                 } catch (Exception e) {
-                                    e.printStackTrace();
+                                    Log.d(TAG, " Exception >> " + e.getMessage());
                                 }
                             }
                         }, new Response.ErrorListener() {
@@ -875,14 +884,61 @@ public class MainFwActivity extends AppCompatActivity
 
                             }
                         });
-                        mQueue.add(request);
-
+                        try {
+                            mQueue.add(request);
+                        } catch (Exception e) {
+                            Log.d(TAG, " Exception >> " + e.getMessage());
+                        }
                     }
                 });
                 updateBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        //TODO update store
+                        if ("0".equalsIgnoreCase(storeId)) {
+                            errorMsgTxt2.setText(getResources().getString(R.string.error_msg3));
+                            errorMsgTxt2.setVisibility(View.VISIBLE);
+                            return;
+                        }
+                        StringRequest updateReq = new StringRequest(Request.Method.POST,
+                                Constant.UPDATE_STORE + appUtil.getPrefrence("ShopperID") + "&StoreId=" + storeId,
+                                new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        Log.d(TAG, " Update api response >> " + response.toString());
+                                        UpdateStore updateStore = new GsonBuilder().create().fromJson(response, UpdateStore.class);
+                                        if (Constant.ERRORCODE.equalsIgnoreCase(updateStore.getErrorcode())) {
+                                            Log.d(TAG, ">> Change store successfully");
+                                        } else {
+                                            Log.d(TAG, ">> Change store Response code " + updateStore.getErrorcode());
+                                        }
+                                    }
+                                }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d(TAG, " Error in update store " + error.getMessage());
+                            }
+                        }){
+                            @Override
+                            public String getBodyContentType() {
+                                return "application/x-www-form-urlencoded";
+                            }
+                            @Override
+                            public Map<String, String> getHeaders() throws AuthFailureError {
+                                Map<String, String> params = new HashMap<String, String>();
+                                params.put("Content-Type", "application/x-www-form-urlencoded");
+                                params.put("Authorization", appUtil.getPrefrence("token_type") + " " + appUtil.getPrefrence("access_token"));
+                                return params;
+                            }
+                        };
+                        RetryPolicy policy = new DefaultRetryPolicy(5000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                        updateReq.setRetryPolicy(policy);
+                        try {
+                            mQueue.add(updateReq);
+                        } catch (Exception e) {
+                            Log.d(TAG, " Exception >> " + e.getMessage());
+                        }
                         changeStorePopup.dismiss();
 
                     }

@@ -55,6 +55,7 @@ public class Constant {
     public static final String SELECT_STORE = "--Select Preferred Store";
     public static final String STATUS = "OK";
     public static final String ERRORCODE = "0";
+    public static final String UPDATE_STORE = "https://fwstagingapi.immdemo.net/api/v1/Account/cirularMemberUpdateStore?ShopperID=";
 
 
 
