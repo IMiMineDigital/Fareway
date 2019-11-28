@@ -757,7 +757,7 @@ public class MainFwActivity extends AppCompatActivity
                 storeDropDown = changeStorePopup.findViewById(R.id.store_spinner);
                 storeDropDown.setEnabled(false);
                 dataAdapter = new ArrayAdapter<String>(MainFwActivity.this,
-                        android.R.layout.simple_spinner_item, dropDownList);
+                        R.layout.change_store_spinner_item, dropDownList);
                 storeDropDown.setAdapter(dataAdapter);
                 storeDropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
@@ -769,9 +769,11 @@ public class MainFwActivity extends AppCompatActivity
                         //Toast.makeText(MainFwActivity.this, selectedStore, Toast.LENGTH_SHORT).show();
                     }
 
+
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) { }
                 });
+
                 closePopUp.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
