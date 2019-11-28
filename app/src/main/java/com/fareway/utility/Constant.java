@@ -49,6 +49,13 @@ public class Constant {
 
     public static final String MEMBERID="memberid";
 
+    //Related to change store
+    public static final String GEOCODER_API = "https://maps.googleapis.com/maps/api/geocode/json?address=";
+    public static final String FINDSTORE = "https://fwstagingapi.immdemo.net/api/v1/Account/StoresByCurrentLocation?UserCurrentLatitude=";
+    public static final String SELECT_STORE = "--Select Preferred Store";
+    public static final String STATUS = "OK";
+    public static final String ERRORCODE = "0";
+
 
 
 }

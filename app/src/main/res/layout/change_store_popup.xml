@@ -38,10 +38,10 @@
             android:id="@+id/error_msg"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="jklhjkljh"
             android:textColor="@color/colorAccent"
             android:layout_below="@id/main_title"
-            android:padding="10dp"
+            android:layout_marginLeft="10dp"
+            android:text="@string/error_msg1"
             android:visibility="gone"/>
 
         <RelativeLayout
@@ -58,8 +58,7 @@
                 android:layout_height="wrap_content"
                 android:hint="@string/zip_cod"
                 android:layout_centerVertical="true"
-                android:gravity="center"
-                android:inputType="number"
+                android:inputType="text"
                 android:background="@drawable/edit_text_background"/>
 
             <Button
@@ -75,14 +74,22 @@
 
         </RelativeLayout>
 
+        <TextView
+            android:id="@+id/error_msg2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/colorAccent"
+            android:layout_below="@id/store_layout"
+            android:layout_marginLeft="10dp"
+            android:visibility="visible"/>
         <Spinner
             android:id="@+id/store_spinner"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/store_layout"/>
+            android:layout_below="@id/error_msg2"/>
 
         <Button
-            android:id="@+id/update"
+            android:id="@+id/update_btn"
             android:layout_width="wrap_content"
             android:layout_height="40dp"
             android:text="@string/update"
