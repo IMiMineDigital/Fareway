@@ -233,7 +233,7 @@
     <!--change store-->
     <string name="change_store"><b><u>Change</u></b></string>
     <string name="change_store_title"><b>Change Store</b></string>
-    <string name="zip_cod">Zip Code or City, State</string>
+    <string name="zip_cod"><font size="15">Zip Code or City, State</font></string>
     <string name="find">Find</string>
     <string name="update">Update</string>
     <string name="error_msg1">You must enter your location.</string>

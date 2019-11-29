@@ -289,6 +289,7 @@ public class MainFwActivity extends AppCompatActivity
     private TextView changeStore;
     private boolean isMyFarewayList = false;
     private Dialog changeStorePopup;
+    private PopupWindow window;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -738,26 +739,39 @@ public class MainFwActivity extends AppCompatActivity
 
             @Override
             public void onClick(View v) {
-                Window window = changeStorePopup.getWindow();
+                LayoutInflater inflater = (LayoutInflater) MainFwActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View layout = inflater.inflate(R.layout.change_store_popup, null);
+                window = new PopupWindow(MainFwActivity.this);
+                window.setWidth(WindowManager.LayoutParams.MATCH_PARENT);
+                window.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+                window.setContentView(layout);
                 window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                window.setOutsideTouchable(false);
+                window.setFocusable(true);
+                window.showAtLocation(layout, Gravity.NO_GRAVITY, 0, 00);
                 dropDownList.add(Constant.SELECT_STORE);
                 storeIds.add("0");
-//                WindowManager.LayoutParams wlp = window.getAttributes();
-//                wlp.gravity = Gravity.RIGHT | Gravity.TOP;
-//                wlp.flags &= ~WindowManager.LayoutParams.FLAG_DIM_BEHIND;
-//                window.setAttributes(wlp);
+                //window.showAtLocation(layout, 17, 100, 100);
+                /*Window window = changeStorePopup.getWindow();
+                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                WindowManager.LayoutParams wlp = window.getAttributes();
+                wlp.gravity = Gravity.RIGHT | Gravity.END;
+                wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                wlp.flags = WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
+                window.setAttributes(wlp);*/
                 changeStorePopup.setContentView(R.layout.change_store_popup);
-                closePopUp = changeStorePopup.findViewById(R.id.close_icon);
-                zipCodeEdt = changeStorePopup.findViewById(R.id.zip_code_edt);
-                findBtn = changeStorePopup.findViewById(R.id.find_btn);
-                updateBtn = changeStorePopup.findViewById(R.id.update_btn);
+                closePopUp = layout.findViewById(R.id.close_icon);
+                zipCodeEdt = layout.findViewById(R.id.zip_code_edt);
+                findBtn = layout.findViewById(R.id.find_btn);
+                updateBtn = layout.findViewById(R.id.update_btn);
                 updateBtn.setEnabled(false);
-                errorMsgTxt1 = changeStorePopup.findViewById(R.id.error_msg);
-                errorMsgTxt2 = changeStorePopup.findViewById(R.id.error_msg2);
-                storeDropDown = changeStorePopup.findViewById(R.id.store_spinner);
+                errorMsgTxt1 = layout.findViewById(R.id.error_msg);
+                errorMsgTxt2 = layout.findViewById(R.id.error_msg2);
+                storeDropDown = layout.findViewById(R.id.store_spinner);
                 storeDropDown.setEnabled(false);
                 dataAdapter = new ArrayAdapter<String>(MainFwActivity.this,
                         R.layout.change_store_spinner_item, dropDownList);
+                dataAdapter.setDropDownViewResource(R.layout.change_store_spinner_item);
                 storeDropDown.setAdapter(dataAdapter);
                 storeDropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
                     @Override
@@ -766,9 +780,7 @@ public class MainFwActivity extends AppCompatActivity
                         Log.d(TAG, " Selected Store >> " + selectedStore);
                         Log.d(TAG, "Store Id >> " + storeIds.get(position));
                         storeId = storeIds.get(position);
-                        //Toast.makeText(MainFwActivity.this, selectedStore, Toast.LENGTH_SHORT).show();
                     }
-
 
                     @Override
                     public void onNothingSelected(AdapterView<?> parent) { }
@@ -777,7 +789,7 @@ public class MainFwActivity extends AppCompatActivity
                 closePopUp.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        changeStorePopup.dismiss();
+                        window.dismiss();
                     }
                 });
                 findBtn.setOnClickListener(new View.OnClickListener() {
@@ -788,6 +800,11 @@ public class MainFwActivity extends AppCompatActivity
                             errorMsgTxt1.setVisibility(View.VISIBLE);
                             return;
                         }
+                        dropDownList.clear();
+                        dataAdapter.clear();
+                        dropDownList.add("Locating store near you");
+                        dataAdapter.addAll(dropDownList);
+                        storeDropDown.setAdapter(dataAdapter);
                         String API_KEY = getResources().getString(R.string.api_key);
                         StringRequest request = new StringRequest(Request.Method.GET, Constant.GEOCODER_API + address + "&key=" + API_KEY, new Response.Listener<String>() {
                             @Override
@@ -797,6 +814,11 @@ public class MainFwActivity extends AppCompatActivity
                                 if (! Constant.STATUS.equalsIgnoreCase(geocoding.getStatus())) {
                                     errorMsgTxt1.setVisibility(View.VISIBLE);
                                     errorMsgTxt1.setText(getResources().getString(R.string.error_msg2));
+                                    dropDownList.clear();
+                                    dataAdapter.clear();
+                                    dropDownList.add(Constant.SELECT_STORE);
+                                    dataAdapter.addAll(dropDownList);
+                                    storeDropDown.setAdapter(dataAdapter);
                                     return;
                                 }
                                 errorMsgTxt1.setVisibility(View.GONE);
@@ -827,10 +849,17 @@ public class MainFwActivity extends AppCompatActivity
                                             Log.d(TAG, ">> Something went wrong");
                                             errorMsgTxt2.setVisibility(View.VISIBLE);
                                             errorMsgTxt2.setText("Some thing went wrong");
+                                            dropDownList.clear();
+                                            dataAdapter.clear();
+                                            dropDownList.add(Constant.SELECT_STORE);
+                                            dataAdapter.addAll(dropDownList);
+                                            storeDropDown.setAdapter(dataAdapter);
                                             return;
                                         }
                                         errorMsgTxt2.setVisibility(View.GONE);
                                         messages = store.getMessage();
+                                        dropDownList.clear();
+                                        dropDownList.add(Constant.SELECT_STORE);
                                         for (Store.Message msg : messages) {
                                             String distance = msg.getDistance();
                                             Float dis = Float.parseFloat(distance);
@@ -850,6 +879,11 @@ public class MainFwActivity extends AppCompatActivity
                                     @Override
                                     public void onErrorResponse(VolleyError error) {
                                         Log.d(TAG, " >> ERROR in Store Api"+ error.getMessage());
+                                        dropDownList.clear();
+                                        dataAdapter.clear();
+                                        dropDownList.add(Constant.SELECT_STORE);
+                                        dataAdapter.addAll(dropDownList);
+                                        storeDropDown.setAdapter(dataAdapter);
                                     }
                                 }) {
 
@@ -882,6 +916,11 @@ public class MainFwActivity extends AppCompatActivity
                             public void onErrorResponse(VolleyError error) {
                                 errorMsgTxt2.setVisibility(View.VISIBLE);
                                 errorMsgTxt2.setText(error.getMessage());
+                                dropDownList.clear();
+                                dataAdapter.clear();
+                                dropDownList.add(Constant.SELECT_STORE);
+                                dataAdapter.addAll(dropDownList);
+                                storeDropDown.setAdapter(dataAdapter);
                                 Log.d(TAG, " >> ERROR "+ error.getLocalizedMessage());
 
                             }
@@ -946,10 +985,11 @@ public class MainFwActivity extends AppCompatActivity
 
                     }
                 });
-                changeStorePopup.show();
+                //changeStorePopup.show();*/
             }
         });
     }
+
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {
