@@ -231,7 +231,8 @@
     <string name="add_ofr">Additional Offer</string>
 
     <!--change store-->
-    <string name="change_store"><b>Change</b></string>
+    <string name="change_store"><b><u>Change</u></b></string>
+    <string name="change_store_title"><b>Change Store</b></string>
     <string name="zip_cod">Zip Code or City, State</string>
     <string name="find">Find</string>
     <string name="update">Update</string>
