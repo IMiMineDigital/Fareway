@@ -747,6 +747,7 @@ public class MainFwActivity extends AppCompatActivity
                 window.setOutsideTouchable(false);
                 window.setFocusable(true);
                 window.showAtLocation(layout, Gravity.NO_GRAVITY, 0, 0);
+                dropDownList.clear();
                 dropDownList.add(Constant.SELECT_STORE);
                 storeIds.add("0");
                 //window.showAtLocation(layout, 17, 100, 100);
@@ -754,6 +755,7 @@ public class MainFwActivity extends AppCompatActivity
                 window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 WindowManager.LayoutParams wlp = window.getAttributes();
                 wlp.gravity = Gravity.RIGHT | Gravity.END;
+
                 wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
                 wlp.flags = WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
                 window.setAttributes(wlp);*/
@@ -799,10 +801,11 @@ public class MainFwActivity extends AppCompatActivity
                             return;
                         }
                         dropDownList.clear();
-                        dataAdapter.clear();
+                        //dataAdapter.clear();
                         dropDownList.add("Locating store near you");
-                        dataAdapter.addAll(dropDownList);
-                        storeDropDown.setAdapter(dataAdapter);
+                        //dataAdapter.addAll(dropDownList);
+                        //storeDropDown.setAdapter(dataAdapter);
+                        dataAdapter.notifyDataSetChanged();
                         String API_KEY = getResources().getString(R.string.api_key);
                         StringRequest request = new StringRequest(Request.Method.GET, Constant.GEOCODER_API + address + "&key=" + API_KEY, new Response.Listener<String>() {
                             @Override
@@ -812,11 +815,14 @@ public class MainFwActivity extends AppCompatActivity
                                 if (! Constant.STATUS.equalsIgnoreCase(geocoding.getStatus())) {
                                     errorMsgTxt1.setVisibility(View.VISIBLE);
                                     errorMsgTxt1.setText(getResources().getString(R.string.error_msg2));
-                                    dropDownList.clear();
+                                    //dropDownList.clear();
                                     dataAdapter.clear();
+                                    dropDownList.clear();
                                     dropDownList.add(Constant.SELECT_STORE);
-                                    dataAdapter.addAll(dropDownList);
-                                    storeDropDown.setAdapter(dataAdapter);
+                                    dataAdapter.notifyDataSetChanged();
+
+                                    //dataAdapter.addAll(dropDownList);
+                                    //storeDropDown.setAdapter(dataAdapter);
                                     return;
                                 }
                                 errorMsgTxt1.setVisibility(View.GONE);
@@ -857,7 +863,7 @@ public class MainFwActivity extends AppCompatActivity
                                         errorMsgTxt2.setVisibility(View.GONE);
                                         messages = store.getMessage();
                                         dropDownList.clear();
-                                        dataAdapter.clear();
+                                        //dataAdapter.clear();
                                         dropDownList.add(Constant.SELECT_STORE);
                                         for (Store.Message msg : messages) {
                                             String distance = msg.getDistance();
@@ -870,9 +876,9 @@ public class MainFwActivity extends AppCompatActivity
                                             dropDownList.add(address);
                                             storeIds.add(msg.getStoreID());
                                         }
-                                        storeDropDown.setEnabled(true);
-                                        dataAdapter.addAll(dropDownList);
+                                        //dataAdapter.addAll(dropDownList);
                                         //storeDropDown.setAdapter(dataAdapter);
+                                        storeDropDown.setEnabled(true);
                                         dataAdapter.notifyDataSetChanged();
                                         updateBtn.setEnabled(true);
                                     }
@@ -982,6 +988,8 @@ public class MainFwActivity extends AppCompatActivity
                             Log.d(TAG, " Exception >> " + e.getMessage());
                         }
                         window.dismiss();
+                        couponTile=true;
+                        pdView=true;
                         startActivity(getIntent());
                     }
                 });
