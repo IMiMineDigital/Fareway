@@ -288,7 +288,6 @@ public class MainFwActivity extends AppCompatActivity
 
     private TextView changeStore;
     private boolean isMyFarewayList = false;
-    private Dialog changeStorePopup;
     private PopupWindow window;
 
     @Override
@@ -296,7 +295,6 @@ public class MainFwActivity extends AppCompatActivity
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_fw);
         activity = MainFwActivity.this;
-        changeStorePopup = new Dialog(this);
         mQueue = FarewayApplication.getmInstance(this).getmRequestQueue();
         appUtil = new AppUtilFw(activity);
         userAlertDialog = new UserAlertDialog(activity);
@@ -748,7 +746,7 @@ public class MainFwActivity extends AppCompatActivity
                 window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 window.setOutsideTouchable(false);
                 window.setFocusable(true);
-                window.showAtLocation(layout, Gravity.NO_GRAVITY, 0, 00);
+                window.showAtLocation(layout, Gravity.NO_GRAVITY, 0, 0);
                 dropDownList.add(Constant.SELECT_STORE);
                 storeIds.add("0");
                 //window.showAtLocation(layout, 17, 100, 100);
@@ -759,7 +757,7 @@ public class MainFwActivity extends AppCompatActivity
                 wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
                 wlp.flags = WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
                 window.setAttributes(wlp);*/
-                changeStorePopup.setContentView(R.layout.change_store_popup);
+                //changeStorePopup.setContentView(R.layout.change_store_popup);
                 closePopUp = layout.findViewById(R.id.close_icon);
                 zipCodeEdt = layout.findViewById(R.id.zip_code_edt);
                 findBtn = layout.findViewById(R.id.find_btn);
@@ -859,6 +857,7 @@ public class MainFwActivity extends AppCompatActivity
                                         errorMsgTxt2.setVisibility(View.GONE);
                                         messages = store.getMessage();
                                         dropDownList.clear();
+                                        dataAdapter.clear();
                                         dropDownList.add(Constant.SELECT_STORE);
                                         for (Store.Message msg : messages) {
                                             String distance = msg.getDistance();
@@ -872,6 +871,8 @@ public class MainFwActivity extends AppCompatActivity
                                             storeIds.add(msg.getStoreID());
                                         }
                                         storeDropDown.setEnabled(true);
+                                        dataAdapter.addAll(dropDownList);
+                                        //storeDropDown.setAdapter(dataAdapter);
                                         dataAdapter.notifyDataSetChanged();
                                         updateBtn.setEnabled(true);
                                     }
@@ -980,12 +981,10 @@ public class MainFwActivity extends AppCompatActivity
                         } catch (Exception e) {
                             Log.d(TAG, " Exception >> " + e.getMessage());
                         }
-                        changeStorePopup.dismiss();
+                        window.dismiss();
                         startActivity(getIntent());
-
                     }
                 });
-                //changeStorePopup.show();*/
             }
         });
     }
