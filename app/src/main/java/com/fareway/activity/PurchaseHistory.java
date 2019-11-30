@@ -252,7 +252,7 @@ public class PurchaseHistory extends AppCompatActivity implements PurchaseHistor
     @Override
     public void onProductSelected(final Purchase purchase) {
 
-        Toast.makeText(getApplicationContext(), "Selected: " + purchase.getPurchasedate(), Toast.LENGTH_SHORT).show();
+        //Toast.makeText(getApplicationContext(), "Selected: " + purchase.getPurchasedate(), Toast.LENGTH_SHORT).show();
         try {
             DecimalFormat dF = new DecimalFormat("00.00");
             Number num = dF.parse(purchase.getTotalamount());
