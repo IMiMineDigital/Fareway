@@ -935,8 +935,14 @@ public class MainFwActivity extends AppCompatActivity
                         if ("0".equalsIgnoreCase(storeId)) {
                             errorMsgTxt2.setText(getResources().getString(R.string.error_msg3));
                             errorMsgTxt2.setVisibility(View.VISIBLE);
+                            progressDialog = new ProgressDialog(activity);
+                            progressDialog.setMessage("Processing");
+                            progressDialog.show();
                             return;
                         }
+                        progressDialog = new ProgressDialog(activity);
+                        progressDialog.setMessage("Processing");
+                        progressDialog.show();
                         StringRequest updateReq = new StringRequest(Request.Method.POST,
                                 Constant.UPDATE_STORE + appUtil.getPrefrence("ShopperID") + "&StoreId=" + storeId,
                                 new Response.Listener<String>() {
@@ -946,8 +952,18 @@ public class MainFwActivity extends AppCompatActivity
                                         UpdateStore updateStore = new GsonBuilder().create().fromJson(response, UpdateStore.class);
                                         if (Constant.ERRORCODE.equalsIgnoreCase(updateStore.getErrorcode())) {
                                             Log.d(TAG, ">> Change store successfully");
+                                            progressDialog.dismiss();
+                                            window.dismiss();
+                                            couponTile=true;
+                                            pdView=true;
+                                            startActivity(getIntent());
                                         } else {
                                             Log.d(TAG, ">> Change store Response code " + updateStore.getErrorcode());
+                                            window.dismiss();
+                                            progressDialog.dismiss();
+                                            couponTile=true;
+                                            pdView=true;
+                                            startActivity(getIntent());
                                         }
                                     }
                                 }, new Response.ErrorListener() {
@@ -977,10 +993,7 @@ public class MainFwActivity extends AppCompatActivity
                         } catch (Exception e) {
                             Log.d(TAG, " Exception >> " + e.getMessage());
                         }
-                        window.dismiss();
-                        couponTile=true;
-                        pdView=true;
-                        startActivity(getIntent());
+
                     }
                 });
             }
@@ -14652,7 +14665,7 @@ public class MainFwActivity extends AppCompatActivity
                 // progressDialog.setMessage("Processing");
                 //progressDialog.show();
 
-                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|7.9",
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|8.0",
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
