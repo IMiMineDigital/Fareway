@@ -259,6 +259,7 @@ public class PurchaseHistory extends AppCompatActivity implements PurchaseHistor
 
             Intent i = new Intent(PurchaseHistory.this, PurchaseHistoryDetail.class);
         i.putExtra("PURCHASEID",purchase.getPurchaseid());
+        i.putExtra("REMAINAMOUTNT",purchase.getRemainamount());
         i.putExtra("PURCHASEDATE",purchase.getPurchasedate());
         i.putExtra("PURCHASESTORELOCATION",purchase.getStorelocation());
         i.putExtra("PURCHASETOTALAMOUNT",new DecimalFormat("##.##").format(num));

@@ -84,6 +84,7 @@ public class PurchaseHistoryDetail extends AppCompatActivity {
         tv_header_bar.setText(getIntent().getExtras().getString("PURCHASEDATE"));
         tv_header_location.setText(getIntent().getExtras().getString("PURCHASESTORELOCATION"));
         tv_header_total_price.setText("$"+getIntent().getExtras().getString("PURCHASETOTALAMOUNT"));
+        tv_bottom_bar2.setText("$"+getIntent().getExtras().getString("REMAINAMOUTNT"));
 
         purchaseArrayList = new ArrayList<>();
         rv_purchase_history = (RecyclerView) findViewById(R.id.rv_purchase_history);
@@ -123,7 +124,7 @@ public class PurchaseHistoryDetail extends AppCompatActivity {
                                         purchasemessage= root.getJSONArray("purchasemessage");
                                         for (int i = 0; i < 1; i++) {
                                             tv_bottom_bar1.setText(purchasemessage.getJSONObject(i).getString("totalquantity"));
-                                            tv_bottom_bar2.setText("$"+purchasemessage.getJSONObject(i).getString("remainamount"));
+                                            //tv_bottom_bar2.setText("$"+purchasemessage.getJSONObject(i).getString("remainamount"));
                                             tv_bottom_bar3.setText(purchasemessage.getJSONObject(i).getString("totalamount"));
                                         }
 

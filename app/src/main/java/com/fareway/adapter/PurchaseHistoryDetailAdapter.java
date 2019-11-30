@@ -70,15 +70,17 @@ public class PurchaseHistoryDetailAdapter extends RecyclerView.Adapter<PurchaseH
         //Log.i("purchase", String.valueOf(purchase.getStorelocation()));
             holder.tv_item_description.setText(purchase.getvDescription()+"\nUPC:"+purchase.getvUPCCode());
             holder.tv_qty.setText(purchase.getiQuantity());
-
-        try {
+        float floatSubsavingamount = Float.parseFloat(purchase.getSubsavingamount()+"f");
+        String formattedSubsavingamount = String.format("%.02f", floatSubsavingamount);
+        holder.tv_unit_price.setText("$"+formattedSubsavingamount);
+        /*try {
             DecimalFormat dF = new DecimalFormat("00.00");
             Number num = dF.parse(purchase.getSubsavingamount());
             holder.tv_unit_price.setText("$" + new DecimalFormat("##.##").format(num));
 
         } catch (Exception e) {
 
-        }
+        }*/
 
         holder.tv_total_price.setText("$"+purchase.getSubtotalamount());
 

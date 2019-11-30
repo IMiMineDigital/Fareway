@@ -34,9 +34,12 @@
                 android:layout_height="wrap_content"
                 android:orientation="vertical">
                 <TextView
-                    android:textSize="@dimen/_10sdp"
+                    android:paddingLeft="10dp"
+                    android:paddingRight="10dp"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="2dp"
+                    android:textSize="10sp"
                     android:textColor="@color/white"
-                    android:padding="@dimen/_2sdp"
                     android:background="@color/red"
                     android:id="@+id/tv_coupon_flag"
                     android:layout_width="wrap_content"

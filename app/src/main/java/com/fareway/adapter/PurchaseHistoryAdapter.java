@@ -105,12 +105,13 @@ public class PurchaseHistoryAdapter extends RecyclerView.Adapter<PurchaseHistory
         holder.tv_location.setText(purchase.getStorelocation());
 
         try {
-            DecimalFormat dF = new DecimalFormat("00.00");
-            Number num = dF.parse(purchase.getTotalamount());
+            /*DecimalFormat dF = new DecimalFormat("00.00");
             Number num2 = dF.parse(purchase.getRemainamount());
-            //holder.tv_total_spent.setText("$" + new DecimalFormat("##.##").format(num));
-            holder.tv_total_save.setText("$" + new DecimalFormat("##.##").format(num2));
+            holder.tv_total_save.setText("$" + new DecimalFormat("##.##").format(num2));*/
 
+            float floatTotalSaving = Float.parseFloat(purchase.getRemainamount()+"f");
+            String formattedTotalSaving = String.format("%.02f", floatTotalSaving);
+            holder.tv_total_save.setText("$"+formattedTotalSaving);
         } catch (Exception e) {
 
         }
