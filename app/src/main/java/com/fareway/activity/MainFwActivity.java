@@ -759,7 +759,6 @@ public class MainFwActivity extends AppCompatActivity
                 wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
                 wlp.flags = WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
                 window.setAttributes(wlp);*/
-                //changeStorePopup.setContentView(R.layout.change_store_popup);
                 closePopUp = layout.findViewById(R.id.close_icon);
                 zipCodeEdt = layout.findViewById(R.id.zip_code_edt);
                 findBtn = layout.findViewById(R.id.find_btn);
@@ -801,10 +800,7 @@ public class MainFwActivity extends AppCompatActivity
                             return;
                         }
                         dropDownList.clear();
-                        //dataAdapter.clear();
                         dropDownList.add("Locating store near you");
-                        //dataAdapter.addAll(dropDownList);
-                        //storeDropDown.setAdapter(dataAdapter);
                         dataAdapter.notifyDataSetChanged();
                         String API_KEY = getResources().getString(R.string.api_key);
                         StringRequest request = new StringRequest(Request.Method.GET, Constant.GEOCODER_API + address + "&key=" + API_KEY, new Response.Listener<String>() {
@@ -820,9 +816,6 @@ public class MainFwActivity extends AppCompatActivity
                                     dropDownList.clear();
                                     dropDownList.add(Constant.SELECT_STORE);
                                     dataAdapter.notifyDataSetChanged();
-
-                                    //dataAdapter.addAll(dropDownList);
-                                    //storeDropDown.setAdapter(dataAdapter);
                                     return;
                                 }
                                 errorMsgTxt1.setVisibility(View.GONE);
@@ -863,7 +856,6 @@ public class MainFwActivity extends AppCompatActivity
                                         errorMsgTxt2.setVisibility(View.GONE);
                                         messages = store.getMessage();
                                         dropDownList.clear();
-                                        //dataAdapter.clear();
                                         dropDownList.add(Constant.SELECT_STORE);
                                         for (Store.Message msg : messages) {
                                             String distance = msg.getDistance();
@@ -876,8 +868,6 @@ public class MainFwActivity extends AppCompatActivity
                                             dropDownList.add(address);
                                             storeIds.add(msg.getStoreID());
                                         }
-                                        //dataAdapter.addAll(dropDownList);
-                                        //storeDropDown.setAdapter(dataAdapter);
                                         storeDropDown.setEnabled(true);
                                         dataAdapter.notifyDataSetChanged();
                                         updateBtn.setEnabled(true);
