@@ -290,6 +290,10 @@ public class MainFwActivity extends AppCompatActivity
     private boolean isMyFarewayList = false;
     private PopupWindow window;
 
+    TextView tv_short_filter;
+    ImageView img_short_cross_button;
+    LinearLayout filter_label;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -298,6 +302,10 @@ public class MainFwActivity extends AppCompatActivity
         mQueue = FarewayApplication.getmInstance(this).getmRequestQueue();
         appUtil = new AppUtilFw(activity);
         userAlertDialog = new UserAlertDialog(activity);
+        tv_short_filter= findViewById(R.id.tv_short_filter);
+        img_short_cross_button= findViewById(R.id.img_short_cross_button);
+        filter_label= findViewById(R.id.filter_label);
+
         linearLayout = findViewById(R.id.linear_personal_ad_lable_title);
         changeStore = findViewById(R.id.change_store);
         offerTitle = findViewById(R.id.tv_personal_lable_title);
@@ -1893,6 +1901,7 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout0Short.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            filter_label.setVisibility(View.GONE);
                             //pdView=true;
                             //couponTile=true;
                             offferShort = false;
@@ -1916,6 +1925,8 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout1Short.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            filter_label.setVisibility(View.GONE);
+                            tv_short_filter.setText("Saving");
                             pdView = false;
                             couponTile = false;
                             offferShort = false;
@@ -1933,6 +1944,8 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout2Short.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            filter_label.setVisibility(View.GONE);
+                            tv_short_filter.setText("Offer Type");
                             offferShort = true;
                             pdView = false;
                             savingsShort = false;
@@ -1946,7 +1959,8 @@ public class MainFwActivity extends AppCompatActivity
                             linearLayout.setVisibility(View.GONE);
                         }
                     });
-                } else if (x == 3) {
+                }
+                else if (x == 3) {
                     rowLayoutShort.setVisibility(View.VISIBLE);
                     rv_items.setVisibility(View.INVISIBLE);
                     rv_category.setVisibility(View.INVISIBLE);
@@ -1955,6 +1969,7 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout0Short.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            filter_label.setVisibility(View.GONE);
                             //tmp=0;
                             pdView = false;
                             couponTile = false;
@@ -1971,6 +1986,8 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout1Short.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            filter_label.setVisibility(View.GONE);
+                            tv_short_filter.setText("Saving");
                             //tmp=0;
                             pdView = false;
                             couponTile = false;
@@ -1987,6 +2004,8 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout2Short.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            filter_label.setVisibility(View.GONE);
+                            tv_short_filter.setText("Offer Type");
                             //tmp=0;
                             pdView = false;
                             couponTile = false;
@@ -14665,12 +14684,11 @@ public class MainFwActivity extends AppCompatActivity
                 // progressDialog.setMessage("Processing");
                 //progressDialog.show();
 
-                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|8.0",
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|8.1",
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
                                 Log.i("Fareway", response.toString());
-                                Log.i("url",Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|7.6");
                                 try {
                                     JSONObject root = new JSONObject(response);
                                     root.getString("errorcode");

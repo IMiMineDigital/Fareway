@@ -80,8 +80,38 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true">-->
+    <LinearLayout
+        android:visibility="gone"
+        android:background="@color/red"
+        android:padding="4dp"
+        android:id="@+id/filter_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:padding="5dp"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Short :-"/>
+        <TextView
+            android:id="@+id/tv_short_filter"
+            android:padding="5dp"
+            android:background="@drawable/white_bg_rounded_corner"
+            android:layout_marginLeft="20dp"
+            android:textColor="@color/red"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Saving"/>
+        <ImageView
+            android:id="@+id/img_short_cross_button"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:background="@drawable/icon_cross" />
+    </LinearLayout>
 
     <LinearLayout
+        android:layout_below="@+id/filter_label"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
@@ -145,7 +175,7 @@
                 android:id="@+id/change_store"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:text="@string/change_store"
+                android:text="@string/change_store_fw"
                 android:gravity="center"
                 android:textSize="12sp"
                 android:textColor="@android:color/white"/>
