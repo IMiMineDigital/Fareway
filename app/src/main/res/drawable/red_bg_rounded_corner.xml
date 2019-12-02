@@ -6,13 +6,13 @@
     android:shape="rectangle">
     <stroke android:width="3dp"
 
-        android:color="@color/colorPrimary"/>
+        android:color="@color/buttonRed"/>
     <corners android:radius="3dp" />
     <gradient
 
-        android:startColor="@color/colorPrimary"
+        android:startColor="@color/buttonRed"
 
-        android:endColor="@color/colorPrimary"
+        android:endColor="@color/buttonRed"
 
         android:type="linear"
 
