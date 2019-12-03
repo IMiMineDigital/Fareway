@@ -101,19 +101,19 @@ public class PurchaseHistoryDetailAdapter extends RecyclerView.Adapter<PurchaseH
             holder.tv_sub_save.setText("Your Savings: $"+purchase.getRemainamount());
        /* holder.tv_total_save.setText(purchase.getRemainamount()); */
 
-    if (purchase.getImage()==""){
-        Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(holder.imv_purchase_item);
-        }else {
-        Picasso.get().load(purchase.getImage()).into(holder.imv_purchase_item);
-        }
-    if (purchase.getImage().contains("https://pty.bashas.com/webapiaccessclient/images/noimage-large.png")||purchase.getImage().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")){
+    try {
+        if (purchase.getImage().contains("https://pty.bashas.com/webapiaccessclient/images/noimage-large.png")||purchase.getImage().contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")) {
 
-        Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(holder.imv_purchase_item);
-        }else if (purchase.getImage().equalsIgnoreCase("")){
             Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(holder.imv_purchase_item);
-        }else {
+        }
+        else{
             Picasso.get().load(purchase.getImage()).into(holder.imv_purchase_item);
         }
+    }catch (Exception e){
+        Picasso.get().load("https://fwstaging.immdemo.net/web/images/GEnoimage.jpg").into(holder.imv_purchase_item);
+        e.printStackTrace();
+    }
+
 
 
     }

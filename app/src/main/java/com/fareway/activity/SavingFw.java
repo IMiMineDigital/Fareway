@@ -195,11 +195,12 @@ public class SavingFw extends AppCompatActivity {
                 progressDialog.dismiss();
 //                displayAlert();
             }
-        } else {
-            alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
-                    getString(R.string.ok),getString(R.string.alert));
-            alertDialog.show();
-            //Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
+        }
+        else {
+            /*alertDialog = userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                    getString(R.string.ok), getString(R.string.alert));
+            alertDialog.show();*/
+            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
         }
     }
 

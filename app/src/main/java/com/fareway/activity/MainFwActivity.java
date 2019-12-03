@@ -909,9 +909,15 @@ public class MainFwActivity extends AppCompatActivity
                                                 DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
                                 findStoreReq.setRetryPolicy(policy);
                                 try {
-                                    Log.d(TAG, " Req Url >> " + findStoreReq.getUrl());
-                                    Log.d(TAG, " Req Header >> " + findStoreReq.getHeaders());
-                                    mQueue.add(findStoreReq);
+                                    if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+                                        Log.d(TAG, " Req Url >> " + findStoreReq.getUrl());
+                                        Log.d(TAG, " Req Header >> " + findStoreReq.getHeaders());
+                                        mQueue.add(findStoreReq);
+
+                                    } else {
+                                        Toast.makeText(MainFwActivity.this, getResources().getString(R.string.noInternet), Toast.LENGTH_SHORT).show();
+                                    }
+
                                 } catch (Exception e) {
                                     Log.d(TAG, " Exception >> " + e.getMessage());
                                 }
@@ -931,7 +937,12 @@ public class MainFwActivity extends AppCompatActivity
                             }
                         });
                         try {
-                            mQueue.add(request);
+                            if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+                                mQueue.add(request);
+                            } else {
+                                Toast.makeText(MainFwActivity.this, getResources().getString(R.string.noInternet), Toast.LENGTH_SHORT).show();
+                            }
+
                         } catch (Exception e) {
                             Log.d(TAG, " Exception >> " + e.getMessage());
                         }
@@ -943,14 +954,16 @@ public class MainFwActivity extends AppCompatActivity
                         if ("0".equalsIgnoreCase(storeId)) {
                             errorMsgTxt2.setText(getResources().getString(R.string.error_msg3));
                             errorMsgTxt2.setVisibility(View.VISIBLE);
+                            /*progressDialog = new ProgressDialog(activity);
+                            progressDialog.setMessage("Processing");
+                            progressDialog.show();*/
+                            return;
+                        } /*else {
                             progressDialog = new ProgressDialog(activity);
                             progressDialog.setMessage("Processing");
                             progressDialog.show();
-                            return;
-                        }
-                        progressDialog = new ProgressDialog(activity);
-                        progressDialog.setMessage("Processing");
-                        progressDialog.show();
+                        }*/
+
                         StringRequest updateReq = new StringRequest(Request.Method.POST,
                                 Constant.UPDATE_STORE + appUtil.getPrefrence("ShopperID") + "&StoreId=" + storeId,
                                 new Response.Listener<String>() {
@@ -960,19 +973,26 @@ public class MainFwActivity extends AppCompatActivity
                                         UpdateStore updateStore = new GsonBuilder().create().fromJson(response, UpdateStore.class);
                                         if (Constant.ERRORCODE.equalsIgnoreCase(updateStore.getErrorcode())) {
                                             Log.d(TAG, ">> Change store successfully");
+                                            appUtil.setPrefrence("StoreId", storeId);
+                                            appUtil.setPrefrence("BackupStoreId", storeId);
+                                            appUtil.setPrefrence("StoreName",selectedStore);
                                             progressDialog.dismiss();
                                             window.dismiss();
                                             couponTile=true;
                                             pdView=true;
-                                            startActivity(getIntent());
+                                            messageLoad();
+
+                                            /*startActivity(getIntent());*/
                                         } else {
-                                            Log.d(TAG, ">> Change store Response code " + updateStore.getErrorcode());
-                                            window.dismiss();
-                                            progressDialog.dismiss();
                                             couponTile=true;
                                             pdView=true;
-                                            startActivity(getIntent());
+                                            progressDialog.dismiss();
+                                            window.dismiss();
+                                            Log.d(TAG, ">> Change store Response code " + updateStore.getErrorcode());
+
+                                            /*startActivity(getIntent());*/
                                         }
+
                                     }
                                 }, new Response.ErrorListener() {
                             @Override
@@ -998,6 +1018,9 @@ public class MainFwActivity extends AppCompatActivity
                         updateReq.setRetryPolicy(policy);
                         try {
                             mQueue.add(updateReq);
+                            progressDialog = new ProgressDialog(activity);
+                            progressDialog.setMessage("Processing");
+                            progressDialog.show();
                         } catch (Exception e) {
                             Log.d(TAG, " Exception >> " + e.getMessage());
                         }
@@ -14684,11 +14707,12 @@ public class MainFwActivity extends AppCompatActivity
                 // progressDialog.setMessage("Processing");
                 //progressDialog.show();
 
-                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|8.1",
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|8.3",
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
                                 Log.i("Fareway", response.toString());
+                                Log.i("url",Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|7.6");
                                 try {
                                     JSONObject root = new JSONObject(response);
                                     root.getString("errorcode");
@@ -14973,10 +14997,10 @@ public class MainFwActivity extends AppCompatActivity
             }
 
         } else {
-            finish();
-            alertDialog = userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+            //finish();
+            /*alertDialog = userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
                     getString(R.string.ok), getString(R.string.alert));
-            alertDialog.show();
+            alertDialog.show();*/
 //            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
         }
     }

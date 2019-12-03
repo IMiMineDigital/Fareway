@@ -131,9 +131,10 @@ public class PurchaseHistory extends AppCompatActivity implements PurchaseHistor
                     if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
                         getTokenkey();
                     } else {
-                        alertDialog = userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                        Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
+                        /*alertDialog = userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
                                 getString(R.string.ok), getString(R.string.alert));
-                        alertDialog.show();
+                        alertDialog.show();*/
                     }
 
 
@@ -144,9 +145,10 @@ public class PurchaseHistory extends AppCompatActivity implements PurchaseHistor
             if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
                 getTokenkey();
             } else {
-                alertDialog = userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                /*alertDialog = userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
                         getString(R.string.ok), getString(R.string.alert));
-                alertDialog.show();
+                alertDialog.show();*/
+                Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
             }
         }
 
@@ -235,11 +237,11 @@ public class PurchaseHistory extends AppCompatActivity implements PurchaseHistor
 //                displayAlert();
             }
         } else {
-            progressDialog.dismiss();
+
            // alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
            //         getString(R.string.ok),getString(R.string.alert));
            // alertDialog.show();
-//            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
+            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
         }
     }
 
@@ -370,10 +372,10 @@ public class PurchaseHistory extends AppCompatActivity implements PurchaseHistor
             }
 
         } else {
-            alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+            /*alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
                     getString(R.string.ok),getString(R.string.alert));
-            alertDialog.show();
-//            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
+            alertDialog.show();*/
+            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
         }
     }
 }
