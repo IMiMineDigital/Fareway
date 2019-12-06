@@ -9,13 +9,11 @@ import android.content.ActivityNotFoundException;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
-import android.content.IntentSender;
 import android.content.pm.ActivityInfo;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.Color;
-import android.graphics.Interpolator;
 import android.graphics.drawable.ColorDrawable;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -29,7 +27,6 @@ import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
-import android.provider.Settings;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
 /*
@@ -45,8 +42,6 @@ import android.support.v7.widget.helper.ItemTouchHelper;*/
 import android.text.Html;
 import android.text.Spanned;
 import android.text.format.Formatter;
-import android.transition.Explode;
-import android.transition.Transition;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -127,15 +122,9 @@ import com.fareway.utility.NetworkUtils;
 import com.fareway.utility.UserAlertDialog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
-import com.google.android.gms.common.api.Status;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResult;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
 import com.google.android.material.bottomnavigation.BottomNavigationItemView;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
@@ -149,10 +138,8 @@ import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
-import java.net.URI;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
@@ -163,7 +150,6 @@ import java.util.Comparator;
 import java.util.Date;
 import java.util.Enumeration;
 import java.util.HashMap;
-import java.util.HashSet;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -1089,35 +1075,19 @@ public class MainFwActivity extends AppCompatActivity
                                         UpdateStore updateStore = new GsonBuilder().create().fromJson(response, UpdateStore.class);
                                         if (Constant.ERRORCODE.equalsIgnoreCase(updateStore.getErrorcode())) {
                                             Log.d(TAG, ">> Change store successfully");
-                                            /*appUtil.setPrefrence("StoreId", storeId);
-                                            appUtil.setPrefrence("BackupStoreId", storeId);
-                                            appUtil.setPrefrence("StoreName",selectedStore);*/
-
-                                            /*messageLoad();*/
-
-                                            new Handler().postDelayed(new Runnable(){
-                                                @Override
-                                                public void run() {
-                                                    /* Create an Intent that will start the Menu-Activity. */
-                                                    progressDialog.dismiss();
-                                                    window.dismiss();
-                                                    couponTile=true;
-                                                    pdView=true;
-                                                    startActivity(getIntent());
-                                                }
-                                            }, 10000);
-
-
                                         } else {
-                                            couponTile=true;
-                                            pdView=true;
-                                            progressDialog.dismiss();
-                                            window.dismiss();
                                             Log.d(TAG, ">> Change store Response code " + updateStore.getErrorcode());
-
-                                            startActivity(getIntent());
                                         }
-
+                                        new Handler().postDelayed(new Runnable(){
+                                            @Override
+                                            public void run() {
+                                                window.dismiss();
+                                                couponTile = true;
+                                                pdView = true;
+                                                changeStore();
+                                                messageChangeStoreLoad();
+                                            }
+                                        }, 10000);
                                     }
                                 }, new Response.ErrorListener() {
                             @Override
@@ -1146,6 +1116,16 @@ public class MainFwActivity extends AppCompatActivity
                             progressDialog = new ProgressDialog(activity);
                             progressDialog.setMessage("Processing");
                             progressDialog.show();
+                            new Thread(new Runnable() {
+                                @Override
+                                public void run() {
+                                    try {
+                                        Thread.sleep(10000);
+                                    } catch (Exception e) {
+                                        Log.d(TAG, e.getMessage());
+                                    }
+                                }
+                            });
                         } catch (Exception e) {
                             Log.d(TAG, " Exception >> " + e.getMessage());
                         }
@@ -15162,6 +15142,96 @@ public class MainFwActivity extends AppCompatActivity
         }
 
         return capMatcher.appendTail(capBuffer).toString();
+    }
+
+    private void messageChangeStoreLoad() {
+        if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+            try {
+//                progressDialog = new ProgressDialog(activity);
+//                progressDialog.setMessage("Processing");
+//                progressDialog.show();
+//                progressDialog.setCanceledOnTouchOutside(false);
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET, Constant.WEB_URL + Constant.PRODUCTLIST + "?memberid=" + appUtil.getPrefrence("MemberId") + "&Plateform=2",
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.i("Fareway Personal Deal", response.toString());
+
+                                try {
+
+                                    JSONObject root = new JSONObject(response);
+                                    root.getString("errorcode");
+                                    Log.i("errorcode", root.getString("errorcode"));
+                                    if (root.getString("errorcode").equals("0")) {
+                                        //progressDialog.dismiss();
+                                        message = root.getJSONArray("message");
+                                        Log.i("pdlength", String.valueOf(message.length()));
+                                        if (comeFrom.equalsIgnoreCase("moreOffer")) {
+                                            // moreCouponLoad();
+                                            x = 1;
+                                        } else {
+                                            CircularmoreCouponLoad();
+                                        }
+
+
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Volley error resp", "error----" + error.getMessage());
+                        error.printStackTrace();
+                        // progressDialog.dismiss();
+                    }
+                }) {
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/x-www-form-urlencoded";
+                    }
+
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        // params.put("UserName", et_email.getText().toString().trim());
+                        // params.put("password", et_pwd.getText().toString().trim());
+                        params.put("Device", "5");
+                        return params;
+                    }
+
+                    //this is the part, that adds the header to the request
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/x-www-form-urlencoded");
+                        params.put("Authorization", appUtil.getPrefrence("token_type") + " " + appUtil.getPrefrence("access_token"));
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (5000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    // FarewayApplication.getInstance().addToRequestQueue(jsonObjectRequest);
+                    mQueue.add(jsonObjectRequest);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                // progressDialog.dismiss();
+//                displayAlert();
+            }
+        } else {
+            alertDialog = userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                    getString(R.string.ok), getString(R.string.alert));
+            alertDialog.show();
+//            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
+        }
     }
 
 }
