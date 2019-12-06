@@ -285,7 +285,7 @@ public class MainFwActivity extends AppCompatActivity
     public static TextView offerTitle;
     public static TextView tv_location_title;
 
-    public static LinearLayout linearLayout;
+    public static RelativeLayout linearLayout;
 
     private TextView changeStore;
     private boolean isMyFarewayList = false;
