@@ -28,6 +28,7 @@ import android.net.wifi.WifiManager;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.os.Handler;
 import android.provider.Settings;
 import android.speech.RecognizerIntent;
 import android.support.annotation.NonNull;
@@ -292,7 +293,15 @@ public class MainFwActivity extends AppCompatActivity
 
     TextView tv_short_filter;
     ImageView img_short_cross_button;
-    LinearLayout filter_label;
+    RelativeLayout filter_label;
+
+    TextView tv_offer_name;
+    ImageView img_offer_cross_button;
+    public static RelativeLayout filter_offer_label;
+
+    public static TextView tv_category_name;
+    public static ImageView img_category_cross_button;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -302,8 +311,122 @@ public class MainFwActivity extends AppCompatActivity
         mQueue = FarewayApplication.getmInstance(this).getmRequestQueue();
         appUtil = new AppUtilFw(activity);
         userAlertDialog = new UserAlertDialog(activity);
+        //category lable
+        tv_category_name= findViewById(R.id.tv_category_name);
+        img_category_cross_button= findViewById(R.id.img_category_cross_button);
+        img_category_cross_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (MainFwActivity.tmp==0 && MainFwActivity.searchLable==false){
+                    filter_offer_label.setVisibility(View.GONE);
+                    tv_category_name.setVisibility(View.GONE);
+                    img_category_cross_button.setVisibility(View.GONE);
+                    MainFwActivity.pdView=true;
+                    MainFwActivity.linearLayout.setVisibility(View.VISIBLE);
+                }else if (MainFwActivity.searchLable==false){
+                    tv_category_name.setVisibility(View.GONE);
+                    img_category_cross_button.setVisibility(View.GONE);
+                }
+                getDate(0);
+                categoryShort=true;
+            }
+        });
+
+        //Offer label
+        tv_offer_name= findViewById(R.id.tv_offer_name);
+        img_offer_cross_button= findViewById(R.id.img_offer_cross_button);
+        img_offer_cross_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (x==0){
+                    filter_offer_label.setVisibility(View.GONE);
+                    tv_category_name.setVisibility(View.GONE);
+                    img_category_cross_button.setVisibility(View.GONE);
+                    tv_offer_name.setVisibility(View.GONE);
+                    img_offer_cross_button.setVisibility(View.GONE);
+                    categoryShort = false;
+                    if (savingsShort == true) {
+                        pdView = false;
+                        couponTile = false;
+                        offferShort = false;
+                        linearLayout.setVisibility(View.GONE);
+                    } else if (offferShort == true) {
+                        pdView = false;
+                        couponTile = false;
+                        savingsShort = false;
+                        linearLayout.setVisibility(View.GONE);
+                    } else {
+                        pdView = true;
+                        couponTile = true;
+                        offferShort = false;
+                        linearLayout.setVisibility(View.VISIBLE);
+                    }
+
+                    tmp = 0;
+                    fetchProduct();
+                    rv_category.setVisibility(View.GONE);
+                    rowLayout.setVisibility(View.GONE);
+                    rv_items.setVisibility(View.VISIBLE);
+                    toolbar.setVisibility(View.VISIBLE);
+                }else if(x==3){
+                    tmp = 0;
+                    searchProduct();
+                    //
+                    rv_category.setVisibility(View.GONE);
+                    rowLayout.setVisibility(View.GONE);
+                    rv_items.setVisibility(View.VISIBLE);
+                    toolbar.setVisibility(View.VISIBLE);
+                }
+
+            }
+        });
+        filter_offer_label= findViewById(R.id.filter_layout);
+
+        // Short Label
         tv_short_filter= findViewById(R.id.tv_short_filter);
         img_short_cross_button= findViewById(R.id.img_short_cross_button);
+        img_short_cross_button.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (x==0){
+                    filter_label.setVisibility(View.GONE);
+                    offferShort = false;
+                    savingsShort = false;
+                    if (tmp == 0 && categoryShort == false) {
+                        pdView = true;
+                        couponTile = true;
+                        linearLayout.setVisibility(View.VISIBLE);
+                    } else {
+
+                    }
+                    fetchProduct();
+                    rv_category.setVisibility(View.GONE);
+                    rowLayoutShort.setVisibility(View.GONE);
+                    rv_items.setVisibility(View.VISIBLE);
+                    toolbar.setVisibility(View.VISIBLE);
+                }
+                else if (x==3){
+
+                    filter_offer_label.setVisibility(View.GONE);
+                    tv_category_name.setVisibility(View.GONE);
+                    img_category_cross_button.setVisibility(View.GONE);
+                    tv_offer_name.setVisibility(View.GONE);
+                    img_offer_cross_button.setVisibility(View.GONE);
+                    categoryShort = false;
+
+                    filter_label.setVisibility(View.GONE);
+                    pdView = false;
+                    couponTile = false;
+                    savingsShort = false;
+                    offferShort = false;
+                    searchProduct();
+                    rv_category.setVisibility(View.GONE);
+                    rowLayoutShort.setVisibility(View.GONE);
+                    rv_items.setVisibility(View.VISIBLE);
+                    toolbar.setVisibility(View.VISIBLE);
+                }
+            }
+        });
         filter_label= findViewById(R.id.filter_label);
 
         linearLayout = findViewById(R.id.linear_personal_ad_lable_title);
@@ -871,8 +994,8 @@ public class MainFwActivity extends AppCompatActivity
                                             DecimalFormat df = new DecimalFormat("0.00");
                                             df.setMaximumFractionDigits(2);
                                             distance = df.format(dis);
-                                            String address = msg.getStoreAddress() + "," +msg.getStoreCity() + "," +
-                                                    msg.getStoreState() + "(" + distance + " miles)";
+                                            String address = msg.getStoreAddress() + ", " +msg.getStoreCity() + ", " +
+                                                    msg.getStoreState() + " (" + distance + " miles)";
                                             dropDownList.add(address);
                                             storeIds.add(msg.getStoreID());
                                         }
@@ -954,15 +1077,8 @@ public class MainFwActivity extends AppCompatActivity
                         if ("0".equalsIgnoreCase(storeId)) {
                             errorMsgTxt2.setText(getResources().getString(R.string.error_msg3));
                             errorMsgTxt2.setVisibility(View.VISIBLE);
-                            /*progressDialog = new ProgressDialog(activity);
-                            progressDialog.setMessage("Processing");
-                            progressDialog.show();*/
                             return;
-                        } /*else {
-                            progressDialog = new ProgressDialog(activity);
-                            progressDialog.setMessage("Processing");
-                            progressDialog.show();
-                        }*/
+                        }
 
                         StringRequest updateReq = new StringRequest(Request.Method.POST,
                                 Constant.UPDATE_STORE + appUtil.getPrefrence("ShopperID") + "&StoreId=" + storeId,
@@ -973,16 +1089,25 @@ public class MainFwActivity extends AppCompatActivity
                                         UpdateStore updateStore = new GsonBuilder().create().fromJson(response, UpdateStore.class);
                                         if (Constant.ERRORCODE.equalsIgnoreCase(updateStore.getErrorcode())) {
                                             Log.d(TAG, ">> Change store successfully");
-                                            appUtil.setPrefrence("StoreId", storeId);
+                                            /*appUtil.setPrefrence("StoreId", storeId);
                                             appUtil.setPrefrence("BackupStoreId", storeId);
-                                            appUtil.setPrefrence("StoreName",selectedStore);
-                                            progressDialog.dismiss();
-                                            window.dismiss();
-                                            couponTile=true;
-                                            pdView=true;
-                                            messageLoad();
+                                            appUtil.setPrefrence("StoreName",selectedStore);*/
 
-                                            /*startActivity(getIntent());*/
+                                            /*messageLoad();*/
+
+                                            new Handler().postDelayed(new Runnable(){
+                                                @Override
+                                                public void run() {
+                                                    /* Create an Intent that will start the Menu-Activity. */
+                                                    progressDialog.dismiss();
+                                                    window.dismiss();
+                                                    couponTile=true;
+                                                    pdView=true;
+                                                    startActivity(getIntent());
+                                                }
+                                            }, 10000);
+
+
                                         } else {
                                             couponTile=true;
                                             pdView=true;
@@ -990,7 +1115,7 @@ public class MainFwActivity extends AppCompatActivity
                                             window.dismiss();
                                             Log.d(TAG, ">> Change store Response code " + updateStore.getErrorcode());
 
-                                            /*startActivity(getIntent());*/
+                                            startActivity(getIntent());
                                         }
 
                                     }
@@ -1723,6 +1848,9 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout0.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            filter_offer_label.setVisibility(View.GONE);
+                            tv_offer_name.setVisibility(View.GONE);
+                            img_offer_cross_button.setVisibility(View.GONE);
                             categoryShort = false;
                             if (savingsShort == true) {
                                 pdView = false;
@@ -1754,6 +1882,10 @@ public class MainFwActivity extends AppCompatActivity
                         public void onClick(View v) {
                             categoryShort = false;
                             linearLayout.setVisibility(View.GONE);
+                            filter_offer_label.setVisibility(View.VISIBLE);
+                            tv_offer_name.setVisibility(View.VISIBLE);
+                            img_offer_cross_button.setVisibility(View.VISIBLE);
+                            tv_offer_name.setText("My Personal Deals");
                             if (savingsShort == true) {
                                 pdView = false;
                                 couponTile = false;
@@ -1780,6 +1912,10 @@ public class MainFwActivity extends AppCompatActivity
                         public void onClick(View v) {
                             categoryShort = false;
                             linearLayout.setVisibility(View.GONE);
+                            filter_offer_label.setVisibility(View.VISIBLE);
+                            tv_offer_name.setVisibility(View.VISIBLE);
+                            img_offer_cross_button.setVisibility(View.VISIBLE);
+                            tv_offer_name.setText("Digital Coupons");
                             if (savingsShort == true) {
                                 pdView = false;
                                 couponTile = false;
@@ -1804,6 +1940,10 @@ public class MainFwActivity extends AppCompatActivity
                         public void onClick(View v) {
                             categoryShort = false;
                             linearLayout.setVisibility(View.GONE);
+                            filter_offer_label.setVisibility(View.VISIBLE);
+                            tv_offer_name.setVisibility(View.VISIBLE);
+                            img_offer_cross_button.setVisibility(View.VISIBLE);
+                            tv_offer_name.setText("Sale Items");
                             if (savingsShort == true) {
                                 pdView = false;
                                 couponTile = false;
@@ -1948,7 +2088,7 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout1Short.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            filter_label.setVisibility(View.GONE);
+                            filter_label.setVisibility(View.VISIBLE);
                             tv_short_filter.setText("Saving");
                             pdView = false;
                             couponTile = false;
@@ -1967,7 +2107,7 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout2Short.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            filter_label.setVisibility(View.GONE);
+                            filter_label.setVisibility(View.VISIBLE);
                             tv_short_filter.setText("Offer Type");
                             offferShort = true;
                             pdView = false;
@@ -2009,7 +2149,7 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout1Short.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            filter_label.setVisibility(View.GONE);
+                            filter_label.setVisibility(View.VISIBLE);
                             tv_short_filter.setText("Saving");
                             //tmp=0;
                             pdView = false;
@@ -2027,7 +2167,7 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout2Short.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            filter_label.setVisibility(View.GONE);
+                            filter_label.setVisibility(View.VISIBLE);
                             tv_short_filter.setText("Offer Type");
                             //tmp=0;
                             pdView = false;
@@ -2067,6 +2207,12 @@ public class MainFwActivity extends AppCompatActivity
                 offferShort = false;
                 savingsShort = false;
                 categoryShort=false;
+                filter_offer_label.setVisibility(View.GONE);
+                filter_label.setVisibility(View.GONE);
+                tv_category_name.setVisibility(View.GONE);
+                img_category_cross_button.setVisibility(View.GONE);
+                tv_offer_name.setVisibility(View.GONE);
+                img_offer_cross_button.setVisibility(View.GONE);
                 fetchProduct();
                 rv_category.setVisibility(View.GONE);
                 rowLayoutShort.setVisibility(View.GONE);
@@ -2126,7 +2272,8 @@ public class MainFwActivity extends AppCompatActivity
            DetaileToolbar.setVisibility(View.GONE);
            rv_items.setVisibility(View.VISIBLE);
            toolbar.setVisibility(View.VISIBLE);
-       }else {
+       }
+       else {
            finish();
        }
 
@@ -3704,6 +3851,7 @@ public class MainFwActivity extends AppCompatActivity
 
     @Override
     public void onProductSelected(final Product product) {
+
         //participate=0;
       /*  if (product.getCouponID().equalsIgnoreCase(product.getUPC())){
             liner_qty.setVisibility(View.GONE);
@@ -3728,6 +3876,7 @@ public class MainFwActivity extends AppCompatActivity
         DetaileToolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 liner_all_Varieties_activate.setVisibility(View.GONE);
                 rv_items_verite.setVisibility(View.GONE);
                 navigation.setVisibility(View.VISIBLE);

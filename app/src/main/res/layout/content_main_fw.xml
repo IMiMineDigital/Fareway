@@ -80,7 +80,174 @@
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true">-->
-    <LinearLayout
+    <!--Offer filter label-->
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/filter_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/red"
+        android:padding="3dp">
+
+        <TextView
+            android:id="@+id/filter_by"
+            android:padding="5dp"
+            android:textColor="@color/white"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:text="Filter By : "/>
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tv_offer_name"
+            android:padding="5dp"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/white_bg_rounded_corner"
+            android:textColor="@color/red"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/filter_by"
+            android:text="Personal Deal"
+            android:gravity="center"
+            android:textSize="4pt"/>
+
+        <FrameLayout
+            android:id="@+id/frame_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv_offer_name"
+            android:layout_marginLeft="-5dp">
+
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/img_offer_cross_button"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:background="@drawable/icon_cross"
+                android:layout_gravity="end"
+                />
+
+
+        </FrameLayout>
+
+        <TextView
+            android:visibility="gone"
+            android:id="@+id/tv_category_name"
+            android:padding="5dp"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/white_bg_rounded_corner"
+            android:textColor="@color/red"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/frame_view"
+            android:text="Category"
+            android:gravity="center"
+            android:textSize="4pt"/>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv_category_name"
+            android:layout_marginLeft="-5dp">
+
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/img_category_cross_button"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:background="@drawable/icon_cross"
+                android:layout_gravity="end"
+                />
+
+
+        </FrameLayout>
+
+
+
+    </RelativeLayout>
+    <!--<LinearLayout
+        android:visibility="visible"
+        android:background="@color/red"
+        android:padding="4dp"
+        android:id="@+id/filter_offer_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal">
+        <TextView
+            android:padding="5dp"
+            android:textColor="@color/white"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:text="Filter By : "/>
+        <TextView
+            android:id="@+id/tv_offer_name"
+            android:padding="5dp"
+            android:background="@drawable/white_bg_rounded_corner"
+            android:textColor="@color/red"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Personal Deal"/>
+        <ImageView
+            android:id="@+id/img_offer_cross_button"
+            android:layout_width="10dp"
+            android:layout_height="10dp"
+            android:background="@drawable/icon_cross" />
+    </LinearLayout>-->
+    <!--short label-->
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:layout_below="@+id/filter_layout"
+        android:id="@+id/filter_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/red"
+        android:padding="3dp">
+
+        <TextView
+            android:id="@+id/sort_by"
+            android:padding="5dp"
+            android:textColor="@color/white"
+            android:layout_width="80dp"
+            android:layout_height="wrap_content"
+            android:text="Sort : "/>
+        <TextView
+            android:id="@+id/tv_short_filter"
+            android:padding="5dp"
+            android:layout_marginTop="3dp"
+            android:background="@drawable/white_bg_rounded_corner"
+            android:textColor="@color/red"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/sort_by"
+            android:text="Savings"
+            android:gravity="center"
+            android:textSize="4pt"/>
+
+        <FrameLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toRightOf="@id/tv_short_filter"
+            android:layout_marginLeft="-5dp">
+
+            <ImageView
+                android:id="@+id/img_short_cross_button"
+                android:layout_width="10dp"
+                android:layout_height="10dp"
+                android:background="@drawable/icon_cross"
+                android:layout_gravity="end"
+                />
+
+
+        </FrameLayout>
+
+
+
+    </RelativeLayout>
+
+
+    <!--<LinearLayout
+        android:layout_below="@+id/filter_layout"
         android:visibility="gone"
         android:background="@color/red"
         android:padding="4dp"
@@ -91,25 +258,24 @@
         <TextView
             android:padding="5dp"
             android:textColor="@color/white"
-            android:layout_width="wrap_content"
+            android:layout_width="80dp"
             android:layout_height="wrap_content"
-            android:text="Short :-"/>
+            android:text="Sort : "/>
         <TextView
             android:id="@+id/tv_short_filter"
             android:padding="5dp"
             android:background="@drawable/white_bg_rounded_corner"
-            android:layout_marginLeft="20dp"
             android:textColor="@color/red"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="Saving"/>
         <ImageView
             android:id="@+id/img_short_cross_button"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
+            android:layout_width="15dp"
+            android:layout_height="15dp"
             android:background="@drawable/icon_cross" />
-    </LinearLayout>
-
+    </LinearLayout>-->
+    <!--personal ad label-->
     <LinearLayout
         android:layout_below="@+id/filter_label"
         android:layout_width="match_parent"
@@ -150,7 +316,7 @@
                 android:layout_gravity="center"/>
 
             <TextView
-                android:gravity="center"
+                android:gravity="left"
                 android:layout_gravity="center"
                 android:ellipsize="end"
                 android:id="@+id/tv_location_title"
@@ -186,7 +352,7 @@
                 android:text="@string/change_store_fw"
                 android:textSize="10sp"
                 android:textColor="@color/white"
-                android:gravity="center"
+                android:gravity="left"
                 android:layout_gravity="center"/>
 
 

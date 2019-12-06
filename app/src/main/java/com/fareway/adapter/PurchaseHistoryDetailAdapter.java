@@ -68,11 +68,19 @@ public class PurchaseHistoryDetailAdapter extends RecyclerView.Adapter<PurchaseH
         holder.tv_total_price.setVisibility(View.GONE);
         holder.tv_sub_save.setVisibility(View.GONE);
         //Log.i("purchase", String.valueOf(purchase.getStorelocation()));
-            holder.tv_item_description.setText(purchase.getvDescription()+"\nUPC:"+purchase.getvUPCCode());
-            holder.tv_qty.setText(purchase.getiQuantity());
+            holder.tv_item_description.setText(purchase.getvDescription()+"\nUPC: "+purchase.getvUPCCode());
+            try {
+                holder.tv_qty.setText(purchase.getiQuantity()+" "+purchase.getUOM());
+            }catch (Exception e){
+               e.printStackTrace();
+            }
+        holder.tv_unit_price.setVisibility(View.VISIBLE);
         float floatSubsavingamount = Float.parseFloat(purchase.getSubsavingamount()+"f");
         String formattedSubsavingamount = String.format("%.02f", floatSubsavingamount);
         holder.tv_unit_price.setText("$"+formattedSubsavingamount);
+        if (purchase.getSubsavingamount().equalsIgnoreCase("0.00")){
+            holder.tv_unit_price.setVisibility(View.GONE);
+        }
         /*try {
             DecimalFormat dF = new DecimalFormat("00.00");
             Number num = dF.parse(purchase.getSubsavingamount());
@@ -83,8 +91,10 @@ public class PurchaseHistoryDetailAdapter extends RecyclerView.Adapter<PurchaseH
         }*/
 
         holder.tv_total_price.setText("$"+purchase.getSubtotalamount());
+        holder.tv_coupon_flag.setVisibility(View.VISIBLE);
 
             if (purchase.getPrimaryoffertypeid()==1){
+                holder.tv_coupon_flag.setVisibility(View.GONE);
                 holder.tv_coupon_flag.setBackgroundColor(mContext.getResources().getColor(R.color.blue));
                 holder.tv_coupon_flag.setText("SALE ITEM");
             }else if (purchase.getPrimaryoffertypeid()==2){

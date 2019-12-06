@@ -12,6 +12,7 @@ public class PurchaseModelHistory {
     private String remainamount;
     private int PrimaryOfferTypeId;
     private int primaryoffertypeid;
+    private String UOM;
 
     public String getvDescription() {
         return vDescription;
@@ -99,5 +100,13 @@ public class PurchaseModelHistory {
 
     public void setPrimaryoffertypeid(int primaryoffertypeid) {
         this.primaryoffertypeid = primaryoffertypeid;
+    }
+
+    public String getUOM() {
+        return UOM;
+    }
+
+    public void setUOM(String UOM) {
+        this.UOM = UOM;
     }
 }
