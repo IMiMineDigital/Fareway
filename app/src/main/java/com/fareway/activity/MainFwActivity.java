@@ -280,7 +280,7 @@ public class MainFwActivity extends AppCompatActivity
 
     TextView tv_short_filter;
     ImageView img_short_cross_button;
-    RelativeLayout filter_label;
+    public static RelativeLayout filter_label;
 
     TextView tv_offer_name;
     ImageView img_offer_cross_button;
@@ -305,17 +305,19 @@ public class MainFwActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 if (tmp==0 && searchLable==false){
+                    filter_label.setVisibility(View.GONE);
                     filter_offer_label.setVisibility(View.GONE);
                     tv_category_name.setVisibility(View.GONE);
                     img_category_cross_button.setVisibility(View.GONE);
                     pdView=true;
                     linearLayout.setVisibility(View.VISIBLE);
                 }else if (searchLable==false){
+                    filter_label.setVisibility(View.GONE);
                     tv_category_name.setVisibility(View.GONE);
                     img_category_cross_button.setVisibility(View.GONE);
                 }
                 getDate(0);
-                categoryShort=true;
+                categoryShort=false;
             }
         });
 
@@ -355,7 +357,8 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout.setVisibility(View.GONE);
                     rv_items.setVisibility(View.VISIBLE);
                     toolbar.setVisibility(View.VISIBLE);
-                }else if(x==3){
+                }
+                else if(x==3){
                     tmp = 0;
                     searchProduct();
                     //
@@ -1830,6 +1833,8 @@ public class MainFwActivity extends AppCompatActivity
                         @Override
                         public void onClick(View v) {
                             filter_offer_label.setVisibility(View.GONE);
+                            tv_category_name.setVisibility(View.GONE);
+                            img_category_cross_button.setVisibility(View.GONE);
                             tv_offer_name.setVisibility(View.GONE);
                             img_offer_cross_button.setVisibility(View.GONE);
                             categoryShort = false;
@@ -1862,6 +1867,8 @@ public class MainFwActivity extends AppCompatActivity
                         @Override
                         public void onClick(View v) {
                             categoryShort = false;
+                            tv_category_name.setVisibility(View.GONE);
+                            img_category_cross_button.setVisibility(View.GONE);
                             linearLayout.setVisibility(View.GONE);
                             filter_offer_label.setVisibility(View.VISIBLE);
                             tv_offer_name.setVisibility(View.VISIBLE);
@@ -1892,6 +1899,8 @@ public class MainFwActivity extends AppCompatActivity
                         @Override
                         public void onClick(View v) {
                             categoryShort = false;
+                            tv_category_name.setVisibility(View.GONE);
+                            img_category_cross_button.setVisibility(View.GONE);
                             linearLayout.setVisibility(View.GONE);
                             filter_offer_label.setVisibility(View.VISIBLE);
                             tv_offer_name.setVisibility(View.VISIBLE);
@@ -1920,6 +1929,8 @@ public class MainFwActivity extends AppCompatActivity
                         @Override
                         public void onClick(View v) {
                             categoryShort = false;
+                            tv_category_name.setVisibility(View.GONE);
+                            img_category_cross_button.setVisibility(View.GONE);
                             linearLayout.setVisibility(View.GONE);
                             filter_offer_label.setVisibility(View.VISIBLE);
                             tv_offer_name.setVisibility(View.VISIBLE);
@@ -2130,7 +2141,7 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout1Short.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            filter_label.setVisibility(View.VISIBLE);
+                            filter_label.setVisibility(View.GONE);
                             tv_short_filter.setText("Saving");
                             //tmp=0;
                             pdView = false;
@@ -2148,7 +2159,7 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout2Short.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            filter_label.setVisibility(View.VISIBLE);
+                            filter_label.setVisibility(View.GONE);
                             tv_short_filter.setText("Offer Type");
                             //tmp=0;
                             pdView = false;
@@ -6287,7 +6298,8 @@ public class MainFwActivity extends AppCompatActivity
         if (x == 0) {
             if (message.length() == 0) {
 
-            } else {
+            }
+            else {
                 String strCategory = "";
                 int Categoryid = 0;
                 int category_count = 0;
@@ -6413,7 +6425,8 @@ public class MainFwActivity extends AppCompatActivity
                         customAdapterPersonalPrices.notifyDataSetChanged();
                     }
 
-                } else {
+                }
+                else {
                     pdView = false;
                     String test1 = "";
                     for (int i = 0; i < message.length(); i++) {
@@ -6534,7 +6547,8 @@ public class MainFwActivity extends AppCompatActivity
 
                 }
             }
-        } else if (x == 3) {
+        }
+        else if (x == 3) {
             if (message3.length() == 0) {
 
             } else {
