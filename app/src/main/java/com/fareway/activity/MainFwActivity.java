@@ -289,6 +289,7 @@ public class MainFwActivity extends AppCompatActivity
 
     private TextView changeStore;
     private boolean isMyFarewayList = false;
+    private boolean isProductSelected = false;
     private PopupWindow window;
 
     TextView tv_short_filter;
@@ -317,13 +318,13 @@ public class MainFwActivity extends AppCompatActivity
         img_category_cross_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                if (MainFwActivity.tmp==0 && MainFwActivity.searchLable==false){
+                if (tmp==0 && searchLable==false){
                     filter_offer_label.setVisibility(View.GONE);
                     tv_category_name.setVisibility(View.GONE);
                     img_category_cross_button.setVisibility(View.GONE);
-                    MainFwActivity.pdView=true;
-                    MainFwActivity.linearLayout.setVisibility(View.VISIBLE);
-                }else if (MainFwActivity.searchLable==false){
+                    pdView=true;
+                    linearLayout.setVisibility(View.VISIBLE);
+                }else if (searchLable==false){
                     tv_category_name.setVisibility(View.GONE);
                     img_category_cross_button.setVisibility(View.GONE);
                 }
@@ -2273,6 +2274,25 @@ public class MainFwActivity extends AppCompatActivity
            rv_items.setVisibility(View.VISIBLE);
            toolbar.setVisibility(View.VISIBLE);
        }
+       else if (isProductSelected==true){
+           if (pdView==true){
+               linearLayout.setVisibility(View.VISIBLE);
+           }else {
+               linearLayout.setVisibility(View.GONE);
+           }
+           liner_all_Varieties_activate.setVisibility(View.GONE);
+           rv_items_verite.setVisibility(View.GONE);
+           navigation.setVisibility(View.VISIBLE);
+           scrollView.setVisibility(View.GONE);
+           DetaileToolbar.setVisibility(View.GONE);
+           participateToolbar.setVisibility(View.GONE);
+           rv_items.setVisibility(View.VISIBLE);
+           toolbar.setVisibility(View.VISIBLE);
+           liner_detail_add_item.setVisibility(View.VISIBLE);
+           liner_add_sub_button.setVisibility(View.VISIBLE);
+           //messageLoadRefresh();
+           qty = 0;
+       }
        else {
            finish();
        }
@@ -3851,7 +3871,7 @@ public class MainFwActivity extends AppCompatActivity
 
     @Override
     public void onProductSelected(final Product product) {
-
+        isProductSelected=true;
         //participate=0;
       /*  if (product.getCouponID().equalsIgnoreCase(product.getUPC())){
             liner_qty.setVisibility(View.GONE);
@@ -3876,7 +3896,7 @@ public class MainFwActivity extends AppCompatActivity
         DetaileToolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                isProductSelected=false;
                 liner_all_Varieties_activate.setVisibility(View.GONE);
                 rv_items_verite.setVisibility(View.GONE);
                 navigation.setVisibility(View.VISIBLE);
@@ -4148,6 +4168,7 @@ public class MainFwActivity extends AppCompatActivity
                                                         //messageLoadRefresh();
                                                         qty = 0;
                                                         if (x == 0) {
+                                                            isProductSelected=false;
                                                             if (pdView==true){
                                                                 linearLayout.setVisibility(View.VISIBLE);
                                                             }else {
@@ -4163,6 +4184,7 @@ public class MainFwActivity extends AppCompatActivity
                                                             //header_title visible
                                                             header_title.setVisibility(View.GONE);
                                                         } else {
+                                                            isProductSelected=false;
                                                             search_message.setVisibility(View.VISIBLE);
                                                             rv_items_group.setVisibility(View.GONE);
                                                             rv_items_verite.setVisibility(View.GONE);
@@ -5401,6 +5423,7 @@ public class MainFwActivity extends AppCompatActivity
     //////////////////////////////////////////////////////////////////////////
     @Override
     public void onProductVeritiesSelected(final Product product) {
+       isProductSelected=true;
         linearLayout.setVisibility(View.GONE);
         Group = "";
         productrelated2 = product;
