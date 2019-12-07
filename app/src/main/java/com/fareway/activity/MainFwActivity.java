@@ -305,16 +305,38 @@ public class MainFwActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 if (tmp==0 && searchLable==false){
-                    filter_label.setVisibility(View.GONE);
-                    filter_offer_label.setVisibility(View.GONE);
-                    tv_category_name.setVisibility(View.GONE);
-                    img_category_cross_button.setVisibility(View.GONE);
-                    pdView=true;
-                    linearLayout.setVisibility(View.VISIBLE);
+                    if (savingsShort==true||offferShort==true){
+                        tv_category_name.setVisibility(View.GONE);
+                        img_category_cross_button.setVisibility(View.GONE);
+                        filter_offer_label.setVisibility(View.GONE);
+                        //filter_label is sort
+                        filter_label.setVisibility(View.VISIBLE);
+                        pdView=false;
+                        linearLayout.setVisibility(View.GONE);
+                    }else {
+                        filter_label.setVisibility(View.GONE);
+                        filter_offer_label.setVisibility(View.GONE);
+                        pdView=true;
+                        linearLayout.setVisibility(View.VISIBLE);
+                    }
                 }else if (searchLable==false){
-                    filter_label.setVisibility(View.GONE);
                     tv_category_name.setVisibility(View.GONE);
                     img_category_cross_button.setVisibility(View.GONE);
+
+                    if (savingsShort==true||offferShort==true){
+                        tv_category_name.setVisibility(View.GONE);
+                        img_category_cross_button.setVisibility(View.GONE);
+                        filter_offer_label.setVisibility(View.VISIBLE);
+                        //filter_label is sort
+                        filter_label.setVisibility(View.VISIBLE);
+                            /*MainFwActivity.pdView=false;
+                            MainFwActivity.linearLayout.setVisibility(View.GONE);*/
+                    }else {
+                        filter_label.setVisibility(View.GONE);
+                        filter_offer_label.setVisibility(View.VISIBLE);
+                            /*MainFwActivity.pdView=true;
+                            MainFwActivity.linearLayout.setVisibility(View.VISIBLE);*/
+                    }
                 }
                 getDate(0);
                 categoryShort=false;
@@ -380,8 +402,12 @@ public class MainFwActivity extends AppCompatActivity
             public void onClick(View v) {
                 if (x==0){
                     filter_label.setVisibility(View.GONE);
+                    //pdView=true;
+                    //couponTile=true;
                     offferShort = false;
                     savingsShort = false;
+
+                    //tmp=0;
                     if (tmp == 0 && categoryShort == false) {
                         pdView = true;
                         couponTile = true;
@@ -394,6 +420,23 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayoutShort.setVisibility(View.GONE);
                     rv_items.setVisibility(View.VISIBLE);
                     toolbar.setVisibility(View.VISIBLE);
+                    /*filter_label.setVisibility(View.GONE);
+                    offferShort = false;
+                    savingsShort = false;
+                    categoryShort = false;
+                    if (tmp == 0 && categoryShort == false) {
+                        filter_offer_label.setVisibility(View.GONE);
+                        pdView = true;
+                        couponTile = true;
+                        linearLayout.setVisibility(View.VISIBLE);
+                    } else {
+
+                    }
+                    fetchProduct();
+                    rv_category.setVisibility(View.GONE);
+                    rowLayoutShort.setVisibility(View.GONE);
+                    rv_items.setVisibility(View.VISIBLE);
+                    toolbar.setVisibility(View.VISIBLE);*/
                 }
                 else if (x==3){
 
