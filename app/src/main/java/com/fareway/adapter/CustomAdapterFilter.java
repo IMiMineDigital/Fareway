@@ -83,6 +83,7 @@ public class CustomAdapterFilter extends RecyclerView.Adapter<CustomAdapterFilte
                 //activate.OtherCouponmulti=0;
                 if (position==0){
                     if (MainFwActivity.tmp==0 && MainFwActivity.searchLable==false){
+                        activate.filter_label.setVisibility(View.GONE);
                         activate.filter_offer_label.setVisibility(View.GONE);
                         activate.tv_category_name.setVisibility(View.GONE);
                         activate.img_category_cross_button.setVisibility(View.GONE);
@@ -104,6 +105,11 @@ public class CustomAdapterFilter extends RecyclerView.Adapter<CustomAdapterFilte
 
                 try {
                     Log.i("test", String.valueOf(category.getCategoryID()));
+                    if (MainFwActivity.x==3){
+                        activate.filter_offer_label.setVisibility(View.GONE);
+                        activate.filter_label.setVisibility(View.GONE);
+
+                    }
                     MainFwActivity.getDate(category.getCategoryID());
                     MainFwActivity.categoryShort=true;
                 }catch (Exception e){
