@@ -912,6 +912,7 @@ public class MainFwActivity extends AppCompatActivity
                 window.setFocusable(true);
                 window.showAtLocation(layout, Gravity.NO_GRAVITY, 0, 0);
                 dropDownList.clear();
+                storeIds.clear();
                 dropDownList.add(Constant.SELECT_STORE);
                 storeIds.add("0");
                 //window.showAtLocation(layout, 17, 100, 100);
@@ -952,6 +953,7 @@ public class MainFwActivity extends AppCompatActivity
                 closePopUp.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        storeIds.clear();
                         window.dismiss();
                     }
                 });
