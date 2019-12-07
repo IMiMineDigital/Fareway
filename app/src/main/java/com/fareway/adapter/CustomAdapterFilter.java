@@ -90,11 +90,13 @@ public class CustomAdapterFilter extends RecyclerView.Adapter<CustomAdapterFilte
                             //filter_label is sort
                             activate.filter_label.setVisibility(View.VISIBLE);
                             MainFwActivity.pdView=false;
+                            MainFwActivity.couponTile=false;
                             MainFwActivity.linearLayout.setVisibility(View.GONE);
                         }else {
                             activate.filter_label.setVisibility(View.GONE);
                             activate.filter_offer_label.setVisibility(View.GONE);
                             MainFwActivity.pdView=true;
+                            MainFwActivity.couponTile=true;
                             MainFwActivity.linearLayout.setVisibility(View.VISIBLE);
                         }
                     }else if (MainFwActivity.searchLable==false){
@@ -118,6 +120,8 @@ public class CustomAdapterFilter extends RecyclerView.Adapter<CustomAdapterFilte
                     }
                     //MainFwActivity.pdView=true;
                 }else {
+                    MainFwActivity.pdView=false;
+                    MainFwActivity.couponTile=false;
                     //MainFwActivity.pdView=false;
                     MainFwActivity.linearLayout.setVisibility(View.GONE);
                     activate.filter_offer_label.setVisibility(View.VISIBLE);

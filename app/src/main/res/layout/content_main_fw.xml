@@ -121,8 +121,8 @@
             <ImageView
                 android:visibility="gone"
                 android:id="@+id/img_offer_cross_button"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
                 android:background="@drawable/icon_cross"
                 android:layout_gravity="end"
                 />
@@ -131,6 +131,7 @@
         </FrameLayout>
 
         <TextView
+            android:layout_marginLeft="3dp"
             android:visibility="gone"
             android:id="@+id/tv_category_name"
             android:padding="5dp"
@@ -153,8 +154,8 @@
             <ImageView
                 android:visibility="gone"
                 android:id="@+id/img_category_cross_button"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
                 android:background="@drawable/icon_cross"
                 android:layout_gravity="end"
                 />
@@ -232,8 +233,8 @@
 
             <ImageView
                 android:id="@+id/img_short_cross_button"
-                android:layout_width="10dp"
-                android:layout_height="10dp"
+                android:layout_width="18dp"
+                android:layout_height="18dp"
                 android:background="@drawable/icon_cross"
                 android:layout_gravity="end"
                 />
