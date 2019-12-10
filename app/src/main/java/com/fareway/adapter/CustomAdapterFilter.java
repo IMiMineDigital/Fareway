@@ -119,7 +119,8 @@ public class CustomAdapterFilter extends RecyclerView.Adapter<CustomAdapterFilte
                         }
                     }
                     //MainFwActivity.pdView=true;
-                }else {
+                }
+                else {
                     MainFwActivity.pdView=false;
                     MainFwActivity.couponTile=false;
                     //MainFwActivity.pdView=false;
@@ -132,11 +133,11 @@ public class CustomAdapterFilter extends RecyclerView.Adapter<CustomAdapterFilte
 
                 try {
                     Log.i("test", String.valueOf(category.getCategoryID()));
-                    if (MainFwActivity.x==3){
+                    /*if (MainFwActivity.x==3){
                         activate.filter_offer_label.setVisibility(View.GONE);
                         activate.filter_label.setVisibility(View.GONE);
 
-                    }
+                    }*/
                     MainFwActivity.getDate(category.getCategoryID());
                     MainFwActivity.categoryShort=true;
                 }catch (Exception e){

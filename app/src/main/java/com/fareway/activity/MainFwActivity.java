@@ -321,7 +321,45 @@ public class MainFwActivity extends AppCompatActivity
                         couponTile=true;
                         linearLayout.setVisibility(View.VISIBLE);
                     }
-                }else if (searchLable==false){
+                }
+                else if (searchLable==false){
+                    tv_category_name.setVisibility(View.GONE);
+                    img_category_cross_button.setVisibility(View.GONE);
+
+                    if (savingsShort==true||offferShort==true){
+                        tv_category_name.setVisibility(View.GONE);
+                        img_category_cross_button.setVisibility(View.GONE);
+                        filter_offer_label.setVisibility(View.VISIBLE);
+                        //filter_label is sort
+                        filter_label.setVisibility(View.VISIBLE);
+                            /*MainFwActivity.pdView=false;
+                            MainFwActivity.linearLayout.setVisibility(View.GONE);*/
+                    }else {
+                        filter_label.setVisibility(View.GONE);
+                        filter_offer_label.setVisibility(View.VISIBLE);
+                            /*MainFwActivity.pdView=true;
+                            MainFwActivity.linearLayout.setVisibility(View.VISIBLE);*/
+                    }
+                }
+                else if (tmp==0 && searchLable==true){
+                    if (savingsShort==true||offferShort==true){
+                        tv_category_name.setVisibility(View.GONE);
+                        img_category_cross_button.setVisibility(View.GONE);
+                        filter_offer_label.setVisibility(View.GONE);
+                        //filter_label is sort
+                        filter_label.setVisibility(View.VISIBLE);
+                        /*pdView=false;
+                        couponTile=false;
+                        linearLayout.setVisibility(View.GONE);*/
+                    }else {
+                        filter_label.setVisibility(View.GONE);
+                        filter_offer_label.setVisibility(View.GONE);
+                        /*pdView=true;
+                        couponTile=true;
+                        linearLayout.setVisibility(View.VISIBLE);*/
+                    }
+                }
+                else if (searchLable==true){
                     tv_category_name.setVisibility(View.GONE);
                     img_category_cross_button.setVisibility(View.GONE);
 
@@ -383,9 +421,30 @@ public class MainFwActivity extends AppCompatActivity
                     toolbar.setVisibility(View.VISIBLE);
                 }
                 else if(x==3){
+                    filter_offer_label.setVisibility(View.GONE);
+                    tv_category_name.setVisibility(View.GONE);
+                    img_category_cross_button.setVisibility(View.GONE);
+                    tv_offer_name.setVisibility(View.GONE);
+                    img_offer_cross_button.setVisibility(View.GONE);
+                    categoryShort = false;
+                    if (savingsShort == true) {
+                        /*pdView = false;
+                        couponTile = false;*/
+                        offferShort = false;
+                        /*linearLayout.setVisibility(View.GONE);*/
+                    } else if (offferShort == true) {
+                        /*pdView = false;
+                        couponTile = false;*/
+                        savingsShort = false;
+                        /*linearLayout.setVisibility(View.GONE);*/
+                    } else {
+                        /*pdView = true;
+                        couponTile = true;*/
+                        offferShort = false;
+                        /*linearLayout.setVisibility(View.VISIBLE);*/
+                    }
                     tmp = 0;
                     searchProduct();
-                    //
                     rv_category.setVisibility(View.GONE);
                     rowLayout.setVisibility(View.GONE);
                     rv_items.setVisibility(View.VISIBLE);
@@ -441,8 +500,21 @@ public class MainFwActivity extends AppCompatActivity
                     toolbar.setVisibility(View.VISIBLE);*/
                 }
                 else if (x==3){
+                    filter_label.setVisibility(View.GONE);
+                    //pdView=true;
+                    //couponTile=true;
+                    offferShort = false;
+                    savingsShort = false;
 
-                    filter_offer_label.setVisibility(View.GONE);
+                    //tmp=0;
+                    if (tmp == 0 && categoryShort == false) {
+                        /*pdView = true;
+                        couponTile = true;
+                        linearLayout.setVisibility(View.VISIBLE);*/
+                    } else {
+
+                    }
+                    /*filter_offer_label.setVisibility(View.GONE);
                     tv_category_name.setVisibility(View.GONE);
                     img_category_cross_button.setVisibility(View.GONE);
                     tv_offer_name.setVisibility(View.GONE);
@@ -453,7 +525,8 @@ public class MainFwActivity extends AppCompatActivity
                     pdView = false;
                     couponTile = false;
                     savingsShort = false;
-                    offferShort = false;
+                    offferShort = false;*/
+
                     searchProduct();
                     rv_category.setVisibility(View.GONE);
                     rowLayoutShort.setVisibility(View.GONE);
@@ -774,9 +847,34 @@ public class MainFwActivity extends AppCompatActivity
                         header_title.setVisibility(View.GONE);
                         searchLable = true;
                         searchLoad(search);
-                        linearLayout.setVisibility(View.GONE);
+                        /*linearLayout.setVisibility(View.GONE);
                         filter_offer_label.setVisibility(View.GONE);
-                        filter_label.setVisibility(View.GONE);
+                        filter_label.setVisibility(View.GONE);*/
+                        if (pdView==true){
+                            linearLayout.setVisibility(View.VISIBLE);
+                        }
+                        else {
+
+                            linearLayout.setVisibility(View.GONE);
+                            if (tmp==1||tmp==2||tmp==3){
+                                filter_offer_label.setVisibility(View.VISIBLE);
+                            }
+                            if (categoryShort==true){
+                                filter_offer_label.setVisibility(View.VISIBLE);
+                                tv_category_name.setVisibility(View.VISIBLE);
+                                img_category_cross_button.setVisibility(View.VISIBLE);
+                            } else {
+                                //filter_offer_label.setVisibility(View.VISIBLE);
+                                tv_category_name.setVisibility(View.GONE);
+                                img_category_cross_button.setVisibility(View.GONE);
+                            }
+                            if (offferShort==true||savingsShort==true){
+                                filter_label.setVisibility(View.VISIBLE);
+                            }else {
+                                filter_label.setVisibility(View.GONE);
+                            }
+
+                        }
 
                     } else {
                         //
@@ -799,6 +897,33 @@ public class MainFwActivity extends AppCompatActivity
                         searchLable = false;
                         fetchProduct();
                         linearLayout.setVisibility(View.VISIBLE);
+                        filter_offer_label.setVisibility(View.GONE);
+                        filter_label.setVisibility(View.GONE);
+                        /*if (pdView==true){
+                            linearLayout.setVisibility(View.VISIBLE);
+                        }
+                        else {
+
+                            linearLayout.setVisibility(View.GONE);
+                            if (tmp==1||tmp==2||tmp==3){
+                                filter_offer_label.setVisibility(View.VISIBLE);
+                            }
+                            if (categoryShort==true){
+                                filter_offer_label.setVisibility(View.VISIBLE);
+                                tv_category_name.setVisibility(View.VISIBLE);
+                                img_category_cross_button.setVisibility(View.VISIBLE);
+                            } else {
+                                //filter_offer_label.setVisibility(View.VISIBLE);
+                                tv_category_name.setVisibility(View.GONE);
+                                img_category_cross_button.setVisibility(View.GONE);
+                            }
+                            if (offferShort==true||savingsShort==true){
+                                filter_label.setVisibility(View.VISIBLE);
+                            }else {
+                                filter_label.setVisibility(View.GONE);
+                            }
+
+                        }*/
                     }
                 }
             }
@@ -1767,6 +1892,31 @@ public class MainFwActivity extends AppCompatActivity
                             DetaileToolbar.setVisibility(View.GONE);
                             rv_items.setVisibility(View.VISIBLE);
                             toolbar.setVisibility(View.VISIBLE);
+                            if (pdView==true){
+                                linearLayout.setVisibility(View.VISIBLE);
+                            }
+                            else {
+
+                                linearLayout.setVisibility(View.GONE);
+                                if (tmp==1||tmp==2||tmp==3){
+                                    filter_offer_label.setVisibility(View.VISIBLE);
+                                }
+                                if (categoryShort==true){
+                                    filter_offer_label.setVisibility(View.VISIBLE);
+                                    tv_category_name.setVisibility(View.VISIBLE);
+                                    img_category_cross_button.setVisibility(View.VISIBLE);
+                                } else {
+                                    //filter_offer_label.setVisibility(View.VISIBLE);
+                                    tv_category_name.setVisibility(View.GONE);
+                                    img_category_cross_button.setVisibility(View.GONE);
+                                }
+                                if (offferShort==true||savingsShort==true){
+                                    filter_label.setVisibility(View.VISIBLE);
+                                }else {
+                                    filter_label.setVisibility(View.GONE);
+                                }
+
+                            }
 
                         }
                     });
@@ -1791,6 +1941,30 @@ public class MainFwActivity extends AppCompatActivity
 
                     shoppingArrayList.clear();
                     shoppingListAdapter.notifyDataSetChanged();
+                    if (pdView==true){
+                        linearLayout.setVisibility(View.VISIBLE);
+                    }
+                    else {
+
+                        linearLayout.setVisibility(View.GONE);
+                        if (tmp==1||tmp==2||tmp==3){
+                            filter_offer_label.setVisibility(View.VISIBLE);
+                        }
+                        if (categoryShort==true){
+                            filter_offer_label.setVisibility(View.VISIBLE);
+                            tv_category_name.setVisibility(View.VISIBLE);
+                            img_category_cross_button.setVisibility(View.VISIBLE);
+                        } else {
+                            tv_category_name.setVisibility(View.GONE);
+                            img_category_cross_button.setVisibility(View.GONE);
+                        }
+                        if (offferShort==true||savingsShort==true){
+                            filter_label.setVisibility(View.VISIBLE);
+                        }else {
+                            filter_label.setVisibility(View.GONE);
+                        }
+
+                    }
 
                     navigation.getMenu().findItem(R.id.ShoppingList).setTitle("MyFareway List");
                     navigation.getMenu().findItem(R.id.ShoppingList).setIcon(R.drawable.ic_view_list_black_24dp);
@@ -2025,6 +2199,13 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout0.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            filter_offer_label.setVisibility(View.GONE);
+                            tv_category_name.setVisibility(View.GONE);
+                            img_category_cross_button.setVisibility(View.GONE);
+                            tv_offer_name.setVisibility(View.GONE);
+                            img_offer_cross_button.setVisibility(View.GONE);
+                            categoryShort = false;
+
                             tmp = 0;
                             searchProduct();
                             //
@@ -2037,6 +2218,13 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout1.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            categoryShort = false;
+                            tv_category_name.setVisibility(View.GONE);
+                            img_category_cross_button.setVisibility(View.GONE);
+                            filter_offer_label.setVisibility(View.VISIBLE);
+                            tv_offer_name.setVisibility(View.VISIBLE);
+                            img_offer_cross_button.setVisibility(View.VISIBLE);
+                            tv_offer_name.setText("My Personal Deals");
                             tmp = 3;
                             searchProduct();
                             rv_category.setVisibility(View.GONE);
@@ -2048,6 +2236,14 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout2.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            categoryShort = false;
+                            tv_category_name.setVisibility(View.GONE);
+                            img_category_cross_button.setVisibility(View.GONE);
+                            linearLayout.setVisibility(View.GONE);
+                            filter_offer_label.setVisibility(View.VISIBLE);
+                            tv_offer_name.setVisibility(View.VISIBLE);
+                            img_offer_cross_button.setVisibility(View.VISIBLE);
+                            tv_offer_name.setText("Digital Coupons");
                             tmp = 2;
                             searchProduct();
                             rv_category.setVisibility(View.GONE);
@@ -2059,6 +2255,14 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout3.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            categoryShort = false;
+                            tv_category_name.setVisibility(View.GONE);
+                            img_category_cross_button.setVisibility(View.GONE);
+                            linearLayout.setVisibility(View.GONE);
+                            filter_offer_label.setVisibility(View.VISIBLE);
+                            tv_offer_name.setVisibility(View.VISIBLE);
+                            img_offer_cross_button.setVisibility(View.VISIBLE);
+                            tv_offer_name.setText("Sale Items");
                             tmp = 1;
                             searchProduct();
                             rv_category.setVisibility(View.GONE);
@@ -2202,8 +2406,9 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout1Short.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            filter_label.setVisibility(View.GONE);
+                            filter_label.setVisibility(View.VISIBLE);
                             tv_short_filter.setText("Saving");
+                            //
                             //tmp=0;
                             pdView = false;
                             couponTile = false;
@@ -2220,7 +2425,7 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout2Short.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
-                            filter_label.setVisibility(View.GONE);
+                            filter_label.setVisibility(View.VISIBLE);
                             tv_short_filter.setText("Offer Type");
                             //tmp=0;
                             pdView = false;
@@ -3485,7 +3690,111 @@ public class MainFwActivity extends AppCompatActivity
                 productList.addAll(items);
 
                 customAdapterPersonalPrices.notifyDataSetChanged();*/
-                    if (savingsShort == true) {
+                    if (categoryShort == true) {
+                        if (offferShort == true) {
+
+                            List<Product> items = new Gson().fromJson(messageCategory.toString(), new TypeToken<List<Product>>() {
+                            }.getType());
+                            productList.clear();
+                            productList.addAll(items);
+
+                            Collections.sort(productList, new Comparator<Product>() {
+
+                                @Override
+                                public int compare(Product o2, Product o1) {
+                                    return Integer.parseInt(String.valueOf(o1.getPrimaryOfferTypeId())) - Integer.parseInt(String.valueOf(o2.getPrimaryOfferTypeId()));
+                                }
+
+                            });
+
+                            customAdapterPersonalPrices.notifyDataSetChanged();
+                            //rv_items.setAdapter(customAdapterPersonalPrices);
+                        } else if (savingsShort == true) {
+                            List<Product> items = new Gson().fromJson(messageCategory.toString(), new TypeToken<List<Product>>() {
+                            }.getType());
+                            productList.clear();
+                            productList.addAll(items);
+
+                            Collections.sort(productList, new Comparator<Product>() {
+
+                                @Override
+                                public int compare(Product o2, Product o1) {
+                                    return Float.valueOf(o1.getSavings()).compareTo(Float.valueOf(o2.getSavings()));
+                                    // return Integer.parseInt(String.valueOf(o1.getSavings())) - Integer.parseInt(String.valueOf(o2.getSavings()));
+                                }
+
+                            });
+
+                            customAdapterPersonalPrices.notifyDataSetChanged();
+                            //rv_items.setAdapter(customAdapterPersonalPrices);
+                        } else {
+                            try {
+                                List<Product> items = new Gson().fromJson(messageCategory.toString(), new TypeToken<List<Product>>() {
+                                }.getType());
+                                // adding product to product list
+                                productList.clear();
+                                productList.addAll(items);
+
+                                customAdapterPersonalPrices.notifyDataSetChanged();
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                            }
+                        /*List<Product> items = new Gson().fromJson(messageCategory.toString(), new TypeToken<List<Product>>() {
+                        }.getType());
+                        // adding product to product list
+                        productList.clear();
+                        productList.addAll(items);
+
+                        customAdapterPersonalPrices.notifyDataSetChanged();*/
+                        }
+                    }
+                    else {
+                        if (offferShort == true) {
+                            List<Product> items = new Gson().fromJson(message3.toString(), new TypeToken<List<Product>>() {
+                            }.getType());
+                            productList.clear();
+                            productList.addAll(items);
+
+                            Collections.sort(productList, new Comparator<Product>() {
+
+                                @Override
+                                public int compare(Product o2, Product o1) {
+                                    return Integer.parseInt(String.valueOf(o1.getPrimaryOfferTypeId())) - Integer.parseInt(String.valueOf(o2.getPrimaryOfferTypeId()));
+                                }
+
+                            });
+
+                            customAdapterPersonalPrices.notifyDataSetChanged();
+                            //rv_items.setAdapter(customAdapterPersonalPrices);
+                        } else if (savingsShort == true) {
+                            List<Product> items = new Gson().fromJson(message3.toString(), new TypeToken<List<Product>>() {
+                            }.getType());
+                            productList.clear();
+                            productList.addAll(items);
+
+                            Collections.sort(productList, new Comparator<Product>() {
+
+                                @Override
+                                public int compare(Product o2, Product o1) {
+                                    return Float.valueOf(o1.getSavings()).compareTo(Float.valueOf(o2.getSavings()));
+                                    // return Integer.parseInt(String.valueOf(o1.getSavings())) - Integer.parseInt(String.valueOf(o2.getSavings()));
+                                }
+
+                            });
+
+                            customAdapterPersonalPrices.notifyDataSetChanged();
+                            //rv_items.setAdapter(customAdapterPersonalPrices);
+                        } else {
+                            List<Product> items = new Gson().fromJson(message3.toString(), new TypeToken<List<Product>>() {
+                            }.getType());
+                            // adding product to product list
+                            productList.clear();
+                            productList.addAll(items);
+
+                            customAdapterPersonalPrices.notifyDataSetChanged();
+                        }
+                    }
+                    /*if (savingsShort == true) {
                         List<Product> items = new Gson().fromJson(message3.toString(), new TypeToken<List<Product>>() {
                         }.getType());
                         productList.clear();
@@ -3496,12 +3805,11 @@ public class MainFwActivity extends AppCompatActivity
                             @Override
                             public int compare(Product o2, Product o1) {
                                 return Float.valueOf(o1.getSavings()).compareTo(Float.valueOf(o2.getSavings()));
-                                // return Integer.parseInt(String.valueOf(o1.getSavings())) - Integer.parseInt(String.valueOf(o2.getSavings()));
-                            }
+                                }
 
                         });
                         customAdapterPersonalPrices.notifyDataSetChanged();
-                        //rv_items.setAdapter(customAdapterPersonalPrices);
+
                     }
                     else if (offferShort == true) {
                         List<Product> items = new Gson().fromJson(message3.toString(), new TypeToken<List<Product>>() {
@@ -3514,23 +3822,20 @@ public class MainFwActivity extends AppCompatActivity
                             @Override
                             public int compare(Product o2, Product o1) {
                                 return Integer.parseInt(String.valueOf(o1.getPrimaryOfferTypeId())) - Integer.parseInt(String.valueOf(o2.getPrimaryOfferTypeId()));
-                                //return o1.getPrimaryOfferTypeId().compareTo(o2.getPrimaryOfferTypeId());
                             }
 
                         });
 
                         customAdapterPersonalPrices.notifyDataSetChanged();
-                        //rv_items.setAdapter(customAdapterPersonalPrices);
-                    }
+                            }
                     else {
                         List<Product> items = new Gson().fromJson(message3.toString(), new TypeToken<List<Product>>() {
                         }.getType());
-                        // adding product to product list
                         productList.clear();
                         productList.addAll(items);
 
                         customAdapterPersonalPrices.notifyDataSetChanged();
-                    }
+                    }*/
 
                     strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category\"}," + strCategory;
                     String data = "[" + String.valueOf(strCategory) + "]";
@@ -3595,7 +3900,111 @@ public class MainFwActivity extends AppCompatActivity
                     productList.clear();
                     productList.addAll(items1);
                     customAdapterPersonalPrices.notifyDataSetChanged();*/
-                        if (offferShort == true) {
+                        if (categoryShort == true) {
+                            if (offferShort == true) {
+
+                                List<Product> items = new Gson().fromJson(messageCategory.toString(), new TypeToken<List<Product>>() {
+                                }.getType());
+                                productList.clear();
+                                productList.addAll(items);
+
+                                Collections.sort(productList, new Comparator<Product>() {
+
+                                    @Override
+                                    public int compare(Product o2, Product o1) {
+                                        return Integer.parseInt(String.valueOf(o1.getPrimaryOfferTypeId())) - Integer.parseInt(String.valueOf(o2.getPrimaryOfferTypeId()));
+                                    }
+
+                                });
+
+                                customAdapterPersonalPrices.notifyDataSetChanged();
+                                //rv_items.setAdapter(customAdapterPersonalPrices);
+                            } else if (savingsShort == true) {
+                                List<Product> items = new Gson().fromJson(messageCategory.toString(), new TypeToken<List<Product>>() {
+                                }.getType());
+                                productList.clear();
+                                productList.addAll(items);
+
+                                Collections.sort(productList, new Comparator<Product>() {
+
+                                    @Override
+                                    public int compare(Product o2, Product o1) {
+                                        return Float.valueOf(o1.getSavings()).compareTo(Float.valueOf(o2.getSavings()));
+                                        // return Integer.parseInt(String.valueOf(o1.getSavings())) - Integer.parseInt(String.valueOf(o2.getSavings()));
+                                    }
+
+                                });
+
+                                customAdapterPersonalPrices.notifyDataSetChanged();
+                                //rv_items.setAdapter(customAdapterPersonalPrices);
+                            } else {
+                                try {
+                                    List<Product> items = new Gson().fromJson(messageCategory.toString(), new TypeToken<List<Product>>() {
+                                    }.getType());
+                                    // adding product to product list
+                                    productList.clear();
+                                    productList.addAll(items);
+
+                                    customAdapterPersonalPrices.notifyDataSetChanged();
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                        /*List<Product> items = new Gson().fromJson(messageCategory.toString(), new TypeToken<List<Product>>() {
+                        }.getType());
+                        // adding product to product list
+                        productList.clear();
+                        productList.addAll(items);
+
+                        customAdapterPersonalPrices.notifyDataSetChanged();*/
+                            }
+                        }
+                        else {
+                            if (offferShort == true) {
+                                List<Product> items = new Gson().fromJson(message3.toString(), new TypeToken<List<Product>>() {
+                                }.getType());
+                                productList.clear();
+                                productList.addAll(items);
+
+                                Collections.sort(productList, new Comparator<Product>() {
+
+                                    @Override
+                                    public int compare(Product o2, Product o1) {
+                                        return Integer.parseInt(String.valueOf(o1.getPrimaryOfferTypeId())) - Integer.parseInt(String.valueOf(o2.getPrimaryOfferTypeId()));
+                                    }
+
+                                });
+
+                                customAdapterPersonalPrices.notifyDataSetChanged();
+                                //rv_items.setAdapter(customAdapterPersonalPrices);
+                            } else if (savingsShort == true) {
+                                List<Product> items = new Gson().fromJson(message3.toString(), new TypeToken<List<Product>>() {
+                                }.getType());
+                                productList.clear();
+                                productList.addAll(items);
+
+                                Collections.sort(productList, new Comparator<Product>() {
+
+                                    @Override
+                                    public int compare(Product o2, Product o1) {
+                                        return Float.valueOf(o1.getSavings()).compareTo(Float.valueOf(o2.getSavings()));
+                                        // return Integer.parseInt(String.valueOf(o1.getSavings())) - Integer.parseInt(String.valueOf(o2.getSavings()));
+                                    }
+
+                                });
+
+                                customAdapterPersonalPrices.notifyDataSetChanged();
+                                //rv_items.setAdapter(customAdapterPersonalPrices);
+                            } else {
+                                List<Product> items = new Gson().fromJson(message3.toString(), new TypeToken<List<Product>>() {
+                                }.getType());
+                                // adding product to product list
+                                productList.clear();
+                                productList.addAll(items);
+
+                                customAdapterPersonalPrices.notifyDataSetChanged();
+                            }
+                        }
+                        /*if (offferShort == true) {
                             items1 = new Gson().fromJson("[" + categorydata.toString() + "]", new TypeToken<List<Product>>() {
                             }.getType());
                             productList.clear();
@@ -3606,14 +4015,13 @@ public class MainFwActivity extends AppCompatActivity
                                 @Override
                                 public int compare(Product o2, Product o1) {
                                     return Integer.parseInt(String.valueOf(o1.getPrimaryOfferTypeId())) - Integer.parseInt(String.valueOf(o2.getPrimaryOfferTypeId()));
-                                    //return o1.getPrimaryOfferTypeId().compareTo(o2.getPrimaryOfferTypeId());
-                                }
+                               }
 
                             });
 
                             customAdapterPersonalPrices.notifyDataSetChanged();
-                            //rv_items.setAdapter(customAdapterPersonalPrices);
-                        } else if (savingsShort == true) {
+                        }
+                        else if (savingsShort == true) {
                             items1 = new Gson().fromJson("[" + categorydata.toString() + "]", new TypeToken<List<Product>>() {
                             }.getType());
                             productList.clear();
@@ -3624,21 +4032,20 @@ public class MainFwActivity extends AppCompatActivity
                                 @Override
                                 public int compare(Product o2, Product o1) {
                                     return Float.valueOf(o1.getSavings()).compareTo(Float.valueOf(o2.getSavings()));
-                                    // return Integer.parseInt(String.valueOf(o1.getSavings())) - Integer.parseInt(String.valueOf(o2.getSavings()));
                                 }
 
                             });
                             customAdapterPersonalPrices.notifyDataSetChanged();
-                            //rv_items.setAdapter(customAdapterPersonalPrices);
-                        } else {
+                       }
+                        else {
                             items1 = new Gson().fromJson("[" + categorydata.toString() + "]", new TypeToken<List<Product>>() {
                             }.getType());
-                            // adding product to product list
                             productList.clear();
                             productList.addAll(items1);
 
                             customAdapterPersonalPrices.notifyDataSetChanged();
-                        }
+                        }*/
+
                         strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category\"}," + strCategory;
                     } else {
                         Toast.makeText(activity, "no data", Toast.LENGTH_SHORT).show();
@@ -8499,7 +8906,8 @@ public class MainFwActivity extends AppCompatActivity
                             }
                             if (pdView==true){
                                 linearLayout.setVisibility(View.VISIBLE);
-                            }else {
+                            }
+                            else {
 
                                 linearLayout.setVisibility(View.GONE);
                                 if (tmp==1||tmp==2||tmp==3){
@@ -11521,7 +11929,8 @@ public class MainFwActivity extends AppCompatActivity
 
                         if (pdView==true){
                             linearLayout.setVisibility(View.VISIBLE);
-                        }else {
+                        }
+                        else {
 
                             linearLayout.setVisibility(View.GONE);
                             if (tmp==1||tmp==2||tmp==3){
@@ -12938,6 +13347,31 @@ public class MainFwActivity extends AppCompatActivity
                                                                                                         DetaileToolbar.setVisibility(View.GONE);
                                                                                                         rv_items.setVisibility(View.VISIBLE);
                                                                                                         toolbar.setVisibility(View.VISIBLE);
+                                                                                                        if (pdView==true){
+                                                                                                            linearLayout.setVisibility(View.VISIBLE);
+                                                                                                        }
+                                                                                                        else {
+
+                                                                                                            linearLayout.setVisibility(View.GONE);
+                                                                                                            if (tmp==1||tmp==2||tmp==3){
+                                                                                                                filter_offer_label.setVisibility(View.VISIBLE);
+                                                                                                            }
+                                                                                                            if (categoryShort==true){
+                                                                                                                filter_offer_label.setVisibility(View.VISIBLE);
+                                                                                                                tv_category_name.setVisibility(View.VISIBLE);
+                                                                                                                img_category_cross_button.setVisibility(View.VISIBLE);
+                                                                                                            } else {
+                                                                                                                //filter_offer_label.setVisibility(View.VISIBLE);
+                                                                                                                tv_category_name.setVisibility(View.GONE);
+                                                                                                                img_category_cross_button.setVisibility(View.GONE);
+                                                                                                            }
+                                                                                                            if (offferShort==true||savingsShort==true){
+                                                                                                                filter_label.setVisibility(View.VISIBLE);
+                                                                                                            }else {
+                                                                                                                filter_label.setVisibility(View.GONE);
+                                                                                                            }
+
+                                                                                                        }
                                                                                                     }
                                                                                                 });
 

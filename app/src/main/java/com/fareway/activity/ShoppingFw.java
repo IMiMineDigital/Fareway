@@ -289,7 +289,8 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
             @Override
             public void onClick(View v) {
 
-                String urlString = "https://fwstaging.immdemo.net/web/printshoppinglist.aspx?shopperid="+appUtil.getPrefrence("ShopperID")+"&memberid="+appUtil.getPrefrence("MemberId");
+                //String urlString = "https://fwstaging.immdemo.net/web/printshoppinglist.aspx?shopperid="+appUtil.getPrefrence("ShopperID")+"&memberid="+appUtil.getPrefrence("MemberId");
+                String urlString = Constant.PRINT_WEB_URL + "shopperid=" + appUtil.getPrefrence("ShopperID") + "&memberid=" + appUtil.getPrefrence("MemberId") + "&storename=" + appUtil.getPrefrence("StoreName");
                 Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse(urlString));
                 intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
                 intent.setPackage("com.android.chrome");
