@@ -2099,6 +2099,8 @@ public class MainFwActivity extends AppCompatActivity
 
             if (i2 == R.id.filter_by_categories) {
                 //pdView=false;
+                filter_offer_label.setVisibility(View.GONE);
+                filter_label.setVisibility(View.GONE);
 
                 search_message.setVisibility(View.GONE);
                 DetaileToolbar.setVisibility(View.GONE);
@@ -2779,6 +2781,10 @@ public class MainFwActivity extends AppCompatActivity
                     public void onErrorResponse(VolleyError error) {
                         Log.i("Volley error resp", "error----" + error.getMessage());
                         error.printStackTrace();
+                        /*ViewErrorAllDialog alert = new ViewErrorAllDialog();
+                        alert.showDialog(activity, "Sorry, your search for " + s + " did not return any result in your personal Ad.Currently we don't have any deals, coupons, sales price items matching your search.\n" +
+                                "Our stores still might carry it and if we do its at the right price.");*/
+
                         progressDialog.dismiss();
                     }
                 }) {
@@ -14781,6 +14787,7 @@ public class MainFwActivity extends AppCompatActivity
                     navigation.setVisibility(View.VISIBLE);
                     x = 0;
                     dialog.dismiss();
+                    //
                 }
             });
 

@@ -99,7 +99,27 @@ public class CustomAdapterFilter extends RecyclerView.Adapter<CustomAdapterFilte
                             MainFwActivity.couponTile=true;
                             MainFwActivity.linearLayout.setVisibility(View.VISIBLE);
                         }
-                    }else if (MainFwActivity.searchLable==false){
+                    }
+                    else if (MainFwActivity.searchLable==false){
+                        activate.tv_category_name.setVisibility(View.GONE);
+                        activate.img_category_cross_button.setVisibility(View.GONE);
+
+                        if (MainFwActivity.savingsShort==true||MainFwActivity.offferShort==true){
+                            activate.tv_category_name.setVisibility(View.GONE);
+                            activate.img_category_cross_button.setVisibility(View.GONE);
+                            activate.filter_offer_label.setVisibility(View.VISIBLE);
+                            //filter_label is sort
+                            activate.filter_label.setVisibility(View.VISIBLE);
+                            /*MainFwActivity.pdView=false;
+                            MainFwActivity.linearLayout.setVisibility(View.GONE);*/
+                        }else {
+                            activate.filter_label.setVisibility(View.GONE);
+                            activate.filter_offer_label.setVisibility(View.VISIBLE);
+                            /*MainFwActivity.pdView=true;
+                            MainFwActivity.linearLayout.setVisibility(View.VISIBLE);*/
+                        }
+                    }
+                    else if (MainFwActivity.searchLable==true){
                         activate.tv_category_name.setVisibility(View.GONE);
                         activate.img_category_cross_button.setVisibility(View.GONE);
 
@@ -125,7 +145,17 @@ public class CustomAdapterFilter extends RecyclerView.Adapter<CustomAdapterFilte
                     MainFwActivity.couponTile=false;
                     //MainFwActivity.pdView=false;
                     MainFwActivity.linearLayout.setVisibility(View.GONE);
-                    activate.filter_offer_label.setVisibility(View.VISIBLE);
+
+                    /*activate.filter_offer_label.setVisibility(View.VISIBLE);*/
+                    if (MainFwActivity.savingsShort==true||MainFwActivity.offferShort==true){
+                        activate.filter_offer_label.setVisibility(View.VISIBLE);
+                        //filter_label is sort
+                        activate.filter_label.setVisibility(View.VISIBLE);
+                    }else {
+                        activate.filter_label.setVisibility(View.GONE);
+                        activate.filter_offer_label.setVisibility(View.VISIBLE);
+                    }
+
                     activate.tv_category_name.setVisibility(View.VISIBLE);
                     activate.img_category_cross_button.setVisibility(View.VISIBLE);
                     activate.tv_category_name.setText(category.getCategoryName());
