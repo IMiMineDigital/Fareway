@@ -107,6 +107,7 @@ import com.fareway.adapter.ShoppingListAdapter;
 import com.fareway.adapter.SwipeToDeleteCallback;
 import com.fareway.controller.FarewayApplication;
 import com.fareway.model.Category;
+import com.fareway.model.CheckCircular;
 import com.fareway.model.Geocoding;
 import com.fareway.model.Group;
 import com.fareway.model.Product;
@@ -1111,6 +1112,7 @@ public class MainFwActivity extends AppCompatActivity
 
             @Override
             public void onClick(View v) {
+                Log.d(TAG, " >> memid " + appUtil.getPrefrence("MemberId"));
                 LayoutInflater inflater = (LayoutInflater) MainFwActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
                 View layout = inflater.inflate(R.layout.change_store_popup, null);
                 window = new PopupWindow(MainFwActivity.this);
@@ -1285,7 +1287,6 @@ public class MainFwActivity extends AppCompatActivity
                                     } else {
                                         Toast.makeText(MainFwActivity.this, getResources().getString(R.string.noInternet), Toast.LENGTH_SHORT).show();
                                     }
-
                                 } catch (Exception e) {
                                     Log.d(TAG, " Exception >> " + e.getMessage());
                                 }
@@ -1301,7 +1302,6 @@ public class MainFwActivity extends AppCompatActivity
                                 dataAdapter.addAll(dropDownList);
                                 storeDropDown.setAdapter(dataAdapter);
                                 Log.d(TAG, " >> ERROR "+ error.getLocalizedMessage());
-
                             }
                         });
                         try {
@@ -1324,7 +1324,6 @@ public class MainFwActivity extends AppCompatActivity
                             errorMsgTxt2.setVisibility(View.VISIBLE);
                             return;
                         }
-
                         StringRequest updateReq = new StringRequest(Request.Method.POST,
                                 Constant.UPDATE_STORE + appUtil.getPrefrence("ShopperID") + "&StoreId=" + storeId,
                                 new Response.Listener<String>() {
@@ -1334,19 +1333,10 @@ public class MainFwActivity extends AppCompatActivity
                                         UpdateStore updateStore = new GsonBuilder().create().fromJson(response, UpdateStore.class);
                                         if (Constant.ERRORCODE.equalsIgnoreCase(updateStore.getErrorcode())) {
                                             Log.d(TAG, ">> Change store successfully");
+                                            checkCircular(storeId);
                                         } else {
                                             Log.d(TAG, ">> Change store Response code " + updateStore.getErrorcode());
                                         }
-                                        new Handler().postDelayed(new Runnable(){
-                                            @Override
-                                            public void run() {
-                                                window.dismiss();
-                                                couponTile = true;
-                                                pdView = true;
-                                                changeStore();
-                                                messageChangeStoreLoad();
-                                            }
-                                        }, 10000);
                                     }
                                 }, new Response.ErrorListener() {
                             @Override
@@ -1375,26 +1365,64 @@ public class MainFwActivity extends AppCompatActivity
                             progressDialog = new ProgressDialog(activity);
                             progressDialog.setMessage("Processing");
                             progressDialog.show();
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    try {
-                                        Thread.sleep(10000);
-                                    } catch (Exception e) {
-                                        Log.d(TAG, e.getMessage());
-                                    }
-                                }
-                            });
                         } catch (Exception e) {
                             Log.d(TAG, " Exception >> " + e.getMessage());
                         }
-
                     }
                 });
             }
         });
     }
 
+    private void checkCircular(final String storeId) {
+        String memberId = appUtil.getPrefrence("MemberId");
+        final StringRequest checkCircularReq = new StringRequest(
+                Request.Method.GET, Constant.CHECK_CIRCULAR + memberId + "&storeid=" + storeId,
+                new Response.Listener<String>() {
+                    @Override
+                    public void onResponse(String response) {
+                        Log.d(TAG, " new api >> " + response);
+                        CheckCircular checkCircular = new GsonBuilder().create().fromJson(response, CheckCircular.class);
+                        if (Constant.CREATED.equalsIgnoreCase(checkCircular.message)) {
+                            window.dismiss();
+                            couponTile = true;
+                            pdView = true;
+                            changeStore();
+                            messageChangeStoreLoad();
+                        } else {
+                            checkCircular(storeId);
+                        }
+                    }
+                }, new Response.ErrorListener() {
+            @Override
+            public void onErrorResponse(VolleyError error) {
+                Log.d(TAG, " error >> " + error.getMessage());
+            }
+        }
+        ){
+            @Override
+            public String getBodyContentType() {
+                return "application/x-www-form-urlencoded";
+            }
+
+            @Override
+            public Map<String, String> getHeaders() throws AuthFailureError {
+                Map<String, String> params = new HashMap<String, String>();
+                params.put("Content-Type", "application/x-www-form-urlencoded");
+                params.put("Authorization", appUtil.getPrefrence("token_type") + " " + appUtil.getPrefrence("access_token"));
+                return params;
+            }
+        };
+        RetryPolicy policy = new DefaultRetryPolicy(5000,
+                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+        checkCircularReq.setRetryPolicy(policy);
+        try {
+            mQueue.add(checkCircularReq);
+        } catch (Exception e){
+            Log.d(TAG, e.getMessage());
+        }
+    }
 
     @Override
     public void onConnected(@Nullable Bundle bundle) {

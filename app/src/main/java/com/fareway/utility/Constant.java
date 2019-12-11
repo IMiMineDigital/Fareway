@@ -56,9 +56,10 @@ public class Constant {
     public static final String STATUS = "OK";
     public static final String ERRORCODE = "0";
     public static final String UPDATE_STORE = "https://fwstagingapi.immdemo.net/api/v1/Account/cirularMemberUpdateStore?ShopperID=";
+    public static final String CHECK_CIRCULAR = "https://fwstagingapi.immdemo.net/api/v1/Circular/CircularCount?memberid=";
 
 
-
+    public static final String CREATED = "Created";
 }
 
 
