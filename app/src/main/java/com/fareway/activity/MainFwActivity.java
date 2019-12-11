@@ -781,23 +781,93 @@ public class MainFwActivity extends AppCompatActivity
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
                     if (edit_txt.getText().toString().isEmpty()) {
 
-                    } else {
+                    }
+                    else {
 
                         if (Integer.parseInt(submit_btn.getTag().toString()) == 0) {
                             submit_btn.setImageResource(R.drawable.ic_clear_black_24dp);
                             submit_btn.setTag(1);
-                            String search = edit_txt.getText().toString();
+                            /*String search = edit_txt.getText().toString();
                             participate = 0;
                             pdView = false;
                             couponTile = false;
                             x = 3;
+                            tmp=0;
                             searchLable = true;
                             navigation.setVisibility(View.VISIBLE);
                             header_title.setVisibility(View.GONE);
                             searchLoad(search);
-                            linearLayout.setVisibility(View.GONE);
+                            linearLayout.setVisibility(View.GONE);*/
+                            String search = edit_txt.getText().toString();
+                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                            imm.hideSoftInputFromWindow(edit_txt.getWindowToken(), 0);
+
+                            participate = 0;
+                            pdView = false;
+                            couponTile = false;
+                            tmp=0;
+                            navigation.setVisibility(View.VISIBLE);
+                            x = 3;
+                            header_title.setVisibility(View.GONE);
+                            searchLable = true;
+                            searchLoad(search);
+                        /*linearLayout.setVisibility(View.GONE);
+                        filter_offer_label.setVisibility(View.GONE);
+                        filter_label.setVisibility(View.GONE);*/
+                            if (pdView==true){
+                                linearLayout.setVisibility(View.VISIBLE);
+                            }
+                            else {
+
+                                linearLayout.setVisibility(View.GONE);
+                                filter_offer_label.setVisibility(View.GONE);
+                                filter_label.setVisibility(View.GONE);
+                                categoryShort=false;
+                                offferShort=false;
+                                savingsShort=false;
+
+                            /*if (tmp==1||tmp==2||tmp==3){
+                                filter_offer_label.setVisibility(View.VISIBLE);
+                            }
+                            if (categoryShort==true){
+                                filter_offer_label.setVisibility(View.VISIBLE);
+                                tv_category_name.setVisibility(View.VISIBLE);
+                                img_category_cross_button.setVisibility(View.VISIBLE);
+                            } else {
+                                //filter_offer_label.setVisibility(View.VISIBLE);
+                                tv_category_name.setVisibility(View.GONE);
+                                img_category_cross_button.setVisibility(View.GONE);
+                            }
+                            if (offferShort==true||savingsShort==true){
+                                filter_label.setVisibility(View.VISIBLE);
+                            }else {
+                                filter_label.setVisibility(View.GONE);
+                            }*/
+
+                            }
                         } else {
                             search_message.setVisibility(View.GONE);
+                            navigation.setVisibility(View.VISIBLE);
+                            submit_btn.setImageResource(R.drawable.ic_search_black_24dp);
+                            submit_btn.setTag(0);
+                            edit_txt.getText().clear();
+
+                            participate = 1;
+                            pdView = true;
+                            couponTile = true;
+                            savingsShort = false;
+                            offferShort = false;
+                            categoryShort = false;
+                            tmp = 0;
+                            x = 0;
+                            //header_title visible
+                            header_title.setVisibility(View.GONE);
+                            searchLable = false;
+                            fetchProduct();
+                            linearLayout.setVisibility(View.VISIBLE);
+                            filter_offer_label.setVisibility(View.GONE);
+                            filter_label.setVisibility(View.GONE);
+                            /*search_message.setVisibility(View.GONE);
                             navigation.setVisibility(View.VISIBLE);
                             submit_btn.setImageResource(R.drawable.ic_search_black_24dp);
                             submit_btn.setTag(0);
@@ -814,7 +884,7 @@ public class MainFwActivity extends AppCompatActivity
                             searchLable = false;
                             header_title.setVisibility(View.GONE);
                             fetchProduct();
-                            linearLayout.setVisibility(View.VISIBLE);
+                            linearLayout.setVisibility(View.VISIBLE);*/
                         }
                     }
                     return true;
@@ -842,6 +912,7 @@ public class MainFwActivity extends AppCompatActivity
                         participate = 0;
                         pdView = false;
                         couponTile = false;
+                        tmp=0;
                         navigation.setVisibility(View.VISIBLE);
                         x = 3;
                         header_title.setVisibility(View.GONE);
@@ -856,7 +927,13 @@ public class MainFwActivity extends AppCompatActivity
                         else {
 
                             linearLayout.setVisibility(View.GONE);
-                            if (tmp==1||tmp==2||tmp==3){
+                            filter_offer_label.setVisibility(View.GONE);
+                            filter_label.setVisibility(View.GONE);
+                            categoryShort=false;
+                            offferShort=false;
+                            savingsShort=false;
+
+                            /*if (tmp==1||tmp==2||tmp==3){
                                 filter_offer_label.setVisibility(View.VISIBLE);
                             }
                             if (categoryShort==true){
@@ -872,11 +949,12 @@ public class MainFwActivity extends AppCompatActivity
                                 filter_label.setVisibility(View.VISIBLE);
                             }else {
                                 filter_label.setVisibility(View.GONE);
-                            }
+                            }*/
 
                         }
 
-                    } else {
+                    }
+                    else {
                         //
                         search_message.setVisibility(View.GONE);
                         navigation.setVisibility(View.VISIBLE);
@@ -940,6 +1018,7 @@ public class MainFwActivity extends AppCompatActivity
                     participate = 0;
                     pdView = false;
                     couponTile = false;
+                    tmp=0;
                     navigation.setVisibility(View.VISIBLE);
                     x = 3;
                     header_title.setVisibility(View.GONE);
@@ -2459,24 +2538,46 @@ public class MainFwActivity extends AppCompatActivity
             }
 
             else if (i2 == R.id.filter_clear){
-                tmp=0;
-                pdView=true;
-                couponTile=true;
-                offferShort = false;
-                savingsShort = false;
-                categoryShort=false;
-                filter_offer_label.setVisibility(View.GONE);
-                filter_label.setVisibility(View.GONE);
-                tv_category_name.setVisibility(View.GONE);
-                img_category_cross_button.setVisibility(View.GONE);
-                tv_offer_name.setVisibility(View.GONE);
-                img_offer_cross_button.setVisibility(View.GONE);
-                fetchProduct();
-                rv_category.setVisibility(View.GONE);
-                rowLayoutShort.setVisibility(View.GONE);
-                rv_items.setVisibility(View.VISIBLE);
-                toolbar.setVisibility(View.VISIBLE);
-                linearLayout.setVisibility(View.VISIBLE);
+                if (x==0){
+                    tmp=0;
+                    pdView=true;
+                    couponTile=true;
+                    offferShort = false;
+                    savingsShort = false;
+                    categoryShort=false;
+                    filter_offer_label.setVisibility(View.GONE);
+                    filter_label.setVisibility(View.GONE);
+                    tv_category_name.setVisibility(View.GONE);
+                    img_category_cross_button.setVisibility(View.GONE);
+                    tv_offer_name.setVisibility(View.GONE);
+                    img_offer_cross_button.setVisibility(View.GONE);
+                    fetchProduct();
+                    rv_category.setVisibility(View.GONE);
+                    rowLayoutShort.setVisibility(View.GONE);
+                    rv_items.setVisibility(View.VISIBLE);
+                    toolbar.setVisibility(View.VISIBLE);
+                    linearLayout.setVisibility(View.VISIBLE);
+                }else if (x==3){
+                    tmp=0;
+                    pdView=false;
+                    couponTile=false;
+                    offferShort = false;
+                    savingsShort = false;
+                    categoryShort=false;
+                    filter_offer_label.setVisibility(View.GONE);
+                    filter_label.setVisibility(View.GONE);
+                    tv_category_name.setVisibility(View.GONE);
+                    img_category_cross_button.setVisibility(View.GONE);
+                    tv_offer_name.setVisibility(View.GONE);
+                    img_offer_cross_button.setVisibility(View.GONE);
+                    searchProduct();
+                    rv_category.setVisibility(View.GONE);
+                    rowLayoutShort.setVisibility(View.GONE);
+                    rv_items.setVisibility(View.VISIBLE);
+                    toolbar.setVisibility(View.VISIBLE);
+                    linearLayout.setVisibility(View.GONE);
+                }
+
             }
 
             else if (i2 == R.id.by_saving) {
@@ -3526,7 +3627,8 @@ public class MainFwActivity extends AppCompatActivity
                     } catch (JSONException e) {
                         e.printStackTrace();
                     }
-                } else {
+                }
+                else {
                     String categorydata = "";
                     for (int i = 0; i < message3.length(); i++) {
                         try {
@@ -3900,111 +4002,7 @@ public class MainFwActivity extends AppCompatActivity
                     productList.clear();
                     productList.addAll(items1);
                     customAdapterPersonalPrices.notifyDataSetChanged();*/
-                        if (categoryShort == true) {
-                            if (offferShort == true) {
-
-                                List<Product> items = new Gson().fromJson(messageCategory.toString(), new TypeToken<List<Product>>() {
-                                }.getType());
-                                productList.clear();
-                                productList.addAll(items);
-
-                                Collections.sort(productList, new Comparator<Product>() {
-
-                                    @Override
-                                    public int compare(Product o2, Product o1) {
-                                        return Integer.parseInt(String.valueOf(o1.getPrimaryOfferTypeId())) - Integer.parseInt(String.valueOf(o2.getPrimaryOfferTypeId()));
-                                    }
-
-                                });
-
-                                customAdapterPersonalPrices.notifyDataSetChanged();
-                                //rv_items.setAdapter(customAdapterPersonalPrices);
-                            } else if (savingsShort == true) {
-                                List<Product> items = new Gson().fromJson(messageCategory.toString(), new TypeToken<List<Product>>() {
-                                }.getType());
-                                productList.clear();
-                                productList.addAll(items);
-
-                                Collections.sort(productList, new Comparator<Product>() {
-
-                                    @Override
-                                    public int compare(Product o2, Product o1) {
-                                        return Float.valueOf(o1.getSavings()).compareTo(Float.valueOf(o2.getSavings()));
-                                        // return Integer.parseInt(String.valueOf(o1.getSavings())) - Integer.parseInt(String.valueOf(o2.getSavings()));
-                                    }
-
-                                });
-
-                                customAdapterPersonalPrices.notifyDataSetChanged();
-                                //rv_items.setAdapter(customAdapterPersonalPrices);
-                            } else {
-                                try {
-                                    List<Product> items = new Gson().fromJson(messageCategory.toString(), new TypeToken<List<Product>>() {
-                                    }.getType());
-                                    // adding product to product list
-                                    productList.clear();
-                                    productList.addAll(items);
-
-                                    customAdapterPersonalPrices.notifyDataSetChanged();
-                                } catch (Exception e) {
-                                    e.printStackTrace();
-                                }
-                        /*List<Product> items = new Gson().fromJson(messageCategory.toString(), new TypeToken<List<Product>>() {
-                        }.getType());
-                        // adding product to product list
-                        productList.clear();
-                        productList.addAll(items);
-
-                        customAdapterPersonalPrices.notifyDataSetChanged();*/
-                            }
-                        }
-                        else {
-                            if (offferShort == true) {
-                                List<Product> items = new Gson().fromJson(message3.toString(), new TypeToken<List<Product>>() {
-                                }.getType());
-                                productList.clear();
-                                productList.addAll(items);
-
-                                Collections.sort(productList, new Comparator<Product>() {
-
-                                    @Override
-                                    public int compare(Product o2, Product o1) {
-                                        return Integer.parseInt(String.valueOf(o1.getPrimaryOfferTypeId())) - Integer.parseInt(String.valueOf(o2.getPrimaryOfferTypeId()));
-                                    }
-
-                                });
-
-                                customAdapterPersonalPrices.notifyDataSetChanged();
-                                //rv_items.setAdapter(customAdapterPersonalPrices);
-                            } else if (savingsShort == true) {
-                                List<Product> items = new Gson().fromJson(message3.toString(), new TypeToken<List<Product>>() {
-                                }.getType());
-                                productList.clear();
-                                productList.addAll(items);
-
-                                Collections.sort(productList, new Comparator<Product>() {
-
-                                    @Override
-                                    public int compare(Product o2, Product o1) {
-                                        return Float.valueOf(o1.getSavings()).compareTo(Float.valueOf(o2.getSavings()));
-                                        // return Integer.parseInt(String.valueOf(o1.getSavings())) - Integer.parseInt(String.valueOf(o2.getSavings()));
-                                    }
-
-                                });
-
-                                customAdapterPersonalPrices.notifyDataSetChanged();
-                                //rv_items.setAdapter(customAdapterPersonalPrices);
-                            } else {
-                                List<Product> items = new Gson().fromJson(message3.toString(), new TypeToken<List<Product>>() {
-                                }.getType());
-                                // adding product to product list
-                                productList.clear();
-                                productList.addAll(items);
-
-                                customAdapterPersonalPrices.notifyDataSetChanged();
-                            }
-                        }
-                        /*if (offferShort == true) {
+                        if (offferShort == true) {
                             items1 = new Gson().fromJson("[" + categorydata.toString() + "]", new TypeToken<List<Product>>() {
                             }.getType());
                             productList.clear();
@@ -4044,7 +4042,7 @@ public class MainFwActivity extends AppCompatActivity
                             productList.addAll(items1);
 
                             customAdapterPersonalPrices.notifyDataSetChanged();
-                        }*/
+                        }
 
                         strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category\"}," + strCategory;
                     } else {
