@@ -1377,7 +1377,7 @@ public class MainFwActivity extends AppCompatActivity
     private void checkCircular(final String storeId) {
         String memberId = appUtil.getPrefrence("MemberId");
         final StringRequest checkCircularReq = new StringRequest(
-                Request.Method.GET, Constant.CHECK_CIRCULAR + memberId + "&storeid=" + storeId,
+                Request.Method.GET, Constant.WEB_URL + Constant.CHECK_CIRCULAR + memberId + "&storeid=" + storeId,
                 new Response.Listener<String>() {
                     @Override
                     public void onResponse(String response) {
