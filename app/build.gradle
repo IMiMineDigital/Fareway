@@ -1,13 +1,13 @@
-apply plugin: 'com.android.application'
-/*apply plugin: 'com.android.library'
+//apply plugin: 'com.android.application'
+apply plugin: 'com.android.library'
 apply plugin: 'com.github.dcendents.android-maven'
 group 'IMeMine'
-version '8.4'*/
+version '8.5'
 //when build need to remove comment in login page
 android {
     compileSdkVersion 28
     defaultConfig {
-        applicationId "com.fareway"
+        //applicationId "com.fareway"
         minSdkVersion 16
         targetSdkVersion 28
         versionCode 18
