@@ -435,8 +435,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="@dimen/_10sdp"
-            >
+            android:padding="@dimen/_10sdp">
             <TextView
                 android:fontFamily="@font/roboto"
                 android:layout_width="match_parent"
@@ -444,16 +443,15 @@
                 android:text="All My Offer"
                 android:scrollHorizontally="false"
                 style="@style/label_tx"
-                android:layout_weight="1"
-                />
+                android:layout_weight="1"/>
 
             <ImageView
+                android:id="@+id/all_my_ofr_icon"
                 android:layout_width="@dimen/_15sdp"
                 android:layout_height="@dimen/_15sdp"
                 android:layout_gravity="center"
                 android:layout_weight="0"
-                android:src="@drawable/ic_check_red_24dp"
-                />
+                android:src="@drawable/ic_check_red_24dp"/>
 
         </LinearLayout>
 
@@ -485,12 +483,11 @@
                 />
 
             <ImageView
+                android:id="@+id/mpd_icon"
                 android:layout_width="@dimen/_15sdp"
                 android:layout_height="@dimen/_15sdp"
                 android:layout_gravity="center"
-                android:layout_weight="0"
-                android:src="@drawable/go"
-                />
+                android:layout_weight="0" />
 
         </LinearLayout>
 
@@ -522,12 +519,11 @@
                 />
 
             <ImageView
+                android:id="@+id/dc_icon"
                 android:layout_width="@dimen/_15sdp"
                 android:layout_height="@dimen/_15sdp"
                 android:layout_gravity="center"
-                android:layout_weight="0"
-                android:src="@drawable/go"
-                />
+                android:layout_weight="0" />
 
         </LinearLayout>
 
@@ -559,12 +555,11 @@
                 />
 
             <ImageView
+                android:id="@+id/sale_icon"
                 android:layout_width="@dimen/_15sdp"
                 android:layout_height="@dimen/_15sdp"
                 android:layout_gravity="center"
-                android:layout_weight="0"
-                android:src="@drawable/go"
-                />
+                android:layout_weight="0"/>
 
         </LinearLayout>
 
@@ -625,13 +620,11 @@
             android:layout_alignParentTop="true"/>-->
 
         <LinearLayout
-
             android:id="@+id/rowLayout0Short"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="@dimen/_10sdp"
-            >
+            android:padding="@dimen/_10sdp">
             <TextView
                 android:fontFamily="@font/roboto"
                 android:layout_width="match_parent"
@@ -639,16 +632,15 @@
                 android:text="Recommended"
                 android:scrollHorizontally="false"
                 style="@style/label_tx"
-                android:layout_weight="1"
-                />
+                android:layout_weight="1"/>
 
             <ImageView
+                android:id="@+id/recommend_icon"
                 android:layout_width="@dimen/_15sdp"
                 android:layout_height="@dimen/_15sdp"
                 android:layout_gravity="center"
                 android:layout_weight="0"
-                android:src="@drawable/go"
-                />
+                android:src="@drawable/ic_check_red_24dp"/>
 
         </LinearLayout>
 
@@ -662,13 +654,11 @@
             android:layout_alignParentTop="true"/>
 
         <LinearLayout
-
             android:id="@+id/rowLayout1Short"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="@dimen/_10sdp"
-            >
+            android:padding="@dimen/_10sdp">
             <TextView
                 android:fontFamily="@font/roboto"
                 android:layout_width="match_parent"
@@ -676,16 +666,14 @@
                 android:text="Saving"
                 android:scrollHorizontally="false"
                 style="@style/label_tx"
-                android:layout_weight="1"
-                />
+                android:layout_weight="1"/>
 
             <ImageView
+                android:id="@+id/saving_sort_icon"
                 android:layout_width="@dimen/_15sdp"
                 android:layout_height="@dimen/_15sdp"
                 android:layout_gravity="center"
-                android:layout_weight="0"
-                android:src="@drawable/go"
-                />
+                android:layout_weight="0" />
 
         </LinearLayout>
 
@@ -699,13 +687,11 @@
             android:layout_alignParentTop="true"/>
 
         <LinearLayout
-
             android:id="@+id/rowLayout2Short"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            android:padding="@dimen/_10sdp"
-            >
+            android:padding="@dimen/_10sdp">
             <TextView
                 android:fontFamily="@font/roboto"
                 android:layout_width="match_parent"
@@ -713,16 +699,14 @@
                 android:text="Offer Type"
                 android:scrollHorizontally="false"
                 style="@style/label_tx"
-                android:layout_weight="1"
-                />
+                android:layout_weight="1" />
 
             <ImageView
+                android:id="@+id/offer_type_icon"
                 android:layout_width="@dimen/_15sdp"
                 android:layout_height="@dimen/_15sdp"
                 android:layout_gravity="center"
-                android:layout_weight="0"
-                android:src="@drawable/go"
-                />
+                android:layout_weight="0" />
 
         </LinearLayout>
 

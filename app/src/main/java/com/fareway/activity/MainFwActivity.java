@@ -289,6 +289,12 @@ public class MainFwActivity extends AppCompatActivity
 
     public static TextView tv_category_name;
     public static ImageView img_category_cross_button;
+    private ImageView mpdIcon, dcIcon, allMyOfferIcon, saleItemIcon;
+    private ImageView recommendSortIcon, savingSortIcon, ofrTypeSortIcon;
+    private final int ALLCATAGORY = 0;
+    private final int ALLOFFER = 1;
+    private final int SORT = 2;
+    private final int CLEAR_FILTER = 3;
 
 
     @Override
@@ -390,6 +396,7 @@ public class MainFwActivity extends AppCompatActivity
         img_offer_cross_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setCheckIcon(ALLOFFER);
                 if (x==0){
                     filter_offer_label.setVisibility(View.GONE);
                     tv_category_name.setVisibility(View.GONE);
@@ -462,6 +469,7 @@ public class MainFwActivity extends AppCompatActivity
         img_short_cross_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                setCheckIcon(SORT);
                 if (x==0){
                     filter_label.setVisibility(View.GONE);
                     //pdView=true;
@@ -1466,6 +1474,33 @@ public class MainFwActivity extends AppCompatActivity
         }
     }
 
+    private void setCheckIcon(int type) {
+        switch (type) {
+            case ALLCATAGORY:
+                break;
+            case ALLOFFER:
+                allMyOfferIcon.setImageResource(R.drawable.ic_check_red_24dp);
+                mpdIcon.setImageResource(0);
+                dcIcon.setImageResource(0);
+                saleItemIcon.setImageResource(0);
+                break;
+            case SORT:
+                recommendSortIcon.setImageResource(R.drawable.ic_check_red_24dp);
+                savingSortIcon.setImageResource(0);
+                ofrTypeSortIcon.setImageResource(0);
+                break;
+            case CLEAR_FILTER:
+                allMyOfferIcon.setImageResource(R.drawable.ic_check_red_24dp);
+                mpdIcon.setImageResource(0);
+                dcIcon.setImageResource(0);
+                saleItemIcon.setImageResource(0);
+                recommendSortIcon.setImageResource(R.drawable.ic_check_red_24dp);
+                savingSortIcon.setImageResource(0);
+                ofrTypeSortIcon.setImageResource(0);
+                break;
+        }
+    }
+
     @Override
     public void onConnected(@Nullable Bundle bundle) {
         Log.d(TAG, " >> onconnected");
@@ -1772,16 +1807,24 @@ public class MainFwActivity extends AppCompatActivity
         //swep item
         //enableSwipeToDeleteAndUndo();
 
+        //Filter All Offers
         rowLayout = findViewById(R.id.rowLayout);
         rowLayout0 = findViewById(R.id.rowLayout0);
         rowLayout1 = findViewById(R.id.rowLayout1);
         rowLayout2 = findViewById(R.id.rowLayout2);
         rowLayout3 = findViewById(R.id.rowLayout3);
+        mpdIcon = findViewById(R.id.mpd_icon);
+        dcIcon = findViewById(R.id.dc_icon);
+        saleItemIcon = findViewById(R.id.sale_icon);
+        allMyOfferIcon = findViewById(R.id.all_my_ofr_icon);
 
         rowLayoutShort = findViewById(R.id.rowLayoutShort);
         rowLayout0Short = findViewById(R.id.rowLayout0Short);
         rowLayout1Short = findViewById(R.id.rowLayout1Short);
         rowLayout2Short = findViewById(R.id.rowLayout2Short);
+        recommendSortIcon = findViewById(R.id.recommend_icon);
+        savingSortIcon = findViewById(R.id.saving_sort_icon);
+        ofrTypeSortIcon = findViewById(R.id.offer_type_icon);
         //et_search = findViewById(R.id.et_search);
 
         drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
@@ -2218,6 +2261,10 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout0.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            allMyOfferIcon.setImageResource(R.drawable.ic_check_red_24dp);
+                            mpdIcon.setImageResource(0);
+                            dcIcon.setImageResource(0);
+                            saleItemIcon.setImageResource(0);
                             filter_offer_label.setVisibility(View.GONE);
                             tv_category_name.setVisibility(View.GONE);
                             img_category_cross_button.setVisibility(View.GONE);
@@ -2252,6 +2299,10 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout1.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            allMyOfferIcon.setImageResource(0);
+                            mpdIcon.setImageResource(R.drawable.ic_check_red_24dp);
+                            dcIcon.setImageResource(0);
+                            saleItemIcon.setImageResource(0);
                             categoryShort = false;
                             tv_category_name.setVisibility(View.GONE);
                             img_category_cross_button.setVisibility(View.GONE);
@@ -2284,6 +2335,10 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout2.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            allMyOfferIcon.setImageResource(0);
+                            mpdIcon.setImageResource(0);
+                            dcIcon.setImageResource(R.drawable.ic_check_red_24dp);
+                            saleItemIcon.setImageResource(0);
                             categoryShort = false;
                             tv_category_name.setVisibility(View.GONE);
                             img_category_cross_button.setVisibility(View.GONE);
@@ -2314,6 +2369,10 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout3.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            allMyOfferIcon.setImageResource(0);
+                            mpdIcon.setImageResource(0);
+                            dcIcon.setImageResource(0);
+                            saleItemIcon.setImageResource(R.drawable.ic_check_red_24dp);
                             categoryShort = false;
                             tv_category_name.setVisibility(View.GONE);
                             img_category_cross_button.setVisibility(View.GONE);
@@ -2350,6 +2409,10 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout0.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            allMyOfferIcon.setImageResource(R.drawable.ic_check_red_24dp);
+                            mpdIcon.setImageResource(0);
+                            dcIcon.setImageResource(0);
+                            saleItemIcon.setImageResource(0);
                             filter_offer_label.setVisibility(View.GONE);
                             tv_category_name.setVisibility(View.GONE);
                             img_category_cross_button.setVisibility(View.GONE);
@@ -2369,6 +2432,10 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout1.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            allMyOfferIcon.setImageResource(0);
+                            mpdIcon.setImageResource(R.drawable.ic_check_red_24dp);
+                            dcIcon.setImageResource(0);
+                            saleItemIcon.setImageResource(0);
                             categoryShort = false;
                             tv_category_name.setVisibility(View.GONE);
                             img_category_cross_button.setVisibility(View.GONE);
@@ -2387,6 +2454,10 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout2.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            allMyOfferIcon.setImageResource(0);
+                            mpdIcon.setImageResource(0);
+                            dcIcon.setImageResource(R.drawable.ic_check_red_24dp);
+                            saleItemIcon.setImageResource(0);
                             categoryShort = false;
                             tv_category_name.setVisibility(View.GONE);
                             img_category_cross_button.setVisibility(View.GONE);
@@ -2406,6 +2477,10 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout3.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            allMyOfferIcon.setImageResource(0);
+                            mpdIcon.setImageResource(0);
+                            dcIcon.setImageResource(0);
+                            saleItemIcon.setImageResource(R.drawable.ic_check_red_24dp);
                             categoryShort = false;
                             tv_category_name.setVisibility(View.GONE);
                             img_category_cross_button.setVisibility(View.GONE);
@@ -2472,6 +2547,9 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout0Short.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            recommendSortIcon.setImageResource(R.drawable.ic_check_red_24dp);
+                            savingSortIcon.setImageResource(0);
+                            ofrTypeSortIcon.setImageResource(0);
                             filter_label.setVisibility(View.GONE);
                             //pdView=true;
                             //couponTile=true;
@@ -2496,6 +2574,9 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout1Short.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            recommendSortIcon.setImageResource(0);
+                            savingSortIcon.setImageResource(R.drawable.ic_check_red_24dp);
+                            ofrTypeSortIcon.setImageResource(0);
                             filter_label.setVisibility(View.VISIBLE);
                             tv_short_filter.setText("Saving");
                             pdView = false;
@@ -2515,6 +2596,9 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout2Short.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            recommendSortIcon.setImageResource(0);
+                            savingSortIcon.setImageResource(0);
+                            ofrTypeSortIcon.setImageResource(R.drawable.ic_check_red_24dp);
                             filter_label.setVisibility(View.VISIBLE);
                             tv_short_filter.setText("Offer Type");
                             offferShort = true;
@@ -2540,6 +2624,9 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout0Short.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            recommendSortIcon.setImageResource(0);
+                            savingSortIcon.setImageResource(R.drawable.ic_check_red_24dp);
+                            ofrTypeSortIcon.setImageResource(0);
                             filter_label.setVisibility(View.GONE);
                             //tmp=0;
                             pdView = false;
@@ -2557,6 +2644,9 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout1Short.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            recommendSortIcon.setImageResource(0);
+                            savingSortIcon.setImageResource(R.drawable.ic_check_red_24dp);
+                            ofrTypeSortIcon.setImageResource(0);
                             filter_label.setVisibility(View.VISIBLE);
                             tv_short_filter.setText("Saving");
                             //
@@ -2576,6 +2666,10 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout2Short.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            recommendSortIcon.setImageResource(0);
+                            savingSortIcon.setImageResource(0);
+                            ofrTypeSortIcon.setImageResource(R.drawable.ic_check_red_24dp);
+                            filter_label.setVisibility(View.VISIBLE);
                             filter_label.setVisibility(View.VISIBLE);
                             tv_short_filter.setText("Offer Type");
                             //tmp=0;
@@ -2610,6 +2704,7 @@ public class MainFwActivity extends AppCompatActivity
             }
 
             else if (i2 == R.id.filter_clear){
+                setCheckIcon(CLEAR_FILTER);
                 if (x==0){
                     tmp=0;
                     pdView=true;
