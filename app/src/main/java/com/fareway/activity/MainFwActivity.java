@@ -295,6 +295,7 @@ public class MainFwActivity extends AppCompatActivity
     private final int ALLOFFER = 1;
     private final int SORT = 2;
     private final int CLEAR_FILTER = 3;
+    private final int SEARCH = 4;
 
 
     @Override
@@ -949,6 +950,7 @@ public class MainFwActivity extends AppCompatActivity
         submit_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                setCheckIcon(SEARCH);
                 if (edit_txt.getText().toString().isEmpty()) {
 
                 } else {
@@ -1490,15 +1492,23 @@ public class MainFwActivity extends AppCompatActivity
                 ofrTypeSortIcon.setImageResource(0);
                 break;
             case CLEAR_FILTER:
-                allMyOfferIcon.setImageResource(R.drawable.ic_check_red_24dp);
-                mpdIcon.setImageResource(0);
-                dcIcon.setImageResource(0);
-                saleItemIcon.setImageResource(0);
-                recommendSortIcon.setImageResource(R.drawable.ic_check_red_24dp);
-                savingSortIcon.setImageResource(0);
-                ofrTypeSortIcon.setImageResource(0);
+                reSetCheckIcon();
                 break;
+            case SEARCH:
+                reSetCheckIcon();
+                break;
+
         }
+    }
+
+    private void reSetCheckIcon() {
+        allMyOfferIcon.setImageResource(R.drawable.ic_check_red_24dp);
+        mpdIcon.setImageResource(0);
+        dcIcon.setImageResource(0);
+        saleItemIcon.setImageResource(0);
+        recommendSortIcon.setImageResource(R.drawable.ic_check_red_24dp);
+        savingSortIcon.setImageResource(0);
+        ofrTypeSortIcon.setImageResource(0);
     }
 
     @Override
