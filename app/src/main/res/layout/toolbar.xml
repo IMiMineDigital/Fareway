@@ -79,7 +79,7 @@
                     android:layout_height="wrap_content"
                     android:inputType="text"
                     android:singleLine="true"
-                    android:imeOptions=""
+                    android:imeOptions="actionSearch"
                     android:textColor="@color/black"
                     android:background="@null"
                     android:hint="@string/search"

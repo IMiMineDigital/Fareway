@@ -74,12 +74,6 @@
         android:clipToPadding="false"
         android:scrollbars="vertical"
         android:visibility="gone"/>
-
-   <!-- <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:fillViewport="true">-->
     <!--Offer filter label-->
 
     <RelativeLayout
@@ -166,34 +160,6 @@
 
 
     </RelativeLayout>
-    <!--<LinearLayout
-        android:visibility="visible"
-        android:background="@color/red"
-        android:padding="4dp"
-        android:id="@+id/filter_offer_label"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:padding="5dp"
-            android:textColor="@color/white"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:text="Filter By : "/>
-        <TextView
-            android:id="@+id/tv_offer_name"
-            android:padding="5dp"
-            android:background="@drawable/white_bg_rounded_corner"
-            android:textColor="@color/red"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Personal Deal"/>
-        <ImageView
-            android:id="@+id/img_offer_cross_button"
-            android:layout_width="10dp"
-            android:layout_height="10dp"
-            android:background="@drawable/icon_cross" />
-    </LinearLayout>-->
     <!--short label-->
 
     <RelativeLayout
@@ -246,36 +212,6 @@
 
     </RelativeLayout>
 
-
-    <!--<LinearLayout
-        android:layout_below="@+id/filter_layout"
-        android:visibility="gone"
-        android:background="@color/red"
-        android:padding="4dp"
-        android:id="@+id/filter_label"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal">
-        <TextView
-            android:padding="5dp"
-            android:textColor="@color/white"
-            android:layout_width="80dp"
-            android:layout_height="wrap_content"
-            android:text="Sort : "/>
-        <TextView
-            android:id="@+id/tv_short_filter"
-            android:padding="5dp"
-            android:background="@drawable/white_bg_rounded_corner"
-            android:textColor="@color/red"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="Saving"/>
-        <ImageView
-            android:id="@+id/img_short_cross_button"
-            android:layout_width="15dp"
-            android:layout_height="15dp"
-            android:background="@drawable/icon_cross" />
-    </LinearLayout>-->
     <!--personal ad label-->
     <LinearLayout
         android:layout_below="@+id/filter_label"
@@ -448,12 +384,10 @@
         </RelativeLayout>
 
     </LinearLayout>
-
-    <!--</ScrollView>-->
-
+    <!--filter by Offer-->
     <LinearLayout
         android:background="@color/white"
-        android:visibility="gone"
+        android:visibility="visible"
         android:id="@+id/rowLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -518,7 +452,7 @@
                 android:layout_height="@dimen/_15sdp"
                 android:layout_gravity="center"
                 android:layout_weight="0"
-                android:src="@drawable/go"
+                android:src="@drawable/ic_check_red_24dp"
                 />
 
         </LinearLayout>
@@ -644,7 +578,7 @@
             android:layout_alignParentTop="true"/>
 
     </LinearLayout>
-
+    <!--filter by sort-->
     <LinearLayout
         android:background="@color/white"
         android:visibility="gone"
