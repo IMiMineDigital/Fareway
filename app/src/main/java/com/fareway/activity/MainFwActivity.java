@@ -2674,6 +2674,7 @@ public class MainFwActivity extends AppCompatActivity
    public void onBackPressed() {
        if (isMyFarewayList==true){
            isMyFarewayList=false;
+           isProductSelected=false;
            if (searchLable == true) {
                x = 3;
                z = 0;
@@ -2731,6 +2732,7 @@ public class MainFwActivity extends AppCompatActivity
            }
        }
        else if (isProductSelected==true){
+
            if (pdView==true){
                linearLayout.setVisibility(View.VISIBLE);
            }else {
@@ -4486,7 +4488,7 @@ public class MainFwActivity extends AppCompatActivity
         DetaileToolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                isProductSelected=false;
+                /*isProductSelected=false;
                 liner_all_Varieties_activate.setVisibility(View.GONE);
                 rv_items_verite.setVisibility(View.GONE);
                 navigation.setVisibility(View.VISIBLE);
@@ -4496,7 +4498,40 @@ public class MainFwActivity extends AppCompatActivity
                 toolbar.setVisibility(View.VISIBLE);
                 liner_detail_add_item.setVisibility(View.VISIBLE);
                 liner_add_sub_button.setVisibility(View.VISIBLE);
-                //messageLoadRefresh();
+                qty = 0;*/
+                isProductSelected=false;
+                if (pdView == true) {
+                    linearLayout.setVisibility(View.VISIBLE);
+                } else {
+                    linearLayout.setVisibility(View.GONE);
+                    if (tmp == 1 || tmp == 2 || tmp == 3) {
+                        filter_offer_label.setVisibility(View.VISIBLE);
+                    }
+                    if (categoryShort == true) {
+                        filter_offer_label.setVisibility(View.VISIBLE);
+                        tv_category_name.setVisibility(View.VISIBLE);
+                        img_category_cross_button.setVisibility(View.VISIBLE);
+                    } else {
+                        tv_category_name.setVisibility(View.GONE);
+                        img_category_cross_button.setVisibility(View.GONE);
+                    }
+                    if (offferShort == true || savingsShort == true) {
+                        filter_label.setVisibility(View.VISIBLE);
+                    } else {
+                        filter_label.setVisibility(View.GONE);
+                    }
+
+                }
+                rv_items_group.setVisibility(View.GONE);
+                rv_items_verite.setVisibility(View.GONE);
+                participateToolbar.setVisibility(View.GONE);
+                scrollView.setVisibility(View.GONE);
+                DetaileToolbar.setVisibility(View.GONE);
+                rv_items.setVisibility(View.VISIBLE);
+                toolbar.setVisibility(View.VISIBLE);
+                navigation.setVisibility(View.VISIBLE);
+                group_count_text.setVisibility(View.GONE);
+                header_title.setVisibility(View.GONE);
                 qty = 0;
 
             }
@@ -4760,11 +4795,21 @@ public class MainFwActivity extends AppCompatActivity
                                                         //messageLoadRefresh();
                                                         qty = 0;
                                                         if (x == 0) {
-                                                            isProductSelected=false;
+                                                            liner_qty.setVisibility(View.VISIBLE);
+                                                            InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                                            imm.hideSoftInputFromWindow(edit_txt.getWindowToken(), 0);
+                                                            tv_quantity_detail.setText(product.getQuantity());
+                                                            navigation.setVisibility(View.GONE);
+                                                            scrollView.setVisibility(View.VISIBLE);
+                                                            DetaileToolbar.setVisibility(View.VISIBLE);
+                                                            participateToolbar.setVisibility(View.GONE);
+                                                            rv_items.setVisibility(View.GONE);
+                                                            toolbar.setVisibility(View.GONE);
+                                                            DetaileToolbar.setTitle("Detail");
+                                                            /*isProductSelected=false;
                                                             if (pdView==true){
                                                                 linearLayout.setVisibility(View.VISIBLE);
                                                             }else {
-
                                                                 linearLayout.setVisibility(View.GONE);
                                                                 if (tmp==1||tmp==2||tmp==3){
                                                                     filter_offer_label.setVisibility(View.VISIBLE);
@@ -4774,7 +4819,6 @@ public class MainFwActivity extends AppCompatActivity
                                                                     tv_category_name.setVisibility(View.VISIBLE);
                                                                     img_category_cross_button.setVisibility(View.VISIBLE);
                                                                 } else {
-                                                                    //filter_offer_label.setVisibility(View.VISIBLE);
                                                                     tv_category_name.setVisibility(View.GONE);
                                                                     img_category_cross_button.setVisibility(View.GONE);
                                                                 }
@@ -4792,8 +4836,7 @@ public class MainFwActivity extends AppCompatActivity
                                                             toolbar.setVisibility(View.VISIBLE);
                                                             navigation.setVisibility(View.VISIBLE);
                                                             group_count_text.setVisibility(View.GONE);
-                                                            //header_title visible
-                                                            header_title.setVisibility(View.GONE);
+                                                            header_title.setVisibility(View.GONE);*/
                                                         } else {
                                                             isProductSelected=false;
                                                             search_message.setVisibility(View.VISIBLE);
