@@ -800,7 +800,7 @@ public class MainFwActivity extends AppCompatActivity
 
                     }
                     else {
-
+                        setCheckIcon(SEARCH);
                         if (Integer.parseInt(submit_btn.getTag().toString()) == 0) {
                             submit_btn.setImageResource(R.drawable.ic_clear_black_24dp);
                             submit_btn.setTag(1);
@@ -1087,6 +1087,7 @@ public class MainFwActivity extends AppCompatActivity
                     linearLayout.setVisibility(View.GONE);
                     filter_offer_label.setVisibility(View.GONE);
                     filter_label.setVisibility(View.GONE);
+                    setCheckIcon(SEARCH);
                 } else {
                     imv_micro_recorder.setImageResource(R.drawable.micro_recorder);
                     imv_micro_recorder.setTag(0);
@@ -1509,6 +1510,7 @@ public class MainFwActivity extends AppCompatActivity
     }
 
     private void reSetCheckIcon() {
+        appUtil.setTagPreference("key", 0);
         allMyOfferIcon.setImageResource(R.drawable.ic_check_red_24dp);
         mpdIcon.setImageResource(0);
         dcIcon.setImageResource(0);
