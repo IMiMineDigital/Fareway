@@ -219,7 +219,7 @@ public class MainFwActivity extends AppCompatActivity
 
     public static JSONArray shopping;
     public static JSONArray activatedOffer;
-    private CustomAdapterFilter customAdapterFilter;
+    private static CustomAdapterFilter customAdapterFilter;
     private ArrayList<Shopping> shoppingArrayList;
     private ShoppingListAdapter shoppingListAdapter;
 
@@ -306,12 +306,14 @@ public class MainFwActivity extends AppCompatActivity
         mQueue = FarewayApplication.getmInstance(this).getmRequestQueue();
         appUtil = new AppUtilFw(activity);
         userAlertDialog = new UserAlertDialog(activity);
+        appUtil.setTagPreference("key", 0);
         //category lable
         tv_category_name= findViewById(R.id.tv_category_name);
         img_category_cross_button= findViewById(R.id.img_category_cross_button);
         img_category_cross_button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+
                 if (tmp==0 && searchLable==false){
                     if (savingsShort==true||offferShort==true){
                         tv_category_name.setVisibility(View.GONE);
@@ -323,6 +325,7 @@ public class MainFwActivity extends AppCompatActivity
                         couponTile=false;
                         linearLayout.setVisibility(View.GONE);
                     }else {
+                        appUtil.setTagPreference("key", 0);
                         filter_label.setVisibility(View.GONE);
                         filter_offer_label.setVisibility(View.GONE);
                         pdView=true;
@@ -343,6 +346,7 @@ public class MainFwActivity extends AppCompatActivity
                             /*MainFwActivity.pdView=false;
                             MainFwActivity.linearLayout.setVisibility(View.GONE);*/
                     }else {
+                        appUtil.setTagPreference("key", 0);
                         filter_label.setVisibility(View.GONE);
                         filter_offer_label.setVisibility(View.VISIBLE);
                             /*MainFwActivity.pdView=true;
@@ -360,6 +364,7 @@ public class MainFwActivity extends AppCompatActivity
                         couponTile=false;
                         linearLayout.setVisibility(View.GONE);*/
                     }else {
+                        appUtil.setTagPreference("key", 0);
                         filter_label.setVisibility(View.GONE);
                         filter_offer_label.setVisibility(View.GONE);
                         /*pdView=true;
@@ -380,6 +385,7 @@ public class MainFwActivity extends AppCompatActivity
                             /*MainFwActivity.pdView=false;
                             MainFwActivity.linearLayout.setVisibility(View.GONE);*/
                     }else {
+                        appUtil.setTagPreference("key", 0);
                         filter_label.setVisibility(View.GONE);
                         filter_offer_label.setVisibility(View.VISIBLE);
                             /*MainFwActivity.pdView=true;
@@ -398,6 +404,7 @@ public class MainFwActivity extends AppCompatActivity
             @Override
             public void onClick(View v) {
                 setCheckIcon(ALLOFFER);
+                appUtil.setTagPreference("key", 0);
                 if (x==0){
                     filter_offer_label.setVisibility(View.GONE);
                     tv_category_name.setVisibility(View.GONE);
@@ -1801,7 +1808,7 @@ public class MainFwActivity extends AppCompatActivity
         customAdapterFilter = new CustomAdapterFilter(this, categoryList);
         RecyclerView.LayoutManager mLayoutManager2 = new LinearLayoutManager(activity);
         rv_category.setLayoutManager(mLayoutManager2);
-        rv_category.setAdapter(customAdapterFilter);
+        //rv_category.setAdapter(customAdapterFilter);
         Drawable dividerDrawable = ContextCompat.getDrawable(activity, R.drawable.divider);
         rv_category.addItemDecoration(new DividerRVDecoration(dividerDrawable));
 
@@ -2264,6 +2271,7 @@ public class MainFwActivity extends AppCompatActivity
                 navigation.getMenu().findItem(R.id.ShoppingList).setIcon(R.drawable.ic_view_list_black_24dp);
 
                 if (x == 0) {
+                    appUtil.setTagPreference("key", 0);
                     rowLayout.setVisibility(View.VISIBLE);
                     rv_items.setVisibility(View.INVISIBLE);
                     rv_category.setVisibility(View.INVISIBLE);
@@ -2412,6 +2420,7 @@ public class MainFwActivity extends AppCompatActivity
                     });
                 }
                 else if (x == 3) {
+                    appUtil.setTagPreference("key", 0);
                     rowLayout.setVisibility(View.VISIBLE);
                     rv_items.setVisibility(View.INVISIBLE);
                     rv_category.setVisibility(View.INVISIBLE);
@@ -2714,7 +2723,9 @@ public class MainFwActivity extends AppCompatActivity
             }
 
             else if (i2 == R.id.filter_clear){
+                appUtil.setTagPreference("key", 0);
                 setCheckIcon(CLEAR_FILTER);
+                rowLayout.setVisibility(View.GONE);
                 if (x==0){
                     tmp=0;
                     pdView=true;
@@ -7213,6 +7224,8 @@ public class MainFwActivity extends AppCompatActivity
 
                         customAdapterPersonalPrices.notifyDataSetChanged();
                     }
+                    customAdapterFilter.notifyDataSetChanged();
+                    rv_category.setAdapter(customAdapterFilter);
 
                 }
                 else {
@@ -7333,6 +7346,8 @@ public class MainFwActivity extends AppCompatActivity
 
                         customAdapterPersonalPrices.notifyDataSetChanged();
                     }
+                    customAdapterFilter.notifyDataSetChanged();
+                    rv_category.setAdapter(customAdapterFilter);
 
                 }
             }
@@ -7343,7 +7358,8 @@ public class MainFwActivity extends AppCompatActivity
             } else {
                 if (message3.length() < 5) {
                     search_message.setVisibility(View.VISIBLE);
-                } else {
+                }
+                else {
                     search_message.setVisibility(View.GONE);
                 }
                 String strCategory = "";
@@ -7468,8 +7484,11 @@ public class MainFwActivity extends AppCompatActivity
 
                         customAdapterPersonalPrices.notifyDataSetChanged();
                     }
+                    customAdapterFilter.notifyDataSetChanged();
+                    rv_category.setAdapter(customAdapterFilter);
 
-                } else {
+                }
+                else {
 
                     String test1 = "";
                     for (int i = 0; i < message3.length(); i++) {
@@ -7585,6 +7604,8 @@ public class MainFwActivity extends AppCompatActivity
 
                         customAdapterPersonalPrices.notifyDataSetChanged();
                     }
+                    customAdapterFilter.notifyDataSetChanged();
+                    rv_category.setAdapter(customAdapterFilter);
 
                 }
             }

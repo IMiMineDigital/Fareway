@@ -15,19 +15,24 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.fareway.R;
 import com.fareway.activity.MainFwActivity;
 import com.fareway.model.Category;
+import com.fareway.utility.AppUtilFw;
 
 import java.util.List;
 
 public class CustomAdapterFilter extends RecyclerView.Adapter<CustomAdapterFilter.MyViewHolder> {
 
+    private static final String TAG = CustomAdapterFilter.class.getSimpleName();
     private Context mContext;
     private List<Category> categoryList;
     public MainFwActivity activate = new MainFwActivity();
+    AppUtilFw appUtilFw;
+
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
         private TextView tv_type;
         private ImageView imv_go;
         private LinearLayout rowLayout;
+
 
         public MyViewHolder(View view) {
             super(view);
@@ -41,6 +46,7 @@ public class CustomAdapterFilter extends RecyclerView.Adapter<CustomAdapterFilte
     public CustomAdapterFilter(Context mContext, List<Category> categoryList) {
         this.mContext = mContext;
         this.categoryList = categoryList;
+        appUtilFw = new AppUtilFw(mContext);
     }
 
     @Override
@@ -54,6 +60,22 @@ public class CustomAdapterFilter extends RecyclerView.Adapter<CustomAdapterFilte
     @Override
     public void onBindViewHolder(final CustomAdapterFilter.MyViewHolder holder, final int position) {
         final Category category = categoryList.get(position);
+        Log.d(TAG, " On cerate view holder >> ");
+        int tag = appUtilFw.getTagPreference("key");
+        if (tag == 0) {
+            if (position == 0) {
+                holder.imv_go.setImageResource(R.drawable.ic_check_red_24dp);
+            } else {
+                holder.imv_go.setImageResource(0);
+            }
+        } else {
+            if (position == tag) {
+                holder.imv_go.setImageResource(R.drawable.ic_check_red_24dp);
+            } else {
+                holder.imv_go.setImageResource(0);
+            }
+        }
+
        /* if (category.getCategoryName().equalsIgnoreCase("")){
 
         }else {
@@ -81,6 +103,8 @@ public class CustomAdapterFilter extends RecyclerView.Adapter<CustomAdapterFilte
             public void onClick(View v) {
                 //activate.OtherCoupon=0;
                 //activate.OtherCouponmulti=0;
+                holder.imv_go.setImageResource(R.drawable.ic_check_red_24dp);
+                appUtilFw.setTagPreference("key", position);
                 if (position==0){
                     if (MainFwActivity.tmp==0 && MainFwActivity.searchLable==false){
                         if (MainFwActivity.savingsShort==true||MainFwActivity.offferShort==true){
