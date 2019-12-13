@@ -42,6 +42,19 @@ public class AppUtilFw {
         editor.commit();
     }
 
+    public void setTagPreference(String key, int value) {
+        SharedPreferences prefrence = context.getSharedPreferences(
+                context.getString(R.string.app_name), 0);
+        SharedPreferences.Editor editor = prefrence.edit();
+        editor.putInt(key, value);
+        editor.commit();
+    }
+
+    public int getTagPreference(String key) {
+        SharedPreferences prefrence = context.getSharedPreferences(
+                context.getString(R.string.app_name), 0);
+        return prefrence.getInt(key, 0);
+    }
     /*
      * retreiving the data from shared preferences     */
     public String getPrefrence(String key) {

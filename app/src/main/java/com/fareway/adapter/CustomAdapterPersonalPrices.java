@@ -207,7 +207,6 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
     @Override
     public void onBindViewHolder(final MyViewHolder holder, final int position) {
 
-        Log.d(TAG, " Count >> " + position);
         final Product product = productListFiltered.get(position);
         MainFwActivity.tv_location_title.setText(appUtil.getPrefrence("StoreName"));
 

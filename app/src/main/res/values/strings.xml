@@ -241,4 +241,5 @@
     <string name="error_msg3">Please select your preferred store</string>
     <!--google address api key-->
     <string name="api_key">AIzaSyBl0wAaoHnYe2EN5AJWiT0t2QlkgWIlnvM</string>
+    <string name="tag_ley">tagKey</string>
 </resources>
