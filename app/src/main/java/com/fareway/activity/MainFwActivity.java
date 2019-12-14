@@ -276,7 +276,11 @@ public class MainFwActivity extends AppCompatActivity
 
     private TextView changeStore;
     private boolean isMyFarewayList = false;
+    private boolean isMyFarewaySelectList = false;
+    private boolean isMyFarewaySelectListVerities = false;
     private boolean isProductSelected = false;
+    private boolean isProductVeritiesSelected = false;
+    private boolean isRelatedSelected = false;
     private PopupWindow window;
 
     TextView tv_short_filter;
@@ -2790,7 +2794,165 @@ public class MainFwActivity extends AppCompatActivity
     }*/
    @Override
    public void onBackPressed() {
-       if (isMyFarewayList==true){
+       if (isMyFarewaySelectListVerities){
+           isMyFarewaySelectListVerities=false;
+           Log.i("testjkjk", "click");
+           if (participate == 0) {
+               search_message.setVisibility(View.VISIBLE);
+           } else if (participate == 1) {
+               search_message.setVisibility(View.GONE);
+           }
+           if (pdView==true){
+               linearLayout.setVisibility(View.VISIBLE);
+           }else {
+
+               linearLayout.setVisibility(View.GONE);
+               if (tmp==1||tmp==2||tmp==3){
+                   filter_offer_label.setVisibility(View.VISIBLE);
+               }
+               if (categoryShort==true){
+                   filter_offer_label.setVisibility(View.VISIBLE);
+                   tv_category_name.setVisibility(View.VISIBLE);
+                   img_category_cross_button.setVisibility(View.VISIBLE);
+               } else {
+                   //filter_offer_label.setVisibility(View.VISIBLE);
+                   tv_category_name.setVisibility(View.GONE);
+                   img_category_cross_button.setVisibility(View.GONE);
+               }
+               if (offferShort==true||savingsShort==true){
+                   filter_label.setVisibility(View.VISIBLE);
+               }else {
+                   filter_label.setVisibility(View.GONE);
+               }
+
+           }
+           shopper = 0;
+           DetaileToolbar.setVisibility(View.VISIBLE);
+           DetaileToolbar.setTitle("MyFareway List");
+           shopping_list_header.setVisibility(View.VISIBLE);
+           rv_shopping_list_items.setVisibility(View.VISIBLE);
+           navigation.setVisibility(View.VISIBLE);
+           group_count_text.setVisibility(View.GONE);
+           rv_items_verite.setVisibility(View.GONE);
+           liner_all_Varieties_activate.setVisibility(View.GONE);
+           rv_items_group.setVisibility(View.GONE);
+           participateToolbar.setVisibility(View.GONE);
+           qty = 0;
+
+           header_title.setVisibility(View.GONE);
+           DetaileToolbar.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   Log.i("test", "detail");
+                   if (pdView==true){
+                       linearLayout.setVisibility(View.VISIBLE);
+                   }else {
+
+                       linearLayout.setVisibility(View.GONE);
+                       if (tmp==1||tmp==2||tmp==3){
+                           filter_offer_label.setVisibility(View.VISIBLE);
+                       }
+                       if (categoryShort==true){
+                           filter_offer_label.setVisibility(View.VISIBLE);
+                           tv_category_name.setVisibility(View.VISIBLE);
+                           img_category_cross_button.setVisibility(View.VISIBLE);
+                       } else {
+                           //filter_offer_label.setVisibility(View.VISIBLE);
+                           tv_category_name.setVisibility(View.GONE);
+                           img_category_cross_button.setVisibility(View.GONE);
+                       }
+                       if (offferShort==true||savingsShort==true){
+                           filter_label.setVisibility(View.VISIBLE);
+                       }else {
+                           filter_label.setVisibility(View.GONE);
+                       }
+
+                   }
+                   shopper = 0;
+                   x = 0;
+                   z = 0;
+                   navigation.getMenu().findItem(R.id.ShoppingList).setTitle("MyFareway List");
+                   navigation.getMenu().findItem(R.id.ShoppingList).setIcon(R.drawable.ic_view_list_black_24dp);
+                   //tv.setVisibility(View.VISIBLE);
+                   tv2.setVisibility(View.VISIBLE);
+                   shopping_list_header.setVisibility(View.GONE);
+                   navigation.setVisibility(View.VISIBLE);
+                   rv_shopping_list_items.setVisibility(View.GONE);
+                   DetaileToolbar.setVisibility(View.GONE);
+                   rv_items.setVisibility(View.VISIBLE);
+                   toolbar.setVisibility(View.VISIBLE);
+               }
+           });
+       }else if (isMyFarewaySelectList){
+           isMyFarewaySelectList=false;
+           navigation.setVisibility(View.VISIBLE);
+           scrollView.setVisibility(View.GONE);
+           DetaileToolbar.setVisibility(View.VISIBLE);
+           DetaileToolbar.setTitle("MyFareway List");
+
+           activated_offer_fragment.setBackground(getResources().getDrawable(R.color.white));
+           activated_offer_fragment.setTextColor(getResources().getColor(R.color.black));
+           shopping_list_fragment.setBackground(getResources().getDrawable(R.color.light_grey));
+           shopping_list_fragment.setTextColor(getResources().getColor(R.color.grey));
+           z = 0;
+           if (activatedOffer == null) {
+               shoppingArrayList.clear();
+               //no students
+           } else {
+               shoppingArrayList.clear();
+               List<Shopping> items = new Gson().fromJson(activatedOffer.toString(), new TypeToken<List<Shopping>>() {
+               }.getType());
+               shoppingArrayList.addAll(items);
+               shoppingListAdapter.notifyDataSetChanged();
+           }
+
+           DetaileToolbar.setOnClickListener(new View.OnClickListener() {
+               @Override
+               public void onClick(View v) {
+                   x = 0;
+                   z = 0;
+                   navigation.getMenu().findItem(R.id.ShoppingList).setTitle("MyFareway List");
+                   navigation.getMenu().findItem(R.id.ShoppingList).setIcon(R.drawable.ic_view_list_black_24dp);
+                   //tv.setVisibility(View.VISIBLE);
+                   tv2.setVisibility(View.VISIBLE);
+                   shopping_list_header.setVisibility(View.GONE);
+                   navigation.setVisibility(View.VISIBLE);
+                   rv_shopping_list_items.setVisibility(View.GONE);
+                   DetaileToolbar.setVisibility(View.GONE);
+                   rv_items.setVisibility(View.VISIBLE);
+                   toolbar.setVisibility(View.VISIBLE);
+
+                   if (pdView==true){
+                       linearLayout.setVisibility(View.VISIBLE);
+                   }
+                   else {
+
+                       linearLayout.setVisibility(View.GONE);
+                       if (tmp==1||tmp==2||tmp==3){
+                           filter_offer_label.setVisibility(View.VISIBLE);
+                       }
+                       if (categoryShort==true){
+                           filter_offer_label.setVisibility(View.VISIBLE);
+                           tv_category_name.setVisibility(View.VISIBLE);
+                           img_category_cross_button.setVisibility(View.VISIBLE);
+                       } else {
+                           //filter_offer_label.setVisibility(View.VISIBLE);
+                           tv_category_name.setVisibility(View.GONE);
+                           img_category_cross_button.setVisibility(View.GONE);
+                       }
+                       if (offferShort==true||savingsShort==true){
+                           filter_label.setVisibility(View.VISIBLE);
+                       }else {
+                           filter_label.setVisibility(View.GONE);
+                       }
+
+                   }
+               }
+           });
+           //toolbar.setVisibility(View.VISIBLE);
+
+           qty = 0;
+       }else if (isMyFarewayList==true){
            isMyFarewayList=false;
            isProductSelected=false;
            if (searchLable == true) {
@@ -2849,7 +3011,38 @@ public class MainFwActivity extends AppCompatActivity
 
            }
        }
+       else if (isRelatedSelected){
+           isProductVeritiesSelected=false;
+           isRelatedSelected=false;
+           isProductSelected=true;
+           scrollView.setVisibility(View.GONE);
+           DetaileToolbar.setVisibility(View.GONE);
+           rv_items_group.setVisibility(View.VISIBLE);
+           rv_items_verite.setVisibility(View.VISIBLE);
+           participateToolbar.setVisibility(View.VISIBLE);
+           liner_detail_add_item.setVisibility(View.VISIBLE);
+           liner_add_sub_button.setVisibility(View.VISIBLE);
+           if (Group.length() > 0) {
+               group_count_text.setVisibility(View.VISIBLE);
+           }
+           fetchVeritesProduct2(Group);
+       }
+       else if (isProductVeritiesSelected){
+           qty=0;
+           isProductVeritiesSelected=false;
+           liner_qty.setVisibility(View.VISIBLE);
+           InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+           imm.hideSoftInputFromWindow(edit_txt.getWindowToken(), 0);
+           navigation.setVisibility(View.GONE);
+           scrollView.setVisibility(View.VISIBLE);
+           DetaileToolbar.setVisibility(View.VISIBLE);
+           participateToolbar.setVisibility(View.GONE);
+           rv_items.setVisibility(View.GONE);
+           toolbar.setVisibility(View.GONE);
+           DetaileToolbar.setTitle("Detail");
+       }
        else if (isProductSelected==true){
+           isProductSelected=false;
 
            if (pdView==true){
                linearLayout.setVisibility(View.VISIBLE);
@@ -4812,7 +5005,7 @@ public class MainFwActivity extends AppCompatActivity
         tv_varieties_detail.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
+                isProductVeritiesSelected=true;
                 header_title.setVisibility(View.GONE);
                 linearLayout.setVisibility(View.GONE);
                 filter_label.setVisibility(View.GONE);
@@ -4913,6 +5106,7 @@ public class MainFwActivity extends AppCompatActivity
                                                         //messageLoadRefresh();
                                                         qty = 0;
                                                         if (x == 0) {
+                                                            isProductVeritiesSelected=false;
                                                             liner_qty.setVisibility(View.VISIBLE);
                                                             InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
                                                             imm.hideSoftInputFromWindow(edit_txt.getWindowToken(), 0);
@@ -8950,7 +9144,7 @@ public class MainFwActivity extends AppCompatActivity
 
     @Override
     public void onRelatedItemSelected(final RelatedItem relatedItem) {
-
+        isRelatedSelected=true;
         tv_quantity_detail.setText(relatedItem.getQuantity());
 
         group_count_text.setVisibility(View.GONE);
@@ -9031,6 +9225,7 @@ public class MainFwActivity extends AppCompatActivity
                     });
                 }
                 else {
+                    isRelatedSelected=false;
                     scrollView.setVisibility(View.GONE);
                     DetaileToolbar.setVisibility(View.GONE);
                     rv_items_group.setVisibility(View.VISIBLE);
@@ -12118,6 +12313,7 @@ public class MainFwActivity extends AppCompatActivity
 
     @Override
     public void onShoppingDetailSelected(final Shopping shopping) {
+        isMyFarewaySelectList=true;
         liner_qty.setVisibility(View.VISIBLE);
 
 //
@@ -12135,6 +12331,7 @@ public class MainFwActivity extends AppCompatActivity
         DetaileToolbar.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                isMyFarewaySelectList=false;
                 navigation.setVisibility(View.VISIBLE);
                 scrollView.setVisibility(View.GONE);
                 DetaileToolbar.setVisibility(View.VISIBLE);
@@ -12735,6 +12932,8 @@ public class MainFwActivity extends AppCompatActivity
                         tv_varieties_detail.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
+                                //
+                                isMyFarewaySelectListVerities=true;
                                 search_message.setVisibility(View.GONE);
                                 header_title.setVisibility(View.GONE);
                                 linearLayout.setVisibility(View.GONE);
@@ -12811,6 +13010,7 @@ public class MainFwActivity extends AppCompatActivity
                                                                 participateToolbar.setOnClickListener(new View.OnClickListener() {
                                                                     @Override
                                                                     public void onClick(View v) {
+                                                                        isMyFarewaySelectListVerities=false;
                                                                         Log.i("testjkjk", "click");
                                                                         if (participate == 0) {
                                                                             search_message.setVisibility(View.VISIBLE);
@@ -13486,6 +13686,7 @@ public class MainFwActivity extends AppCompatActivity
                                                 tv_varieties_detail.setOnClickListener(new View.OnClickListener() {
                                                     @Override
                                                     public void onClick(View v) {
+                                                        isMyFarewaySelectListVerities=true;
 
                                                         header_title.setVisibility(View.GONE);
                                                         linearLayout.setVisibility(View.GONE);
@@ -13561,6 +13762,7 @@ public class MainFwActivity extends AppCompatActivity
                                                                                             @Override
                                                                                             public void onClick(View v) {
                                                                                                 Log.i("test", "click");
+                                                                                                isMyFarewaySelectListVerities=false;
                                                                                                 shopper = 0;
                                                                                                 DetaileToolbar.setVisibility(View.VISIBLE);
                                                                                                 DetaileToolbar.setTitle("MyFareway List");
@@ -15886,7 +16088,7 @@ public class MainFwActivity extends AppCompatActivity
                 // progressDialog.setMessage("Processing");
                 //progressDialog.show();
 
-                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|8.5",
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|8.6",
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {

@@ -142,6 +142,23 @@ public class CustomAdapterFilter extends RecyclerView.Adapter<CustomAdapterFilte
                             /*MainFwActivity.pdView=true;
                             MainFwActivity.linearLayout.setVisibility(View.VISIBLE);*/
                         }
+                    }else if (MainFwActivity.tmp==0 && MainFwActivity.searchLable==true){
+                        if (MainFwActivity.savingsShort==true||MainFwActivity.offferShort==true){
+                            activate.tv_category_name.setVisibility(View.GONE);
+                            activate.img_category_cross_button.setVisibility(View.GONE);
+                            activate.filter_offer_label.setVisibility(View.GONE);
+                            //filter_label is sort
+                            activate.filter_label.setVisibility(View.VISIBLE);
+                            MainFwActivity.pdView=false;
+                            MainFwActivity.couponTile=false;
+                            MainFwActivity.linearLayout.setVisibility(View.GONE);
+                        }else {
+                            activate.filter_label.setVisibility(View.GONE);
+                            activate.filter_offer_label.setVisibility(View.GONE);
+                            MainFwActivity.pdView=false;
+                            MainFwActivity.couponTile=false;
+                            MainFwActivity.linearLayout.setVisibility(View.GONE);
+                        }
                     }
                     else if (MainFwActivity.searchLable==true){
                         activate.tv_category_name.setVisibility(View.GONE);
@@ -156,7 +173,7 @@ public class CustomAdapterFilter extends RecyclerView.Adapter<CustomAdapterFilte
                             /*MainFwActivity.pdView=false;
                             MainFwActivity.linearLayout.setVisibility(View.GONE);*/
                         }else {
-                            activate.filter_label.setVisibility(View.VISIBLE);
+                            activate.filter_label.setVisibility(View.GONE);
                             activate.filter_offer_label.setVisibility(View.VISIBLE);
                             /*MainFwActivity.pdView=true;
                             MainFwActivity.linearLayout.setVisibility(View.VISIBLE);*/
