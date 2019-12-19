@@ -964,7 +964,8 @@ public class MainFwActivity extends AppCompatActivity
                 setCheckIcon(SEARCH);
                 if (edit_txt.getText().toString().isEmpty()) {
 
-                } else {
+                }
+                else {
 
                     if (Integer.parseInt(submit_btn.getTag().toString()) == 0) {
                         submit_btn.setImageResource(R.drawable.ic_clear_black_24dp);
@@ -1041,6 +1042,11 @@ public class MainFwActivity extends AppCompatActivity
                         linearLayout.setVisibility(View.VISIBLE);
                         filter_offer_label.setVisibility(View.GONE);
                         filter_label.setVisibility(View.GONE);
+
+                        tv_category_name.setVisibility(View.GONE);
+                        img_category_cross_button.setVisibility(View.GONE);
+                        tv_offer_name.setVisibility(View.GONE);
+                        img_offer_cross_button.setVisibility(View.GONE);
                         /*if (pdView==true){
                             linearLayout.setVisibility(View.VISIBLE);
                         }
@@ -5546,6 +5552,11 @@ public class MainFwActivity extends AppCompatActivity
             } catch (Exception e) {
                 e.printStackTrace();
             }
+            if (product.getIsFamily().equalsIgnoreCase("True")){
+                liner_qty.setVisibility(View.GONE);
+                table_upc.setVisibility(View.GONE);
+                table_upc_view.setVisibility(View.GONE);
+            }
 
 
         }
@@ -5732,6 +5743,16 @@ public class MainFwActivity extends AppCompatActivity
                 tv_detail_detail.setText(product.getCouponShortDescription());
             }else {
                 liner_qty.setVisibility(View.VISIBLE);
+            }
+            if (product.getIsStacked().equalsIgnoreCase("0")){
+                liner_qty.setVisibility(View.GONE);
+                table_upc.setVisibility(View.GONE);
+                table_upc_view.setVisibility(View.GONE);
+            }
+            if (product.getIsStacked().equalsIgnoreCase("1")&&product.getAdPrice().equalsIgnoreCase("0")){
+                liner_qty.setVisibility(View.GONE);
+                table_upc.setVisibility(View.GONE);
+                table_upc_view.setVisibility(View.GONE);
             }
 
         }
@@ -9144,6 +9165,7 @@ public class MainFwActivity extends AppCompatActivity
 
     @Override
     public void onRelatedItemSelected(final RelatedItem relatedItem) {
+        liner_qty.setVisibility(View.GONE);
         isRelatedSelected=true;
         tv_quantity_detail.setText(relatedItem.getQuantity());
 

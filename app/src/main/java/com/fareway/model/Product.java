@@ -67,6 +67,9 @@ public class Product {
     private String CouponShortDescription;
     private int CPRPromoTypeId;
     private String PosMultiple;
+    private String IsFamily;
+    private String IsStacked;
+
 
 
 
@@ -584,6 +587,22 @@ public class Product {
 
     public void setPosMultiple(String posMultiple) {
         PosMultiple = posMultiple;
+    }
+
+    public String getIsFamily() {
+        return IsFamily;
+    }
+
+    public void setIsFamily(String isFamily) {
+        IsFamily = isFamily;
+    }
+
+    public String getIsStacked() {
+        return IsStacked;
+    }
+
+    public void setIsStacked(String isStacked) {
+        IsStacked = isStacked;
     }
 }
 
