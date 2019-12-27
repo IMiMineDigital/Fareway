@@ -79,10 +79,12 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
         private LinearLayout  bottomLayout,liner_save,liner_item_add,linear_tab_button,liner_promo_price;
         private CardView card_view;
         private RelativeLayout imv_layout,layoutforprofileimage,relative_badge;
+        private RelativeLayout linear_personal_ad_lable_title_search_adapter;
         //private Button all_Varieties_activate;
 
         public MyViewHolder(View view) {
             super(view);
+            linear_personal_ad_lable_title_search_adapter = (RelativeLayout) view.findViewById(R.id.linear_personal_ad_lable_title_search_adapter);
 
             relative_badge = (RelativeLayout) view.findViewById(R.id.relative_badge);
             //all_Varieties_activate= (Button)view.findViewById(R.id.all_Varieties_activate);
@@ -181,6 +183,7 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
         holder.liner_item_add.setVisibility(View.VISIBLE);
         holder.linear_tab_button.setVisibility(View.VISIBLE);
         holder.tv_coupon_type_1.setVisibility(View.GONE);
+        holder.linear_personal_ad_lable_title_search_adapter.setVisibility(View.GONE);
 
         if(MainFwActivity.singleView) {
             holder.circular_layout.setVisibility(View.GONE);

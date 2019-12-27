@@ -236,6 +236,7 @@ public class MainFwActivity extends AppCompatActivity
     public static RequestQueue mQueue2;
     public static AppUtilFw appUtil2;
     ImageView submit_btn, imv_micro_recorder, print, email;
+    TextView search_reset;
     EditText edit_txt;
     ScrollView scrollView;
     TextView group_count_text, header_title;
@@ -269,12 +270,12 @@ public class MainFwActivity extends AppCompatActivity
     GoogleApiClient googleApiClient;
     private final static int REQUEST_CHECK_SETTINGS_GPS = 0x1;
     private final static int REQUEST_ID_MULTIPLE_PERMISSIONS = 0x2;
-    public static TextView offerTitle;
-    public static TextView tv_location_title;
+    public static TextView offerTitle,offerTitle_search,search_keyword;
+    public static TextView tv_location_title, tv_location_title_search;
 
-    public static RelativeLayout linearLayout;
+    public static RelativeLayout linearLayout, linearLayout_search;
 
-    private TextView changeStore;
+    private TextView changeStore, changeStore_search;
     private boolean isMyFarewayList = false;
     private boolean isMyFarewaySelectList = false;
     private boolean isMyFarewaySelectListVerities = false;
@@ -300,6 +301,24 @@ public class MainFwActivity extends AppCompatActivity
     private final int SORT = 2;
     private final int CLEAR_FILTER = 3;
     private final int SEARCH = 4;
+    public static int searchCount;
+    public static String offerTitle_search_string="";
+    public static String search_keyword_string="";
+
+    ImageView closePopUp;
+    Spinner storeDropDown;
+    Button findBtn;
+    TextView errorMsgTxt1;
+    TextView errorMsgTxt2;
+    Button updateBtn;
+    EditText zipCodeEdt;
+    String zipCode = null;
+    String selectedStore = Constant.SELECT_STORE;
+    List<String> dropDownList = new ArrayList<>();
+    ArrayAdapter<String> dataAdapter;
+    List<Store.Message> messages = new ArrayList<>();
+    List<String> storeIds = new ArrayList<>();
+    String storeId = null;
 
 
     @Override
@@ -359,6 +378,7 @@ public class MainFwActivity extends AppCompatActivity
                 }
                 else if (tmp==0 && searchLable==true){
                     if (savingsShort==true||offferShort==true){
+                        linearLayout_search.setVisibility(View.GONE);
                         tv_category_name.setVisibility(View.GONE);
                         img_category_cross_button.setVisibility(View.GONE);
                         filter_offer_label.setVisibility(View.GONE);
@@ -368,6 +388,7 @@ public class MainFwActivity extends AppCompatActivity
                         couponTile=false;
                         linearLayout.setVisibility(View.GONE);*/
                     }else {
+                        linearLayout_search.setVisibility(View.GONE);
                         appUtil.setTagPreference("key", 0);
                         filter_label.setVisibility(View.GONE);
                         filter_offer_label.setVisibility(View.GONE);
@@ -377,6 +398,7 @@ public class MainFwActivity extends AppCompatActivity
                     }
                 }
                 else if (searchLable==true){
+                    linearLayout_search.setVisibility(View.GONE);
                     tv_category_name.setVisibility(View.GONE);
                     img_category_cross_button.setVisibility(View.GONE);
 
@@ -451,17 +473,17 @@ public class MainFwActivity extends AppCompatActivity
                         /*pdView = false;
                         couponTile = false;*/
                         offferShort = false;
-                        /*linearLayout.setVisibility(View.GONE);*/
+                        linearLayout_search.setVisibility(View.GONE);
                     } else if (offferShort == true) {
                         /*pdView = false;
                         couponTile = false;*/
                         savingsShort = false;
-                        /*linearLayout.setVisibility(View.GONE);*/
+                        linearLayout_search.setVisibility(View.GONE);
                     } else {
                         /*pdView = true;
                         couponTile = true;*/
                         offferShort = false;
-                        /*linearLayout.setVisibility(View.VISIBLE);*/
+                        linearLayout_search.setVisibility(View.GONE);
                     }
                     tmp = 0;
                     searchProduct();
@@ -530,8 +552,8 @@ public class MainFwActivity extends AppCompatActivity
                     //tmp=0;
                     if (tmp == 0 && categoryShort == false) {
                         /*pdView = true;
-                        couponTile = true;
-                        linearLayout.setVisibility(View.VISIBLE);*/
+                        couponTile = true;*/
+                        linearLayout_search.setVisibility(View.GONE);
                     } else {
 
                     }
@@ -559,9 +581,16 @@ public class MainFwActivity extends AppCompatActivity
         filter_label= findViewById(R.id.filter_label);
 
         linearLayout = findViewById(R.id.linear_personal_ad_lable_title);
+        linearLayout_search = findViewById(R.id.linear_personal_ad_lable_title_search);
         changeStore = findViewById(R.id.change_store);
+        changeStore_search = findViewById(R.id.change_store_search);
         offerTitle = findViewById(R.id.tv_personal_lable_title);
         tv_location_title = findViewById(R.id.tv_location_title);
+
+        offerTitle_search = findViewById(R.id.tv_personal_lable_title_search);
+        search_keyword = findViewById(R.id.search_keyword);
+
+        tv_location_title_search = findViewById(R.id.tv_location_title_search);
 
         mQueue2 = FarewayApplication.getmInstance(this).getmRequestQueue();
         appUtil2 = new AppUtilFw(activity);
@@ -800,12 +829,16 @@ public class MainFwActivity extends AppCompatActivity
             @Override
             public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
                 if (actionId == EditorInfo.IME_ACTION_SEARCH) {
+                    offerTitle_search.setText("");
+                    search_keyword.setText("");
+                    search_reset.setText("");
                     if (edit_txt.getText().toString().isEmpty()) {
 
                     }
                     else {
                         setCheckIcon(SEARCH);
                         if (Integer.parseInt(submit_btn.getTag().toString()) == 0) {
+
                             submit_btn.setImageResource(R.drawable.ic_clear_black_24dp);
                             submit_btn.setTag(1);
                             /*String search = edit_txt.getText().toString();
@@ -846,6 +879,7 @@ public class MainFwActivity extends AppCompatActivity
                                 categoryShort=false;
                                 offferShort=false;
                                 savingsShort=false;
+                                linearLayout_search.setVisibility(View.GONE);
 
                             /*if (tmp==1||tmp==2||tmp==3){
                                 filter_offer_label.setVisibility(View.VISIBLE);
@@ -908,6 +942,7 @@ public class MainFwActivity extends AppCompatActivity
                                 categoryShort=false;
                                 offferShort=false;
                                 savingsShort=false;
+                                linearLayout_search.setVisibility(View.GONE);
 
                             /*if (tmp==1||tmp==2||tmp==3){
                                 filter_offer_label.setVisibility(View.VISIBLE);
@@ -955,13 +990,14 @@ public class MainFwActivity extends AppCompatActivity
                 return false;
             }
         });
-
-        submit_btn = (ImageView) findViewById(R.id.submit_btn);
-        submit_btn.setTag(0);
-        submit_btn.setOnClickListener(new View.OnClickListener() {
+        search_reset = findViewById(R.id.search_reset);
+        search_reset.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
+            public void onClick(View v) {
                 setCheckIcon(SEARCH);
+                offerTitle_search.setText("");
+                search_keyword.setText("");
+                search_reset.setText("");
                 if (edit_txt.getText().toString().isEmpty()) {
 
                 }
@@ -992,6 +1028,7 @@ public class MainFwActivity extends AppCompatActivity
                         else {
 
                             linearLayout.setVisibility(View.GONE);
+                            linearLayout_search.setVisibility(View.GONE);
                             filter_offer_label.setVisibility(View.GONE);
                             filter_label.setVisibility(View.GONE);
                             categoryShort=false;
@@ -1021,6 +1058,133 @@ public class MainFwActivity extends AppCompatActivity
                     }
                     else {
                         //
+                        linearLayout_search.setVisibility(View.GONE);
+                        search_message.setVisibility(View.GONE);
+                        navigation.setVisibility(View.VISIBLE);
+                        submit_btn.setImageResource(R.drawable.ic_search_black_24dp);
+                        submit_btn.setTag(0);
+                        edit_txt.getText().clear();
+
+                        participate = 1;
+                        pdView = true;
+                        couponTile = true;
+                        savingsShort = false;
+                        offferShort = false;
+                        categoryShort = false;
+                        tmp = 0;
+                        x = 0;
+                        //header_title visible
+                        header_title.setVisibility(View.GONE);
+                        searchLable = false;
+                        fetchProduct();
+                        linearLayout.setVisibility(View.VISIBLE);
+                        filter_offer_label.setVisibility(View.GONE);
+                        filter_label.setVisibility(View.GONE);
+
+                        tv_category_name.setVisibility(View.GONE);
+                        img_category_cross_button.setVisibility(View.GONE);
+                        tv_offer_name.setVisibility(View.GONE);
+                        img_offer_cross_button.setVisibility(View.GONE);
+                        /*if (pdView==true){
+                            linearLayout.setVisibility(View.VISIBLE);
+                        }
+                        else {
+
+                            linearLayout.setVisibility(View.GONE);
+                            if (tmp==1||tmp==2||tmp==3){
+                                filter_offer_label.setVisibility(View.VISIBLE);
+                            }
+                            if (categoryShort==true){
+                                filter_offer_label.setVisibility(View.VISIBLE);
+                                tv_category_name.setVisibility(View.VISIBLE);
+                                img_category_cross_button.setVisibility(View.VISIBLE);
+                            } else {
+                                //filter_offer_label.setVisibility(View.VISIBLE);
+                                tv_category_name.setVisibility(View.GONE);
+                                img_category_cross_button.setVisibility(View.GONE);
+                            }
+                            if (offferShort==true||savingsShort==true){
+                                filter_label.setVisibility(View.VISIBLE);
+                            }else {
+                                filter_label.setVisibility(View.GONE);
+                            }
+
+                        }*/
+                    }
+                }
+            }
+        });
+
+        submit_btn = (ImageView) findViewById(R.id.submit_btn);
+        submit_btn.setTag(0);
+        submit_btn.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                setCheckIcon(SEARCH);
+                offerTitle_search.setText("");
+                search_keyword.setText("");
+                search_reset.setText("");
+                if (edit_txt.getText().toString().isEmpty()) {
+
+                }
+                else {
+
+                    if (Integer.parseInt(submit_btn.getTag().toString()) == 0) {
+                        submit_btn.setImageResource(R.drawable.ic_clear_black_24dp);
+                        submit_btn.setTag(1);
+                        String search = edit_txt.getText().toString();
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(edit_txt.getWindowToken(), 0);
+
+                        participate = 0;
+                        pdView = false;
+                        couponTile = false;
+                        tmp=0;
+                        navigation.setVisibility(View.VISIBLE);
+                        x = 3;
+                        header_title.setVisibility(View.GONE);
+                        searchLable = true;
+                        searchLoad(search);
+                        /*linearLayout.setVisibility(View.GONE);
+                        filter_offer_label.setVisibility(View.GONE);
+                        filter_label.setVisibility(View.GONE);*/
+                        if (pdView==true){
+                            linearLayout.setVisibility(View.VISIBLE);
+                        }
+                        else {
+
+                            linearLayout.setVisibility(View.GONE);
+                            linearLayout_search.setVisibility(View.GONE);
+                            filter_offer_label.setVisibility(View.GONE);
+                            filter_label.setVisibility(View.GONE);
+                            categoryShort=false;
+                            offferShort=false;
+                            savingsShort=false;
+
+                            /*if (tmp==1||tmp==2||tmp==3){
+                                filter_offer_label.setVisibility(View.VISIBLE);
+                            }
+                            if (categoryShort==true){
+                                filter_offer_label.setVisibility(View.VISIBLE);
+                                tv_category_name.setVisibility(View.VISIBLE);
+                                img_category_cross_button.setVisibility(View.VISIBLE);
+                            } else {
+                                //filter_offer_label.setVisibility(View.VISIBLE);
+                                tv_category_name.setVisibility(View.GONE);
+                                img_category_cross_button.setVisibility(View.GONE);
+                            }
+                            if (offferShort==true||savingsShort==true){
+                                filter_label.setVisibility(View.VISIBLE);
+                            }else {
+                                filter_label.setVisibility(View.GONE);
+                            }*/
+
+                        }
+
+                    }
+                    else {
+                        //
+                        linearLayout_search.setVisibility(View.GONE);
                         search_message.setVisibility(View.GONE);
                         navigation.setVisibility(View.VISIBLE);
                         submit_btn.setImageResource(R.drawable.ic_search_black_24dp);
@@ -1081,6 +1245,9 @@ public class MainFwActivity extends AppCompatActivity
         imv_micro_recorder.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                offerTitle_search.setText("");
+                search_keyword.setText("");
+                search_reset.setText("");
 
                 if (Integer.parseInt(imv_micro_recorder.getTag().toString()) == 0) {
                     imv_micro_recorder.setImageResource(R.drawable.ic_clear_black_24dp);
@@ -1098,7 +1265,8 @@ public class MainFwActivity extends AppCompatActivity
                     filter_offer_label.setVisibility(View.GONE);
                     filter_label.setVisibility(View.GONE);
                     setCheckIcon(SEARCH);
-                } else {
+                }
+                else {
                     imv_micro_recorder.setImageResource(R.drawable.micro_recorder);
                     imv_micro_recorder.setTag(0);
                     edit_txt.getText().clear();
@@ -1442,6 +1610,289 @@ public class MainFwActivity extends AppCompatActivity
                 });
             }
         });
+
+        this.changeStore_search.setOnClickListener(new View.OnClickListener() {
+//            ImageView closePopUp;
+//            Spinner storeDropDown;
+//            Button findBtn;
+//            TextView errorMsgTxt1;
+//            TextView errorMsgTxt2;
+//            Button updateBtn;
+//            EditText zipCodeEdt;
+//            String zipCode = null;
+//            String selectedStore = Constant.SELECT_STORE;
+//            List<String> dropDownList = new ArrayList<>();
+//            ArrayAdapter<String> dataAdapter;
+//            List<Store.Message> messages = new ArrayList<>();
+//            List<String> storeIds = new ArrayList<>();
+//            String storeId = null;
+
+            @Override
+            public void onClick(View v) {
+                Log.d(TAG, " >> memid " + appUtil.getPrefrence("MemberId"));
+                LayoutInflater inflater = (LayoutInflater) MainFwActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                View layout = inflater.inflate(R.layout.change_store_popup, null);
+                window = new PopupWindow(MainFwActivity.this);
+                window.setWidth(WindowManager.LayoutParams.MATCH_PARENT);
+                window.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+                window.setContentView(layout);
+                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                window.setOutsideTouchable(false);
+                window.setFocusable(true);
+                window.showAtLocation(layout, Gravity.NO_GRAVITY, 0, 0);
+                dropDownList.clear();
+                storeIds.clear();
+                dropDownList.add(Constant.SELECT_STORE);
+                storeIds.add("0");
+                //window.showAtLocation(layout, 17, 100, 100);
+                /*Window window = changeStorePopup.getWindow();
+                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                WindowManager.LayoutParams wlp = window.getAttributes();
+                wlp.gravity = Gravity.RIGHT | Gravity.END;
+
+                wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                wlp.flags = WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
+                window.setAttributes(wlp);*/
+                closePopUp = layout.findViewById(R.id.close_icon);
+                zipCodeEdt = layout.findViewById(R.id.zip_code_edt);
+                findBtn = layout.findViewById(R.id.find_btn);
+                updateBtn = layout.findViewById(R.id.update_btn);
+                updateBtn.setEnabled(false);
+                errorMsgTxt1 = layout.findViewById(R.id.error_msg);
+                errorMsgTxt2 = layout.findViewById(R.id.error_msg2);
+                storeDropDown = layout.findViewById(R.id.store_spinner);
+                storeDropDown.setEnabled(false);
+                dataAdapter = new ArrayAdapter<String>(MainFwActivity.this,
+                        R.layout.change_store_spinner_item, dropDownList);
+                dataAdapter.setDropDownViewResource(R.layout.change_store_spinner_item);
+                storeDropDown.setAdapter(dataAdapter);
+                storeDropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                    @Override
+                    public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                        selectedStore = dropDownList.get(position);
+                        Log.d(TAG, " Selected Store >> " + selectedStore);
+                        Log.d(TAG, "Store Id >> " + storeIds.get(position));
+                        storeId = storeIds.get(position);
+                    }
+
+                    @Override
+                    public void onNothingSelected(AdapterView<?> parent) { }
+                });
+
+                closePopUp.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        storeIds.clear();
+                        window.dismiss();
+                    }
+                });
+                findBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        String address = zipCodeEdt.getText().toString();
+                        if (address.matches("")) {
+                            errorMsgTxt1.setVisibility(View.VISIBLE);
+                            return;
+                        }
+                        dropDownList.clear();
+                        dropDownList.add("Locating store near you");
+                        dataAdapter.notifyDataSetChanged();
+                        String API_KEY = getResources().getString(R.string.api_key);
+                        StringRequest request = new StringRequest(Request.Method.GET, Constant.GEOCODER_API + address + "&key=" + API_KEY, new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                VolleyLog.wtf(response, "utf-8");
+                                Geocoding geocoding = new GsonBuilder().create().fromJson(response, Geocoding.class);
+                                if (! Constant.STATUS.equalsIgnoreCase(geocoding.getStatus())) {
+                                    errorMsgTxt1.setVisibility(View.VISIBLE);
+                                    errorMsgTxt1.setText(getResources().getString(R.string.error_msg2));
+                                    //dropDownList.clear();
+                                    dataAdapter.clear();
+                                    dropDownList.clear();
+                                    dropDownList.add(Constant.SELECT_STORE);
+                                    dataAdapter.notifyDataSetChanged();
+                                    return;
+                                }
+                                errorMsgTxt1.setVisibility(View.GONE);
+                                Geocoding.Result result = geocoding.getResult().get(0);
+                                Geocoding.Geometry geometry = result.geometry;
+                                Geocoding.Location location = geometry.location;
+                                String lat = location.lat;
+                                String lng = location.lng;
+                                StringRequest findStoreReq = new StringRequest(Request.Method.GET, Constant.FINDSTORE
+                                        + lat + "&UserCurrentLongitude=" + lng, new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        VolleyLog.wtf(response, "utf-8");
+                                        try {
+                                            JSONObject root = new JSONObject(response);
+                                            String errorCode = root.getString("errorcode");
+                                            Log.d(TAG, "Store Api status >> " +errorCode);
+                                            if ("200".equals(errorCode)) {
+                                                errorMsgTxt1.setVisibility(View.VISIBLE);
+                                                errorMsgTxt1.setText(root.getString("message"));
+                                                return;
+                                            }
+                                        } catch (JSONException e) {
+                                            Log.d(TAG, " Exception >> " + e.getMessage());
+                                        }
+                                        Store store = new GsonBuilder().create().fromJson(response, Store.class);
+                                        if (! Constant.ERRORCODE.equalsIgnoreCase(store.getErrorcode())) {
+                                            Log.d(TAG, ">> Something went wrong");
+                                            errorMsgTxt2.setVisibility(View.VISIBLE);
+                                            errorMsgTxt2.setText("Some thing went wrong");
+                                            dropDownList.clear();
+                                            dataAdapter.clear();
+                                            dropDownList.add(Constant.SELECT_STORE);
+                                            dataAdapter.addAll(dropDownList);
+                                            storeDropDown.setAdapter(dataAdapter);
+                                            return;
+                                        }
+                                        errorMsgTxt2.setVisibility(View.GONE);
+                                        messages = store.getMessage();
+                                        dropDownList.clear();
+                                        dropDownList.add(Constant.SELECT_STORE);
+                                        for (Store.Message msg : messages) {
+                                            String distance = msg.getDistance();
+                                            Float dis = Float.parseFloat(distance);
+                                            DecimalFormat df = new DecimalFormat("0.00");
+                                            df.setMaximumFractionDigits(2);
+                                            distance = df.format(dis);
+                                            String address = msg.getStoreAddress() + ", " +msg.getStoreCity() + ", " +
+                                                    msg.getStoreState() + " (" + distance + " miles)";
+                                            dropDownList.add(address);
+                                            storeIds.add(msg.getStoreID());
+                                        }
+                                        storeDropDown.setEnabled(true);
+                                        dataAdapter.notifyDataSetChanged();
+                                        updateBtn.setEnabled(true);
+                                    }
+                                }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Log.d(TAG, " >> ERROR in Store Api"+ error.getMessage());
+                                        dropDownList.clear();
+                                        dataAdapter.clear();
+                                        dropDownList.add(Constant.SELECT_STORE);
+                                        dataAdapter.addAll(dropDownList);
+                                        storeDropDown.setAdapter(dataAdapter);
+                                    }
+                                }) {
+
+                                    @Override
+                                    public String getBodyContentType() {
+                                        return "application/x-www-form-urlencoded";
+                                    }
+                                    @Override
+                                    public Map<String, String> getHeaders() {
+                                        Map<String, String> params = new HashMap<String, String>();
+                                        params.put("Content-Type", "application/x-www-form-urlencoded");
+                                        params.put("Authorization", appUtil.getPrefrence("token_type") + " " + appUtil.getPrefrence("access_token"));
+                                        return params;
+                                    }
+                                };
+                                RetryPolicy policy = new DefaultRetryPolicy(5000,
+                                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                                findStoreReq.setRetryPolicy(policy);
+                                try {
+                                    if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+                                        Log.d(TAG, " Req Url >> " + findStoreReq.getUrl());
+                                        Log.d(TAG, " Req Header >> " + findStoreReq.getHeaders());
+                                        mQueue.add(findStoreReq);
+
+                                    } else {
+                                        Toast.makeText(MainFwActivity.this, getResources().getString(R.string.noInternet), Toast.LENGTH_SHORT).show();
+                                    }
+                                } catch (Exception e) {
+                                    Log.d(TAG, " Exception >> " + e.getMessage());
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                errorMsgTxt2.setVisibility(View.VISIBLE);
+                                errorMsgTxt2.setText(error.getMessage());
+                                dropDownList.clear();
+                                dataAdapter.clear();
+                                dropDownList.add(Constant.SELECT_STORE);
+                                dataAdapter.addAll(dropDownList);
+                                storeDropDown.setAdapter(dataAdapter);
+                                Log.d(TAG, " >> ERROR "+ error.getLocalizedMessage());
+                            }
+                        });
+                        try {
+                            if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+                                mQueue.add(request);
+                            } else {
+                                Toast.makeText(MainFwActivity.this, getResources().getString(R.string.noInternet), Toast.LENGTH_SHORT).show();
+                            }
+
+                        } catch (Exception e) {
+                            Log.d(TAG, " Exception >> " + e.getMessage());
+                        }
+                    }
+                });
+                updateBtn.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        if ("0".equalsIgnoreCase(storeId)) {
+                            errorMsgTxt2.setText(getResources().getString(R.string.error_msg3));
+                            errorMsgTxt2.setVisibility(View.VISIBLE);
+                            return;
+                        }
+                        StringRequest updateReq = new StringRequest(Request.Method.POST,
+                                Constant.UPDATE_STORE + appUtil.getPrefrence("ShopperID") + "&StoreId=" + storeId,
+                                new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        Log.d(TAG, " Update api response >> " + response.toString());
+                                        UpdateStore updateStore = new GsonBuilder().create().fromJson(response, UpdateStore.class);
+                                        if (Constant.ERRORCODE.equalsIgnoreCase(updateStore.getErrorcode())) {
+                                            Log.d(TAG, ">> Change store successfully");
+                                            checkCircular(storeId);
+                                        } else {
+                                            window.dismiss();
+                                            progressDialog.dismiss();
+                                            Log.d(TAG, ">> Change store Response code " + updateStore.getErrorcode());
+                                        }
+                                    }
+                                }, new Response.ErrorListener() {
+                            @Override
+                            public void onErrorResponse(VolleyError error) {
+                                Log.d(TAG, " Error in update store " + error.getMessage());
+                                window.dismiss();
+                                progressDialog.dismiss();
+                            }
+                        }){
+                            @Override
+                            public String getBodyContentType() {
+                                return "application/x-www-form-urlencoded";
+                            }
+                            @Override
+                            public Map<String, String> getHeaders() throws AuthFailureError {
+                                Map<String, String> params = new HashMap<String, String>();
+                                params.put("Content-Type", "application/x-www-form-urlencoded");
+                                params.put("Authorization", appUtil.getPrefrence("token_type") + " " + appUtil.getPrefrence("access_token"));
+                                return params;
+                            }
+                        };
+                        RetryPolicy policy = new DefaultRetryPolicy(5000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                        updateReq.setRetryPolicy(policy);
+                        try {
+                            mQueue.add(updateReq);
+                            progressDialog = new ProgressDialog(activity);
+                            progressDialog.setMessage("Processing");
+                            progressDialog.show();
+                        } catch (Exception e) {
+                            Log.d(TAG, " Exception >> " + e.getMessage());
+                        }
+                    }
+                });
+            }
+        });
     }
 
     private void checkCircular(final String storeId) {
@@ -1455,10 +1906,22 @@ public class MainFwActivity extends AppCompatActivity
                         CheckCircular checkCircular = new GsonBuilder().create().fromJson(response, CheckCircular.class);
                         if (Constant.CREATED.equalsIgnoreCase(checkCircular.message)) {
                             window.dismiss();
-                            couponTile = true;
-                            pdView = true;
-                            changeStore();
-                            messageChangeStoreLoad();
+                            if (x==3){
+                                /*couponTile = true;
+                                pdView = true;*/
+                                offerTitle.setText("Personal Ad");
+                                changeStore();
+                                messageChangeStoreLoad();
+                            }else if (x==0){
+                                couponTile = true;
+                                pdView = true;
+                                offerTitle.setText("Personal Ad");
+                                changeStore();
+                                messageChangeStoreLoad();
+                            }
+
+
+                            //
                         } else {
                             checkCircular(storeId);
                         }
@@ -1948,13 +2411,13 @@ public class MainFwActivity extends AppCompatActivity
         rv_items_verite.setAdapter(customAdapterParticipateItems);
 
         rv_items = (RecyclerView) findViewById(R.id.rv_items);
-        customAdapterPersonalPrices = new CustomAdapterPersonalPrices(this, productList, this, this, this, this, this, this);
+        customAdapterPersonalPrices = new CustomAdapterPersonalPrices(this, productList, this, this, this, this, this, this,this,this);
         //  RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(activity, 1);
         //  rv_items.setLayoutManager(mLayoutManager);
 
         rv_items.setAdapter(customAdapterPersonalPrices);
 
-        if (diagonalInches >= 6.80) {
+        /*if (diagonalInches >= 6.80) {
             setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_REVERSE_LANDSCAPE);
             RecyclerView.LayoutManager mLayoutManager4 = new GridLayoutManager(activity, 4);
             rv_items_verite.setLayoutManager(mLayoutManager4);
@@ -1967,14 +2430,14 @@ public class MainFwActivity extends AppCompatActivity
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(activity, 2);
             rv_items.setLayoutManager(mLayoutManager);
             singleView = false;
-        } else {
+        } else {*/
             RecyclerView.LayoutManager mLayoutManager4 = new GridLayoutManager(activity, 2);
             rv_items_verite.setLayoutManager(mLayoutManager4);
             RecyclerView.LayoutManager mLayoutManager = new GridLayoutManager(activity, 2);
             rv_items.setLayoutManager(mLayoutManager);
             singleView = false;
 
-        }
+        /*}*/
         if (diagonalInches >= 6.80) {
             deviceType = "tablet";
         } else {
@@ -2440,6 +2903,7 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout0.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            linearLayout_search.setVisibility(View.GONE);
                             allMyOfferIcon.setImageResource(R.drawable.ic_check_red_24dp);
                             mpdIcon.setImageResource(0);
                             dcIcon.setImageResource(0);
@@ -2463,6 +2927,7 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout1.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            linearLayout_search.setVisibility(View.GONE);
                             allMyOfferIcon.setImageResource(0);
                             mpdIcon.setImageResource(R.drawable.ic_check_red_24dp);
                             dcIcon.setImageResource(0);
@@ -2485,6 +2950,7 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout2.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            linearLayout_search.setVisibility(View.GONE);
                             allMyOfferIcon.setImageResource(0);
                             mpdIcon.setImageResource(0);
                             dcIcon.setImageResource(R.drawable.ic_check_red_24dp);
@@ -2508,6 +2974,7 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout3.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            linearLayout_search.setVisibility(View.GONE);
                             allMyOfferIcon.setImageResource(0);
                             mpdIcon.setImageResource(0);
                             dcIcon.setImageResource(0);
@@ -2659,6 +3126,11 @@ public class MainFwActivity extends AppCompatActivity
                             savingSortIcon.setImageResource(R.drawable.ic_check_red_24dp);
                             ofrTypeSortIcon.setImageResource(0);
                             filter_label.setVisibility(View.GONE);
+                            if (tmp==0){
+                                linearLayout_search.setVisibility(View.GONE);
+                            }else {
+                                linearLayout_search.setVisibility(View.GONE);
+                            }
                             //tmp=0;
                             pdView = false;
                             couponTile = false;
@@ -2675,6 +3147,7 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout1Short.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            linearLayout_search.setVisibility(View.GONE);
                             recommendSortIcon.setImageResource(0);
                             savingSortIcon.setImageResource(R.drawable.ic_check_red_24dp);
                             ofrTypeSortIcon.setImageResource(0);
@@ -2697,6 +3170,7 @@ public class MainFwActivity extends AppCompatActivity
                     rowLayout2Short.setOnClickListener(new View.OnClickListener() {
                         @Override
                         public void onClick(View v) {
+                            linearLayout_search.setVisibility(View.GONE);
                             recommendSortIcon.setImageResource(0);
                             savingSortIcon.setImageResource(0);
                             ofrTypeSortIcon.setImageResource(R.drawable.ic_check_red_24dp);
@@ -3146,7 +3620,18 @@ public class MainFwActivity extends AppCompatActivity
                                           message3=message;
                                         message=jsonParam;
                                         */
+                                        searchCount=jsonParam.length();
+
+                                        offerTitle_search.setText("["+searchCount+"] Search Results");
+                                        search_keyword.setText("Keywords: "+s);
+                                        search_reset.setText(" Reset");
+
+                                        ////
+                                        offerTitle_search_string="["+searchCount+"] Search Results";
+                                        search_keyword_string="Keywords: "+s;
+                                        //
                                         message3 = jsonParam;
+
                                         //tmp=0;
                                         searchProduct();
                                     } catch (Throwable e) {
@@ -4536,8 +5021,15 @@ public class MainFwActivity extends AppCompatActivity
                                             message = null;
                                             JSONArray jsonArray = new JSONArray(s3);
                                             message = jsonArray;
-                                            fetchProduct();
-                                            shoppingListIdLoad();
+                                            if (x==3){
+                                                String search = edit_txt.getText().toString();
+                                                searchLoad(search);
+                                                //shoppingListIdLoad();
+                                            }else {
+                                                fetchProduct();
+                                                shoppingListIdLoad();
+                                            }
+
                                             //
                                         }
 
@@ -5557,6 +6049,7 @@ public class MainFwActivity extends AppCompatActivity
                 table_upc.setVisibility(View.GONE);
                 table_upc_view.setVisibility(View.GONE);
             }
+            //
 
 
         }
@@ -5754,6 +6247,7 @@ public class MainFwActivity extends AppCompatActivity
                 table_upc.setVisibility(View.GONE);
                 table_upc_view.setVisibility(View.GONE);
             }
+            //
 
         }
 
@@ -7289,6 +7783,395 @@ public class MainFwActivity extends AppCompatActivity
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    @Override
+    public void onReset(Product product) {
+        setCheckIcon(SEARCH);
+        offerTitle_search.setText("");
+        search_keyword.setText("");
+        search_reset.setText("");
+        if (edit_txt.getText().toString().isEmpty()) {
+
+        }
+        else {
+
+            if (Integer.parseInt(submit_btn.getTag().toString()) == 0) {
+                submit_btn.setImageResource(R.drawable.ic_clear_black_24dp);
+                submit_btn.setTag(1);
+                String search = edit_txt.getText().toString();
+                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                imm.hideSoftInputFromWindow(edit_txt.getWindowToken(), 0);
+
+                participate = 0;
+                pdView = false;
+                couponTile = false;
+                tmp=0;
+                navigation.setVisibility(View.VISIBLE);
+                x = 3;
+                header_title.setVisibility(View.GONE);
+                searchLable = true;
+                searchLoad(search);
+                        /*linearLayout.setVisibility(View.GONE);
+                        filter_offer_label.setVisibility(View.GONE);
+                        filter_label.setVisibility(View.GONE);*/
+                if (pdView==true){
+                    linearLayout.setVisibility(View.VISIBLE);
+                }
+                else {
+
+                    linearLayout.setVisibility(View.GONE);
+                    linearLayout_search.setVisibility(View.GONE);
+                    filter_offer_label.setVisibility(View.GONE);
+                    filter_label.setVisibility(View.GONE);
+                    categoryShort=false;
+                    offferShort=false;
+                    savingsShort=false;
+
+                            /*if (tmp==1||tmp==2||tmp==3){
+                                filter_offer_label.setVisibility(View.VISIBLE);
+                            }
+                            if (categoryShort==true){
+                                filter_offer_label.setVisibility(View.VISIBLE);
+                                tv_category_name.setVisibility(View.VISIBLE);
+                                img_category_cross_button.setVisibility(View.VISIBLE);
+                            } else {
+                                //filter_offer_label.setVisibility(View.VISIBLE);
+                                tv_category_name.setVisibility(View.GONE);
+                                img_category_cross_button.setVisibility(View.GONE);
+                            }
+                            if (offferShort==true||savingsShort==true){
+                                filter_label.setVisibility(View.VISIBLE);
+                            }else {
+                                filter_label.setVisibility(View.GONE);
+                            }*/
+
+                }
+
+            }
+            else {
+                //
+                linearLayout_search.setVisibility(View.GONE);
+                search_message.setVisibility(View.GONE);
+                navigation.setVisibility(View.VISIBLE);
+                submit_btn.setImageResource(R.drawable.ic_search_black_24dp);
+                submit_btn.setTag(0);
+                edit_txt.getText().clear();
+
+                participate = 1;
+                pdView = true;
+                couponTile = true;
+                savingsShort = false;
+                offferShort = false;
+                categoryShort = false;
+                tmp = 0;
+                x = 0;
+                //header_title visible
+                header_title.setVisibility(View.GONE);
+                searchLable = false;
+                fetchProduct();
+                linearLayout.setVisibility(View.VISIBLE);
+                filter_offer_label.setVisibility(View.GONE);
+                filter_label.setVisibility(View.GONE);
+
+                tv_category_name.setVisibility(View.GONE);
+                img_category_cross_button.setVisibility(View.GONE);
+                tv_offer_name.setVisibility(View.GONE);
+                img_offer_cross_button.setVisibility(View.GONE);
+                        /*if (pdView==true){
+                            linearLayout.setVisibility(View.VISIBLE);
+                        }
+                        else {
+
+                            linearLayout.setVisibility(View.GONE);
+                            if (tmp==1||tmp==2||tmp==3){
+                                filter_offer_label.setVisibility(View.VISIBLE);
+                            }
+                            if (categoryShort==true){
+                                filter_offer_label.setVisibility(View.VISIBLE);
+                                tv_category_name.setVisibility(View.VISIBLE);
+                                img_category_cross_button.setVisibility(View.VISIBLE);
+                            } else {
+                                //filter_offer_label.setVisibility(View.VISIBLE);
+                                tv_category_name.setVisibility(View.GONE);
+                                img_category_cross_button.setVisibility(View.GONE);
+                            }
+                            if (offferShort==true||savingsShort==true){
+                                filter_label.setVisibility(View.VISIBLE);
+                            }else {
+                                filter_label.setVisibility(View.GONE);
+                            }
+
+                        }*/
+            }
+        }
+    }
+
+    @Override
+    public void onChangeStore(Product product) {
+            Log.d(TAG, " >> memid " + appUtil.getPrefrence("MemberId"));
+            LayoutInflater inflater = (LayoutInflater) MainFwActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+            View layout = inflater.inflate(R.layout.change_store_popup, null);
+            window = new PopupWindow(MainFwActivity.this);
+            window.setWidth(WindowManager.LayoutParams.MATCH_PARENT);
+            window.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+            window.setContentView(layout);
+            window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+            window.setOutsideTouchable(false);
+            window.setFocusable(true);
+            window.showAtLocation(layout, Gravity.NO_GRAVITY, 0, 0);
+            dropDownList.clear();
+            storeIds.clear();
+            dropDownList.add(Constant.SELECT_STORE);
+            storeIds.add("0");
+            //window.showAtLocation(layout, 17, 100, 100);
+                /*Window window = changeStorePopup.getWindow();
+                window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                WindowManager.LayoutParams wlp = window.getAttributes();
+                wlp.gravity = Gravity.RIGHT | Gravity.END;
+
+                wlp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                wlp.flags = WindowManager.LayoutParams.FLAG_LAYOUT_IN_SCREEN;
+                window.setAttributes(wlp);*/
+            closePopUp = layout.findViewById(R.id.close_icon);
+            zipCodeEdt = layout.findViewById(R.id.zip_code_edt);
+            findBtn = layout.findViewById(R.id.find_btn);
+            updateBtn = layout.findViewById(R.id.update_btn);
+            updateBtn.setEnabled(false);
+            errorMsgTxt1 = layout.findViewById(R.id.error_msg);
+            errorMsgTxt2 = layout.findViewById(R.id.error_msg2);
+            storeDropDown = layout.findViewById(R.id.store_spinner);
+            storeDropDown.setEnabled(false);
+            dataAdapter = new ArrayAdapter<String>(MainFwActivity.this,
+                    R.layout.change_store_spinner_item, dropDownList);
+            dataAdapter.setDropDownViewResource(R.layout.change_store_spinner_item);
+            storeDropDown.setAdapter(dataAdapter);
+            storeDropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                @Override
+                public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                    selectedStore = dropDownList.get(position);
+                    Log.d(TAG, " Selected Store >> " + selectedStore);
+                    Log.d(TAG, "Store Id >> " + storeIds.get(position));
+                    storeId = storeIds.get(position);
+                }
+
+                @Override
+                public void onNothingSelected(AdapterView<?> parent) { }
+            });
+
+            closePopUp.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    storeIds.clear();
+                    window.dismiss();
+                }
+            });
+            findBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    String address = zipCodeEdt.getText().toString();
+                    if (address.matches("")) {
+                        errorMsgTxt1.setVisibility(View.VISIBLE);
+                        return;
+                    }
+                    dropDownList.clear();
+                    dropDownList.add("Locating store near you");
+                    dataAdapter.notifyDataSetChanged();
+                    String API_KEY = getResources().getString(R.string.api_key);
+                    StringRequest request = new StringRequest(Request.Method.GET, Constant.GEOCODER_API + address + "&key=" + API_KEY, new Response.Listener<String>() {
+                        @Override
+                        public void onResponse(String response) {
+                            VolleyLog.wtf(response, "utf-8");
+                            Geocoding geocoding = new GsonBuilder().create().fromJson(response, Geocoding.class);
+                            if (! Constant.STATUS.equalsIgnoreCase(geocoding.getStatus())) {
+                                errorMsgTxt1.setVisibility(View.VISIBLE);
+                                errorMsgTxt1.setText(getResources().getString(R.string.error_msg2));
+                                //dropDownList.clear();
+                                dataAdapter.clear();
+                                dropDownList.clear();
+                                dropDownList.add(Constant.SELECT_STORE);
+                                dataAdapter.notifyDataSetChanged();
+                                return;
+                            }
+                            errorMsgTxt1.setVisibility(View.GONE);
+                            Geocoding.Result result = geocoding.getResult().get(0);
+                            Geocoding.Geometry geometry = result.geometry;
+                            Geocoding.Location location = geometry.location;
+                            String lat = location.lat;
+                            String lng = location.lng;
+                            StringRequest findStoreReq = new StringRequest(Request.Method.GET, Constant.FINDSTORE
+                                    + lat + "&UserCurrentLongitude=" + lng, new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    VolleyLog.wtf(response, "utf-8");
+                                    try {
+                                        JSONObject root = new JSONObject(response);
+                                        String errorCode = root.getString("errorcode");
+                                        Log.d(TAG, "Store Api status >> " +errorCode);
+                                        if ("200".equals(errorCode)) {
+                                            errorMsgTxt1.setVisibility(View.VISIBLE);
+                                            errorMsgTxt1.setText(root.getString("message"));
+                                            return;
+                                        }
+                                    } catch (JSONException e) {
+                                        Log.d(TAG, " Exception >> " + e.getMessage());
+                                    }
+                                    Store store = new GsonBuilder().create().fromJson(response, Store.class);
+                                    if (! Constant.ERRORCODE.equalsIgnoreCase(store.getErrorcode())) {
+                                        Log.d(TAG, ">> Something went wrong");
+                                        errorMsgTxt2.setVisibility(View.VISIBLE);
+                                        errorMsgTxt2.setText("Some thing went wrong");
+                                        dropDownList.clear();
+                                        dataAdapter.clear();
+                                        dropDownList.add(Constant.SELECT_STORE);
+                                        dataAdapter.addAll(dropDownList);
+                                        storeDropDown.setAdapter(dataAdapter);
+                                        return;
+                                    }
+                                    errorMsgTxt2.setVisibility(View.GONE);
+                                    messages = store.getMessage();
+                                    dropDownList.clear();
+                                    dropDownList.add(Constant.SELECT_STORE);
+                                    for (Store.Message msg : messages) {
+                                        String distance = msg.getDistance();
+                                        Float dis = Float.parseFloat(distance);
+                                        DecimalFormat df = new DecimalFormat("0.00");
+                                        df.setMaximumFractionDigits(2);
+                                        distance = df.format(dis);
+                                        String address = msg.getStoreAddress() + ", " +msg.getStoreCity() + ", " +
+                                                msg.getStoreState() + " (" + distance + " miles)";
+                                        dropDownList.add(address);
+                                        storeIds.add(msg.getStoreID());
+                                    }
+                                    storeDropDown.setEnabled(true);
+                                    dataAdapter.notifyDataSetChanged();
+                                    updateBtn.setEnabled(true);
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    Log.d(TAG, " >> ERROR in Store Api"+ error.getMessage());
+                                    dropDownList.clear();
+                                    dataAdapter.clear();
+                                    dropDownList.add(Constant.SELECT_STORE);
+                                    dataAdapter.addAll(dropDownList);
+                                    storeDropDown.setAdapter(dataAdapter);
+                                }
+                            }) {
+
+                                @Override
+                                public String getBodyContentType() {
+                                    return "application/x-www-form-urlencoded";
+                                }
+                                @Override
+                                public Map<String, String> getHeaders() {
+                                    Map<String, String> params = new HashMap<String, String>();
+                                    params.put("Content-Type", "application/x-www-form-urlencoded");
+                                    params.put("Authorization", appUtil.getPrefrence("token_type") + " " + appUtil.getPrefrence("access_token"));
+                                    return params;
+                                }
+                            };
+                            RetryPolicy policy = new DefaultRetryPolicy(5000,
+                                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                            findStoreReq.setRetryPolicy(policy);
+                            try {
+                                if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+                                    Log.d(TAG, " Req Url >> " + findStoreReq.getUrl());
+                                    Log.d(TAG, " Req Header >> " + findStoreReq.getHeaders());
+                                    mQueue.add(findStoreReq);
+
+                                } else {
+                                    Toast.makeText(MainFwActivity.this, getResources().getString(R.string.noInternet), Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (Exception e) {
+                                Log.d(TAG, " Exception >> " + e.getMessage());
+                            }
+                        }
+                    }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            errorMsgTxt2.setVisibility(View.VISIBLE);
+                            errorMsgTxt2.setText(error.getMessage());
+                            dropDownList.clear();
+                            dataAdapter.clear();
+                            dropDownList.add(Constant.SELECT_STORE);
+                            dataAdapter.addAll(dropDownList);
+                            storeDropDown.setAdapter(dataAdapter);
+                            Log.d(TAG, " >> ERROR "+ error.getLocalizedMessage());
+                        }
+                    });
+                    try {
+                        if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+                            mQueue.add(request);
+                        } else {
+                            Toast.makeText(MainFwActivity.this, getResources().getString(R.string.noInternet), Toast.LENGTH_SHORT).show();
+                        }
+
+                    } catch (Exception e) {
+                        Log.d(TAG, " Exception >> " + e.getMessage());
+                    }
+                }
+            });
+            updateBtn.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    if ("0".equalsIgnoreCase(storeId)) {
+                        errorMsgTxt2.setText(getResources().getString(R.string.error_msg3));
+                        errorMsgTxt2.setVisibility(View.VISIBLE);
+                        return;
+                    }
+                    StringRequest updateReq = new StringRequest(Request.Method.POST,
+                            Constant.UPDATE_STORE + appUtil.getPrefrence("ShopperID") + "&StoreId=" + storeId,
+                            new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    Log.d(TAG, " Update api response >> " + response.toString());
+                                    UpdateStore updateStore = new GsonBuilder().create().fromJson(response, UpdateStore.class);
+                                    if (Constant.ERRORCODE.equalsIgnoreCase(updateStore.getErrorcode())) {
+                                        Log.d(TAG, ">> Change store successfully");
+                                        checkCircular(storeId);
+                                    } else {
+                                        window.dismiss();
+                                        progressDialog.dismiss();
+                                        Log.d(TAG, ">> Change store Response code " + updateStore.getErrorcode());
+                                    }
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+                            Log.d(TAG, " Error in update store " + error.getMessage());
+                            window.dismiss();
+                            progressDialog.dismiss();
+                        }
+                    }){
+                        @Override
+                        public String getBodyContentType() {
+                            return "application/x-www-form-urlencoded";
+                        }
+                        @Override
+                        public Map<String, String> getHeaders() throws AuthFailureError {
+                            Map<String, String> params = new HashMap<String, String>();
+                            params.put("Content-Type", "application/x-www-form-urlencoded");
+                            params.put("Authorization", appUtil.getPrefrence("token_type") + " " + appUtil.getPrefrence("access_token"));
+                            return params;
+                        }
+                    };
+                    RetryPolicy policy = new DefaultRetryPolicy(5000,
+                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                    updateReq.setRetryPolicy(policy);
+                    try {
+                        mQueue.add(updateReq);
+                        progressDialog = new ProgressDialog(activity);
+                        progressDialog.setMessage("Processing");
+                        progressDialog.show();
+                    } catch (Exception e) {
+                        Log.d(TAG, " Exception >> " + e.getMessage());
+                    }
+                }
+            });
+
     }
 
     @Override
@@ -9165,7 +10048,7 @@ public class MainFwActivity extends AppCompatActivity
 
     @Override
     public void onRelatedItemSelected(final RelatedItem relatedItem) {
-        liner_qty.setVisibility(View.GONE);
+        liner_qty.setVisibility(View.VISIBLE);
         isRelatedSelected=true;
         tv_quantity_detail.setText(relatedItem.getQuantity());
 
@@ -13365,6 +14248,12 @@ public class MainFwActivity extends AppCompatActivity
                                 e.printStackTrace();
                             }
 
+                            if (message.getJSONObject(i).getString("IsFamily").equalsIgnoreCase("True")){
+                                liner_qty.setVisibility(View.GONE);
+                                table_upc.setVisibility(View.GONE);
+                                table_upc_view.setVisibility(View.GONE);
+                            }
+
 
 
                         }
@@ -13588,6 +14477,16 @@ public class MainFwActivity extends AppCompatActivity
                             tv_upc_detail.setText(message.getJSONObject(i).getString("UPC"));
                             tv_deal_type_detaile.setText(message.getJSONObject(i).getString("OfferTypeTagName"));
 
+                            if (message.getJSONObject(i).getString("IsStacked").equalsIgnoreCase("0")){
+                                liner_qty.setVisibility(View.GONE);
+                                table_upc.setVisibility(View.GONE);
+                                table_upc_view.setVisibility(View.GONE);
+                            }
+                            if (message.getJSONObject(i).getString("IsStacked").equalsIgnoreCase("1")&&message.getJSONObject(i).getString("AdPrice").equalsIgnoreCase("0")){
+                                liner_qty.setVisibility(View.GONE);
+                                table_upc.setVisibility(View.GONE);
+                                table_upc_view.setVisibility(View.GONE);
+                            }
                         }
 
 
@@ -14060,6 +14959,12 @@ public class MainFwActivity extends AppCompatActivity
                                                         table_varieties_view.setVisibility(View.GONE);
                                                     }
 
+                                                    if (jsonShoppingParam.getJSONObject(i).getString("IsFamily").equalsIgnoreCase("True")){
+                                                        liner_qty.setVisibility(View.GONE);
+                                                        table_upc.setVisibility(View.GONE);
+                                                        table_upc_view.setVisibility(View.GONE);
+                                                    }
+
 
                                                 } else if (shopping.getPrimaryOfferTypeid() == 2) {
                                                     if (jsonShoppingParam.getJSONObject(i).getString("LargeImagePath").contains("http://pty.bashas.com/webapiaccessclient/images/noimage-large.png")) {
@@ -14212,6 +15117,17 @@ public class MainFwActivity extends AppCompatActivity
                                                         tv_detail_detail.setText(chars);
                                                     }else {
                                                         liner_qty.setVisibility(View.VISIBLE);
+                                                    }
+
+                                                    if (jsonShoppingParam.getJSONObject(i).getString("IsStacked").equalsIgnoreCase("0")){
+                                                        liner_qty.setVisibility(View.GONE);
+                                                        table_upc.setVisibility(View.GONE);
+                                                        table_upc_view.setVisibility(View.GONE);
+                                                    }
+                                                    if (jsonShoppingParam.getJSONObject(i).getString("IsStacked").equalsIgnoreCase("1")&&jsonShoppingParam.getJSONObject(i).getString("AdPrice").equalsIgnoreCase("0")){
+                                                        liner_qty.setVisibility(View.GONE);
+                                                        table_upc.setVisibility(View.GONE);
+                                                        table_upc_view.setVisibility(View.GONE);
                                                     }
                                                 }
 
@@ -15252,10 +16168,12 @@ public class MainFwActivity extends AppCompatActivity
                     navigation.setVisibility(View.VISIBLE);
                     x = 0;
                     dialog.dismiss();*/
+                    linearLayout_search.setVisibility(View.GONE);
                     rv_items.setVisibility(View.VISIBLE);
                     search_message.setVisibility(View.GONE);
                     navigation.setVisibility(View.VISIBLE);
                     submit_btn.setImageResource(R.drawable.ic_search_black_24dp);
+                    imv_micro_recorder.setImageResource(R.drawable.micro_recorder);
                     submit_btn.setTag(0);
                     edit_txt.getText().clear();
 
@@ -15292,10 +16210,12 @@ public class MainFwActivity extends AppCompatActivity
                     navigation.setVisibility(View.VISIBLE);
                     x = 0;
                     dialog.dismiss();*/
+                    linearLayout_search.setVisibility(View.GONE);
                     rv_items.setVisibility(View.VISIBLE);
                     search_message.setVisibility(View.GONE);
                     navigation.setVisibility(View.VISIBLE);
                     submit_btn.setImageResource(R.drawable.ic_search_black_24dp);
+                    imv_micro_recorder.setImageResource(R.drawable.micro_recorder);
                     submit_btn.setTag(0);
                     edit_txt.getText().clear();
 
@@ -16110,7 +17030,7 @@ public class MainFwActivity extends AppCompatActivity
                 // progressDialog.setMessage("Processing");
                 //progressDialog.show();
 
-                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|8.6",
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|8.7",
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {

@@ -2,6 +2,7 @@ package com.fareway.adapter;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.Paint;
 import android.graphics.Typeface;
 /*
@@ -73,6 +74,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
     private CustomAdapterPersonalPricesListener listener;
     private CustomAdapterPersonalPricesListener listener2;
     private CustomAdapterPersonalPricesListener activateListener;
+    private CustomAdapterPersonalPricesListener resetListener;
+    private CustomAdapterPersonalPricesListener changeStoreListener;
     private CustomAdapterPersonalPricesListener activateMultiListener;
     private CustomAdapterPersonalPricesListener removeListener;
     private CustomAdapterPersonalPricesListener removeMultiListener;
@@ -100,9 +103,25 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 item_layout_tile,linear_personal_ad_lable,linear_multi_personal_ad_lable;
         private CardView card_view;
         private RelativeLayout imv_layout,relative_badge;
+        private RelativeLayout linear_personal_ad_lable_title_search_adapter;
+        private TextView tv_personal_lable_title_search_adapter,search_keyword_adapter,search_reset_adapter,
+                tv_location_title_search_adapter,change_store_search_adapter;
+        private ImageView imv_location_search_adapter;
+        private View view_line_search_adapter;
         public MyViewHolder(View view) {
 
             super(view);
+            ///////////////////////
+            linear_personal_ad_lable_title_search_adapter = (RelativeLayout) view.findViewById(R.id.linear_personal_ad_lable_title_search_adapter);
+
+            tv_personal_lable_title_search_adapter = (TextView) view.findViewById(R.id.tv_personal_lable_title_search_adapter);
+            search_keyword_adapter = (TextView) view.findViewById(R.id.search_keyword_adapter);
+            search_reset_adapter = (TextView) view.findViewById(R.id.search_reset_adapter);
+            tv_location_title_search_adapter = (TextView) view.findViewById(R.id.tv_location_title_search_adapter);
+            change_store_search_adapter = (TextView) view.findViewById(R.id.change_store_search_adapter);
+            imv_location_search_adapter = (ImageView) view.findViewById(R.id.imv_location_search_adapter);
+            view_line_search_adapter = (View)view.findViewById(R.id.view_line_search_adapter);
+            /////////////////////////
             imv_layout = (RelativeLayout) view.findViewById(R.id.imv_layout);
             relative_badge = (RelativeLayout) view.findViewById(R.id.relative_badge);
 
@@ -175,17 +194,36 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                 }
             });
 
+            search_reset_adapter.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    resetListener.onReset(productListFiltered.get(getAdapterPosition()));
+                    //MainFwActivity.reLoadApi();
+                }
+            });
+            change_store_search_adapter.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    changeStoreListener.onChangeStore(productListFiltered.get(getAdapterPosition()));
+                    //MainFwActivity.reLoadApi();
+                }
+            });
+
         }
     }
 
     public CustomAdapterPersonalPrices(Context mContext, List<Product> ProductList, CustomAdapterPersonalPricesListener listener,
                                        CustomAdapterPersonalPricesListener listener2, CustomAdapterPersonalPricesListener activateListener,
-                                       CustomAdapterPersonalPricesListener activateMultiListener,  CustomAdapterPersonalPricesListener removeListener,
-                                       CustomAdapterPersonalPricesListener removeMultiListener) {
+                                       CustomAdapterPersonalPricesListener activateMultiListener, CustomAdapterPersonalPricesListener removeListener,
+                                       CustomAdapterPersonalPricesListener removeMultiListener, MainFwActivity resetListener,
+                                       MainFwActivity changeStoreListener) {
         this.mContext = mContext;
         this.listener = listener;
         this.listener2 = listener2;
         this.activateListener = activateListener;
+        this.resetListener = resetListener;
+        this.changeStoreListener = changeStoreListener;
+
         this.activateMultiListener = activateMultiListener;
         this.removeListener = removeListener;
         this.removeMultiListener = removeMultiListener;
@@ -209,8 +247,37 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
         final Product product = productListFiltered.get(position);
         MainFwActivity.tv_location_title.setText(appUtil.getPrefrence("StoreName"));
+        MainFwActivity.tv_location_title_search.setText(appUtil.getPrefrence("StoreName"));
+
+        holder.linear_personal_ad_lable_title_search_adapter.setVisibility(View.GONE);
+        holder.tv_location_title_search_adapter.setText(appUtil.getPrefrence("StoreName"));
+        holder.tv_personal_lable_title_search_adapter.setText(MainFwActivity.offerTitle_search_string);
+        holder.search_keyword_adapter.setText(MainFwActivity.search_keyword_string);
 
         if(MainFwActivity.singleView) {
+            if (MainFwActivity.x==3){
+                if (position==0){
+                    if (MainFwActivity.categoryShort||MainFwActivity.offferShort||MainFwActivity.savingsShort||MainFwActivity.tmp==1||
+                            MainFwActivity.tmp==2||MainFwActivity.tmp==3){
+                        holder.linear_personal_ad_lable_title_search_adapter.setVisibility(View.GONE);
+                    }else {
+                        holder.linear_personal_ad_lable_title_search_adapter.setVisibility(View.VISIBLE);
+                        holder.imv_location_search_adapter.setVisibility(View.VISIBLE);
+                        holder.tv_location_title_search_adapter.setVisibility(View.VISIBLE);
+                        holder.view_line_search_adapter.setVisibility(View.VISIBLE);
+                        holder.change_store_search_adapter.setVisibility(View.VISIBLE);
+
+                        holder.tv_personal_lable_title_search_adapter.setVisibility(View.VISIBLE);
+                        holder.search_keyword_adapter.setVisibility(View.VISIBLE);
+                        holder.search_reset_adapter.setVisibility(View.VISIBLE);
+                    }
+                }else {
+                    holder.linear_personal_ad_lable_title_search_adapter.setVisibility(View.GONE);
+                }
+
+            }else {
+                holder.linear_personal_ad_lable_title_search_adapter.setVisibility(View.GONE);
+            }
             holder.card_view.setVisibility(View.VISIBLE);
             holder.item_layout_tile.setVisibility(View.VISIBLE);
 
@@ -1444,6 +1511,46 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
         }
 
         else {
+            if (MainFwActivity.x==3){
+                if (position==0){
+                    if (MainFwActivity.categoryShort||MainFwActivity.offferShort||MainFwActivity.savingsShort||MainFwActivity.tmp==1||
+                            MainFwActivity.tmp==2||MainFwActivity.tmp==3){
+                        holder.linear_personal_ad_lable_title_search_adapter.setVisibility(View.GONE);
+                    }else {
+                        holder.linear_personal_ad_lable_title_search_adapter.setVisibility(View.VISIBLE);
+                        holder.imv_location_search_adapter.setVisibility(View.GONE);
+                        holder.tv_location_title_search_adapter.setVisibility(View.GONE);
+                        holder.view_line_search_adapter.setVisibility(View.GONE);
+                        holder.change_store_search_adapter.setVisibility(View.GONE);
+
+                        holder.tv_personal_lable_title_search_adapter.setVisibility(View.VISIBLE);
+                        holder.search_keyword_adapter.setVisibility(View.VISIBLE);
+                        holder.search_reset_adapter.setVisibility(View.VISIBLE);
+                    }
+
+                }else if (position==1){
+                    if (MainFwActivity.categoryShort||MainFwActivity.offferShort||MainFwActivity.savingsShort||MainFwActivity.tmp==1||
+                            MainFwActivity.tmp==2||MainFwActivity.tmp==3){
+                        holder.linear_personal_ad_lable_title_search_adapter.setVisibility(View.GONE);
+                    }else {
+                        holder.linear_personal_ad_lable_title_search_adapter.setVisibility(View.VISIBLE);
+                        holder.imv_location_search_adapter.setVisibility(View.VISIBLE);
+                        holder.tv_location_title_search_adapter.setVisibility(View.VISIBLE);
+                        holder.view_line_search_adapter.setVisibility(View.VISIBLE);
+                        holder.change_store_search_adapter.setVisibility(View.VISIBLE);
+
+                        holder.tv_personal_lable_title_search_adapter.setVisibility(View.GONE);
+                        holder.search_keyword_adapter.setVisibility(View.GONE);
+                        holder.search_reset_adapter.setVisibility(View.GONE);
+                    }
+
+                }else {
+                    holder.linear_personal_ad_lable_title_search_adapter.setVisibility(View.GONE);
+                }
+
+            }else {
+                holder.linear_personal_ad_lable_title_search_adapter.setVisibility(View.GONE);
+            }
 
             holder.item_layout_tile.setVisibility(View.VISIBLE);
             holder.circular_layout.setVisibility(View.VISIBLE);
@@ -2909,6 +3016,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
         void onProductMultiActivate(Product product);
         void onProductRemove(Product product);
         void onProductMultiRemove(Product product);
+        void onReset(Product product);
+        void onChangeStore(Product product);
 
     }
 
