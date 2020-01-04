@@ -1548,7 +1548,8 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     holder.linear_personal_ad_lable_title_search_adapter.setVisibility(View.GONE);
                 }
 
-            }else {
+            }
+            else {
                 holder.linear_personal_ad_lable_title_search_adapter.setVisibility(View.GONE);
             }
 
