@@ -1,8 +1,6 @@
 package com.fareway.model;
 
 public class Product {
-
-
     private String name;
     private int numOfSongs;
     private int thumbnail;
@@ -69,9 +67,6 @@ public class Product {
     private String PosMultiple;
     private String IsFamily;
     private String IsStacked;
-
-
-
 
     public Product() {
     }

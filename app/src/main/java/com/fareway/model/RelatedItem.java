@@ -59,6 +59,7 @@ public class RelatedItem {
     private String TotalQuantity;
     private String Isbadged;
     private String PosMultiple;
+    private String IsFamily;
 
     public String getName() {
         return name;
@@ -514,5 +515,13 @@ public class RelatedItem {
 
     public void setPosMultiple(String posMultiple) {
         PosMultiple = posMultiple;
+    }
+
+    public String getIsFamily() {
+        return IsFamily;
+    }
+
+    public void setIsFamily(String isFamily) {
+        IsFamily = isFamily;
     }
 }
