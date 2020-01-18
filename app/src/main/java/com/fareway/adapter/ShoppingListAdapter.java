@@ -187,8 +187,8 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             holder.linear_personal.setVisibility(View.VISIBLE);
             holder.linear_coupon.setVisibility(View.GONE);
 
-            String chars = capitalize(shopping.getLongDescription());
-            holder.tv_personal_description.setText(chars);
+            //String chars = capitalize(shopping.getLongDescription());
+            holder.tv_personal_description.setText(shopping.getLongDescription());
 
             holder.tv_qty_shopping.setText(shopping.getQuantity());
 
@@ -219,8 +219,8 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         else if (shopping.getPrimaryOfferTypeId()==2){
             holder.linear_personal.setVisibility(View.VISIBLE);
             holder.linear_coupon.setVisibility(View.GONE);
-            String chars = capitalize(shopping.getLongDescription());
-            holder.tv_personal_description.setText(chars);
+            //String chars = capitalize(shopping.getLongDescription());
+            holder.tv_personal_description.setText(shopping.getLongDescription());
             holder.tv_qty_shopping.setText(shopping.getQuantity());
 
             holder.shopping_flag_dot.setBackground(mContext.getResources().getDrawable(R.drawable.circular_green_bg));
@@ -249,8 +249,8 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
         else if (shopping.getPrimaryOfferTypeId()==1){
             holder.linear_personal.setVisibility(View.VISIBLE);
             holder.linear_coupon.setVisibility(View.GONE);
-            String chars = capitalize(shopping.getLongDescription());
-            holder.tv_personal_description.setText(chars);
+            //String chars = capitalize(shopping.getLongDescription());
+            holder.tv_personal_description.setText(shopping.getLongDescription());
             holder.tv_qty_shopping.setText(shopping.getQuantity());
 
             holder.shopping_flag_dot.setBackground(mContext.getResources().getDrawable(R.drawable.circular_blue_bg));
@@ -306,7 +306,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             holder.linear_coupon.setVisibility(View.VISIBLE);
 
             String chars = capitalize(shopping.getDescription());
-            holder.tv_coupon_description.setText(chars);
+            holder.tv_coupon_description.setText(shopping.getDescription());
             String saveDate = shopping.getExpirationDate();
             if (saveDate.length()==0){
                 // getTokenkey();
@@ -354,8 +354,8 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             holder.linear_coupon.setVisibility(View.VISIBLE);
            // holder.tv_coupon_description.setText(shopping.getDescription()+"\n$ "+shopping.getPrice());
 
-            String chars = capitalize(shopping.getDescription());
-            holder.tv_coupon_description.setText(chars+"\n$ "+shopping.getPrice());
+            //String chars = capitalize(shopping.getDescription());
+            holder.tv_coupon_description.setText(shopping.getDescription()+"\n$ "+shopping.getPrice());
             String saveDate = shopping.getExpirationDate();
             if (saveDate.length()==0){
                 // getTokenkey();
@@ -402,8 +402,8 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
             holder.linear_coupon.setVisibility(View.VISIBLE);
             //holder.tv_coupon_description.setText(shopping.getDescription());
 
-            String chars = capitalize(shopping.getDescription());
-            holder.tv_coupon_description.setText(chars);
+            //String chars = capitalize(shopping.getDescription());
+            holder.tv_coupon_description.setText(shopping.getDescription());
             String saveDate = shopping.getExpirationDate();
             if (saveDate.length()==0){
                 // getTokenkey();

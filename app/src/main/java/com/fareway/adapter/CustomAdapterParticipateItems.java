@@ -247,8 +247,8 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 holder.tv_coupon_flag.setText("With MyFareway");
                 holder.tv_deal_type.setText(relatedItem.getOfferTypeTagName());
 
-                String chars = capitalize(relatedItem.getDescription());
-                holder.tv_detail.setText(chars);
+                //String chars = capitalize(relatedItem.getDescription());
+                holder.tv_detail.setText(relatedItem.getDescription());
 
                 holder.tv_saving.setVisibility(View.VISIBLE);
                 holder.tv_varieties.setVisibility(View.VISIBLE);
@@ -417,26 +417,44 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
 
                 try {
 
-                        DecimalFormat dF = new DecimalFormat("00.00");
-                        Number adPrice = dF.parse(relatedItem.getAdPrice());
-                        Number everyDayPrice = dF.parse(relatedItem.getRegularPrice());
+                    float myFloatAdPrice = Float.parseFloat(relatedItem.getAdPrice()+"f");
+                    String adPrice = String.format("%.02f", myFloatAdPrice);
 
-                            holder.tv_saving.setTypeface(holder.tv_saving.getTypeface(), Typeface.NORMAL);
-                            Typeface typeface = ResourcesCompat.getFont(mContext, R.font.roboto_black);
-                            holder.tv_saving.setTypeface(typeface);
+                    float myFloatRegularPrice = Float.parseFloat(relatedItem.getRegularPrice()+"f");
+                    String everyDayPrice = String.format("%.02f", myFloatRegularPrice);
 
-                            if (relatedItem.getRegularPrice().equalsIgnoreCase("0")){
-                                holder.tv_saving_pri_fix.setText("");
-                                holder.tv_saving.setText("");
-                                holder.tv_promo_price__pri_fix.setText("");
-                                holder.tv_promo_price.setText("");
-                            }else {
-
-                              holder.tv_saving.setText("$"+everyDayPrice);
-                              holder.tv_saving_pri_fix.setText("Everyday Price ");
-                              holder.tv_promo_price__pri_fix.setText("Promo Price    ");
-                              holder.tv_promo_price.setText("$"+new DecimalFormat("##.##").format(adPrice));
-                            }
+                    //DecimalFormat dF = new DecimalFormat("00.00");
+                    //Number adPrice = dF.parse(relatedItem.getAdPrice());
+                    //Number everyDayPrice = dF.parse(relatedItem.getRegularPrice());
+                    holder.tv_saving.setText("$"+everyDayPrice);
+                    holder.tv_saving_pri_fix.setText("Everyday Price ");
+                    holder.tv_promo_price__pri_fix.setText("Promo Price ");
+                    holder.tv_promo_price.setText("$"+adPrice);
+                    if (adPrice.equalsIgnoreCase("0.00")&&everyDayPrice.equalsIgnoreCase("0.00")){
+                        /*holder.tv_saving_pri_fix.setText("");
+                        holder.tv_saving.setText("");
+                        holder.tv_promo_price__pri_fix.setText("");
+                        holder.tv_promo_price.setText("");*/
+                        holder.liner_save.setVisibility(View.GONE);
+                        holder.liner_promo_price.setVisibility(View.GONE);
+                    }else if (myFloatAdPrice==myFloatRegularPrice){
+                        /*holder.tv_saving_pri_fix.setText("");
+                        holder.tv_saving.setText("");
+                        holder.tv_promo_price__pri_fix.setText("");
+                        holder.tv_promo_price.setText("");*/
+                        holder.liner_save.setVisibility(View.VISIBLE);
+                        holder.liner_promo_price.setVisibility(View.GONE);
+                    }else if(myFloatRegularPrice==0.00){
+                        holder.liner_save.setVisibility(View.GONE);
+                        holder.liner_promo_price.setVisibility(View.GONE);
+                    }else {
+                        holder.liner_save.setVisibility(View.VISIBLE);
+                        holder.liner_promo_price.setVisibility(View.VISIBLE);
+                        /*holder.tv_saving.setText("$"+everyDayPrice);
+                        holder.tv_saving_pri_fix.setText("Everyday Price ");
+                        holder.tv_promo_price__pri_fix.setText("Promo Price    ");
+                        holder.tv_promo_price.setText("$"+new DecimalFormat("##.##").format(adPrice));*/
+                    }
 
                 } catch (Exception e) {
 
@@ -463,13 +481,13 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                     holder.tv_status.setText("Activate");*/
 
                 }
-                if (relatedItem.getIsbadged().equalsIgnoreCase("True")){
+                /*if (relatedItem.getIsbadged().equalsIgnoreCase("True")){
                     holder.liner_save.setVisibility(View.VISIBLE);
                     holder.liner_promo_price.setVisibility(View.VISIBLE);
                 }else {
                     holder.liner_save.setVisibility(View.GONE);
                     holder.liner_promo_price.setVisibility(View.GONE);
-                }
+                }*/
                 /*if (relatedItem.getRequiresActivation().equalsIgnoreCase("false")){
 
                     holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.blue));
@@ -513,8 +531,8 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 holder.tv_coupon_flag.setText("");
                 holder.tv_deal_type.setText(relatedItem.getOfferTypeTagName());
 
-                String chars = capitalize(relatedItem.getDescription());
-                holder.tv_detail.setText(chars);
+                //String chars = capitalize(relatedItem.getDescription());
+                holder.tv_detail.setText(relatedItem.getDescription());
 
                 holder.circular_layout.setVisibility(View.VISIBLE);
                 holder.tv_saving.setVisibility(View.VISIBLE);
@@ -623,8 +641,8 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 holder.tv_coupon_flag.setText("With MyFareway");
                 holder.tv_deal_type.setText(relatedItem.getOfferTypeTagName());
 
-                String chars = capitalize(relatedItem.getDescription());
-                holder.tv_detail.setText(chars);
+                //String chars = capitalize(relatedItem.getDescription());
+                holder.tv_detail.setText(relatedItem.getDescription());
 
                 holder.tv_saving.setVisibility(View.VISIBLE);
                 holder.tv_varieties.setVisibility(View.VISIBLE);
@@ -787,21 +805,43 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 holder.tv_varieties.setVisibility(View.VISIBLE);
 
                 try {
+                    float myFloatAdPrice = Float.parseFloat(relatedItem.getAdPrice()+"f");
+                    String adPrice = String.format("%.02f", myFloatAdPrice);
 
-                    DecimalFormat dF = new DecimalFormat("00.00");
-                    Number adPrice = dF.parse(relatedItem.getAdPrice());
-                    Number everyDayPrice = dF.parse(relatedItem.getRegularPrice());
+                    float myFloatRegularPrice = Float.parseFloat(relatedItem.getRegularPrice()+"f");
+                    String everyDayPrice = String.format("%.02f", myFloatRegularPrice);
 
-                    if (relatedItem.getRegularPrice().equalsIgnoreCase("0")){
-                        holder.tv_saving_pri_fix.setText("");
+                    //DecimalFormat dF = new DecimalFormat("00.00");
+                    //Number adPrice = dF.parse(relatedItem.getAdPrice());
+                    //Number everyDayPrice = dF.parse(relatedItem.getRegularPrice());
+                    holder.tv_saving.setText("$"+everyDayPrice);
+                    holder.tv_saving_pri_fix.setText("Everyday Price ");
+                    holder.tv_promo_price__pri_fix.setText("Promo Price ");
+                    holder.tv_promo_price.setText("$"+adPrice);
+                    if (adPrice.equalsIgnoreCase("0.00")&&everyDayPrice.equalsIgnoreCase("0.00")){
+                        /*holder.tv_saving_pri_fix.setText("");
                         holder.tv_saving.setText("");
                         holder.tv_promo_price__pri_fix.setText("");
-                        holder.tv_promo_price.setText("");
+                        holder.tv_promo_price.setText("");*/
+                        holder.liner_save.setVisibility(View.GONE);
+                        holder.liner_promo_price.setVisibility(View.GONE);
+                    }else if (adPrice.equalsIgnoreCase(everyDayPrice)){
+                        /*holder.tv_saving_pri_fix.setText("");
+                        holder.tv_saving.setText("");
+                        holder.tv_promo_price__pri_fix.setText("");
+                        holder.tv_promo_price.setText("");*/
+                        holder.liner_save.setVisibility(View.VISIBLE);
+                        holder.liner_promo_price.setVisibility(View.GONE);
+                    }else if(everyDayPrice.equalsIgnoreCase("0.00")){
+                        holder.liner_save.setVisibility(View.GONE);
+                        holder.liner_promo_price.setVisibility(View.GONE);
                     }else {
-                        holder.tv_saving.setText("$"+everyDayPrice);
+                        holder.liner_save.setVisibility(View.VISIBLE);
+                        holder.liner_promo_price.setVisibility(View.VISIBLE);
+                        /*holder.tv_saving.setText("$"+everyDayPrice);
                         holder.tv_saving_pri_fix.setText("Everyday Price ");
                         holder.tv_promo_price__pri_fix.setText("Promo Price    ");
-                        holder.tv_promo_price.setText("$"+new DecimalFormat("##.##").format(adPrice));
+                        holder.tv_promo_price.setText("$"+new DecimalFormat("##.##").format(adPrice));*/
                     }
 
                 } catch (Exception e) {
@@ -836,13 +876,13 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
 
 
                 }
-                if (relatedItem.getIsbadged().equalsIgnoreCase("True")){
+                /*if (relatedItem.getIsbadged().equalsIgnoreCase("True")){
                     holder.liner_save.setVisibility(View.VISIBLE);
                     holder.liner_promo_price.setVisibility(View.VISIBLE);
                 }else {
                     holder.liner_save.setVisibility(View.GONE);
                     holder.liner_promo_price.setVisibility(View.GONE);
-                }
+                }*/
 
                 /*if (relatedItem.getRequiresActivation().equalsIgnoreCase("false")){
 
@@ -889,8 +929,8 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 holder.tv_coupon_flag.setText("");
                 holder.tv_deal_type.setText(relatedItem.getOfferTypeTagName());
 
-                String chars = capitalize(relatedItem.getDescription());
-                holder.tv_detail.setText(chars);
+                //String chars = capitalize(relatedItem.getDescription());
+                holder.tv_detail.setText(relatedItem.getDescription());
 
                 holder.circular_layout.setVisibility(View.VISIBLE);
                 holder.tv_saving.setVisibility(View.VISIBLE);

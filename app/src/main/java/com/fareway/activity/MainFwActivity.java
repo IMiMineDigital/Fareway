@@ -6228,12 +6228,12 @@ public class MainFwActivity extends AppCompatActivity
             //Spanned result = Html.fromHtml(product.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
             //tv_price_detaile.setText(result);
 
-            String chars = capitalize(product.getCouponShortDescription());
+            //String chars = capitalize(product.getCouponShortDescription());
             String charsPackaging =lowercase(product.getPackagingSize());
             if (product.getIsFamily().equalsIgnoreCase("false")){
-                tv_detail_detail.setText(chars+" "+charsPackaging);
+                tv_detail_detail.setText(product.getCouponShortDescription()+" "+charsPackaging);
             }else {
-                tv_detail_detail.setText(chars);
+                tv_detail_detail.setText(product.getCouponShortDescription());
             }
 
 
@@ -6394,9 +6394,7 @@ public class MainFwActivity extends AppCompatActivity
                 tv_coupon_detail_detail.setVisibility(View.GONE);
             }
             try {
-                float myFloatCouponDiscount = Float.parseFloat(product.getCouponDiscount() + "f");
-                String formattedStringCouponDiscount = String.format("%.02f", myFloatCouponDiscount);
-                tv_coupon_detail.setText("$" + formattedStringCouponDiscount);
+
 
                 float myFloatAdPrice = Float.parseFloat(product.getAdPrice() + "f");
                 String formattedStringAdPrice = String.format("%.02f", myFloatAdPrice);
@@ -6476,9 +6474,24 @@ public class MainFwActivity extends AppCompatActivity
             String formattedStringRegularPrice = String.format("%.02f", myFloatRegularPrice);
             tv_reg_price_detail.setText("$" + formattedStringRegularPrice);
 
-            float myFloatSaving = Float.parseFloat(product.getSavings() + "f");
-            String formattedString = String.format("%.02f", myFloatSaving);
-            tv_save_detail.setText("$" + formattedString);
+            if (product.getRequiredQty()>1){
+                float myFloatSaving = Float.parseFloat(product.getSavings() + "f");
+                String formattedString = String.format("%.02f", myFloatSaving);
+                tv_save_detail.setText("$" + formattedString+" on "+product.getRequiredQty());
+
+                float myFloatCouponDiscount = Float.parseFloat(product.getCouponDiscount() + "f");
+                String formattedStringCouponDiscount = String.format("%.02f", myFloatCouponDiscount);
+                tv_coupon_detail.setText("$" + formattedStringCouponDiscount+" on "+product.getRequiredQty());
+            }else {
+                float myFloatSaving = Float.parseFloat(product.getSavings() + "f");
+                String formattedString = String.format("%.02f", myFloatSaving);
+                tv_save_detail.setText("$" + formattedString);
+
+                float myFloatCouponDiscount = Float.parseFloat(product.getCouponDiscount() + "f");
+                String formattedStringCouponDiscount = String.format("%.02f", myFloatCouponDiscount);
+                tv_coupon_detail.setText("$" + formattedStringCouponDiscount);
+            }
+
             /*try {
                 DecimalFormat dF = new DecimalFormat("0.00");
                 Number num = dF.parse(product.getSavings());
@@ -6583,9 +6596,9 @@ public class MainFwActivity extends AppCompatActivity
             /*Spanned result = Html.fromHtml(product.getDisplayPrice().replace("<sup>","<sup><small>").replace("</sup>","</small></sup>"));
             tv_price_detaile.setText(result);*/
 
-            String chars = capitalize(product.getDescription());
+            //String chars = capitalize(product.getDescription());
             String charsPackaging =lowercase(product.getPackagingSize());
-            tv_detail_detail.setText(chars + " " + charsPackaging);
+            tv_detail_detail.setText(product.getDescription() + " " + charsPackaging);
 
             tv_reg_price_detail.setText("$" + product.getRegularPrice());
 
@@ -10875,9 +10888,9 @@ public class MainFwActivity extends AppCompatActivity
             Spanned result = Html.fromHtml(displayPrice.replace("<sup>", "<sup><small><small>").replace("</sup>", "</small></small></sup>"));
             tv_price_detaile.setText(result);
 
-            String chars = capitalize(relatedItem.getDescription());
+            //String chars = capitalize(relatedItem.getDescription());
             String charsPackaging =lowercase(relatedItem.getPackagingSize());
-            tv_detail_detail.setText(chars + " " + charsPackaging);
+            tv_detail_detail.setText(relatedItem.getDescription() + " " + charsPackaging);
 
             tv_reg_price_detail.setText("$ " + relatedItem.getRegularPrice());
 
@@ -11077,9 +11090,24 @@ public class MainFwActivity extends AppCompatActivity
             String formattedStringRegularPrice = String.format("%.02f", myFloatRegularPrice);
             tv_reg_price_detail.setText("$" + formattedStringRegularPrice);
 
-            float myFloatSaving = Float.parseFloat(relatedItem.getSavings() + "f");
-            String formattedString = String.format("%.02f", myFloatSaving);
-            tv_save_detail.setText("$" + formattedString);
+
+            if (relatedItem.getRequiredQty()>1){
+                float myFloatSaving = Float.parseFloat(relatedItem.getSavings() + "f");
+                String formattedString = String.format("%.02f", myFloatSaving);
+                tv_save_detail.setText("$" + formattedString+" on "+relatedItem.getRequiredQty());
+
+                float myFloatCouponDiscount = Float.parseFloat(relatedItem.getCouponDiscount() + "f");
+                String formattedStringCouponDiscount = String.format("%.02f", myFloatCouponDiscount);
+                tv_coupon_detail.setText("$" + formattedStringCouponDiscount+" on "+relatedItem.getRequiredQty());
+            }else {
+                float myFloatSaving = Float.parseFloat(relatedItem.getSavings() + "f");
+                String formattedString = String.format("%.02f", myFloatSaving);
+                tv_save_detail.setText("$" + formattedString);
+
+                float myFloatCouponDiscount = Float.parseFloat(relatedItem.getCouponDiscount() + "f");
+                String formattedStringCouponDiscount = String.format("%.02f", myFloatCouponDiscount);
+                tv_coupon_detail.setText("$" + formattedStringCouponDiscount);
+            }
             /*try {
                 DecimalFormat dF = new DecimalFormat("0.00");
                 Number num = dF.parse(relatedItem.getSavings());
@@ -11189,9 +11217,9 @@ public class MainFwActivity extends AppCompatActivity
             Spanned result = Html.fromHtml(relatedItem.getDisplayPrice().replace("<sup>", "<sup><small>").replace("</sup>", "</small></sup>"));
             tv_price_detaile.setText(result);
 
-            String chars = capitalize(relatedItem.getDescription());
+            //String chars = capitalize(relatedItem.getDescription());
             String charsPackaging =lowercase(relatedItem.getPackagingSize());
-            tv_detail_detail.setText(chars + " " + charsPackaging);
+            tv_detail_detail.setText(relatedItem.getDescription() + " " + charsPackaging);
 
             tv_reg_price_detail.setText("$ " + relatedItem.getRegularPrice());
             String number = relatedItem.getPosMultiple();
@@ -14520,12 +14548,12 @@ public class MainFwActivity extends AppCompatActivity
                             /*String chars = capitalize(message.getJSONObject(i).getString("Description"));
                             tv_detail_detail.setText(chars + " " + message.getJSONObject(i).getString("PackagingSize"));*/
 
-                            String chars = capitalize(message.getJSONObject(i).getString("CouponShortDescription"));
+                            //String chars = capitalize(message.getJSONObject(i).getString("CouponShortDescription"));
                             String charsPackaging =lowercase(message.getJSONObject(i).getString("PackagingSize"));
                             if (message.getJSONObject(i).getString("IsFamily").equalsIgnoreCase("false")){
-                                tv_detail_detail.setText(chars+" "+charsPackaging);
+                                tv_detail_detail.setText(message.getJSONObject(i).getString("CouponShortDescription")+" "+charsPackaging);
                             }else {
-                                tv_detail_detail.setText(chars);
+                                tv_detail_detail.setText(message.getJSONObject(i).getString("CouponShortDescription"));
                             }
 
                             tv_reg_price_detail.setText("$" + message.getJSONObject(i).getString("RegularPrice"));
@@ -14811,9 +14839,25 @@ public class MainFwActivity extends AppCompatActivity
                             String formattedStringRegularPrice = String.format("%.02f", myFloatRegularPrice);
                             tv_reg_price_detail.setText("$" + formattedStringRegularPrice);
 
-                            float myFloatSavings = Float.parseFloat(message.getJSONObject(i).getString("Savings") + "f");
-                            String formattedString = String.format("%.02f", myFloatSavings);
-                            tv_save_detail.setText("$" + formattedString);
+
+
+                            if (message.getJSONObject(i).getInt("RequiredQty")>1){
+                                float myFloatSavings = Float.parseFloat(message.getJSONObject(i).getString("Savings") + "f");
+                                String formattedString = String.format("%.02f", myFloatSavings);
+                                tv_save_detail.setText("$" + formattedString+" on "+message.getJSONObject(i).getInt("RequiredQty"));
+
+                                float myFloatCouponDiscount = Float.parseFloat(message.getJSONObject(i).getString("CouponDiscount") + "f");
+                                String formattedStringCouponDiscount = String.format("%.02f", myFloatCouponDiscount);
+                                tv_coupon_detail.setText("$" + formattedStringCouponDiscount+" on "+message.getJSONObject(i).getInt("RequiredQty"));
+                            }else {
+                                float myFloatSavings = Float.parseFloat(message.getJSONObject(i).getString("Savings") + "f");
+                                String formattedString = String.format("%.02f", myFloatSavings);
+                                tv_save_detail.setText("$" + formattedString);
+
+                                float myFloatCouponDiscount = Float.parseFloat(message.getJSONObject(i).getString("CouponDiscount") + "f");
+                                String formattedStringCouponDiscount = String.format("%.02f", myFloatCouponDiscount);
+                                tv_coupon_detail.setText("$" + formattedStringCouponDiscount);
+                            }
                                 /*try {
                                     DecimalFormat dF = new DecimalFormat("0.00");
                                     Number num = dF.parse(message.getJSONObject(i).getString("Savings"));
@@ -15227,12 +15271,12 @@ public class MainFwActivity extends AppCompatActivity
                                                     Spanned result = Html.fromHtml(displayPrice.replace("<sup>", "<sup><small><small>").replace("</sup>", "</small></small></sup>"));
                                                     tv_price_detaile.setText(result);
 
-                                                    String chars = capitalize(jsonShoppingParam.getJSONObject(i).getString("CouponShortDescription"));
+                                                    //String chars = capitalize(jsonShoppingParam.getJSONObject(i).getString("CouponShortDescription"));
                                                     String charsPackaging =lowercase(jsonShoppingParam.getJSONObject(i).getString("PackagingSize"));
                                                     if (jsonShoppingParam.getJSONObject(i).getString("IsFamily").equalsIgnoreCase("false")){
-                                                        tv_detail_detail.setText(chars+" "+charsPackaging);
+                                                        tv_detail_detail.setText(jsonShoppingParam.getJSONObject(i).getString("CouponShortDescription")+" "+charsPackaging);
                                                     }else {
-                                                        tv_detail_detail.setText(chars);
+                                                        tv_detail_detail.setText(jsonShoppingParam.getJSONObject(i).getString("CouponShortDescription"));
                                                     }
 
                                                     tv_reg_price_detail.setText("$" + jsonShoppingParam.getJSONObject(i).getString("RegularPrice"));
@@ -15445,9 +15489,27 @@ public class MainFwActivity extends AppCompatActivity
                                                     String formattedStringRegularPrice = String.format("%.02f", myFloatRegularPrice);
                                                     tv_reg_price_detail.setText("$" + formattedStringRegularPrice);
 
-                                                    float myFloatSavings = Float.parseFloat(jsonShoppingParam.getJSONObject(i).getString("Savings") + "f");
+                                                    /*float myFloatSavings = Float.parseFloat(jsonShoppingParam.getJSONObject(i).getString("Savings") + "f");
                                                     String formattedString = String.format("%.02f", myFloatSavings);
-                                                    tv_save_detail.setText("$" + formattedString);
+                                                    tv_save_detail.setText("$" + formattedString);*/
+
+                                                    if (jsonShoppingParam.getJSONObject(i).getInt("RequiredQty")>1){
+                                                        float myFloatSavings = Float.parseFloat(jsonShoppingParam.getJSONObject(i).getString("Savings") + "f");
+                                                        String formattedString = String.format("%.02f", myFloatSavings);
+                                                        tv_save_detail.setText("$" + formattedString+" on "+jsonShoppingParam.getJSONObject(i).getInt("RequiredQty"));
+
+                                                        float myFloatCouponDiscount = Float.parseFloat(jsonShoppingParam.getJSONObject(i).getString("CouponDiscount") + "f");
+                                                        String formattedStringCouponDiscount = String.format("%.02f", myFloatCouponDiscount);
+                                                        tv_coupon_detail.setText("$" + formattedStringCouponDiscount+" on "+jsonShoppingParam.getJSONObject(i).getInt("RequiredQty"));
+                                                    }else {
+                                                        float myFloatSavings = Float.parseFloat(jsonShoppingParam.getJSONObject(i).getString("Savings") + "f");
+                                                        String formattedString = String.format("%.02f", myFloatSavings);
+                                                        tv_save_detail.setText("$" + formattedString);
+
+                                                        float myFloatCouponDiscount = Float.parseFloat(jsonShoppingParam.getJSONObject(i).getString("CouponDiscount") + "f");
+                                                        String formattedStringCouponDiscount = String.format("%.02f", myFloatCouponDiscount);
+                                                        tv_coupon_detail.setText("$" + formattedStringCouponDiscount);
+                                                    }
                                                             /*try {
                                                                 DecimalFormat dF = new DecimalFormat("0.00");
                                                                 Number num = dF.parse(jsonShoppingParam.getJSONObject(i).getString("Savings"));
@@ -17409,7 +17471,7 @@ public class MainFwActivity extends AppCompatActivity
                 // progressDialog.setMessage("Processing");
                 //progressDialog.show();
 
-                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|8.9",
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|9.0",
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
