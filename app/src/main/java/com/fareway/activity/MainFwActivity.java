@@ -768,62 +768,248 @@ public class MainFwActivity extends AppCompatActivity
         btn_return_pd.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*rv_items.setVisibility(View.VISIBLE);
-                search_message.setVisibility(View.GONE);
-                navigation.setVisibility(View.VISIBLE);
-                submit_btn.setImageResource(R.drawable.ic_search_black_24dp);
-                submit_btn.setTag(0);
-                edit_txt.getText().clear();
-                fetchProduct();
-                x=0;*/
-                search_message.setVisibility(View.GONE);
-                navigation.setVisibility(View.VISIBLE);
-                submit_btn.setImageResource(R.drawable.ic_search_black_24dp);
-                submit_btn.setTag(0);
-                edit_txt.getText().clear();
-                pdView = true;
-                couponTile = true;
-                savingsShort = false;
-                offferShort = false;
-                categoryShort = false;
+                setCheckIcon(SEARCH);
+                offerTitle_search.setText("");
+                search_keyword.setText("");
+                search_reset.setText("");
+                if (edit_txt.getText().toString().isEmpty()) {
 
-                participate = 1;
-                tmp = 0;
-                x = 0;
-                searchLable = false;
-                header_title.setVisibility(View.GONE);
-                fetchProduct();
+                }
+                else {
+
+                    if (Integer.parseInt(submit_btn.getTag().toString()) == 0) {
+                        submit_btn.setImageResource(R.drawable.ic_clear_black_24dp);
+                        submit_btn.setTag(1);
+                        String search = edit_txt.getText().toString();
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(edit_txt.getWindowToken(), 0);
+
+                        participate = 0;
+                        pdView = false;
+                        couponTile = false;
+                        tmp=0;
+                        navigation.setVisibility(View.VISIBLE);
+                        x = 3;
+                        header_title.setVisibility(View.GONE);
+                        searchLable = true;
+                        searchLoad(search);
+                        /*linearLayout.setVisibility(View.GONE);
+                        filter_offer_label.setVisibility(View.GONE);
+                        filter_label.setVisibility(View.GONE);*/
+                        if (pdView==true){
+                            linearLayout.setVisibility(View.VISIBLE);
+                        }
+                        else {
+
+                            linearLayout.setVisibility(View.GONE);
+                            linearLayout_search.setVisibility(View.GONE);
+                            filter_offer_label.setVisibility(View.GONE);
+                            filter_label.setVisibility(View.GONE);
+                            categoryShort=false;
+                            offferShort=false;
+                            savingsShort=false;
+
+                            /*if (tmp==1||tmp==2||tmp==3){
+                                filter_offer_label.setVisibility(View.VISIBLE);
+                            }
+                            if (categoryShort==true){
+                                filter_offer_label.setVisibility(View.VISIBLE);
+                                tv_category_name.setVisibility(View.VISIBLE);
+                                img_category_cross_button.setVisibility(View.VISIBLE);
+                            } else {
+                                //filter_offer_label.setVisibility(View.VISIBLE);
+                                tv_category_name.setVisibility(View.GONE);
+                                img_category_cross_button.setVisibility(View.GONE);
+                            }
+                            if (offferShort==true||savingsShort==true){
+                                filter_label.setVisibility(View.VISIBLE);
+                            }else {
+                                filter_label.setVisibility(View.GONE);
+                            }*/
+
+                        }
+
+                    }
+                    else {
+                        //
+                        linearLayout_search.setVisibility(View.GONE);
+                        search_message.setVisibility(View.GONE);
+                        navigation.setVisibility(View.VISIBLE);
+                        submit_btn.setImageResource(R.drawable.ic_search_black_24dp);
+                        submit_btn.setTag(0);
+                        edit_txt.getText().clear();
+
+                        participate = 1;
+                        pdView = true;
+                        couponTile = true;
+                        savingsShort = false;
+                        offferShort = false;
+                        categoryShort = false;
+                        tmp = 0;
+                        x = 0;
+                        //header_title visible
+                        header_title.setVisibility(View.GONE);
+                        searchLable = false;
+                        fetchProduct();
+                        linearLayout.setVisibility(View.VISIBLE);
+                        filter_offer_label.setVisibility(View.GONE);
+                        filter_label.setVisibility(View.GONE);
+
+                        tv_category_name.setVisibility(View.GONE);
+                        img_category_cross_button.setVisibility(View.GONE);
+                        tv_offer_name.setVisibility(View.GONE);
+                        img_offer_cross_button.setVisibility(View.GONE);
+                        /*if (pdView==true){
+                            linearLayout.setVisibility(View.VISIBLE);
+                        }
+                        else {
+
+                            linearLayout.setVisibility(View.GONE);
+                            if (tmp==1||tmp==2||tmp==3){
+                                filter_offer_label.setVisibility(View.VISIBLE);
+                            }
+                            if (categoryShort==true){
+                                filter_offer_label.setVisibility(View.VISIBLE);
+                                tv_category_name.setVisibility(View.VISIBLE);
+                                img_category_cross_button.setVisibility(View.VISIBLE);
+                            } else {
+                                //filter_offer_label.setVisibility(View.VISIBLE);
+                                tv_category_name.setVisibility(View.GONE);
+                                img_category_cross_button.setVisibility(View.GONE);
+                            }
+                            if (offferShort==true||savingsShort==true){
+                                filter_label.setVisibility(View.VISIBLE);
+                            }else {
+                                filter_label.setVisibility(View.GONE);
+                            }
+
+                        }*/
+                    }
+                }
             }
         });
         btn_try_another_search = findViewById(R.id.btn_try_another_search);
         btn_try_another_search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                /*rv_items.setVisibility(View.VISIBLE);
-                search_message.setVisibility(View.GONE);
-                navigation.setVisibility(View.VISIBLE);
-                submit_btn.setImageResource(R.drawable.ic_search_black_24dp);
-                submit_btn.setTag(0);
-                edit_txt.getText().clear();
-                fetchProduct();
-                x=0;*/
-                search_message.setVisibility(View.GONE);
-                navigation.setVisibility(View.VISIBLE);
-                submit_btn.setImageResource(R.drawable.ic_search_black_24dp);
-                submit_btn.setTag(0);
-                edit_txt.getText().clear();
-                pdView = true;
-                couponTile = true;
-                savingsShort = false;
-                offferShort = false;
-                categoryShort = false;
+                setCheckIcon(SEARCH);
+                offerTitle_search.setText("");
+                search_keyword.setText("");
+                search_reset.setText("");
+                if (edit_txt.getText().toString().isEmpty()) {
 
-                participate = 1;
-                tmp = 0;
-                x = 0;
-                searchLable = false;
-                header_title.setVisibility(View.GONE);
-                fetchProduct();
+                }
+                else {
+
+                    if (Integer.parseInt(submit_btn.getTag().toString()) == 0) {
+                        submit_btn.setImageResource(R.drawable.ic_clear_black_24dp);
+                        submit_btn.setTag(1);
+                        String search = edit_txt.getText().toString();
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(edit_txt.getWindowToken(), 0);
+
+                        participate = 0;
+                        pdView = false;
+                        couponTile = false;
+                        tmp=0;
+                        navigation.setVisibility(View.VISIBLE);
+                        x = 3;
+                        header_title.setVisibility(View.GONE);
+                        searchLable = true;
+                        searchLoad(search);
+                        /*linearLayout.setVisibility(View.GONE);
+                        filter_offer_label.setVisibility(View.GONE);
+                        filter_label.setVisibility(View.GONE);*/
+                        if (pdView==true){
+                            linearLayout.setVisibility(View.VISIBLE);
+                        }
+                        else {
+
+                            linearLayout.setVisibility(View.GONE);
+                            linearLayout_search.setVisibility(View.GONE);
+                            filter_offer_label.setVisibility(View.GONE);
+                            filter_label.setVisibility(View.GONE);
+                            categoryShort=false;
+                            offferShort=false;
+                            savingsShort=false;
+
+                            /*if (tmp==1||tmp==2||tmp==3){
+                                filter_offer_label.setVisibility(View.VISIBLE);
+                            }
+                            if (categoryShort==true){
+                                filter_offer_label.setVisibility(View.VISIBLE);
+                                tv_category_name.setVisibility(View.VISIBLE);
+                                img_category_cross_button.setVisibility(View.VISIBLE);
+                            } else {
+                                //filter_offer_label.setVisibility(View.VISIBLE);
+                                tv_category_name.setVisibility(View.GONE);
+                                img_category_cross_button.setVisibility(View.GONE);
+                            }
+                            if (offferShort==true||savingsShort==true){
+                                filter_label.setVisibility(View.VISIBLE);
+                            }else {
+                                filter_label.setVisibility(View.GONE);
+                            }*/
+
+                        }
+
+                    }
+                    else {
+                        //
+                        linearLayout_search.setVisibility(View.GONE);
+                        search_message.setVisibility(View.GONE);
+                        navigation.setVisibility(View.VISIBLE);
+                        submit_btn.setImageResource(R.drawable.ic_search_black_24dp);
+                        submit_btn.setTag(0);
+                        edit_txt.getText().clear();
+
+                        participate = 1;
+                        pdView = true;
+                        couponTile = true;
+                        savingsShort = false;
+                        offferShort = false;
+                        categoryShort = false;
+                        tmp = 0;
+                        x = 0;
+                        //header_title visible
+                        header_title.setVisibility(View.GONE);
+                        searchLable = false;
+                        fetchProduct();
+                        linearLayout.setVisibility(View.VISIBLE);
+                        filter_offer_label.setVisibility(View.GONE);
+                        filter_label.setVisibility(View.GONE);
+
+                        tv_category_name.setVisibility(View.GONE);
+                        img_category_cross_button.setVisibility(View.GONE);
+                        tv_offer_name.setVisibility(View.GONE);
+                        img_offer_cross_button.setVisibility(View.GONE);
+                        /*if (pdView==true){
+                            linearLayout.setVisibility(View.VISIBLE);
+                        }
+                        else {
+
+                            linearLayout.setVisibility(View.GONE);
+                            if (tmp==1||tmp==2||tmp==3){
+                                filter_offer_label.setVisibility(View.VISIBLE);
+                            }
+                            if (categoryShort==true){
+                                filter_offer_label.setVisibility(View.VISIBLE);
+                                tv_category_name.setVisibility(View.VISIBLE);
+                                img_category_cross_button.setVisibility(View.VISIBLE);
+                            } else {
+                                //filter_offer_label.setVisibility(View.VISIBLE);
+                                tv_category_name.setVisibility(View.GONE);
+                                img_category_cross_button.setVisibility(View.GONE);
+                            }
+                            if (offferShort==true||savingsShort==true){
+                                filter_label.setVisibility(View.VISIBLE);
+                            }else {
+                                filter_label.setVisibility(View.GONE);
+                            }
+
+                        }*/
+                    }
+                }
             }
         });
 

@@ -213,6 +213,16 @@
     </RelativeLayout>
 
     <!--personal ad label and rv item-->
+    <!--<LinearLayout
+        android:layout_below="@+id/filter_label"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >-->
+    <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:fillViewport="true">
+
     <LinearLayout
         android:layout_below="@+id/filter_label"
         android:layout_width="match_parent"
@@ -398,7 +408,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:clipToPadding="false"
-            android:scrollbars="horizontal"
+            android:scrollbars="vertical"
             android:paddingBottom="@dimen/_40sdp"/>
 
         <RelativeLayout
@@ -412,7 +422,7 @@
             <TextView
                 android:fontFamily="@font/roboto"
                 android:textColor="@color/black"
-                android:textAlignment="center"
+                android:gravity="center"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="LOOKS LIKE THERE AREN’T MANY TO SHOW."
@@ -422,7 +432,7 @@
 
             <TextView
                 android:textSize="12sp"
-                android:textAlignment="center"
+                android:gravity="center"
                 android:layout_below="@+id/error_header"
                 android:textColor="@color/black"
                 android:fontFamily="@font/roboto"
@@ -473,6 +483,9 @@
         </RelativeLayout>
 
     </LinearLayout>
+
+    </ScrollView>
+    <!--</LinearLayout>-->
     <!--filter by Offer-->
     <LinearLayout
         android:background="@color/white"

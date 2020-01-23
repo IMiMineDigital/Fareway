@@ -1700,6 +1700,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                         params.put("Emails", emails);
                         params.put("MemberId", appUtil.getPrefrence("MemberId"));
                         params.put("LoyaltyNumber", appUtil.getPrefrence("LoyaltyCard"));
+                        params.put("ShopperID", appUtil.getPrefrence("ShopperID"));
                         //params.put("password", appUtil.getPrefrence("Password"));
                         //test
                         params.put("Device", "5");
