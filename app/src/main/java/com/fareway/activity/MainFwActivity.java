@@ -5751,7 +5751,8 @@ public class MainFwActivity extends AppCompatActivity
                 isProductSelected=false;
                 if (pdView == true) {
                     linearLayout.setVisibility(View.VISIBLE);
-                } else {
+                }
+                else {
                     linearLayout.setVisibility(View.GONE);
                     if (tmp == 1 || tmp == 2 || tmp == 3) {
                         filter_offer_label.setVisibility(View.VISIBLE);
@@ -5795,6 +5796,8 @@ public class MainFwActivity extends AppCompatActivity
         TextView tv_save_detail = (TextView) findViewById(R.id.tv_save_detail);
         TextView tv_upc_detail = (TextView) findViewById(R.id.tv_upc_detail);
         TextView tv_limit = (TextView) findViewById(R.id.tv_limit);
+        TextView tv_must = (TextView) findViewById(R.id.tv_must);
+
         TextView tv_valid_detail = (TextView) findViewById(R.id.tv_valid_detail);
         TextView tv_detail_detail = (TextView) findViewById(R.id.tv_detail_detail);
         TextView tv_deal_type_detaile = (TextView) findViewById(R.id.tv_deal_type_detaile);
@@ -5952,7 +5955,8 @@ public class MainFwActivity extends AppCompatActivity
                 /*if (product.getRequiresActivation().equalsIgnoreCase("false")){
                     liner_all_Varieties_activate.setVisibility(View.INVISIBLE);
                     imv_status_verities.setVisibility(View.GONE);
-                }else*/ if (product.getPrimaryOfferTypeId() == 3 || product.getPrimaryOfferTypeId() == 2) {
+                }else*/
+                if (product.getPrimaryOfferTypeId() == 3 || product.getPrimaryOfferTypeId() == 2) {
 
                     if (product.getClickCount() == 0) {
                         liner_all_Varieties_activate.setVisibility(View.VISIBLE);
@@ -6329,6 +6333,9 @@ public class MainFwActivity extends AppCompatActivity
 
         TableRow table_limit = (TableRow) findViewById(R.id.table_limit);
         TableRow table_limit_view = (TableRow) findViewById(R.id.table_limit_view);
+
+        TableRow table_must = (TableRow) findViewById(R.id.table_must);
+        TableRow table_must_view = (TableRow) findViewById(R.id.table_must_view);
         TableRow table_regular = (TableRow) findViewById(R.id.table_regular);
         TableRow table_regular_view = (TableRow) findViewById(R.id.table_regular_view);
         TableRow table_promo = (TableRow) findViewById(R.id.table_promo);
@@ -6369,6 +6376,8 @@ public class MainFwActivity extends AppCompatActivity
             tv_fareway_flag.setText("With MyFareway");
             table_limit.setVisibility(View.GONE);
             table_limit_view.setVisibility(View.GONE);
+            table_must.setVisibility(View.GONE);
+            table_must_view.setVisibility(View.GONE);
             table_package_view.setVisibility(View.GONE);
             table_package.setVisibility(View.GONE);
             table_regular.setVisibility(View.VISIBLE);
@@ -6523,6 +6532,9 @@ public class MainFwActivity extends AppCompatActivity
             table_limit.setVisibility(View.VISIBLE);
             table_limit_view.setVisibility(View.VISIBLE);
 
+            table_must.setVisibility(View.GONE);
+            table_must_view.setVisibility(View.GONE);
+
             table_regular.setVisibility(View.VISIBLE);
             table_regular_view.setVisibility(View.VISIBLE);
 
@@ -6540,6 +6552,28 @@ public class MainFwActivity extends AppCompatActivity
 
             table_upc.setVisibility(View.VISIBLE);
             table_upc_view.setVisibility(View.VISIBLE);
+
+//
+            if (product.getMinAmount() > 0) {
+            } else if (product.getRequiredQty() > 1) {
+                if (product.getLimitPerTransection() > 1) {
+                    table_must.setVisibility(View.VISIBLE);
+                    table_must_view.setVisibility(View.VISIBLE);
+                    tv_must.setText(String.valueOf(product.getRequiredQty()));
+                } else {
+                    table_must.setVisibility(View.VISIBLE);
+                    table_must_view.setVisibility(View.VISIBLE);
+                    tv_must.setText(String.valueOf(product.getRequiredQty()));
+                }
+            }
+
+            if (product.getIsbadged().equalsIgnoreCase("True")){
+                table_save.setVisibility(View.GONE);
+                table_save_view.setVisibility(View.GONE);
+            }else {
+                table_save.setVisibility(View.VISIBLE);
+                table_save_view.setVisibility(View.VISIBLE);
+            }
 
             if (product.getAdPrice().equalsIgnoreCase("0.0000") || product.getAdPrice().equalsIgnoreCase("0")) {
 
@@ -6755,6 +6789,8 @@ public class MainFwActivity extends AppCompatActivity
             tv_fareway_flag.setText(" ");
             table_limit.setVisibility(View.GONE);
             table_limit_view.setVisibility(View.GONE);
+            table_must.setVisibility(View.GONE);
+            table_must_view.setVisibility(View.GONE);
             table_package_view.setVisibility(View.GONE);
             table_package.setVisibility(View.GONE);
             table_regular.setVisibility(View.VISIBLE);
@@ -10660,6 +10696,7 @@ public class MainFwActivity extends AppCompatActivity
         TextView tv_coupon_detail = (TextView) findViewById(R.id.tv_coupon_detail);
         TextView tv_varieties_detail = (TextView) findViewById(R.id.tv_varieties_detail);
         TextView tv_limit = (TextView) findViewById(R.id.tv_limit);
+        TextView tv_must = (TextView) findViewById(R.id.tv_must);
         TextView tv_promo_price_detail = (TextView) findViewById(R.id.tv_promo_price_detail);
         TextView tv_coupon_detail_detail = (TextView) findViewById(R.id.tv_coupon_detail_detail);
 
@@ -10706,7 +10743,8 @@ public class MainFwActivity extends AppCompatActivity
 
                     }
 
-                } else if (x == 3) {
+                }
+                else if (x == 3) {
                     if (message3.length() < 5) {
                         search_message.setVisibility(View.VISIBLE);
                     }
@@ -10724,7 +10762,8 @@ public class MainFwActivity extends AppCompatActivity
                     }else {
                         linearLayout.setVisibility(View.GONE);
                     }
-                } else if (shopper == 1) {
+                }
+                else if (shopper == 1) {
                     shopper = 0;
                     activated_offer_fragment.setBackground(getResources().getDrawable(R.color.white));
                     activated_offer_fragment.setTextColor(getResources().getColor(R.color.black));
@@ -10788,7 +10827,8 @@ public class MainFwActivity extends AppCompatActivity
                             z = 0;
                         }
                     });
-                } else {
+                }
+                else {
                     rv_items_group.setVisibility(View.GONE);
                     rv_items_verite.setVisibility(View.GONE);
                     participateToolbar.setVisibility(View.GONE);
@@ -10909,7 +10949,8 @@ public class MainFwActivity extends AppCompatActivity
                         progressDialog.dismiss();
                     }
 
-                } catch (Exception e) {
+                }
+                catch (Exception e) {
 
                     e.printStackTrace();
                     progressDialog.dismiss();
@@ -10969,6 +11010,9 @@ public class MainFwActivity extends AppCompatActivity
         LinearLayout bottomLayout_detaile = (LinearLayout) findViewById(R.id.bottomLayout_detaile);
         TableRow table_limit = (TableRow) findViewById(R.id.table_limit);
         TableRow table_limit_view = (TableRow) findViewById(R.id.table_limit_view);
+
+        TableRow table_must = (TableRow) findViewById(R.id.table_must);
+        TableRow table_must_view = (TableRow) findViewById(R.id.table_must_view);
         TableRow table_regular = (TableRow) findViewById(R.id.table_regular);
         TableRow table_regular_view = (TableRow) findViewById(R.id.table_regular_view);
         TableRow table_save = (TableRow) findViewById(R.id.table_save);
@@ -11031,6 +11075,8 @@ public class MainFwActivity extends AppCompatActivity
             circular_layout_detaile.setVisibility(View.VISIBLE);
             table_limit.setVisibility(View.GONE);
             table_limit_view.setVisibility(View.GONE);
+            table_must.setVisibility(View.GONE);
+            table_must_view.setVisibility(View.GONE);
             table_package_view.setVisibility(View.GONE);
             table_package.setVisibility(View.GONE);
             table_regular.setVisibility(View.VISIBLE);
@@ -11153,6 +11199,9 @@ public class MainFwActivity extends AppCompatActivity
             table_limit.setVisibility(View.VISIBLE);
             table_limit_view.setVisibility(View.VISIBLE);
 
+            table_must.setVisibility(View.GONE);
+            table_must_view.setVisibility(View.GONE);
+
             table_regular.setVisibility(View.VISIBLE);
             table_regular_view.setVisibility(View.VISIBLE);
 
@@ -11174,6 +11223,27 @@ public class MainFwActivity extends AppCompatActivity
             table_upc.setVisibility(View.VISIBLE);
             table_upc_view.setVisibility(View.VISIBLE);
             Log.i("getAdPrice", relatedItem.getAdPrice());
+
+            if (relatedItem.getMinAmount() > 0) {
+            } else if (relatedItem.getRequiredQty() > 1) {
+                if (relatedItem.getLimitPerTransection() > 1) {
+                    table_must.setVisibility(View.VISIBLE);
+                    table_must_view.setVisibility(View.VISIBLE);
+                    tv_must.setText(String.valueOf(relatedItem.getRequiredQty()));
+                } else {
+                    table_must.setVisibility(View.VISIBLE);
+                    table_must_view.setVisibility(View.VISIBLE);
+                    tv_must.setText(String.valueOf(relatedItem.getRequiredQty()));
+                }
+            }
+
+            if (relatedItem.getIsbadged().equalsIgnoreCase("True")){
+                table_save.setVisibility(View.GONE);
+                table_save_view.setVisibility(View.GONE);
+            }else {
+                table_save.setVisibility(View.VISIBLE);
+                table_save_view.setVisibility(View.VISIBLE);
+            }
 
             if (relatedItem.getAdPrice().equalsIgnoreCase("0.0000") || relatedItem.getAdPrice().equalsIgnoreCase("0")) {
                 Log.i("if", "atul");
@@ -11373,6 +11443,9 @@ public class MainFwActivity extends AppCompatActivity
 
             table_limit.setVisibility(View.GONE);
             table_limit_view.setVisibility(View.GONE);
+
+            table_must.setVisibility(View.GONE);
+            table_must_view.setVisibility(View.GONE);
             table_package_view.setVisibility(View.GONE);
             table_package.setVisibility(View.GONE);
             table_regular.setVisibility(View.VISIBLE);
@@ -13808,7 +13881,8 @@ public class MainFwActivity extends AppCompatActivity
                 if (activatedOffer == null) {
                     shoppingArrayList.clear();
                     //no students
-                } else {
+                }
+                else {
                     shoppingArrayList.clear();
                     List<Shopping> items = new Gson().fromJson(activatedOffer.toString(), new TypeToken<List<Shopping>>() {
                     }.getType());
@@ -14314,6 +14388,7 @@ public class MainFwActivity extends AppCompatActivity
                         TextView tv_save_detail = (TextView) findViewById(R.id.tv_save_detail);
                         TextView tv_upc_detail = (TextView) findViewById(R.id.tv_upc_detail);
                         TextView tv_limit = (TextView) findViewById(R.id.tv_limit);
+                        TextView tv_must = (TextView) findViewById(R.id.tv_must);
                         TextView tv_valid_detail = (TextView) findViewById(R.id.tv_valid_detail);
                         TextView tv_detail_detail = (TextView) findViewById(R.id.tv_detail_detail);
                         TextView tv_deal_type_detaile = (TextView) findViewById(R.id.tv_deal_type_detaile);
@@ -14347,6 +14422,8 @@ public class MainFwActivity extends AppCompatActivity
                         LinearLayout bottomLayout_detaile = (LinearLayout) findViewById(R.id.bottomLayout_detaile);
                         TableRow table_limit = (TableRow) findViewById(R.id.table_limit);
                         TableRow table_limit_view = (TableRow) findViewById(R.id.table_limit_view);
+                        TableRow table_must = (TableRow) findViewById(R.id.table_must);
+                        TableRow table_must_view = (TableRow) findViewById(R.id.table_must_view);
                         TableRow table_regular = (TableRow) findViewById(R.id.table_regular);
                         TableRow table_regular_view = (TableRow) findViewById(R.id.table_regular_view);
                         TableRow table_promo = (TableRow) findViewById(R.id.table_promo);
@@ -14669,6 +14746,8 @@ public class MainFwActivity extends AppCompatActivity
                             tv_fareway_flag.setText("With MyFareway");
                             table_limit.setVisibility(View.GONE);
                             table_limit_view.setVisibility(View.GONE);
+                            table_must.setVisibility(View.GONE);
+                            table_must_view.setVisibility(View.GONE);
                             table_package_view.setVisibility(View.GONE);
                             table_package.setVisibility(View.GONE);
                             table_regular.setVisibility(View.VISIBLE);
@@ -14849,6 +14928,9 @@ public class MainFwActivity extends AppCompatActivity
                             table_limit.setVisibility(View.VISIBLE);
                             table_limit_view.setVisibility(View.VISIBLE);
 
+                            table_limit.setVisibility(View.GONE);
+                            table_limit_view.setVisibility(View.GONE);
+
                             table_regular.setVisibility(View.VISIBLE);
                             table_regular_view.setVisibility(View.VISIBLE);
 
@@ -14866,6 +14948,27 @@ public class MainFwActivity extends AppCompatActivity
 
                             table_upc.setVisibility(View.VISIBLE);
                             table_upc_view.setVisibility(View.VISIBLE);
+
+                            if (message.getJSONObject(i).getInt("MinAmount") > 0) {
+                            } else if (message.getJSONObject(i).getInt("RequiredQty") > 1) {
+                                if (message.getJSONObject(i).getInt("LimitPerTransection") > 1) {
+                                    table_must.setVisibility(View.VISIBLE);
+                                    table_must_view.setVisibility(View.VISIBLE);
+                                    tv_must.setText(String.valueOf(message.getJSONObject(i).getInt("RequiredQty")));
+                                } else {
+                                    table_must.setVisibility(View.VISIBLE);
+                                    table_must_view.setVisibility(View.VISIBLE);
+                                    tv_must.setText(String.valueOf(message.getJSONObject(i).getInt("RequiredQty")));
+                                }
+                            }
+
+                            if (message.getJSONObject(i).getString("Isbadged").equalsIgnoreCase("True")){
+                                table_save.setVisibility(View.GONE);
+                                table_save_view.setVisibility(View.GONE);
+                            }else {
+                                table_save.setVisibility(View.VISIBLE);
+                                table_save_view.setVisibility(View.VISIBLE);
+                            }
 
                             if (message.getJSONObject(i).getString("AdPrice").equalsIgnoreCase("0.0000") || message.getJSONObject(i).getString("AdPrice").equalsIgnoreCase("0")) {
                                 Log.i("if", "atul");
@@ -14899,7 +15002,8 @@ public class MainFwActivity extends AppCompatActivity
                                 table_upc.setVisibility(View.VISIBLE);
                                 table_upc_view.setVisibility(View.VISIBLE);
                                 tv_coupon_detail_detail.setVisibility(View.VISIBLE);
-                            } else if (message.getJSONObject(i).getInt("HasRelatedItems") == 0) {
+                            }
+                            else if (message.getJSONObject(i).getInt("HasRelatedItems") == 0) {
                                 table_varieties.setVisibility(View.GONE);
                                 table_varieties_view.setVisibility(View.GONE);
                                 table_upc.setVisibility(View.GONE);
@@ -15106,6 +15210,7 @@ public class MainFwActivity extends AppCompatActivity
                                                 TextView tv_save_detail = (TextView) findViewById(R.id.tv_save_detail);
                                                 TextView tv_upc_detail = (TextView) findViewById(R.id.tv_upc_detail);
                                                 TextView tv_limit = (TextView) findViewById(R.id.tv_limit);
+                                                TextView tv_must = (TextView) findViewById(R.id.tv_must);
                                                 TextView tv_valid_detail = (TextView) findViewById(R.id.tv_valid_detail);
                                                 TextView tv_detail_detail = (TextView) findViewById(R.id.tv_detail_detail);
                                                 TextView tv_deal_type_detaile = (TextView) findViewById(R.id.tv_deal_type_detaile);
@@ -15139,6 +15244,9 @@ public class MainFwActivity extends AppCompatActivity
                                                 LinearLayout bottomLayout_detaile = (LinearLayout) findViewById(R.id.bottomLayout_detaile);
                                                 TableRow table_limit = (TableRow) findViewById(R.id.table_limit);
                                                 TableRow table_limit_view = (TableRow) findViewById(R.id.table_limit_view);
+
+                                                TableRow table_must = (TableRow) findViewById(R.id.table_must);
+                                                TableRow table_must_view = (TableRow) findViewById(R.id.table_must_view);
                                                 TableRow table_regular = (TableRow) findViewById(R.id.table_regular);
                                                 TableRow table_regular_view = (TableRow) findViewById(R.id.table_regular_view);
                                                 TableRow table_promo = (TableRow) findViewById(R.id.table_promo);
@@ -15426,6 +15534,8 @@ public class MainFwActivity extends AppCompatActivity
                                                     tv_fareway_flag.setText("With MyFareway");
                                                     table_limit.setVisibility(View.GONE);
                                                     table_limit_view.setVisibility(View.GONE);
+                                                    table_must.setVisibility(View.GONE);
+                                                    table_must_view.setVisibility(View.GONE);
                                                     table_package_view.setVisibility(View.GONE);
                                                     table_package.setVisibility(View.GONE);
                                                     table_regular.setVisibility(View.VISIBLE);
@@ -15558,6 +15668,9 @@ public class MainFwActivity extends AppCompatActivity
                                                     table_limit.setVisibility(View.VISIBLE);
                                                     table_limit_view.setVisibility(View.VISIBLE);
 
+                                                    table_must.setVisibility(View.GONE);
+                                                    table_must_view.setVisibility(View.GONE);
+
                                                     table_regular.setVisibility(View.VISIBLE);
                                                     table_regular_view.setVisibility(View.VISIBLE);
 
@@ -15575,6 +15688,27 @@ public class MainFwActivity extends AppCompatActivity
 
                                                     table_upc.setVisibility(View.VISIBLE);
                                                     table_upc_view.setVisibility(View.VISIBLE);
+
+                                                    if (jsonShoppingParam.getJSONObject(i).getInt("MinAmount") > 0) {
+                                                    } else if (jsonShoppingParam.getJSONObject(i).getInt("RequiredQty") > 1) {
+                                                        if (jsonShoppingParam.getJSONObject(i).getInt("LimitPerTransection") > 1) {
+                                                            table_must.setVisibility(View.VISIBLE);
+                                                            table_must_view.setVisibility(View.VISIBLE);
+                                                            tv_must.setText(String.valueOf(jsonShoppingParam.getJSONObject(i).getInt("RequiredQty")));
+                                                        } else {
+                                                            table_must.setVisibility(View.VISIBLE);
+                                                            table_must_view.setVisibility(View.VISIBLE);
+                                                            tv_must.setText(String.valueOf(jsonShoppingParam.getJSONObject(i).getInt("RequiredQty")));
+                                                        }
+                                                    }
+
+                                                    if (jsonShoppingParam.getJSONObject(i).getString("Isbadged").equalsIgnoreCase("True")){
+                                                        table_save.setVisibility(View.GONE);
+                                                        table_save_view.setVisibility(View.GONE);
+                                                    }else {
+                                                        table_save.setVisibility(View.VISIBLE);
+                                                        table_save_view.setVisibility(View.VISIBLE);
+                                                    }
 
                                                     if (jsonShoppingParam.getJSONObject(i).getString("AdPrice").equalsIgnoreCase("0.0000") || jsonShoppingParam.getJSONObject(i).getString("AdPrice").equalsIgnoreCase("0")) {
                                                         Log.i("if", "atul");
@@ -17657,12 +17791,12 @@ public class MainFwActivity extends AppCompatActivity
                 // progressDialog.setMessage("Processing");
                 //progressDialog.show();
 
-                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|9.1",
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|9.2",
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
                                 Log.i("Fareway", response.toString());
-                                Log.i("url",Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|7.6");
+                                Log.i("url",Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|9.2");
                                 try {
                                     JSONObject root = new JSONObject(response);
                                     root.getString("errorcode");
