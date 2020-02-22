@@ -281,7 +281,14 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 if(relatedItem.getDisplayPrice().toString().split("\\.").length>1)
                     displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ (relatedItem.getDisplayPrice().split("\\.")[1]).replace("<sup>","").replace("</sup>","")+"</sup>";
                 Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
-                holder.tv_price.setText(result);
+                //holder.tv_price.setText(result);
+                Spanned result2 = Html.fromHtml(displayPrice.replace("<sup>", "<sup><small><small>").replace("</sup>", "</small></small></sup>")+"<sup><small><small> *</small></small></sup>");
+                if (relatedItem.getCouponDiscount().equalsIgnoreCase("0.00") ||
+                        relatedItem.getCouponDiscount().equalsIgnoreCase("0")){
+                    holder.tv_price.setText(result);
+                }else {
+                    holder.tv_price.setText(result2);
+                }
 
                holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.mehrune));
 
@@ -676,7 +683,14 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                 if(relatedItem.getDisplayPrice().toString().split("\\.").length>1)
                     displayPrice= relatedItem.getDisplayPrice().split("\\.")[0]+"<sup>"+ (relatedItem.getDisplayPrice().split("\\.")[1]).replace("<sup>","").replace("</sup>","")+"</sup>";
                 Spanned result = Html.fromHtml(displayPrice.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
-                holder.tv_price.setText(result);
+                //holder.tv_price.setText(result);
+                Spanned result2 = Html.fromHtml(displayPrice.replace("<sup>", "<sup><small><small>").replace("</sup>", "</small></small></sup>")+"<sup><small><small> *</small></small></sup>");
+                if (relatedItem.getCouponDiscount().equalsIgnoreCase("0.00") ||
+                        relatedItem.getCouponDiscount().equalsIgnoreCase("0")){
+                    holder.tv_price.setText(result);
+                }else {
+                    holder.tv_price.setText(result2);
+                }
                 holder.bottomLayout.setBackgroundColor(mContext.getResources().getColor(R.color.mehrune));
 
             }

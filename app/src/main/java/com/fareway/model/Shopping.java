@@ -25,6 +25,8 @@ public class Shopping {
     private String TotalQuantity;
     private String HasRelatedItems;
     private String ValidityType;
+    private String IsStacked;
+
 
 
 
@@ -202,5 +204,13 @@ public class Shopping {
 
     public void setValidityType(String validityType) {
         ValidityType = validityType;
+    }
+
+    public String getIsStacked() {
+        return IsStacked;
+    }
+
+    public void setIsStacked(String isStacked) {
+        IsStacked = isStacked;
     }
 }

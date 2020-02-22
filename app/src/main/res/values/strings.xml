@@ -242,4 +242,5 @@
     <!--google address api key-->
     <string name="api_key">AIzaSyBl0wAaoHnYe2EN5AJWiT0t2QlkgWIlnvM</string>
     <string name="tag_ley">tagKey</string>
+    <string name="offer_detail">Offer Details: Shopper Id must be used to receive the discount at checkout. When offers are added, they can be used at the store selected as My Preferred Store. Not all items are available in all stores, subject to availability, no rain checks. Digital Coupon coupons will not be doubled. We reserve the right to correct all errors. Sales tax, deposits or other fees may apply.</string>
 </resources>

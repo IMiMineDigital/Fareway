@@ -1947,8 +1947,7 @@
                 android:fontFamily="@font/roboto"
                 android:scrollHorizontally="false"
                 android:textColor="@color/black"
-                android:text="Offer Details: Shopper Id must be used to receive the discount at checkout. When offers are added, they can be used at the store selected as My Preferred Store. Not all items are available in all stores, subject to availability, no rain checks. Digital Coupon coupons will not be doubled. We reserve the right to correct all errors."
-                />
+                android:text="@string/offer_detail"/>
 
         </RelativeLayout>
 
