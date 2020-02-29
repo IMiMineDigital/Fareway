@@ -218,18 +218,101 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >-->
+
+    <LinearLayout
+        android:layout_below="@+id/filter_label"
+        android:id="@+id/personal_label_fixed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical" >
+
+    <RelativeLayout
+        android:padding="5dp"
+        android:visibility="visible"
+        android:id="@+id/linear_personal_ad_lable_title"
+        android:layout_width="match_parent"
+        android:layout_height="40dp"
+        android:background="@color/red">
+        <TextView
+            android:id="@+id/tv_personal_lable_title"
+            android:textSize="15sp"
+            android:visibility="visible"
+            android:textStyle="bold"
+            android:fontFamily="@font/roboto"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Personal Ad"
+            android:layout_centerVertical="true"
+            android:lines="1" />
+
+        <ImageView
+            android:id="@+id/imv_location"
+            android:src="@drawable/ic_location_on_black_24dp"
+            android:layout_width="15dp"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toLeftOf="@id/tv_location_title"/>
+
+        <TextView
+            android:ellipsize="end"
+            android:id="@+id/tv_location_title"
+            android:textSize="10sp"
+            android:textStyle="bold"
+            android:fontFamily="@font/roboto"
+            android:textColor="@color/white"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_toLeftOf="@id/view_line"
+            android:layout_centerHorizontal="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="4dp"
+            android:maxEms="14"
+            android:lines="1"
+            android:maxLines="1"
+            android:minEms="10"/>
+
+        <View
+            android:id="@+id/view_line"
+            android:layout_width="1dp"
+            android:layout_height="12dp"
+            android:background="@color/white"
+            android:layout_marginTop="4dp"
+            android:layout_marginRight="3dp"
+            android:layout_toLeftOf="@id/change_store"
+            android:layout_centerVertical="true"/>
+
+        <TextView
+            android:textStyle="bold"
+            android:fontFamily="@font/roboto"
+            android:id="@+id/change_store"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/change_store_fw"
+            android:textSize="10sp"
+            android:textColor="@color/white"
+            android:layout_marginLeft="3dp"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="5dp"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:layout_centerHorizontal="true"/>
+
+
+    </RelativeLayout>
+    </LinearLayout>
     <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:fillViewport="true"
-        android:layout_below="@+id/filter_label">
+        android:layout_below="@+id/personal_label_fixed">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="vertical" >
 
-        <RelativeLayout
+        <!--<RelativeLayout
             android:padding="5dp"
             android:visibility="visible"
             android:id="@+id/linear_personal_ad_lable_title"
@@ -302,7 +385,7 @@
                 android:layout_centerHorizontal="true"/>
 
 
-        </RelativeLayout>
+        </RelativeLayout>-->
 
         <RelativeLayout
             android:padding="0dp"
@@ -440,7 +523,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:padding="10dp"
-                android:text="We are only showing with a Deal, Coupon or Sale Price. Our stores still might carry it and if we do its at the right price."/>
+                android:text="We are only showing with a Deal or Coupon. Our stores still might carry it and if we do its at the right price."/>
 
             <LinearLayout
                 android:gravity="center"
@@ -645,6 +728,7 @@
             android:layout_height="wrap_content"
             android:orientation="horizontal"
             android:padding="@dimen/_10sdp"
+            android:visibility="gone"
             >
             <TextView
                 android:fontFamily="@font/roboto"

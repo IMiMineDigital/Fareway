@@ -1601,11 +1601,6 @@ public class MainFwActivity extends AppCompatActivity
                     @Override
                     public void onClick(View v) {
                         String address = zipCodeEdt.getText().toString();
-                        if (isNumeric(address)) {
-                            city = "";
-                        } else {
-                            city = address;
-                        }
                         if (address.matches("")) {
                             errorMsgTxt1.setVisibility(View.VISIBLE);
                             return;
@@ -1613,7 +1608,384 @@ public class MainFwActivity extends AppCompatActivity
                         dropDownList.clear();
                         dropDownList.add("Locating store near you");
                         dataAdapter.notifyDataSetChanged();
-                        if (getLocation()) {
+                        if (isNumeric(address)) {
+                            city = "";
+                            //address is numeric no need to check user current location.
+                            Log.d(TAG, ">> Address is zipcode getting lat long by google api");
+                            String API_KEY = getResources().getString(R.string.api_key);
+                            StringRequest request = new StringRequest(Request.Method.GET, Constant.GEOCODER_API + address + "&key=" + API_KEY, new Response.Listener<String>() {
+                                @Override
+                                public void onResponse(String response) {
+                                    VolleyLog.wtf(response, "utf-8");
+                                    Geocoding geocoding = new GsonBuilder().create().fromJson(response, Geocoding.class);
+                                    if (!Constant.STATUS.equalsIgnoreCase(geocoding.getStatus())) {
+                                        errorMsgTxt1.setVisibility(View.VISIBLE);
+                                        errorMsgTxt1.setText(getResources().getString(R.string.error_msg2));
+                                        //dropDownList.clear();
+                                        dataAdapter.clear();
+                                        dropDownList.clear();
+                                        dropDownList.add(Constant.SELECT_STORE);
+                                        dataAdapter.notifyDataSetChanged();
+                                        return;
+                                    }
+                                    errorMsgTxt1.setVisibility(View.GONE);
+                                    Geocoding.Result result = geocoding.getResult().get(0);
+                                    Geocoding.Geometry geometry = result.geometry;
+                                    Geocoding.Location location = geometry.location;
+                                    String lat = location.lat;
+                                    String lng = location.lng;
+                                    StringRequest findStoreReq = new StringRequest(Request.Method.GET, Constant.FINDSTORE
+                                            + lat + "&UserCurrentLongitude=" + lng + "&City=" + city, new Response.Listener<String>() {
+                                        @Override
+                                        public void onResponse(String response) {
+                                            VolleyLog.wtf(response, "utf-8");
+                                            try {
+                                                JSONObject root = new JSONObject(response);
+                                                String errorCode = root.getString("errorcode");
+                                                Log.d(TAG, "Store Api status >> " + errorCode);
+                                                if ("200".equals(errorCode)) {
+                                                    errorMsgTxt1.setVisibility(View.VISIBLE);
+                                                    errorMsgTxt1.setText(root.getString("message"));
+                                                    return;
+                                                }
+                                            } catch (JSONException e) {
+                                                Log.d(TAG, " Exception >> " + e.getMessage());
+                                            }
+                                            Store store = new GsonBuilder().create().fromJson(response, Store.class);
+                                            if (!Constant.ERRORCODE.equalsIgnoreCase(store.getErrorcode())) {
+                                                Log.d(TAG, ">> Something went wrong");
+                                                errorMsgTxt2.setVisibility(View.VISIBLE);
+                                                errorMsgTxt2.setText("Some thing went wrong");
+                                                dropDownList.clear();
+                                                dataAdapter.clear();
+                                                dropDownList.add(Constant.SELECT_STORE);
+                                                dataAdapter.addAll(dropDownList);
+                                                storeDropDown.setAdapter(dataAdapter);
+                                                return;
+                                            }
+                                            errorMsgTxt2.setVisibility(View.GONE);
+                                            messages = store.getMessage();
+                                            dropDownList.clear();
+                                            dropDownList.add(Constant.SELECT_STORE);
+                                            for (Store.Message msg : messages) {
+                                                String distance = msg.getDistance();
+                                                Float dis = Float.parseFloat(distance);
+                                                DecimalFormat df = new DecimalFormat("0.00");
+                                                df.setMaximumFractionDigits(2);
+                                                distance = df.format(dis);
+                                                String address = msg.getStoreAddress() + ", " + msg.getStoreCity() + ", " +
+                                                        msg.getStoreState() + " (" + distance + " miles)";
+                                                dropDownList.add(address);
+                                                storeIds.add(msg.getStoreID());
+                                            }
+                                            storeDropDown.setEnabled(true);
+                                            dataAdapter.notifyDataSetChanged();
+                                            updateBtn.setEnabled(true);
+                                        }
+                                    }, new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            Log.d(TAG, " >> ERROR in Store Api" + error.getMessage());
+                                            dropDownList.clear();
+                                            dataAdapter.clear();
+                                            dropDownList.add(Constant.SELECT_STORE);
+                                            dataAdapter.addAll(dropDownList);
+                                            storeDropDown.setAdapter(dataAdapter);
+                                        }
+                                    }) {
+
+                                        @Override
+                                        public String getBodyContentType() {
+                                            return "application/x-www-form-urlencoded";
+                                        }
+
+                                        @Override
+                                        public Map<String, String> getHeaders() {
+                                            Map<String, String> params = new HashMap<String, String>();
+                                            params.put("Content-Type", "application/x-www-form-urlencoded");
+                                            params.put("Authorization", appUtil.getPrefrence("token_type") + " " + appUtil.getPrefrence("access_token"));
+                                            return params;
+                                        }
+                                    };
+                                    RetryPolicy policy = new DefaultRetryPolicy(5000,
+                                            DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                            DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                                    findStoreReq.setRetryPolicy(policy);
+                                    try {
+                                        if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+                                            Log.d(TAG, " Req Url >> " + findStoreReq.getUrl());
+                                            Log.d(TAG, " Req Header >> " + findStoreReq.getHeaders());
+                                            mQueue.add(findStoreReq);
+
+                                        } else {
+                                            Toast.makeText(MainFwActivity.this, getResources().getString(R.string.noInternet), Toast.LENGTH_SHORT).show();
+                                        }
+                                    } catch (Exception e) {
+                                        Log.d(TAG, " Exception >> " + e.getMessage());
+                                    }
+                                }
+                            }, new Response.ErrorListener() {
+                                @Override
+                                public void onErrorResponse(VolleyError error) {
+                                    errorMsgTxt2.setVisibility(View.VISIBLE);
+                                    errorMsgTxt2.setText(error.getMessage());
+                                    dropDownList.clear();
+                                    dataAdapter.clear();
+                                    dropDownList.add(Constant.SELECT_STORE);
+                                    dataAdapter.addAll(dropDownList);
+                                    storeDropDown.setAdapter(dataAdapter);
+                                    Log.d(TAG, " >> ERROR " + error.getLocalizedMessage());
+                                }
+                            });
+                            try {
+                                if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+
+                                    mQueue.add(request);
+                                } else {
+                                    Toast.makeText(MainFwActivity.this, getResources().getString(R.string.noInternet), Toast.LENGTH_SHORT).show();
+                                }
+
+                            } catch (Exception e) {
+                                Log.d(TAG, " Exception >> " + e.getMessage());
+                            }
+                        } else {
+                            city = address;
+                            //address is text need to check user current location.
+                            Log.d(TAG, " >> Address is text check user location.");
+                            if (getLocation()) {
+                                if (userLocation != null) {
+                                    if (userLocation.longitude != null && userLocation.latitude != null) {
+                                        StringRequest findStoreReq = new StringRequest(Request.Method.GET, Constant.FINDSTORE
+                                                + userLocation.latitude + "&UserCurrentLongitude=" + userLocation.longitude + "&City=" + city, new Response.Listener<String>() {
+                                            @Override
+                                            public void onResponse(String response) {
+                                                VolleyLog.wtf(response, "utf-8");
+                                                try {
+                                                    JSONObject root = new JSONObject(response);
+                                                    String errorCode = root.getString("errorcode");
+                                                    Log.d(TAG, "Store Api status >> " + errorCode);
+                                                    if ("200".equals(errorCode)) {
+                                                        errorMsgTxt1.setVisibility(View.VISIBLE);
+                                                        errorMsgTxt1.setText(root.getString("message"));
+                                                        return;
+                                                    }
+                                                } catch (JSONException e) {
+                                                    Log.d(TAG, " Exception >> " + e.getMessage());
+                                                }
+                                                Store store = new GsonBuilder().create().fromJson(response, Store.class);
+                                                if (!Constant.ERRORCODE.equalsIgnoreCase(store.getErrorcode())) {
+                                                    Log.d(TAG, ">> Something went wrong");
+                                                    errorMsgTxt2.setVisibility(View.VISIBLE);
+                                                    errorMsgTxt2.setText("Some thing went wrong");
+                                                    dropDownList.clear();
+                                                    dataAdapter.clear();
+                                                    dropDownList.add(Constant.SELECT_STORE);
+                                                    dataAdapter.addAll(dropDownList);
+                                                    storeDropDown.setAdapter(dataAdapter);
+                                                    return;
+                                                }
+                                                errorMsgTxt2.setVisibility(View.GONE);
+                                                messages = store.getMessage();
+                                                dropDownList.clear();
+                                                dropDownList.add(Constant.SELECT_STORE);
+                                                for (Store.Message msg : messages) {
+                                                    String distance = msg.getDistance();
+                                                    Float dis = Float.parseFloat(distance);
+                                                    DecimalFormat df = new DecimalFormat("0.00");
+                                                    df.setMaximumFractionDigits(2);
+                                                    distance = df.format(dis);
+                                                    String address = msg.getStoreAddress() + ", " + msg.getStoreCity() + ", " +
+                                                            msg.getStoreState() + " (" + distance + " miles)";
+                                                    dropDownList.add(address);
+                                                    storeIds.add(msg.getStoreID());
+                                                }
+                                                storeDropDown.setEnabled(true);
+                                                dataAdapter.notifyDataSetChanged();
+                                                updateBtn.setEnabled(true);
+                                            }
+                                        }, new Response.ErrorListener() {
+                                            @Override
+                                            public void onErrorResponse(VolleyError error) {
+                                                Log.d(TAG, " >> ERROR in Store Api" + error.getMessage());
+                                                dropDownList.clear();
+                                                dataAdapter.clear();
+                                                dropDownList.add(Constant.SELECT_STORE);
+                                                dataAdapter.addAll(dropDownList);
+                                                storeDropDown.setAdapter(dataAdapter);
+                                            }
+                                        }) {
+                                            @Override
+                                            public String getBodyContentType() {
+                                                return "application/x-www-form-urlencoded";
+                                            }
+                                            @Override
+                                            public Map<String, String> getHeaders() {
+                                                Map<String, String> params = new HashMap<String, String>();
+                                                params.put("Content-Type", "application/x-www-form-urlencoded");
+                                                params.put("Authorization", appUtil.getPrefrence("token_type") + " " + appUtil.getPrefrence("access_token"));
+                                                return params;
+                                            }
+                                        };
+                                        RetryPolicy policy = new DefaultRetryPolicy(5000,
+                                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                                        findStoreReq.setRetryPolicy(policy);
+                                        try {
+                                            if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+                                                Log.d(TAG, " Req Url >> " + findStoreReq.getUrl());
+                                                Log.d(TAG, " Req Header >> " + findStoreReq.getHeaders());
+                                                mQueue.add(findStoreReq);
+
+                                            } else {
+                                                Toast.makeText(MainFwActivity.this, getResources().getString(R.string.noInternet), Toast.LENGTH_SHORT).show();
+                                            }
+                                        } catch (Exception e) {
+                                            Log.d(TAG, " Exception >> " + e.getMessage());
+                                        }
+                                    }
+                                }
+
+                            } else {
+                                Log.d(TAG, ">> Location OFF, calling google api");
+                                String API_KEY = getResources().getString(R.string.api_key);
+                                StringRequest request = new StringRequest(Request.Method.GET, Constant.GEOCODER_API + address + "&key=" + API_KEY, new Response.Listener<String>() {
+                                    @Override
+                                    public void onResponse(String response) {
+                                        VolleyLog.wtf(response, "utf-8");
+                                        Geocoding geocoding = new GsonBuilder().create().fromJson(response, Geocoding.class);
+                                        if (!Constant.STATUS.equalsIgnoreCase(geocoding.getStatus())) {
+                                            errorMsgTxt1.setVisibility(View.VISIBLE);
+                                            errorMsgTxt1.setText(getResources().getString(R.string.error_msg2));
+                                            //dropDownList.clear();
+                                            dataAdapter.clear();
+                                            dropDownList.clear();
+                                            dropDownList.add(Constant.SELECT_STORE);
+                                            dataAdapter.notifyDataSetChanged();
+                                            return;
+                                        }
+                                        errorMsgTxt1.setVisibility(View.GONE);
+                                        Geocoding.Result result = geocoding.getResult().get(0);
+                                        Geocoding.Geometry geometry = result.geometry;
+                                        Geocoding.Location location = geometry.location;
+                                        String lat = location.lat;
+                                        String lng = location.lng;
+                                        StringRequest findStoreReq = new StringRequest(Request.Method.GET, Constant.FINDSTORE
+                                                + lat + "&UserCurrentLongitude=" + lng + "&City=" + city, new Response.Listener<String>() {
+                                            @Override
+                                            public void onResponse(String response) {
+                                                VolleyLog.wtf(response, "utf-8");
+                                                try {
+                                                    JSONObject root = new JSONObject(response);
+                                                    String errorCode = root.getString("errorcode");
+                                                    Log.d(TAG, "Store Api status >> " + errorCode);
+                                                    if ("200".equals(errorCode)) {
+                                                        errorMsgTxt1.setVisibility(View.VISIBLE);
+                                                        errorMsgTxt1.setText(root.getString("message"));
+                                                        return;
+                                                    }
+                                                } catch (JSONException e) {
+                                                    Log.d(TAG, " Exception >> " + e.getMessage());
+                                                }
+                                                Store store = new GsonBuilder().create().fromJson(response, Store.class);
+                                                if (!Constant.ERRORCODE.equalsIgnoreCase(store.getErrorcode())) {
+                                                    Log.d(TAG, ">> Something went wrong");
+                                                    errorMsgTxt2.setVisibility(View.VISIBLE);
+                                                    errorMsgTxt2.setText("Some thing went wrong");
+                                                    dropDownList.clear();
+                                                    dataAdapter.clear();
+                                                    dropDownList.add(Constant.SELECT_STORE);
+                                                    dataAdapter.addAll(dropDownList);
+                                                    storeDropDown.setAdapter(dataAdapter);
+                                                    return;
+                                                }
+                                                errorMsgTxt2.setVisibility(View.GONE);
+                                                messages = store.getMessage();
+                                                dropDownList.clear();
+                                                dropDownList.add(Constant.SELECT_STORE);
+                                                for (Store.Message msg : messages) {
+                                                    String distance = msg.getDistance();
+                                                    Float dis = Float.parseFloat(distance);
+                                                    DecimalFormat df = new DecimalFormat("0.00");
+                                                    df.setMaximumFractionDigits(2);
+                                                    distance = df.format(dis);
+                                                    String address = msg.getStoreAddress() + ", " + msg.getStoreCity() + ", " +
+                                                            msg.getStoreState() + " (" + distance + " miles)";
+                                                    dropDownList.add(address);
+                                                    storeIds.add(msg.getStoreID());
+                                                }
+                                                storeDropDown.setEnabled(true);
+                                                dataAdapter.notifyDataSetChanged();
+                                                updateBtn.setEnabled(true);
+                                            }
+                                        }, new Response.ErrorListener() {
+                                            @Override
+                                            public void onErrorResponse(VolleyError error) {
+                                                Log.d(TAG, " >> ERROR in Store Api" + error.getMessage());
+                                                dropDownList.clear();
+                                                dataAdapter.clear();
+                                                dropDownList.add(Constant.SELECT_STORE);
+                                                dataAdapter.addAll(dropDownList);
+                                                storeDropDown.setAdapter(dataAdapter);
+                                            }
+                                        }) {
+
+                                            @Override
+                                            public String getBodyContentType() {
+                                                return "application/x-www-form-urlencoded";
+                                            }
+
+                                            @Override
+                                            public Map<String, String> getHeaders() {
+                                                Map<String, String> params = new HashMap<String, String>();
+                                                params.put("Content-Type", "application/x-www-form-urlencoded");
+                                                params.put("Authorization", appUtil.getPrefrence("token_type") + " " + appUtil.getPrefrence("access_token"));
+                                                return params;
+                                            }
+                                        };
+                                        RetryPolicy policy = new DefaultRetryPolicy(5000,
+                                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                                        findStoreReq.setRetryPolicy(policy);
+                                        try {
+                                            if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+                                                Log.d(TAG, " Req Url >> " + findStoreReq.getUrl());
+                                                Log.d(TAG, " Req Header >> " + findStoreReq.getHeaders());
+                                                mQueue.add(findStoreReq);
+
+                                            } else {
+                                                Toast.makeText(MainFwActivity.this, getResources().getString(R.string.noInternet), Toast.LENGTH_SHORT).show();
+                                            }
+                                        } catch (Exception e) {
+                                            Log.d(TAG, " Exception >> " + e.getMessage());
+                                        }
+                                    }
+                                }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        errorMsgTxt2.setVisibility(View.VISIBLE);
+                                        errorMsgTxt2.setText(error.getMessage());
+                                        dropDownList.clear();
+                                        dataAdapter.clear();
+                                        dropDownList.add(Constant.SELECT_STORE);
+                                        dataAdapter.addAll(dropDownList);
+                                        storeDropDown.setAdapter(dataAdapter);
+                                        Log.d(TAG, " >> ERROR " + error.getLocalizedMessage());
+                                    }
+                                });
+                                try {
+                                    if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+
+                                        mQueue.add(request);
+                                    } else {
+                                        Toast.makeText(MainFwActivity.this, getResources().getString(R.string.noInternet), Toast.LENGTH_SHORT).show();
+                                    }
+
+                                } catch (Exception e) {
+                                    Log.d(TAG, " Exception >> " + e.getMessage());
+                                }
+                            }
+                        }
+                        /*if (getLocation()) {
                             if (userLocation != null) {
                                 if (userLocation.longitude != null && userLocation.latitude != null) {
                                     StringRequest findStoreReq = new StringRequest(Request.Method.GET, Constant.FINDSTORE
@@ -1706,7 +2078,8 @@ public class MainFwActivity extends AppCompatActivity
                                 }
                             }
 
-                        } else {
+                        }
+                        else {
                             Log.d(TAG, ">> Location OFF, calling google api");
                             String API_KEY = getResources().getString(R.string.api_key);
                             StringRequest request = new StringRequest(Request.Method.GET, Constant.GEOCODER_API + address + "&key=" + API_KEY, new Response.Listener<String>() {
@@ -1844,7 +2217,7 @@ public class MainFwActivity extends AppCompatActivity
                             } catch (Exception e) {
                                 Log.d(TAG, " Exception >> " + e.getMessage());
                             }
-                        }
+                        }*/
                     }
                 });
                 updateBtn.setOnClickListener(new View.OnClickListener() {
@@ -1872,7 +2245,7 @@ public class MainFwActivity extends AppCompatActivity
                                 }, new Response.ErrorListener() {
                             @Override
                             public void onErrorResponse(VolleyError error) {
-                                Log.d(TAG, " Error in update store " + error.getMessage());
+                                Log.d(TAG, " Error in update store " + error.getMessage(), error);
                             }
                         }){
                             @Override
@@ -2300,6 +2673,7 @@ public class MainFwActivity extends AppCompatActivity
                 Log.d(TAG, " Long >> " + location.getLongitude());
                 Latitude = String.valueOf(location.getLatitude());
                 Longitude = String.valueOf(location.getLongitude());
+
                 userLocation = new UserLocation();
                 userLocation.latitude = Latitude;
                 userLocation.longitude = Longitude;
@@ -4084,7 +4458,7 @@ public class MainFwActivity extends AppCompatActivity
                                     //Toast.makeText(activity, "neelam", Toast.LENGTH_SHORT).show();
                                     progressDialog.dismiss();
                                     ViewErrorAllDialog alert = new ViewErrorAllDialog();
-                                    alert.showDialog(activity, "Sorry, your search for " + s + " did not return any result in your personal Ad.Currently we don't have any deals, coupons, sales price items matching your search.\n" +
+                                    alert.showDialog(activity, "Sorry, your search for " + s + " did not return any result in your personal Ad.Currently we don't have any deals or coupons matching your search.\n" +
                                             "Our stores still might carry it and if we do its at the right price.");
 
                                 }
@@ -5445,17 +5819,12 @@ public class MainFwActivity extends AppCompatActivity
                                             s1 = s1.substring(s1.indexOf("[") + 1, s1.lastIndexOf("]"));
                                             s2 = s2.substring(s2.indexOf("[") + 1, s2.lastIndexOf("]"));
                                             int a = message.length() / 2;
-                                            //s3="["+s2+","+s1+"]";
                                             if (a * 2 == message.length()) {
                                                 s3 = "[" + s2 + "," + s1 + "]";
                                             } else {
-                                                //cdOddView=true;
-                                               /*for (int i = message.length()-1; i < message.length(); i++) {
-                                                   UPCOddView=message.getJSONObject(i).getString("UPC");
-                                                   s3="["+s2+","+String.valueOf(message.getJSONObject(i))+","+s1+"]";
-                                               }*/
-                                                //s3="["+s2+","+s1+"]";
-                                                s3 = "[" + s2 + "," + s4 + "," + s1 + "]";
+
+                                                //s3 = "[" + s2 + "," + s4 + "," + s1 + "]";
+                                                s3 = "[" + s2 +","+ s1 + "]";
 
                                             }
 
@@ -5465,13 +5834,11 @@ public class MainFwActivity extends AppCompatActivity
                                             if (x==3){
                                                 String search = edit_txt.getText().toString();
                                                 searchLoad(search);
-                                                //shoppingListIdLoad();
                                             }else {
                                                 fetchProduct();
                                                 shoppingListIdLoad();
                                             }
 
-                                            //
                                         }
 
                                     }
@@ -6569,7 +6936,8 @@ public class MainFwActivity extends AppCompatActivity
             table_upc_view.setVisibility(View.VISIBLE);
 
 //
-            if (product.getMinAmount() > 0) {
+            if (product.getMinAmount() > 0||product.getOfferDefinitionId() == 8 ||product.getOfferDefinitionId() == 9) {
+
             }
             else if (product.getRequiredQty() > 1) {
                 if (product.getLimitPerTransection() > 1) {
@@ -6669,7 +7037,7 @@ public class MainFwActivity extends AppCompatActivity
             Spanned result2 = Html.fromHtml(displayPrice.replace("<sup>", "<sup><small><small>").replace("</sup>", "</small></small></sup>")+"<sup><small><small> *</small></small></sup>");
 
             tv_price_detaile.setText(result);
-            if (product.getRequiredQty()>1){
+            if (product.getRequiredQty()>1||product.getMinAmount() > 0){
                 tv_price_detaile.setText(result2);
             }
             //
@@ -6680,7 +7048,7 @@ public class MainFwActivity extends AppCompatActivity
                 try {
                     DecimalFormat dF = new DecimalFormat("0.00");
                     Number reward_value = dF.parse(product.getRewardValue());
-                    tv_price_detaile.setText("Buy " + product.getRequiredQty() + "\n" + "Get " + product.getRewardQty() + " $" + new DecimalFormat("##.##").format(reward_value) + " OFF*");
+                    //tv_price_detaile.setText("Buy " + product.getRequiredQty() + "\n" + "Get " + product.getRewardQty() + " $" + new DecimalFormat("##.##").format(reward_value) + " OFF*");
 
                 } catch (Exception e) {
 
@@ -6709,8 +7077,6 @@ public class MainFwActivity extends AppCompatActivity
                 tv_coupon_detail_detail.setText("\n" + "*" + chars3);
             }
 
-            //tv_reg_price_detail.setText("$"+product.getRegularPrice());
-
             float myFloatRegularPrice = Float.parseFloat(product.getRegularPrice() + "f");
             String formattedStringRegularPrice = String.format("%.02f", myFloatRegularPrice);
             tv_reg_price_detail.setText("$" + formattedStringRegularPrice);
@@ -6734,23 +7100,20 @@ public class MainFwActivity extends AppCompatActivity
                 tv_coupon_detail.setText("$" + formattedStringCouponDiscount);
             }
 
-            /*try {
-                DecimalFormat dF = new DecimalFormat("0.00");
-                Number num = dF.parse(product.getSavings());
-                tv_save_detail.setText("$" + new DecimalFormat("##.##").format(num));
-
-            } catch (Exception e) {
-
-            }*/
             tv_limit.setText(String.valueOf(product.getLimitPerTransection()));
             tv_upc_detail.setText(product.getUPC());
             tv_deal_type_detaile.setText(product.getOfferTypeTagName());
 
-            if (product.getOfferDefinitionId()==8&& product.getPrimaryOfferTypeId()==2&&
-                    product.getCPRPromoTypeId()==3&& product.getOfferDetailId()==4){
+            if (((product.getOfferDefinitionId() == 8 ||product.getOfferDefinitionId() == 9) && product.getPrimaryOfferTypeId() == 2 &&
+                    product.getCPRPromoTypeId() == 3 && product.getOfferDetailId() == 4) || (product.getPrimaryOfferTypeId() == 2 && product.getRelevantUPC().equalsIgnoreCase("0"))) {
                 liner_qty.setVisibility(View.GONE);
                 tv_detail_detail.setVisibility(View.VISIBLE);
-                tv_detail_detail.setText(product.getCouponShortDescription());
+                if(product.getMinAmount() > 0 ||product.getOfferDefinitionId() == 8 ||product.getOfferDefinitionId() == 9){
+                    tv_detail_detail.setText("*"+product.getCouponShortDescription());
+                }else {
+                    tv_detail_detail.setText(product.getCouponShortDescription());
+                }
+
             }
             else {
                 liner_qty.setVisibility(View.VISIBLE);
@@ -6773,37 +7136,11 @@ public class MainFwActivity extends AppCompatActivity
                 table_limit.setVisibility(View.GONE);
                 table_limit_view.setVisibility(View.GONE);
             }
-            //
-            /*if (product.getRequiresActivation().equalsIgnoreCase("false")){
-                if (product.getAdPrice().equalsIgnoreCase("0.0000") || product.getAdPrice().equalsIgnoreCase("0")){
-                    table_upc.setVisibility(View.GONE);
-                    table_upc_view.setVisibility(View.GONE);
-                }else {
-                    table_upc.setVisibility(View.VISIBLE);
-                    table_upc_view.setVisibility(View.VISIBLE);
-                }
-                table_coupon.setVisibility(View.GONE);
-                table_coupon_view.setVisibility(View.GONE);
-                if (product.getLimitPerTransection()>0){
-                    table_limit.setVisibility(View.VISIBLE);
-                    table_limit_view.setVisibility(View.VISIBLE);
-                }else {
-                    table_limit.setVisibility(View.GONE);
-                    table_limit_view.setVisibility(View.GONE);
-                }
-                bottomLayout_detaile.setBackgroundColor(getResources().getColor(R.color.blue));
-                tv_deal_type_detaile.setText(product.getOfferTypeTagName());
-                circular_layout_detaile.setVisibility(View.GONE);
-
-                String displayPrice1=product.getDisplayPrice().toString();
-                if(product.getDisplayPrice().toString().split("\\.").length>1)
-                    displayPrice1= product.getDisplayPrice().split("\\.")[0]+"<sup>"+ (product.getDisplayPrice().split("\\.")[1]).replace("<sup>","").replace("</sup>","")+"</sup>";
-                Spanned result1 = Html.fromHtml(displayPrice1.replace("<sup>","<sup><small><small>").replace("</sup>","</small></small></sup>"));
-                tv_price_detaile.setText(result1);
-                tv_fareway_flag.setVisibility(View.GONE);
-            }else {
-                tv_fareway_flag.setVisibility(View.VISIBLE);
-            }*/
+            if (product.getIsbadged().equalsIgnoreCase("True"))
+            {
+                table_upc.setVisibility(View.VISIBLE);
+                table_upc_view.setVisibility(View.VISIBLE);
+            }
 
         }
 
@@ -15006,6 +15343,9 @@ public class MainFwActivity extends AppCompatActivity
                             table_package.setVisibility(View.GONE);
                             table_package_view.setVisibility(View.GONE);
 
+                            table_must.setVisibility(View.GONE);
+                            table_must_view.setVisibility(View.GONE);
+
                             table_upc.setVisibility(View.VISIBLE);
                             table_upc_view.setVisibility(View.VISIBLE);
 
@@ -15031,7 +15371,6 @@ public class MainFwActivity extends AppCompatActivity
                             }
 
                             if (message.getJSONObject(i).getString("AdPrice").equalsIgnoreCase("0.0000") || message.getJSONObject(i).getString("AdPrice").equalsIgnoreCase("0")) {
-                                Log.i("if", "atul");
                                 table_limit.setVisibility(View.VISIBLE);
                                 table_limit_view.setVisibility(View.VISIBLE);
                                 table_regular.setVisibility(View.GONE);
@@ -15137,23 +15476,25 @@ public class MainFwActivity extends AppCompatActivity
                             Spanned result2 = Html.fromHtml(displayPrice.replace("<sup>", "<sup><small><small>").replace("</sup>", "</small></small></sup>")+"<sup><small><small> *</small></small></sup>");
 
                             tv_price_detaile.setText(result);
-                            if (message.getJSONObject(i).getInt("RequiredQty")>1){
+                            if (message.getJSONObject(i).getInt("RequiredQty")>1||message.getJSONObject(i).getInt("MinAmount") > 0){
                                 tv_price_detaile.setText(result2);
                             }
                             //
                             if (message.getJSONObject(i).getString("RewardType").equalsIgnoreCase("2") && message.getJSONObject(i).getInt("OfferDefinitionId") == 4) {
                                 tv_price_detaile.setText("Buy " + message.getJSONObject(i).getInt("RequiredQty") + "\n" + "Get " + message.getJSONObject(i).getInt("RewardQty") + " " + result + "*");
-                            } else if (message.getJSONObject(i).getString("RewardType").equalsIgnoreCase("1") && message.getJSONObject(i).getInt("OfferDefinitionId") == 4) {
+                            }
+                            else if (message.getJSONObject(i).getString("RewardType").equalsIgnoreCase("1") && message.getJSONObject(i).getInt("OfferDefinitionId") == 4) {
                                 try {
                                     DecimalFormat dF = new DecimalFormat("0.00");
                                     Number reward_value = dF.parse(message.getJSONObject(i).getString("RewardValue"));
-                                    tv_price_detaile.setText("Buy " + message.getJSONObject(i).getInt("RequiredQty") + "\n" + "Get " + message.getJSONObject(i).getInt("RewardQty") + " $" + new DecimalFormat("##.##").format(reward_value) + " OFF*");
+                                    //tv_price_detaile.setText("Buy " + message.getJSONObject(i).getInt("RequiredQty") + "\n" + "Get " + message.getJSONObject(i).getInt("RewardQty") + " $" + new DecimalFormat("##.##").format(reward_value) + " OFF*");
 
                                 } catch (Exception e) {
 
                                 }
 
-                            } else {
+                            }
+                            else {
 
                             }
                             String chars = capitalize(message.getJSONObject(i).getString("Description"));
@@ -15166,12 +15507,27 @@ public class MainFwActivity extends AppCompatActivity
                             }
 
                             ///
-                            if (message.getJSONObject(i).getInt("OfferDefinitionId")==8&& message.getJSONObject(i).getInt("PrimaryOfferTypeId")==2&&
+                            /*if ((message.getJSONObject(i).getInt("OfferDefinitionId")==8||message.getJSONObject(i).getInt("OfferDefinitionId")==9)&& message.getJSONObject(i).getInt("PrimaryOfferTypeId")==2&&
                                     message.getJSONObject(i).getInt("CPRPromoTypeId")==3&& message.getJSONObject(i).getInt("OfferDetailId")==4){
                                 liner_qty.setVisibility(View.GONE);
                                 tv_detail_detail.setVisibility(View.VISIBLE);
                                 tv_detail_detail.setText(chars);
                             }else {
+                                liner_qty.setVisibility(View.VISIBLE);
+                            }*/
+
+                            if (((message.getJSONObject(i).getInt("OfferDefinitionId") == 8 ||message.getJSONObject(i).getInt("OfferDefinitionId") == 9) && message.getJSONObject(i).getInt("PrimaryOfferTypeId") == 2 &&
+                                    message.getJSONObject(i).getInt("CPRPromoTypeId") == 3 && message.getJSONObject(i).getInt("OfferDetailId")==4) || (message.getJSONObject(i).getInt("PrimaryOfferTypeId") == 2 && message.getJSONObject(i).getString("RelevantUPC").equalsIgnoreCase("0"))) {
+                                liner_qty.setVisibility(View.GONE);
+                                tv_detail_detail.setVisibility(View.VISIBLE);
+                                if(message.getJSONObject(i).getInt("MinAmount") > 0 ||message.getJSONObject(i).getInt("OfferDefinitionId") == 8 ||message.getJSONObject(i).getInt("OfferDefinitionId") == 9){
+                                    tv_detail_detail.setText("*"+message.getJSONObject(i).getString("CouponShortDescription"));
+                                }else {
+                                    tv_detail_detail.setText(message.getJSONObject(i).getString("CouponShortDescription"));
+                                }
+
+                            }
+                            else {
                                 liner_qty.setVisibility(View.VISIBLE);
                             }
 
@@ -15182,8 +15538,6 @@ public class MainFwActivity extends AppCompatActivity
                                 String chars3 = capitalize(message.getJSONObject(i).getString("CouponShortDescription"));
                                 tv_coupon_detail_detail.setText("\n" + "*" + chars3);
                             }
-
-                            //tv_reg_price_detail.setText("$"+message.getJSONObject(i).getString("RegularPrice"));
 
                             float myFloatRegularPrice = Float.parseFloat(message.getJSONObject(i).getString("RegularPrice") + "f");
                             String formattedStringRegularPrice = String.format("%.02f", myFloatRegularPrice);
@@ -15208,14 +15562,7 @@ public class MainFwActivity extends AppCompatActivity
                                 String formattedStringCouponDiscount = String.format("%.02f", myFloatCouponDiscount);
                                 tv_coupon_detail.setText("$" + formattedStringCouponDiscount);
                             }
-                                /*try {
-                                    DecimalFormat dF = new DecimalFormat("0.00");
-                                    Number num = dF.parse(message.getJSONObject(i).getString("Savings"));
-                                    tv_save_detail.setText("$" + new DecimalFormat("##.##").format(num));
 
-                                } catch (Exception e) {
-
-                                }*/
                             tv_limit.setText(String.valueOf(message.getJSONObject(i).getInt("LimitPerTransection")));
                             tv_upc_detail.setText(message.getJSONObject(i).getString("UPC"));
                             tv_deal_type_detaile.setText(message.getJSONObject(i).getString("OfferTypeTagName"));
@@ -15229,6 +15576,12 @@ public class MainFwActivity extends AppCompatActivity
                                 liner_qty.setVisibility(View.GONE);
                                 table_upc.setVisibility(View.GONE);
                                 table_upc_view.setVisibility(View.GONE);
+                            }
+
+                            if (message.getJSONObject(i).getString("Isbadged").equalsIgnoreCase("True"))
+                            {
+                                table_upc.setVisibility(View.VISIBLE);
+                                table_upc_view.setVisibility(View.VISIBLE);
                             }
                         }
 
@@ -15859,7 +16212,7 @@ public class MainFwActivity extends AppCompatActivity
 
                                                     bottomLayout_detaile.setBackgroundColor(getResources().getColor(R.color.green));
 
-                                                    String displayPrice = jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").toString();
+                                                    /*String displayPrice = jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").toString();
                                                     if (jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").toString().split("\\.").length > 1)
                                                         displayPrice = jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").split("\\.")[0] + "<sup>" + (jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").split("\\.")[1]).replace("<sup>","").replace("</sup>","")+"</sup>";
 
@@ -15872,6 +16225,36 @@ public class MainFwActivity extends AppCompatActivity
                                                         tv_price_detaile.setText(result);
                                                     } else {
                                                         tv_price_detaile.setText(result + "*");
+                                                    }*/
+
+                                                    String displayPrice = jsonShoppingParam.getJSONObject(i).getString("DisplayPrice");
+                                                    if (jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").toString().split("\\.").length > 1)
+                                                        displayPrice = jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").split("\\.")[0] + "<sup>" + (jsonShoppingParam.getJSONObject(i).getString("DisplayPrice").split("\\.")[1]).replace("<sup>","").replace("</sup>","")+"</sup>";
+
+                                                    Spanned result = Html.fromHtml(displayPrice.replace("<sup>", "<sup><small><small>").replace("</sup>", "</small></small></sup>"));
+                                                    Spanned result2 = Html.fromHtml(displayPrice.replace("<sup>", "<sup><small><small>").replace("</sup>", "</small></small></sup>")+"<sup><small><small> *</small></small></sup>");
+
+                                                    tv_price_detaile.setText(result);
+                                                    if (jsonShoppingParam.getJSONObject(i).getInt("RequiredQty")>1||jsonShoppingParam.getJSONObject(i).getInt("MinAmount") > 0){
+                                                        tv_price_detaile.setText(result2);
+                                                    }
+                                                    //
+                                                    if (jsonShoppingParam.getJSONObject(i).getString("RewardType").equalsIgnoreCase("2") && jsonShoppingParam.getJSONObject(i).getInt("OfferDefinitionId") == 4) {
+                                                        tv_price_detaile.setText("Buy " + jsonShoppingParam.getJSONObject(i).getInt("RequiredQty") + "\n" + "Get " + jsonShoppingParam.getJSONObject(i).getInt("RewardQty") + " " + result + "*");
+                                                    }
+                                                    else if (jsonShoppingParam.getJSONObject(i).getString("RewardType").equalsIgnoreCase("1") && jsonShoppingParam.getJSONObject(i).getInt("OfferDefinitionId") == 4) {
+                                                        try {
+                                                            DecimalFormat dF = new DecimalFormat("0.00");
+                                                            Number reward_value = dF.parse(jsonShoppingParam.getJSONObject(i).getString("RewardValue"));
+                                                            //tv_price_detaile.setText("Buy " + jsonShoppingParam.getJSONObject(i).getInt("RequiredQty") + "\n" + "Get " + jsonShoppingParam.getJSONObject(i).getInt("RewardQty") + " $" + new DecimalFormat("##.##").format(reward_value) + " OFF*");
+
+                                                        } catch (Exception e) {
+
+                                                        }
+
+                                                    }
+                                                    else {
+
                                                     }
                                                     String chars = capitalize(jsonShoppingParam.getJSONObject(i).getString("Description"));
 
@@ -15889,6 +16272,21 @@ public class MainFwActivity extends AppCompatActivity
                                                         tv_detail_detail.setVisibility(View.VISIBLE);
                                                         tv_detail_detail.setText(chars);
                                                     }else {
+                                                        liner_qty.setVisibility(View.VISIBLE);
+                                                    }
+
+                                                    if (((jsonShoppingParam.getJSONObject(i).getInt("OfferDefinitionId") == 8 ||jsonShoppingParam.getJSONObject(i).getInt("OfferDefinitionId") == 9) && jsonShoppingParam.getJSONObject(i).getInt("PrimaryOfferTypeId") == 2 &&
+                                                            jsonShoppingParam.getJSONObject(i).getInt("CPRPromoTypeId") == 3 && jsonShoppingParam.getJSONObject(i).getInt("OfferDetailId")==4) || (jsonShoppingParam.getJSONObject(i).getInt("PrimaryOfferTypeId") == 2 && jsonShoppingParam.getJSONObject(i).getString("RelevantUPC").equalsIgnoreCase("0"))) {
+                                                        liner_qty.setVisibility(View.GONE);
+                                                        tv_detail_detail.setVisibility(View.VISIBLE);
+                                                        if(jsonShoppingParam.getJSONObject(i).getInt("MinAmount") > 0 ||jsonShoppingParam.getJSONObject(i).getInt("OfferDefinitionId") == 8 ||jsonShoppingParam.getJSONObject(i).getInt("OfferDefinitionId") == 9){
+                                                            tv_detail_detail.setText("*"+jsonShoppingParam.getJSONObject(i).getString("CouponShortDescription"));
+                                                        }else {
+                                                            tv_detail_detail.setText(jsonShoppingParam.getJSONObject(i).getString("CouponShortDescription"));
+                                                        }
+
+                                                    }
+                                                    else {
                                                         liner_qty.setVisibility(View.VISIBLE);
                                                     }
 
@@ -15960,6 +16358,11 @@ public class MainFwActivity extends AppCompatActivity
                                                         liner_qty.setVisibility(View.GONE);
                                                         table_upc.setVisibility(View.GONE);
                                                         table_upc_view.setVisibility(View.GONE);
+                                                    }
+                                                    if (jsonShoppingParam.getJSONObject(i).getString("Isbadged").equalsIgnoreCase("True"))
+                                                    {
+                                                        table_upc.setVisibility(View.VISIBLE);
+                                                        table_upc_view.setVisibility(View.VISIBLE);
                                                     }
                                                 }
 
@@ -17846,7 +18249,7 @@ public class MainFwActivity extends AppCompatActivity
     }
 
     private boolean getLocation() {
-        boolean flag = false;
+        boolean flag;
         try {
             locationManager = (LocationManager) getSystemService(Context.LOCATION_SERVICE);
             if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
@@ -17892,12 +18295,12 @@ public class MainFwActivity extends AppCompatActivity
                 // progressDialog.setMessage("Processing");
                 //progressDialog.show();
 
-                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|9.4",
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|9.5",
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
                                 Log.i("Fareway", response.toString());
-                                Log.i("url",Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|9.2");
+                                Log.i("url",Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|9.5");
                                 try {
                                     JSONObject root = new JSONObject(response);
                                     root.getString("errorcode");

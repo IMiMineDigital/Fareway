@@ -52,7 +52,8 @@ public class Product {
     private String Quantity;
     private String TotalQuantity;
 
-    private int MinAmount;
+    //private int MinAmount;
+    private float MinAmount;
     private String PercentSavings;
     private String RewardValue;
     private String RewardQty;
@@ -464,13 +465,13 @@ public class Product {
         Quantity = quantity;
     }
 
-    public int getMinAmount() {
+    /*public int getMinAmount() {
         return MinAmount;
     }
 
     public void setMinAmount(int minAmount) {
         MinAmount = minAmount;
-    }
+    }*/
 
     public String getPercentSavings() {
         return PercentSavings;
@@ -598,6 +599,14 @@ public class Product {
 
     public void setIsStacked(String isStacked) {
         IsStacked = isStacked;
+    }
+
+    public float getMinAmount() {
+        return MinAmount;
+    }
+
+    public void setMinAmount(float minAmount) {
+        MinAmount = minAmount;
     }
 }
 
