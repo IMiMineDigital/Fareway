@@ -2243,6 +2243,7 @@ public class MainFwActivity extends AppCompatActivity
                                         UpdateStore updateStore = new GsonBuilder().create().fromJson(response, UpdateStore.class);
                                         if (Constant.ERRORCODE.equalsIgnoreCase(updateStore.getErrorcode())) {
                                             Log.d(TAG, ">> Change store successfully");
+                                            delegate.userDidUpdateStore(storeId);
 
                                             checkCircular(storeId);
                                         } else {
