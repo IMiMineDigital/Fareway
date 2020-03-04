@@ -372,9 +372,9 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
 
                     else if(relatedItem.getRewardType().equalsIgnoreCase("2")&&relatedItem.getPrimaryOfferTypeId()==2){
                         DecimalFormat dF = new DecimalFormat("00.00");
-                        try {
+                        /*try {
                             Number rewardValue = dF.parse(relatedItem.getRewardValue());
-                            Spanned result = Html.fromHtml(new DecimalFormat("##.##").format(rewardValue)+"% OFF"+"<sup><small><small> *</small></small></sup>");
+                            Spanned result = Html.fromHtml(new DecimalFormat("##.##").format(rewardValue)+"% OFF"+"<sup><small><small> *</small></small></sup>");*/
                             if (relatedItem.getOfferDefinitionId()==3){
                                 holder.tv_price.setText("FREE");
                             }else {
@@ -390,9 +390,9 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                             holder.tv_saving_pri_fix.setText("");
                             holder.tv_saving.setText("");
 
-                        } catch (ParseException e) {
+                        /*} catch (ParseException e) {
                             e.printStackTrace();
-                        }
+                        }*/
                     }
                     else {
                         String displayPrice=relatedItem.getDisplayPrice().toString();
@@ -768,9 +768,9 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
 
                     else if(relatedItem.getRewardType().equalsIgnoreCase("2")&&relatedItem.getPrimaryOfferTypeId()==2){
                         DecimalFormat dF = new DecimalFormat("00.00");
-                        try {
+                       /* try {
                             Number rewardValue = dF.parse(relatedItem.getRewardValue());
-                            Spanned result = Html.fromHtml(new DecimalFormat("##.##").format(rewardValue)+"% OFF"+"<sup><small><small> *</small></small></sup>");
+                            Spanned result = Html.fromHtml(new DecimalFormat("##.##").format(rewardValue)+"% OFF"+"<sup><small><small> *</small></small></sup>");*/
                             if (relatedItem.getOfferDefinitionId()==3){
                                 holder.tv_price.setText("FREE");
                             }else {
@@ -786,9 +786,9 @@ public class CustomAdapterParticipateItems extends RecyclerView.Adapter<CustomAd
                             holder.tv_saving_pri_fix.setText("");
                             holder.tv_saving.setText("");
 
-                        } catch (ParseException e) {
+                       /* } catch (ParseException e) {
                             e.printStackTrace();
-                        }
+                        }*/
                     }
                     else {
                         String displayPrice=relatedItem.getDisplayPrice().toString();
