@@ -124,6 +124,7 @@ import com.fareway.utility.DividerRVDecoration;
 
 import com.fareway.utility.IMMApiHandlerDelegate;
 import com.fareway.utility.NetworkUtils;
+import com.fareway.utility.StoreUpdateHandler;
 import com.fareway.utility.UserAlertDialog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
@@ -325,16 +326,17 @@ public class MainFwActivity extends AppCompatActivity
     String storeId = null;
     private android.location.LocationListener locationListener;
     private UserLocation userLocation = null;
-    private IMMApiHandlerDelegate delegate;
+    private StoreUpdateHandler storeUpdateHandler;
 
-    public void setStoreUpdateDelegate(IMMApiHandlerDelegate delegate) {
-        this.delegate = delegate;
-    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main_fw);
         activity = MainFwActivity.this;
+        storeUpdateHandler = StoreUpdateHandler.getInstance();
+        storeUpdateHandler.setStoreUpdateListener((StoreUpdateHandler.StoreUpdateListenr) MainFwActivity.this);
+
+
         mQueue = FarewayApplication.getmInstance(this).getmRequestQueue();
         appUtil = new AppUtilFw(activity);
         userAlertDialog = new UserAlertDialog(activity);
@@ -2243,8 +2245,7 @@ public class MainFwActivity extends AppCompatActivity
                                         UpdateStore updateStore = new GsonBuilder().create().fromJson(response, UpdateStore.class);
                                         if (Constant.ERRORCODE.equalsIgnoreCase(updateStore.getErrorcode())) {
                                             Log.d(TAG, ">> Change store successfully");
-                                            delegate.userDidUpdateStore(storeId);
-
+                                            storeUpdateHandler.setStoreId(storeId);
                                             checkCircular(storeId);
                                         } else {
                                             Log.d(TAG, ">> Change store Response code " + updateStore.getErrorcode());
@@ -2629,7 +2630,7 @@ public class MainFwActivity extends AppCompatActivity
                                         UpdateStore updateStore = new GsonBuilder().create().fromJson(response, UpdateStore.class);
                                         if (Constant.ERRORCODE.equalsIgnoreCase(updateStore.getErrorcode())) {
                                             Log.d(TAG, ">> Change store successfully");
-                                            delegate.userDidUpdateStore(storeId);
+                                            storeUpdateHandler.setStoreId(storeId);
                                             checkCircular(storeId);
                                         } else {
                                             window.dismiss();
