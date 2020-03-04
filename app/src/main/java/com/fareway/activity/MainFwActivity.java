@@ -334,7 +334,6 @@ public class MainFwActivity extends AppCompatActivity
         setContentView(R.layout.activity_main_fw);
         activity = MainFwActivity.this;
         storeUpdateHandler = StoreUpdateHandler.getInstance();
-        storeUpdateHandler.setStoreUpdateListener((StoreUpdateHandler.StoreUpdateListenr) MainFwActivity.this);
 
 
         mQueue = FarewayApplication.getmInstance(this).getmRequestQueue();
