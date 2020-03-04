@@ -25,7 +25,7 @@ public class StoreUpdateHandler {
 
     public void setStoreId(String storeId) {
         if (mListener != null) {
-            this.storeId = storeId;
+            this.mListener.userDidUpdateStore(storeId);
         }
     }
 }
