@@ -121,6 +121,8 @@ import com.fareway.utility.AppUtilFw;
 import com.fareway.utility.ConnectivityReceiver;
 import com.fareway.utility.Constant;
 import com.fareway.utility.DividerRVDecoration;
+
+import com.fareway.utility.IMMApiHandlerDelegate;
 import com.fareway.utility.NetworkUtils;
 import com.fareway.utility.UserAlertDialog;
 import com.google.android.gms.common.ConnectionResult;
@@ -323,7 +325,11 @@ public class MainFwActivity extends AppCompatActivity
     String storeId = null;
     private android.location.LocationListener locationListener;
     private UserLocation userLocation = null;
+    private IMMApiHandlerDelegate delegate;
 
+    public void setStoreUpdateDelegate(IMMApiHandlerDelegate delegate) {
+        this.delegate = delegate;
+    }
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -2237,6 +2243,7 @@ public class MainFwActivity extends AppCompatActivity
                                         UpdateStore updateStore = new GsonBuilder().create().fromJson(response, UpdateStore.class);
                                         if (Constant.ERRORCODE.equalsIgnoreCase(updateStore.getErrorcode())) {
                                             Log.d(TAG, ">> Change store successfully");
+
                                             checkCircular(storeId);
                                         } else {
                                             Log.d(TAG, ">> Change store Response code " + updateStore.getErrorcode());
@@ -2621,6 +2628,7 @@ public class MainFwActivity extends AppCompatActivity
                                         UpdateStore updateStore = new GsonBuilder().create().fromJson(response, UpdateStore.class);
                                         if (Constant.ERRORCODE.equalsIgnoreCase(updateStore.getErrorcode())) {
                                             Log.d(TAG, ">> Change store successfully");
+                                            delegate.userDidUpdateStore(storeId);
                                             checkCircular(storeId);
                                         } else {
                                             window.dismiss();
@@ -18295,7 +18303,7 @@ public class MainFwActivity extends AppCompatActivity
                 // progressDialog.setMessage("Processing");
                 //progressDialog.show();
 
-                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|9.5",
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|9.6",
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
@@ -18698,4 +18706,5 @@ public class MainFwActivity extends AppCompatActivity
         public String longitude = null;
 
     }
+
 }
