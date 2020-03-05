@@ -327,6 +327,8 @@ public class MainFwActivity extends AppCompatActivity
     private android.location.LocationListener locationListener;
     private UserLocation userLocation = null;
     private StoreUpdateHandler storeUpdateHandler;
+    LinearLayout linear_search_layout,linear_header_logo_layout;
+    private boolean isSearchHeader=false;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -340,6 +342,17 @@ public class MainFwActivity extends AppCompatActivity
         appUtil = new AppUtilFw(activity);
         userAlertDialog = new UserAlertDialog(activity);
         appUtil.setTagPreference("key", 0);
+        linear_search_layout = findViewById(R.id.linear_search_layout);
+        linear_header_logo_layout = findViewById(R.id.linear_header_logo_layout);
+
+        if (isSearchHeader){
+            linear_header_logo_layout.setVisibility(View.GONE);
+            linear_search_layout.setVisibility(View.VISIBLE);
+        }else {
+           linear_header_logo_layout.setVisibility(View.VISIBLE);
+           linear_search_layout.setVisibility(View.GONE);
+        }
+
         //category lable
         tv_category_name= findViewById(R.id.tv_category_name);
         img_category_cross_button= findViewById(R.id.img_category_cross_button);
@@ -18304,12 +18317,12 @@ public class MainFwActivity extends AppCompatActivity
                 // progressDialog.setMessage("Processing");
                 //progressDialog.show();
 
-                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|10.1",
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|10.2",
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
                                 Log.i("Fareway", response.toString());
-                                Log.i("url",Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|10.1");
+                                Log.i("url",Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|10.2");
                                 try {
                                     JSONObject root = new JSONObject(response);
                                     root.getString("errorcode");

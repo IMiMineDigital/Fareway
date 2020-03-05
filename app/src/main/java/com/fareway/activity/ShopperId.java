@@ -1,6 +1,7 @@
 package com.fareway.activity;
 
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.graphics.Bitmap;
 //import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -46,6 +47,7 @@ public class ShopperId extends AppCompatActivity {
         setContentView(R.layout.activity_shopper_id_fw);
         activity=ShopperId.this;
         appUtil=new AppUtilFw(activity);
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
         getSupportActionBar().setTitle("Shopper ID");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         getSupportActionBar().setDisplayShowHomeEnabled(true);
