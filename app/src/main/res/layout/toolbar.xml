@@ -26,6 +26,7 @@
         </LinearLayout>
 
         <LinearLayout
+            android:visibility="gone"
             android:id="@+id/linear_search_layout"
             android:layout_width="match_parent"
             android:layout_height="@dimen/_30sdp"
@@ -110,12 +111,12 @@
         <LinearLayout
         android:id="@+id/linear_header_logo_layout"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/_30sdp"
+        android:layout_height="@dimen/_60sdp"
         android:orientation="horizontal"
         android:gravity="center_horizontal"
         android:layout_weight="1"
-        android:paddingBottom="@dimen/_5sdp"
-        android:paddingTop="@dimen/_5sdp"
+        android:paddingBottom="@dimen/_7sdp"
+        android:paddingTop="@dimen/_7sdp"
         android:layout_marginRight="@dimen/_7sdp">
         <ImageView
             android:layout_width="wrap_content"
