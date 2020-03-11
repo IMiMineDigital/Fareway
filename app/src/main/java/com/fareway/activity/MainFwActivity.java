@@ -5915,7 +5915,8 @@ public class MainFwActivity extends AppCompatActivity
                 progressDialog2.dismiss();
 //                displayAlert();
             }
-        } else {
+        }
+        else {
             alertDialog = userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
                     getString(R.string.ok), getString(R.string.alert));
             alertDialog.show();
