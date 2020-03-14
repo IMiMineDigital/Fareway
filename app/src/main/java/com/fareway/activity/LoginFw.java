@@ -129,7 +129,7 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
         appUtil.setPrefrence("Password", "123456");*/
         linkUIElements();
         //checkLocationPermission();
-        //login();
+        login();
 
     }
     private void linkUIElements()
@@ -237,6 +237,7 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
                             @Override
                             public void onResponse(String response) {
                                 Log.i("Fareway", response.toString());
+                                //response="[]";
                                 try {
                                     JSONObject root = new JSONObject(response);
                                     root.getString("errorcode");
@@ -296,8 +297,9 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
                                         Toast.makeText(activity, root.getString("message"), Toast.LENGTH_LONG).show();
                                     }
                                 } catch (JSONException e) {
-                                    finish();
                                     e.printStackTrace();
+                                    saveErrorLog("login", e.getLocalizedMessage());
+                                    //finish();
                                 }
 
                             }
@@ -306,6 +308,7 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
                     public void onErrorResponse(VolleyError error) {
                         Log.i("Volley error resp", "error----" + error.getMessage());
                         error.printStackTrace();
+                        saveErrorLog("login", String.valueOf(error.networkResponse.statusCode));
                         //  progressDialog.dismiss();
                         if (error.networkResponse == null) {
                             //      progressDialog.dismiss();
@@ -331,10 +334,10 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> params = new HashMap<String, String>();
                         ///////
-                        appUtil.setPrefrence("Latitude", "0.00");
+                        /*appUtil.setPrefrence("Latitude", "0.00");
                         appUtil.setPrefrence("Longitude", "0.00");
                         appUtil.setPrefrence("Email", et_email.getText().toString());
-                        appUtil.setPrefrence("Password", et_pwd.getText().toString());
+                        appUtil.setPrefrence("Password", et_pwd.getText().toString());*/
                         ///////
                         String charsLowerEmail =lowercase(appUtil.getPrefrence("Email"));
                         appUtil.setPrefrence("Email", charsLowerEmail);
@@ -589,6 +592,91 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
         }
 
         return capMatcher.appendTail(capBuffer).toString();
+    }
+
+    private void saveErrorLog(String FunctionName, String ErrorDetail) {
+        if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+            try {
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.ERRORLOG + "?FunctionName=" + FunctionName + "&ErrorSource=" + "android" + "&ErrorStatus=" + "fail" + "&ErrorDetail="+ErrorDetail + "&MemberId=" + appUtil.getPrefrence("MemberId") ,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.i("Fareway", response.toString());
+                                try {
+                                    JSONObject root = new JSONObject(response);
+                                    root.getString("errorcode");
+                                    Log.i("errorcode", root.getString("errorcode"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Volley error resp", "error----" + error.getMessage());
+                        error.printStackTrace();
+                        if (error.networkResponse == null) {
+                            if (error.getClass().equals(TimeoutError.class)) {
+                                alertDialog = userAlertDialog.createPositiveAlert("Time out error",
+                                        getString(R.string.ok), "Fail");
+                                alertDialog.show();
+
+                            }
+                        }
+                        finish();
+                    }
+                }) {
+
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/x-www-form-urlencoded";
+                    }
+
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+
+                        params.put("Device", "5");
+                        return params;
+                    }
+
+                    //this is the part, that adds the header to the request
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/x-www-form-urlencoded");
+                        params.put("Authorization", appUtil.getPrefrence("token_type") + " " + appUtil.getPrefrence("access_token"));
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (5000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    // FarewayApplication.getInstance().addToRequestQueue(jsonObjectRequest);
+                    mQueue.add(jsonObjectRequest);
+                } catch (Exception e) {
+                    finish();
+                    e.printStackTrace();
+                }
+
+            } catch (Exception e) {
+                finish();
+                e.printStackTrace();
+                //  progressDialog.dismiss();
+//                displayAlert();
+            }
+
+        } else {
+            finish();
+            alertDialog = userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                    getString(R.string.ok), getString(R.string.alert));
+            alertDialog.show();
+//            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
+        }
     }
 
 

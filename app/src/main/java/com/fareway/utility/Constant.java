@@ -8,6 +8,8 @@ public class Constant {
     public static final String GET_TOKEN="Token";
     public static final String LOGIN="Account/Login";
     public static final String LOGINSAVE="Account/SaveLogLogin?FileName=LoginLog";
+    public static final String ERRORLOG="Error/Log";
+
     public static final String PRODUCTLIST="Circular/Offers";
     public static final String RELATEDITEMLIST="Circular/RelatedItems";
     public static final String SIGNUP="Account/SignUp";

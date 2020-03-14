@@ -28,6 +28,7 @@ import com.fareway.utility.Constant;
 import com.fareway.utility.NetworkUtils;
 import com.fareway.utility.UserAlertDialog;
 
+import org.json.JSONException;
 import org.json.JSONObject;
 
 import java.text.ParseException;
@@ -156,6 +157,7 @@ public class SplashFw extends AppCompatActivity {
                             public void onResponse(String response) {
                                 try {
                                     Log.i("Fareway text", response.toString());
+                                    //response="[]";
                                     JSONObject jsonParam = new JSONObject(response.toString());
                                     appUtil.setPrefrence("access_token", jsonParam.getString("access_token"));
                                     appUtil.setPrefrence("token_type", jsonParam.getString("token_type"));
@@ -170,6 +172,7 @@ public class SplashFw extends AppCompatActivity {
                                     //  progressDialog.dismiss();
                                     Log.i("Excep", "error----" + e.getMessage());
                                     e.printStackTrace();
+                                    saveErrorLog("getTokenkey", e.getLocalizedMessage());
                                 }
                             }
                         }, new Response.ErrorListener() {
@@ -177,6 +180,7 @@ public class SplashFw extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         Log.i("Volley error resp", "error----" + error.getMessage());
                         error.printStackTrace();
+                        saveErrorLog("getTokenkey", String.valueOf(error.networkResponse.statusCode));
                         // progressDialog.dismiss();
                         if (error.networkResponse == null) {
                             //  progressDialog.dismiss();
@@ -282,6 +286,7 @@ public class SplashFw extends AppCompatActivity {
                                     //  progressDialog.dismiss();
                                     Log.i("Excep", "error----" + e.getMessage());
                                     e.printStackTrace();
+                                    saveErrorLog("getTokenkey2", e.getLocalizedMessage());
                                 }
                             }
                         }, new Response.ErrorListener() {
@@ -289,6 +294,7 @@ public class SplashFw extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         Log.i("Volley error resp", "error----" + error.getMessage());
                         error.printStackTrace();
+                        saveErrorLog("getTokenkey2", String.valueOf(error.networkResponse.statusCode));
                         // progressDialog.dismiss();
                         if (error.networkResponse == null) {
                             //  progressDialog.dismiss();
@@ -353,6 +359,91 @@ public class SplashFw extends AppCompatActivity {
         } else {
             alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
                     getString(R.string.ok),getString(R.string.alert));
+            alertDialog.show();
+//            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void saveErrorLog(String FunctionName, String ErrorDetail) {
+        if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+            try {
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.ERRORLOG + "?FunctionName=" + FunctionName + "&ErrorSource=" + "android" + "&ErrorStatus=" + "fail" + "&ErrorDetail="+ErrorDetail + "&MemberId=" + appUtil.getPrefrence("MemberId") ,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.i("Fareway", response.toString());
+                                try {
+                                    JSONObject root = new JSONObject(response);
+                                    root.getString("errorcode");
+                                    Log.i("errorcode", root.getString("errorcode"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Volley error resp", "error----" + error.getMessage());
+                        error.printStackTrace();
+                        if (error.networkResponse == null) {
+                            if (error.getClass().equals(TimeoutError.class)) {
+                                alertDialog = userAlertDialog.createPositiveAlert("Time out error",
+                                        getString(R.string.ok), "Fail");
+                                alertDialog.show();
+
+                            }
+                        }
+                        finish();
+                    }
+                }) {
+
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/x-www-form-urlencoded";
+                    }
+
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+
+                        params.put("Device", "5");
+                        return params;
+                    }
+
+                    //this is the part, that adds the header to the request
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/x-www-form-urlencoded");
+                        params.put("Authorization", appUtil.getPrefrence("token_type") + " " + appUtil.getPrefrence("access_token"));
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (5000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    // FarewayApplication.getInstance().addToRequestQueue(jsonObjectRequest);
+                    mQueue.add(jsonObjectRequest);
+                } catch (Exception e) {
+                    finish();
+                    e.printStackTrace();
+                }
+
+            } catch (Exception e) {
+                finish();
+                e.printStackTrace();
+                //  progressDialog.dismiss();
+//                displayAlert();
+            }
+
+        } else {
+            finish();
+            alertDialog = userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                    getString(R.string.ok), getString(R.string.alert));
             alertDialog.show();
 //            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
         }
