@@ -293,13 +293,15 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
                                         //saveLogin();
 
                                     }else if (root.getString("errorcode").equals("200")){
-                                        finish();
+                                        //finish();
+                                        saveErrorLog("login", "200 "+root.getString("message"));
                                         Toast.makeText(activity, root.getString("message"), Toast.LENGTH_LONG).show();
+                                        finish();
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                     saveErrorLog("login", e.getLocalizedMessage());
-                                    //finish();
+                                    finish();
                                 }
 
                             }
