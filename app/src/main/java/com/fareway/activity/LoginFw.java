@@ -237,7 +237,6 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
                             @Override
                             public void onResponse(String response) {
                                 Log.i("Fareway", response.toString());
-                                //response="[]";
                                 try {
                                     JSONObject root = new JSONObject(response);
                                     root.getString("errorcode");
@@ -289,6 +288,7 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
                                             Log.i("Longitude", Longitude);
                                         }catch (Exception e){
                                             e.printStackTrace();
+                                            saveErrorLog("login", e.getLocalizedMessage());
                                         }
                                         //saveLogin();
 
@@ -371,11 +371,13 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
                 }
                 catch (Exception e)
                 {
+                    saveErrorLog("login", e.getLocalizedMessage());
                     finish();
                     e.printStackTrace();
                 }
 
             } catch (Exception e) {
+                saveErrorLog("login", e.getLocalizedMessage());
                 finish();
                 e.printStackTrace();
                 //  progressDialog.dismiss();

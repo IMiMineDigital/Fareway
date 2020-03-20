@@ -4560,7 +4560,6 @@ public class MainFwActivity extends AppCompatActivity
                             @Override
                             public void onResponse(String response) {
                                 Log.i("Fareway Personal Deal", response.toString());
-                                //response="[]";
                                 if (response!=null){
                                     try {
 
@@ -5839,7 +5838,6 @@ public class MainFwActivity extends AppCompatActivity
                             @Override
                             public void onResponse(String response) {
                                 Log.i("Digital coupon response", response.toString());
-                                //response="";
                                 if (response!=null){
                                     try {
                                         JSONObject root = new JSONObject(response);
@@ -7989,7 +7987,7 @@ public class MainFwActivity extends AppCompatActivity
                                 if (!response.equals("[]")) {
                                     try {
                                         rv_items_verite.setVisibility(View.VISIBLE);
-                                        Log.i("Verites response", response.toString());
+                                        //Log.i("Verites response", response.toString());
                                         jsonParam = new JSONArray(response.toString());
                                        /* List<RelatedItem> items = new Gson().fromJson(jsonParam.toString(), new TypeToken<List<RelatedItem>>() {
                                         }.getType());
@@ -13484,8 +13482,6 @@ public class MainFwActivity extends AppCompatActivity
                             @Override
                             public void onResponse(String response) {
                                 Log.i("ShoppingListId", response.toString());
-                                //response="[]";
-
                                 try {
                                     JSONObject root = new JSONObject(response);
                                     root.getString("errorcode");
@@ -13626,9 +13622,7 @@ public class MainFwActivity extends AppCompatActivity
                                             Log.i("shopping", "test");
                                             shoppingArrayList.clear();
                                             shoppingListAdapter.notifyDataSetChanged();
-                                            //tv_number_item.setText(String.valueOf(0));
                                             tv.setText(String.valueOf(0));
-                                            //activatedOffersListIdLoad();
 
                                         } else {
                                             Log.i("shopping", String.valueOf(shopping));
@@ -13636,18 +13630,8 @@ public class MainFwActivity extends AppCompatActivity
 
                                             for (int i = 0; i < shopping.length(); i++) {
 
-                                               /* couponId=shopping.getJSONObject(i).getString("CouponID");
-
-                                                Log.i("couponId", shopping.getJSONObject(i).getString("CouponID"));
-
-                                                shopping.getJSONObject(i).getString("Quantity");
-                                                qty= qty+Integer.parseInt(shopping.getJSONObject(i).getString("Quantity"));
-                                                Log.i("qut", shopping.getJSONObject(i).getString("Quantity"));*/
                                             }
-                                            //tv_number_item.setText(String.valueOf(shopping.length()));
                                             tv.setText(String.valueOf(shopping.length()));
-                                            //
-                                            //activatedOffersListIdLoad();
                                             activatedOffersListMainLoad();
                                         }
                                     }
@@ -18451,12 +18435,12 @@ public class MainFwActivity extends AppCompatActivity
                 // progressDialog.setMessage("Processing");
                 //progressDialog.show();
 
-                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|10.5",
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|10.6",
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
                                 Log.i("Fareway", response.toString());
-                                Log.i("url",Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|10.5");
+                                Log.i("url",Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|10.6");
                                 try {
                                     JSONObject root = new JSONObject(response);
                                     root.getString("errorcode");

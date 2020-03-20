@@ -24,6 +24,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.fareway.R;
@@ -35,6 +36,7 @@ import com.fareway.utility.ConnectivityReceiver;
 import com.fareway.utility.Constant;
 import com.fareway.utility.DividerRVDecoration;
 import com.fareway.utility.NetworkUtils;
+import com.fareway.utility.UserAlertDialog;
 import com.google.gson.Gson;
 import com.google.gson.reflect.TypeToken;
 
@@ -49,6 +51,7 @@ import java.util.Map;
 
 public class PurchaseHistoryDetail extends AppCompatActivity {
     private ProgressDialog progressDialog;
+    private UserAlertDialog userAlertDialog;
     AppUtilFw appUtil;
     private Activity activity;
     private AlertDialog alertDialog;
@@ -67,6 +70,7 @@ public class PurchaseHistoryDetail extends AppCompatActivity {
         activity=PurchaseHistoryDetail.this;
         mQueue= FarewayApplication.getmInstance(this).getmRequestQueue();
         appUtil=new AppUtilFw(activity);
+        userAlertDialog=new UserAlertDialog(activity);
 
         tv_bottom_bar1=findViewById(R.id.tv_bottom_bar1);
         tv_bottom_bar2=findViewById(R.id.tv_bottom_bar2);
@@ -81,7 +85,7 @@ public class PurchaseHistoryDetail extends AppCompatActivity {
                 getIntent().getExtras().getString("PURCHASETOTALAMOUNT");*/
         //String rate = getIntent().getExtras().getString("PURCHASESTORELOCATION");
         //String rate = getIntent().getExtras().getString("PURCHASETOTALAMOUNT");
-        tv_header_bar.setText(getIntent().getExtras().getString("PURCHASEDATE"));
+        //tv_header_bar.setText(getIntent().getExtras().getString("PURCHASEDATE"));
         tv_header_location.setText(getIntent().getExtras().getString("PURCHASESTORELOCATION"));
         tv_header_total_price.setText("$"+getIntent().getExtras().getString("PURCHASETOTALAMOUNT"));
         tv_bottom_bar2.setText("$"+getIntent().getExtras().getString("REMAINAMOUTNT"));
@@ -126,6 +130,7 @@ public class PurchaseHistoryDetail extends AppCompatActivity {
                                             tv_bottom_bar1.setText(purchasemessage.getJSONObject(i).getString("totalquantity"));
                                             //tv_bottom_bar2.setText("$"+purchasemessage.getJSONObject(i).getString("remainamount"));
                                             tv_bottom_bar3.setText(purchasemessage.getJSONObject(i).getString("totalamount"));
+                                            tv_header_bar.setText(purchasemessage.getJSONObject(i).getString("purchasedate")+" Purchase");
                                         }
 
                                         purchaseArrayList.clear();
@@ -137,6 +142,7 @@ public class PurchaseHistoryDetail extends AppCompatActivity {
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
+                                    saveErrorLog("purchaseHistoryLoad", e.getLocalizedMessage());
                                 }
                             }
                         }, new Response.ErrorListener() {
@@ -144,6 +150,7 @@ public class PurchaseHistoryDetail extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         Log.i("Volley error resp", "error----" + error.getMessage());
                         error.printStackTrace();
+                        saveErrorLog("purchaseHistoryLoad", String.valueOf(error.networkResponse.statusCode));
                         progressDialog.dismiss();
                     }
                 })
@@ -181,17 +188,19 @@ public class PurchaseHistoryDetail extends AppCompatActivity {
                 catch (Exception e)
                 {
                     e.printStackTrace();
+                    saveErrorLog("purchaseHistoryLoad", e.getLocalizedMessage());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                saveErrorLog("purchaseHistoryLoad", e.getLocalizedMessage());
                 progressDialog.dismiss();
 //                displayAlert();
             }
         } else {
             progressDialog.dismiss();
-            // alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
-            //         getString(R.string.ok),getString(R.string.alert));
-            // alertDialog.show();
+             alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                     getString(R.string.ok),getString(R.string.alert));
+             alertDialog.show();
 //            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
         }
     }
@@ -201,5 +210,90 @@ public class PurchaseHistoryDetail extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    private void saveErrorLog(String FunctionName, String ErrorDetail) {
+        if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+            try {
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.ERRORLOG + "?FunctionName=" + FunctionName + "&ErrorSource=" + "android" + "&ErrorStatus=" + "fail" + "&ErrorDetail="+ErrorDetail + "&MemberId=" + appUtil.getPrefrence("MemberId") ,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.i("Fareway", response.toString());
+                                try {
+                                    JSONObject root = new JSONObject(response);
+                                    root.getString("errorcode");
+                                    Log.i("errorcode", root.getString("errorcode"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Volley error resp", "error----" + error.getMessage());
+                        error.printStackTrace();
+                        if (error.networkResponse == null) {
+                            if (error.getClass().equals(TimeoutError.class)) {
+                                alertDialog = userAlertDialog.createPositiveAlert("Time out error",
+                                        getString(R.string.ok), "Fail");
+                                alertDialog.show();
+
+                            }
+                        }
+                        finish();
+                    }
+                }) {
+
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/x-www-form-urlencoded";
+                    }
+
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+
+                        params.put("Device", "5");
+                        return params;
+                    }
+
+                    //this is the part, that adds the header to the request
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/x-www-form-urlencoded");
+                        params.put("Authorization", appUtil.getPrefrence("token_type") + " " + appUtil.getPrefrence("access_token"));
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (5000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    // FarewayApplication.getInstance().addToRequestQueue(jsonObjectRequest);
+                    mQueue.add(jsonObjectRequest);
+                } catch (Exception e) {
+                    finish();
+                    e.printStackTrace();
+                }
+
+            } catch (Exception e) {
+                finish();
+                e.printStackTrace();
+                //  progressDialog.dismiss();
+//                displayAlert();
+            }
+
+        } else {
+            finish();
+            alertDialog = userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                    getString(R.string.ok), getString(R.string.alert));
+            alertDialog.show();
+//            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
+        }
     }
 }

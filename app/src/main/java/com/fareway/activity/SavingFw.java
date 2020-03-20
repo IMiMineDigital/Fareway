@@ -23,6 +23,7 @@ import com.android.volley.Request;
 import com.android.volley.RequestQueue;
 import com.android.volley.Response;
 import com.android.volley.RetryPolicy;
+import com.android.volley.TimeoutError;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.fareway.R;
@@ -59,6 +60,7 @@ public class SavingFw extends AppCompatActivity {
         activity=SavingFw.this;
         mQueue=FarewayApplication.getmInstance(this).getmRequestQueue();
         appUtil=new AppUtilFw(activity);
+        userAlertDialog=new UserAlertDialog(activity);
         comeFrom=getIntent().getStringExtra("comeFrom");
         getSupportActionBar().setTitle("MyFareway Savings");
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
@@ -141,6 +143,7 @@ public class SavingFw extends AppCompatActivity {
                                     tv_tyc_lbl.setText("Digital Coupons");
                                     tv_total_save_lbl.setText("Total Savings");
                                     e.printStackTrace();
+                                    saveErrorLog("messageLoadSavingFw", e.getLocalizedMessage());
                                 }
                             }
                         }, new Response.ErrorListener() {
@@ -152,6 +155,7 @@ public class SavingFw extends AppCompatActivity {
                         tv_tyc_lbl.setText("Digital Coupons");
                         tv_total_save_lbl.setText("Total Savings");
                         error.printStackTrace();
+                        saveErrorLog("messageLoadSavingFw", String.valueOf(error.networkResponse.statusCode));
                         progressDialog.dismiss();
                     }
                 })
@@ -189,9 +193,11 @@ public class SavingFw extends AppCompatActivity {
                 catch (Exception e)
                 {
                     e.printStackTrace();
+                    saveErrorLog("messageLoadSavingFw", e.getLocalizedMessage());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                saveErrorLog("messageLoadSavingFw", e.getLocalizedMessage());
                 progressDialog.dismiss();
 //                displayAlert();
             }
@@ -208,5 +214,90 @@ public class SavingFw extends AppCompatActivity {
     public boolean onSupportNavigateUp() {
         onBackPressed();
         return true;
+    }
+
+    private void saveErrorLog(String FunctionName, String ErrorDetail) {
+        if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+            try {
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.ERRORLOG + "?FunctionName=" + FunctionName + "&ErrorSource=" + "android" + "&ErrorStatus=" + "fail" + "&ErrorDetail="+ErrorDetail + "&MemberId=" + appUtil.getPrefrence("MemberId") ,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.i("Fareway", response.toString());
+                                try {
+                                    JSONObject root = new JSONObject(response);
+                                    root.getString("errorcode");
+                                    Log.i("errorcode", root.getString("errorcode"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Volley error resp", "error----" + error.getMessage());
+                        error.printStackTrace();
+                        if (error.networkResponse == null) {
+                            if (error.getClass().equals(TimeoutError.class)) {
+                                alertDialog = userAlertDialog.createPositiveAlert("Time out error",
+                                        getString(R.string.ok), "Fail");
+                                alertDialog.show();
+
+                            }
+                        }
+                        finish();
+                    }
+                }) {
+
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/x-www-form-urlencoded";
+                    }
+
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+
+                        params.put("Device", "5");
+                        return params;
+                    }
+
+                    //this is the part, that adds the header to the request
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/x-www-form-urlencoded");
+                        params.put("Authorization", appUtil.getPrefrence("token_type") + " " + appUtil.getPrefrence("access_token"));
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (5000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    // FarewayApplication.getInstance().addToRequestQueue(jsonObjectRequest);
+                    mQueue.add(jsonObjectRequest);
+                } catch (Exception e) {
+                    finish();
+                    e.printStackTrace();
+                }
+
+            } catch (Exception e) {
+                finish();
+                e.printStackTrace();
+                //  progressDialog.dismiss();
+//                displayAlert();
+            }
+
+        } else {
+            finish();
+            alertDialog = userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                    getString(R.string.ok), getString(R.string.alert));
+            alertDialog.show();
+//            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
+        }
     }
 }

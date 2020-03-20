@@ -22,6 +22,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -62,6 +63,8 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter.ShoppingListAdapterListener {
 
@@ -334,14 +337,13 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                 appUtil.setPrefrence("comeFrom", "mpp");
 
                 if (appUtil.getPrefrence("isLogin").equalsIgnoreCase("yes")==true) {
-                    // getTokenkey();
-                    if (currentDate.compareTo(saveDate) < 0) {
-                      //shoppingListLoad();
+                    /*if (currentDate.compareTo(saveDate) < 0) {
                         shoppingListIdLoad();
 
                     } else {
                         getTokenkey();
-                    }
+                    }*/
+                    getTokenkey2();
 
                 } else {
 
@@ -422,6 +424,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
+                                    saveErrorLog("shoppingListLoadShoppingFW", e.getLocalizedMessage());
                                 }
                             }
                         }, new Response.ErrorListener() {
@@ -429,6 +432,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                     public void onErrorResponse(VolleyError error) {
                         Log.i("Volley error resp", "error----" + error.getMessage());
                         error.printStackTrace();
+                        saveErrorLog("shoppingListLoadShoppingFW", String.valueOf(error.networkResponse.statusCode));
                           progressDialog.dismiss();
                     }
                 })
@@ -466,9 +470,11 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                 catch (Exception e)
                 {
                     e.printStackTrace();
+                    saveErrorLog("shoppingListLoadShoppingFW", e.getLocalizedMessage());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                saveErrorLog("shoppingListLoadShoppingFW", e.getLocalizedMessage());
                  progressDialog.dismiss();
 //                displayAlert();
             }
@@ -533,6 +539,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
+                                    saveErrorLog("activatedOffersListIdLoadShoppingFW", e.getLocalizedMessage());
                                 }
                             }
                         }, new Response.ErrorListener() {
@@ -540,6 +547,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                     public void onErrorResponse(VolleyError error) {
                         Log.i("Volley error resp", "error----" + error.getMessage());
                         error.printStackTrace();
+                        saveErrorLog("activatedOffersListIdLoadShoppingFW", String.valueOf(error.networkResponse.statusCode));
                         progressDialog.dismiss();
                     }
                 })
@@ -577,9 +585,11 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                 catch (Exception e)
                 {
                     e.printStackTrace();
+                    saveErrorLog("activatedOffersListIdLoadShoppingFW", e.getLocalizedMessage());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
+                saveErrorLog("activatedOffersListIdLoadShoppingFW", e.getLocalizedMessage());
                 progressDialog.dismiss();
 //                displayAlert();
             }
@@ -628,13 +638,18 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                         @Override
                         public void onResponse(String  response) {
                             Log.i("success", String.valueOf(response));
-                            fetchShoppingListLoad();
+                            try {
+                                fetchShoppingListLoad();
+                            }catch (Exception e){
+                                saveErrorLog("onShoppingItemSelectedShoppingFW", e.getLocalizedMessage());
+
+                            }
 
                         }
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
-
+                    saveErrorLog("onShoppingItemSelectedShoppingFW", String.valueOf(error.networkResponse.statusCode));
                     Log.i("fail", String.valueOf(error));
                 }
             }){
@@ -661,6 +676,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
             catch (Exception e)
             {
                 e.printStackTrace();
+                saveErrorLog("onShoppingItemSelectedShoppingFW", e.getLocalizedMessage());
             }
         }
 
@@ -687,14 +703,20 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                         @Override
                         public void onResponse(String  response) {
                             Log.i("success", String.valueOf(response));
-                            fetchShoppingListLoad();
-                            progressDialog.dismiss();
+                            try {
+                                fetchShoppingListLoad();
+                                progressDialog.dismiss();
+                            }catch (Exception e){
+                                saveErrorLog("onShoppingaddSelectedShoppingFW", e.getLocalizedMessage());
+                            }
+
 
                         }
                     }, new Response.ErrorListener() {
                 @Override
                 public void onErrorResponse(VolleyError error) {
                     Log.i("fail", String.valueOf(error));
+                    saveErrorLog("onShoppingaddSelectedShoppingFW", String.valueOf(error.networkResponse.statusCode));
                 }
             }){
 
@@ -729,6 +751,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
             catch (Exception e)
             {
                 e.printStackTrace();
+                saveErrorLog("onShoppingaddSelectedShoppingFW", e.getLocalizedMessage());
             }
 
         }
@@ -768,14 +791,20 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                             @Override
                             public void onResponse(String  response) {
                                 Log.i("success", String.valueOf(response));
-                                fetchShoppingListLoad();
-                                progressDialog.dismiss();
+                                try {
+                                    fetchShoppingListLoad();
+                                    progressDialog.dismiss();
+                                }catch (Exception e){
+                                    saveErrorLog("onShoppingaddSelectedShoppingFW", e.getLocalizedMessage());
+                                }
+
 
                             }
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.i("fail", String.valueOf(error));
+                        saveErrorLog("onShoppingaddSelectedShoppingFW", String.valueOf(error.networkResponse.statusCode));
                     }
                 }){
 
@@ -817,11 +846,13 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                 catch (Exception e)
                 {
                     e.printStackTrace();
+                    saveErrorLog("onShoppingaddSelectedShoppingFW", e.getLocalizedMessage());
                 }
             }
             catch (Exception e)
             {
                 e.printStackTrace();
+                saveErrorLog("onShoppingaddSelectedShoppingFW", e.getLocalizedMessage());
             }
 
         }
@@ -842,14 +873,19 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                             @Override
                             public void onResponse(String  response) {
                                 Log.i("success", String.valueOf(response));
-                                fetchShoppingListLoad();
-                                progressDialog.dismiss();
+                                try {
+                                    fetchShoppingListLoad();
+                                    progressDialog.dismiss();
+                                }catch (Exception e){
+                                    saveErrorLog("onShoppingsubSelectedShoppingFW", e.getLocalizedMessage());
+                                }
 
                             }
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.i("fail", String.valueOf(error));
+                        saveErrorLog("onShoppingsubSelectedShoppingFW", String.valueOf(error.networkResponse.statusCode));
                     }
                 }){
 
@@ -884,6 +920,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                 catch (Exception e)
                 {
                     e.printStackTrace();
+                    saveErrorLog("onShoppingsubSelectedShoppingFW", e.getLocalizedMessage());
                 }
             }
             else {
@@ -922,13 +959,19 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                                 @Override
                                 public void onResponse(String  response) {
                                     Log.i("success", String.valueOf(response));
-                                    fetchShoppingListLoad();
-                                    progressDialog.dismiss();
+                                    try {
+                                        fetchShoppingListLoad();
+                                        progressDialog.dismiss();
+                                    }catch (Exception e){
+                                        saveErrorLog("onShoppingsubSelectedShoppingFW", e.getLocalizedMessage());
+                                    }
+
                                 }
                             }, new Response.ErrorListener() {
                         @Override
                         public void onErrorResponse(VolleyError error) {
                             Log.i("fail", String.valueOf(error));
+                            saveErrorLog("onShoppingsubSelectedShoppingFW", String.valueOf(error.networkResponse.statusCode));
                         }
                     }){
 
@@ -970,11 +1013,13 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                     catch (Exception e)
                     {
                         e.printStackTrace();
+                        saveErrorLog("onShoppingsubSelectedShoppingFW", e.getLocalizedMessage());
                     }
                 }
                 catch (Exception e)
                 {
                     e.printStackTrace();
+                    saveErrorLog("onShoppingsubSelectedShoppingFW", e.getLocalizedMessage());
                 }
 
             }
@@ -1044,6 +1089,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
+                                    saveErrorLog("fetchShoppingListLoadShoppingFW", e.getLocalizedMessage());
                                 }
                             }
                         }, new Response.ErrorListener() {
@@ -1051,6 +1097,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                     public void onErrorResponse(VolleyError error) {
                         Log.i("Volley error resp", "error----" + error.getMessage());
                         error.printStackTrace();
+                        saveErrorLog("fetchShoppingListLoadShoppingFW", String.valueOf(error.networkResponse.statusCode));
                         //progressDialog.dismiss();
                     }
                 })
@@ -1088,11 +1135,11 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                 catch (Exception e)
                 {
                     e.printStackTrace();
+                    saveErrorLog("fetchShoppingListLoadShoppingFW", e.getLocalizedMessage());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                //progressDialog.dismiss();
-//                displayAlert();
+                saveErrorLog("fetchShoppingListLoadShoppingFW", e.getLocalizedMessage());
             }
         } else {
             alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
@@ -1131,11 +1178,13 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                                   //  startActivity(i);
                                  //   finish();
                                    // shoppingListLoad();
-                                    shoppingListIdLoad();
+                                    //shoppingListIdLoad();
+                                    login();
                                 } catch (Throwable e) {
                                     //  progressDialog.dismiss();
                                     Log.i("Excep", "error----" + e.getMessage());
                                     e.printStackTrace();
+                                    saveErrorLog("getTokenkeyShoppingFW", e.getLocalizedMessage());
                                 }
                             }
                         }, new Response.ErrorListener() {
@@ -1143,6 +1192,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                     public void onErrorResponse(VolleyError error) {
                         Log.i("Volley error resp", "error----" + error.getMessage());
                         error.printStackTrace();
+                        saveErrorLog("getTokenkeyShoppingFW", String.valueOf(error.networkResponse.statusCode));
                          progressDialog.dismiss();
                         if (error.networkResponse == null) {
                             //  progressDialog.dismiss();
@@ -1195,11 +1245,13 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                 catch (Exception e)
                 {
                     e.printStackTrace();
+                    saveErrorLog("getTokenkeyShoppingFW", e.getLocalizedMessage());
                 }
 
             } catch (Exception e) {
 
                 e.printStackTrace();
+                saveErrorLog("getTokenkeyShoppingFW", e.getLocalizedMessage());
                   progressDialog.dismiss();
 //                displayAlert();
             }
@@ -1233,11 +1285,13 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                                 @Override
                                 public void onResponse(String  response) {
                                     Log.i("ViewRemoveAllDialog", String.valueOf(response));
-                                    activatedOffer=null;
-                                    shoppingArrayList.clear();
-                                    shoppingListAdapter.notifyDataSetChanged();
-                                    //shoppingListLoad();
-                                    //removeOwnItem();
+                                    try {
+                                        activatedOffer=null;
+                                        shoppingArrayList.clear();
+                                        shoppingListAdapter.notifyDataSetChanged();
+                                    }catch (Exception e){
+                                        saveErrorLog("ViewRemoveAllDialogShoppingFW", e.getLocalizedMessage());
+                                    }
                                 }
                             }, new Response.ErrorListener() {
                         @Override
@@ -1248,6 +1302,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                             shoppingArrayList.clear();
                             shoppingListAdapter.notifyDataSetChanged();
                             removeOwnItem();
+                            saveErrorLog("ViewRemoveAllDialogShoppingFW", String.valueOf(error.networkResponse.statusCode));
                         }
                     }){
                         @Override
@@ -1272,6 +1327,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                     catch (Exception e)
                     {
                         e.printStackTrace();
+                        saveErrorLog("ViewRemoveAllDialogShoppingFW", e.getLocalizedMessage());
                     }
                     dialog.dismiss();
                 }
@@ -1297,15 +1353,18 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                     @Override
                     public void onResponse(String  response) {
                         Log.i("removeOwnItemsuccess", String.valueOf(response));
-                        shoppingListLoad();
-                        //messageLoad();
-                        //removeOwnItem();
+                        try {
+                            shoppingListLoad();
+                        }catch (Exception e){
+                            saveErrorLog("removeOwnItemShoppingFW", e.getLocalizedMessage());
+                        }
                     }
                 }, new Response.ErrorListener() {
 
             @Override
             public void onErrorResponse(VolleyError error) {
                 Log.i("fail", String.valueOf(error));
+                saveErrorLog("removeOwnItemShoppingFW", String.valueOf(error.networkResponse.statusCode));
                 //messageLoad();
             }
         }){
@@ -1331,6 +1390,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
         catch (Exception e)
         {
             e.printStackTrace();
+            saveErrorLog("removeOwnItemShoppingFW", e.getLocalizedMessage());
         }
         //dialog.dismiss();
 
@@ -1345,16 +1405,12 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                     @Override
                     public void onResponse(String  response) {
                         Log.i("success", String.valueOf(response));
-                        //shoppingListLoad();
-                        fetchShoppingListLoad();
-                        // remove_layout_detail.setVisibility(View.GONE);
-                        //    count_product_number_detail.setVisibility(View.GONE);
-                        // product.setClickCount(1);
-                        // tv_status_detaile.setText("Add");
-                        // circular_layout_detaile.setBackground(getResources().getDrawable(R.drawable.circular_red_bg));
-                        //  imv_status_detaile.setImageDrawable(getResources().getDrawable(R.drawable.addwhite));
-                        //remove quantity
-                        //  SetRemoveActivateDetail(product.getPrimaryOfferTypeId(),product.getCouponID(),product.getUPC(),product.getRequiresActivation(),1);
+                        try {
+                            fetchShoppingListLoad();
+                        }catch (Exception e){
+                            saveErrorLog("removeSingleOwnItemShoppingFW", e.getLocalizedMessage());
+                        }
+
 
                     }
                 }, new Response.ErrorListener() {
@@ -1362,6 +1418,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
             public void onErrorResponse(VolleyError error) {
                 //removeSingleOwnItem(shopping.getShoppingListItemID());
                 Log.i("fail", String.valueOf(error));
+                saveErrorLog("removeSingleOwnItemShoppingFW", String.valueOf(error.networkResponse.statusCode));
             }
         }){
             @Override
@@ -1387,6 +1444,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
         catch (Exception e)
         {
             e.printStackTrace();
+            saveErrorLog("removeSingleOwnItemShoppingFW", e.getLocalizedMessage());
         }
     }
 
@@ -1422,8 +1480,13 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                             @Override
                             public void onResponse(String response) {
                                 Log.i("Fareway", response.toString());
-                                progressDialog.dismiss();
-                                fetchShoppingListLoad();
+                                try {
+                                    progressDialog.dismiss();
+                                    fetchShoppingListLoad();
+                                }catch (Exception e){
+                                    saveErrorLog("addShoppingItemShoppingFW", e.getLocalizedMessage());
+                                }
+
 
                             }
                         }, new Response.ErrorListener() {
@@ -1431,6 +1494,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                     public void onErrorResponse(VolleyError error) {
                         Log.i("Volley error resp", "error----" + error.getMessage());
                         error.printStackTrace();
+                        saveErrorLog("addShoppingItemShoppingFW", String.valueOf(error.networkResponse.statusCode));
                         progressDialog.dismiss();
                         if (error.networkResponse == null) {
                             progressDialog.dismiss();
@@ -1486,13 +1550,13 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                 catch (Exception e)
                 {
                     e.printStackTrace();
+                    saveErrorLog("addShoppingItemShoppingFW", e.getLocalizedMessage());
                 }
 
             } catch (Exception e) {
-
                 e.printStackTrace();
+                saveErrorLog("addShoppingItemShoppingFW", e.getLocalizedMessage());
                 progressDialog.dismiss();
-//                displayAlert();
             }
 
         } else {
@@ -1555,6 +1619,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
+                                    saveErrorLog("shoppingListIdLoadShoppingFW", e.getLocalizedMessage());
                                 }
                             }
                         }, new Response.ErrorListener() {
@@ -1562,6 +1627,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                     public void onErrorResponse(VolleyError error) {
                         Log.i("Volley error resp", "error----" + error.getMessage());
                         error.printStackTrace();
+                        saveErrorLog("shoppingListIdLoadShoppingFW", String.valueOf(error.networkResponse.statusCode));
                         // progressDialog.dismiss();
                     }
                 })
@@ -1599,11 +1665,11 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                 catch (Exception e)
                 {
                     e.printStackTrace();
+                    saveErrorLog("shoppingListIdLoadShoppingFW", e.getLocalizedMessage());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                //  progressDialog.dismiss();
-//                displayAlert();
+                saveErrorLog("shoppingListIdLoadShoppingFW", e.getLocalizedMessage());
             }
         } else {
             alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
@@ -1664,14 +1730,19 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                             @Override
                             public void onResponse(String response) {
                                 Log.i("Fareway", response.toString());
-                                progressDialog.dismiss();
-                                //  fetchShoppingListLoad();
+                                try {
+                                    progressDialog.dismiss();
+                                }catch (Exception e){
+                                    saveErrorLog("sendEmailShoppingListShoppingFW", e.getLocalizedMessage());
+                                }
+
                             }
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
                         Log.i("Volley error resp", "error----" + error.getMessage());
                         error.printStackTrace();
+                        saveErrorLog("sendEmailShoppingListShoppingFW", String.valueOf(error.networkResponse.statusCode));
                         progressDialog.dismiss();
                         if (error.networkResponse == null) {
                             progressDialog.dismiss();
@@ -1728,11 +1799,12 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                 catch (Exception e)
                 {
                     e.printStackTrace();
+                    saveErrorLog("sendEmailShoppingListShoppingFW", e.getLocalizedMessage());
                 }
 
             } catch (Exception e) {
-
                 e.printStackTrace();
+                saveErrorLog("sendEmailShoppingListShoppingFW", e.getLocalizedMessage());
                 progressDialog.dismiss();
 //                displayAlert();
             }
@@ -1740,6 +1812,371 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
         } else {
             alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
                     getString(R.string.ok),getString(R.string.alert));
+            alertDialog.show();
+//            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void login() {
+        if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+            try {
+                // progressDialog = new ProgressDialog(activity);
+                // progressDialog.setMessage("Processing");
+                //progressDialog.show();
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST,Constant.WEB_URL + Constant.LOGIN,
+                        new Response.Listener<String>(){
+                            @Override
+                            public void onResponse(String response) {
+                                Log.i("Fareway", response.toString());
+                                try {
+                                    JSONObject root = new JSONObject(response);
+                                    root.getString("errorcode");
+                                    Log.i("errorcode", root.getString("errorcode"));
+                                    if (root.getString("errorcode").equals("0")){
+
+                                        JSONArray message= root.getJSONArray("message");
+                                        for(int i=0;i<message.length();i++)
+                                        {
+                                            JSONObject jsonParam= message.getJSONObject(i);
+                                            appUtil.setPrefrence("GeoStatus", jsonParam.getString("GeoStatus"));
+                                            appUtil.setPrefrence("ZipCode", jsonParam.getString("ZipCode"));
+                                            appUtil.setPrefrence("UserAccessToken", jsonParam.getString("UserAccessToken"));
+                                            appUtil.setPrefrence("SecretQuestionID", jsonParam.getString("SecretQuestionID"));
+                                            appUtil.setPrefrence("ErrorMessage", jsonParam.getString("ErrorMessage"));
+                                            appUtil.setPrefrence("MemberId", jsonParam.getString("MemberId"));
+                                            appUtil.setPrefrence("IsEmployee", jsonParam.getString("IsEmployee"));
+                                            appUtil.setPrefrence("FName", jsonParam.getString("FName"));
+                                            appUtil.setPrefrence("LName", jsonParam.getString("LName"));
+                                            appUtil.setPrefrence("LoyaltyCard", jsonParam.getString("LoyaltyCard"));
+                                            appUtil.setPrefrence("ActivaStatus", jsonParam.getString("ActivaStatus"));
+                                            appUtil.setPrefrence("ShopperID", jsonParam.getString("ShopperID"));
+                                            appUtil.setPrefrence("StoreId", jsonParam.getString("StoreId"));
+                                            appUtil.setPrefrence("BackupStoreId", jsonParam.getString("StoreId"));
+                                            appUtil.setPrefrence("StoreName", jsonParam.getString("storename"));
+
+                                        }
+                                        appUtil.setPrefrence("SaveLogin", "no");
+
+                                        appUtil.setPrefrence("isLogin", "yes");
+                                        /*Intent i = new Intent(activity, MainFwActivity.class);
+                                        i.putExtra("comeFrom","mpp");
+                                        startActivity(i);
+                                        finish();*/
+                                        shoppingListIdLoad();
+
+                                        /*Log.i("IPaddress",IPaddress);
+                                        Log.i("osName",osName);
+                                        Log.i("myVersion",myVersion);
+                                        Log.i("sdkVersion", String.valueOf(sdkVersion));
+                                        Log.i("diagonalInches", String.valueOf(diagonalInches));
+                                        if (diagonalInches>=6.80){
+                                            deviceType="tablet";
+                                        }else {
+                                            deviceType="mobile";
+                                        }
+                                        Log.i("deviceType", deviceType);
+                                        try {
+                                            Log.i("Latitude", Latitude);
+                                            Log.i("Longitude", Longitude);
+                                        }catch (Exception e){
+                                            e.printStackTrace();
+                                            saveErrorLog("login", e.getLocalizedMessage());
+                                        }*/
+                                        //saveLogin();
+
+                                    }else if (root.getString("errorcode").equals("200")){
+                                        //finish();
+                                        saveErrorLog("loginShoppingFw", "200 "+root.getString("message"));
+                                        Toast.makeText(activity, root.getString("message"), Toast.LENGTH_LONG).show();
+                                        finish();
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                    saveErrorLog("loginShoppingFw", e.getLocalizedMessage());
+                                    finish();
+                                }
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Volley error resp", "error----" + error.getMessage());
+                        error.printStackTrace();
+                        saveErrorLog("loginShoppingFw", String.valueOf(error.networkResponse.statusCode));
+                        //  progressDialog.dismiss();
+                        if (error.networkResponse == null) {
+                            //      progressDialog.dismiss();
+                            if (error.getClass().equals(TimeoutError.class)) {
+//                                Toast.makeText(activity, "Time out error", Toast.LENGTH_LONG).show();
+                                alertDialog=userAlertDialog.createPositiveAlert("Time out error",
+                                        getString(R.string.ok),"Fail");
+                                alertDialog.show();
+
+                            }
+                        }
+                        finish();
+                    }
+                })
+                {
+
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/x-www-form-urlencoded";
+                    }
+
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        ///////
+                        /*appUtil.setPrefrence("Latitude", "0.00");
+                        appUtil.setPrefrence("Longitude", "0.00");
+                        appUtil.setPrefrence("Email", et_email.getText().toString());
+                        appUtil.setPrefrence("Password", et_pwd.getText().toString());*/
+                        ///////
+                        String charsLowerEmail =lowercase(appUtil.getPrefrence("Email"));
+                        appUtil.setPrefrence("Email", charsLowerEmail);
+                        params.put("UserName", charsLowerEmail);
+                        params.put("password", appUtil.getPrefrence("Password"));
+
+                        //test
+                        params.put("Device", "5");
+                        return params;
+                    }
+
+                    //this is the part, that adds the header to the request
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/x-www-form-urlencoded");
+                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (5000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    // FarewayApplication.getInstance().addToRequestQueue(jsonObjectRequest);
+                    mQueue.add(jsonObjectRequest);
+                }
+                catch (Exception e)
+                {
+                    saveErrorLog("loginShoppingFw", e.getLocalizedMessage());
+                    finish();
+                    e.printStackTrace();
+                }
+
+            } catch (Exception e) {
+                saveErrorLog("loginShoppingFw", e.getLocalizedMessage());
+                finish();
+                e.printStackTrace();
+                //  progressDialog.dismiss();
+//                displayAlert();
+            }
+
+        } else {
+            finish();
+            alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                    getString(R.string.ok),getString(R.string.alert));
+            alertDialog.show();
+//            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void getTokenkey2() {
+        if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+            try {
+                // progressDialog = new ProgressDialog(activity);
+                //  progressDialog.setMessage("Processing");
+                //  progressDialog.show();
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST,Constant.WEB_URL + Constant.GET_TOKEN,
+                        new Response.Listener<String>(){
+                            @Override
+                            public void onResponse(String response) {
+                                try {
+                                    Log.i("Fareway text", response.toString());
+                                    JSONObject jsonParam = new JSONObject(response.toString());
+                                    appUtil.setPrefrence("access_token", jsonParam.getString("access_token"));
+                                    appUtil.setPrefrence("token_type", jsonParam.getString("token_type"));
+                                    appUtil.setPrefrence("expires_in", jsonParam.getString("expires_in"));
+                                    appUtil.setPrefrence(".issued", jsonParam.getString(".issued"));
+                                    appUtil.setPrefrence(".expires", jsonParam.getString(".expires"));
+
+                                    shoppingListIdLoad();
+                                } catch (Throwable e) {
+                                    //  progressDialog.dismiss();
+                                    Log.i("Excep", "error----" + e.getMessage());
+                                    e.printStackTrace();
+                                    saveErrorLog("getTokenkey2ShoppingFw", e.getLocalizedMessage());
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Volley error resp", "error----" + error.getMessage());
+                        error.printStackTrace();
+                        saveErrorLog("getTokenkey2ShoppingFw", String.valueOf(error.networkResponse.statusCode));
+                        // progressDialog.dismiss();
+                        if (error.networkResponse == null) {
+                            //  progressDialog.dismiss();
+                            if (error.getClass().equals(TimeoutError.class)) {
+//                                Toast.makeText(activity, "Time out error", Toast.LENGTH_LONG).show();
+                                alertDialog=userAlertDialog.createPositiveAlert("Time out error",
+                                        getString(R.string.ok),"Fail");
+                                alertDialog.show();
+
+                            }
+                        }
+                    }
+                })
+                {
+
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/x-www-form-urlencoded";
+                    }
+
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("grant_type", "password");
+                        return params;
+                    }
+
+                    //this is the part, that adds the header to the request
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/x-www-form-urlencoded");
+//                        params.put("Authorization", appUtil.getPrefrence("token_type")+" "+appUtil.getPrefrence("access_token"));
+                        params.put("username", "imemine@usa.com");
+                        params.put("password", "123456");
+                        params.put("ClientID", "1");
+//                        params.put("Content-Type", "application/json ;charset=utf-8");
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (5000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    mQueue.add(jsonObjectRequest);
+                    //  FarewayApplication.getInstance().addToRequestQueue(jsonObjectRequest);
+                }
+                catch (Exception e)
+                {
+                    e.printStackTrace();
+                }
+
+            } catch (Exception e) {
+
+                e.printStackTrace();
+                //  progressDialog.dismiss();
+//                displayAlert();
+            }
+
+        } else {
+            alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                    getString(R.string.ok),getString(R.string.alert));
+            alertDialog.show();
+//            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private String lowercase(String lowerString){
+        StringBuffer capBuffer = new StringBuffer();
+        Matcher capMatcher = Pattern.compile("([a-z])([a-z]*)", Pattern.CASE_INSENSITIVE).matcher(lowerString);
+        while (capMatcher.find()){
+            capMatcher.appendReplacement(capBuffer, capMatcher.group(1).toLowerCase() + capMatcher.group(2).toLowerCase());
+        }
+
+        return capMatcher.appendTail(capBuffer).toString();
+    }
+
+    private void saveErrorLog(String FunctionName, String ErrorDetail) {
+        if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+            try {
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.ERRORLOG + "?FunctionName=" + FunctionName + "&ErrorSource=" + "android" + "&ErrorStatus=" + "fail" + "&ErrorDetail="+ErrorDetail + "&MemberId=" + appUtil.getPrefrence("MemberId") ,
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.i("Fareway", response.toString());
+                                try {
+                                    JSONObject root = new JSONObject(response);
+                                    root.getString("errorcode");
+                                    Log.i("errorcode", root.getString("errorcode"));
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Volley error resp", "error----" + error.getMessage());
+                        error.printStackTrace();
+                        if (error.networkResponse == null) {
+                            if (error.getClass().equals(TimeoutError.class)) {
+                                alertDialog = userAlertDialog.createPositiveAlert("Time out error",
+                                        getString(R.string.ok), "Fail");
+                                alertDialog.show();
+
+                            }
+                        }
+                        finish();
+                    }
+                }) {
+
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/x-www-form-urlencoded";
+                    }
+
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+
+                        params.put("Device", "5");
+                        return params;
+                    }
+
+                    //this is the part, that adds the header to the request
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/x-www-form-urlencoded");
+                        params.put("Authorization", appUtil.getPrefrence("token_type") + " " + appUtil.getPrefrence("access_token"));
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (5000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    // FarewayApplication.getInstance().addToRequestQueue(jsonObjectRequest);
+                    mQueue.add(jsonObjectRequest);
+                } catch (Exception e) {
+                    finish();
+                    e.printStackTrace();
+                }
+
+            } catch (Exception e) {
+                finish();
+                e.printStackTrace();
+                //  progressDialog.dismiss();
+//                displayAlert();
+            }
+
+        } else {
+            finish();
+            alertDialog = userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                    getString(R.string.ok), getString(R.string.alert));
             alertDialog.show();
 //            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
         }

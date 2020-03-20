@@ -26,6 +26,7 @@ public class Shopping {
     private String HasRelatedItems;
     private String ValidityType;
     private String IsStacked;
+    private String OfferTypeTagName;
 
 
 
@@ -212,5 +213,13 @@ public class Shopping {
 
     public void setIsStacked(String isStacked) {
         IsStacked = isStacked;
+    }
+
+    public String getOfferTypeTagName() {
+        return OfferTypeTagName;
+    }
+
+    public void setOfferTypeTagName(String offerTypeTagName) {
+        OfferTypeTagName = offerTypeTagName;
     }
 }

@@ -55,7 +55,7 @@ public class SplashFw extends AppCompatActivity {
         userAlertDialog = new UserAlertDialog(activity);
         mQueue = FarewayApplication.getmInstance(this).getmRequestQueue();
         getSupportActionBar().hide();
-        //getSupportActionBar().hide();
+
 
         String saveDate = appUtil.getPrefrence(".expires");
         Log.i("saveDate", saveDate);
@@ -63,13 +63,10 @@ public class SplashFw extends AppCompatActivity {
 
             if (saveDate.length() == 0) {
                 Log.i("start date", saveDate + appUtil.getPrefrence("isLogin").equalsIgnoreCase("yes"));
-                //Toast.makeText(activity, "first time open", Toast.LENGTH_LONG).show();
                 getTokenkey();
             }
-
             else {
-                //Toast.makeText(activity, "second time open" + saveDate+appUtil.getPrefrence("isLogin").equalsIgnoreCase("yes"), Toast.LENGTH_LONG).show();
-                SimpleDateFormat spf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss");
+                 SimpleDateFormat spf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss");
                 Date newDate = null;
                 try {
                     newDate = spf.parse(saveDate);
@@ -77,25 +74,20 @@ public class SplashFw extends AppCompatActivity {
                     e.printStackTrace();
                 }
                 String c = "yyyy-MM-dd HH:mm:ss";
-                //String c= "dd MMM yyyy";
                 spf = new SimpleDateFormat(c);
                 saveDate = spf.format(newDate);
                 System.out.println("saveDate " + saveDate);
 
                 Calendar c2 = Calendar.getInstance();
                 SimpleDateFormat dateformat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                //SimpleDateFormat dateformat2 = new SimpleDateFormat("dd MMM yyyy");
                 String currentDate = dateformat2.format(c2.getTime());
                 System.out.println("currentDate " + currentDate);
                 appUtil.setPrefrence("comeFrom", "mpp");
 
                 if (appUtil.getPrefrence("isLogin").equalsIgnoreCase("yes")==true) {
-                    // getTokenkey();
-                    if (currentDate.compareTo(saveDate) < 0) {
-                        //getTokenkey();
-                        /*Intent i = new Intent(activity, LoginFw.class);
-                        startActivity(i);
-                        finish();*/
+                    getTokenkey2();
+
+                    /*if (currentDate.compareTo(saveDate) < 0) {
                         if (appUtil.getPrefrence("StoreId").equalsIgnoreCase(appUtil.getPrefrence("BackupStoreId"))){
                             Intent i = new Intent(activity, MainFwActivity.class);
 
@@ -115,9 +107,10 @@ public class SplashFw extends AppCompatActivity {
 
                     } else {
                         getTokenkey2();
-                    }
+                    }*/
 
-                } else {
+                }
+                else {
 
                     if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
                         getTokenkey();
@@ -132,7 +125,6 @@ public class SplashFw extends AppCompatActivity {
             }
 
         }
-
         else {
 
             if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
@@ -157,7 +149,6 @@ public class SplashFw extends AppCompatActivity {
                             public void onResponse(String response) {
                                 try {
                                     Log.i("Fareway text", response.toString());
-                                    //response="[]";
                                     JSONObject jsonParam = new JSONObject(response.toString());
                                     appUtil.setPrefrence("access_token", jsonParam.getString("access_token"));
                                     appUtil.setPrefrence("token_type", jsonParam.getString("token_type"));

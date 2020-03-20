@@ -200,7 +200,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                 @Override
                 public void onClick(View v) {
                     holder.tv_header_title.setBackground(mContext.getResources().getDrawable(R.color.red));
-                    holder.tv_header_title.setText("PERSONAL DEAL");
+                    holder.tv_header_title.setText(shopping.getOfferTypeTagName());
                     holder.shopping_flag_dot.setVisibility(View.GONE);
                     holder.tv_header_title.setVisibility(View.VISIBLE);
                 }
@@ -231,7 +231,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                 @Override
                 public void onClick(View v) {
                     holder.tv_header_title.setBackground(mContext.getResources().getDrawable(R.color.green));
-                    holder.tv_header_title.setText("DIGITAL COUPON");
+                    holder.tv_header_title.setText(shopping.getOfferTypeTagName());
                     holder.shopping_flag_dot.setVisibility(View.GONE);
                     holder.tv_header_title.setVisibility(View.VISIBLE);
                 }
@@ -260,7 +260,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                 @Override
                 public void onClick(View v) {
                     holder.tv_header_title.setBackground(mContext.getResources().getDrawable(R.color.blue));
-                    holder.tv_header_title.setText("SALE ITEM");
+                    holder.tv_header_title.setText(shopping.getOfferTypeTagName());
                     holder.shopping_flag_dot.setVisibility(View.GONE);
                     holder.tv_header_title.setVisibility(View.VISIBLE);
                 }
@@ -334,7 +334,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                 @Override
                 public void onClick(View v) {
                     holder.tv_header_title.setBackground(mContext.getResources().getDrawable(R.color.green));
-                    holder.tv_header_title.setText("DIGITAL COUPON");
+                    holder.tv_header_title.setText(shopping.getOfferTypeTagName());
                     holder.shopping_flag_dot.setVisibility(View.GONE);
                     holder.tv_header_title.setVisibility(View.VISIBLE);
                 }
@@ -382,7 +382,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                 @Override
                 public void onClick(View v) {
                     holder.tv_header_title.setBackground(mContext.getResources().getDrawable(R.color.red));
-                    holder.tv_header_title.setText("PERSONAL DEAL");
+                    holder.tv_header_title.setText(shopping.getOfferTypeTagName());
                     holder.shopping_flag_dot.setVisibility(View.GONE);
                     holder.tv_header_title.setVisibility(View.VISIBLE);
                 }
@@ -430,7 +430,7 @@ public class ShoppingListAdapter extends RecyclerView.Adapter<ShoppingListAdapte
                 @Override
                 public void onClick(View v) {
                     holder.tv_header_title.setBackground(mContext.getResources().getDrawable(R.color.blue));
-                    holder.tv_header_title.setText("SALE ITEM");
+                    holder.tv_header_title.setText(shopping.getOfferTypeTagName());
                     holder.shopping_flag_dot.setVisibility(View.GONE);
                     holder.tv_header_title.setVisibility(View.VISIBLE);
                 }
