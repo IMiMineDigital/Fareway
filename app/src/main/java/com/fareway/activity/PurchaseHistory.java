@@ -3,15 +3,23 @@ package com.fareway.activity;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 /*import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;*/
+import android.net.ConnectivityManager;
+import android.net.NetworkInfo;
+import android.net.wifi.WifiManager;
+import android.os.Build;
 import android.os.Bundle;
 /*
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;*/
+import android.text.format.Formatter;
+import android.util.DisplayMetrics;
 import android.util.Log;
+import android.view.Display;
 import android.widget.Toast;
 
 import androidx.appcompat.app.AppCompatActivity;
@@ -44,12 +52,15 @@ import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
+import java.net.InetAddress;
+import java.net.NetworkInterface;
 import java.text.DecimalFormat;
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.Enumeration;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -67,6 +78,16 @@ public class PurchaseHistory extends AppCompatActivity implements PurchaseHistor
     private PurchaseHistoryAdapter purchaseListAdapter;
     public static JSONArray purchasemessage;
     private UserAlertDialog userAlertDialog;
+
+    Boolean IPValue;
+    String IPaddress;
+    String osName;
+    String myVersion;
+    String Latitude = "";
+    String Longitude = "";
+    int sdkVersion;
+    double diagonalInches;
+    String deviceType = "";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -142,7 +163,8 @@ public class PurchaseHistory extends AppCompatActivity implements PurchaseHistor
 
                 }
             }
-        } else {
+        }
+        else {
 
             if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
                 getTokenkey();
@@ -154,6 +176,18 @@ public class PurchaseHistory extends AppCompatActivity implements PurchaseHistor
             }
         }
 
+        osName = Build.VERSION_CODES.class.getFields()[android.os.Build.VERSION.SDK_INT].getName();
+        myVersion = android.os.Build.VERSION.RELEASE;
+        sdkVersion = android.os.Build.VERSION.SDK_INT;
+        NetwordDetect();
+
+        Display display = ((Activity) activity).getWindowManager().getDefaultDisplay();
+        DisplayMetrics metrics = new DisplayMetrics();
+        display.getMetrics(metrics);
+
+        float widthInches = metrics.widthPixels / metrics.xdpi;
+        float heightInches = metrics.heightPixels / metrics.ydpi;
+        final double diagonalInches = Math.sqrt(Math.pow(widthInches, 2) + Math.pow(heightInches, 2));
 
     }
 
@@ -428,24 +462,20 @@ public class PurchaseHistory extends AppCompatActivity implements PurchaseHistor
                                             appUtil.setPrefrence("StoreName", jsonParam.getString("storename"));
 
                                         }
-                                        appUtil.setPrefrence("SaveLogin", "no");
+                                        appUtil.setPrefrence("SaveLogin", "yes");
 
                                         appUtil.setPrefrence("isLogin", "yes");
-                                        /*Intent i = new Intent(activity, MainFwActivity.class);
-                                        i.putExtra("comeFrom","mpp");
-                                        startActivity(i);
-                                        finish();*/
                                         purchaseHistoryLoad();
 
-                                        /*Log.i("IPaddress",IPaddress);
+                                        Log.i("IPaddress",IPaddress);
                                         Log.i("osName",osName);
                                         Log.i("myVersion",myVersion);
                                         Log.i("sdkVersion", String.valueOf(sdkVersion));
                                         Log.i("diagonalInches", String.valueOf(diagonalInches));
                                         if (diagonalInches>=6.80){
-                                            deviceType="tablet";
+                                            deviceType="5";
                                         }else {
-                                            deviceType="mobile";
+                                            deviceType="2";
                                         }
                                         Log.i("deviceType", deviceType);
                                         try {
@@ -454,8 +484,8 @@ public class PurchaseHistory extends AppCompatActivity implements PurchaseHistor
                                         }catch (Exception e){
                                             e.printStackTrace();
                                             saveErrorLog("login", e.getLocalizedMessage());
-                                        }*/
-                                        //saveLogin();
+                                        }
+                                        saveLogin();
 
                                     }else if (root.getString("errorcode").equals("200")){
                                         //finish();
@@ -503,8 +533,8 @@ public class PurchaseHistory extends AppCompatActivity implements PurchaseHistor
                         ///////
                         /*appUtil.setPrefrence("Latitude", "0.00");
                         appUtil.setPrefrence("Longitude", "0.00");
-                        appUtil.setPrefrence("Email", et_email.getText().toString());
-                        appUtil.setPrefrence("Password", et_pwd.getText().toString());*/
+                        appUtil.setPrefrence("Email", "");
+                        appUtil.setPrefrence("Password", "");*/
                         ///////
                         String charsLowerEmail =lowercase(appUtil.getPrefrence("Email"));
                         appUtil.setPrefrence("Email", charsLowerEmail);
@@ -713,6 +743,185 @@ public class PurchaseHistory extends AppCompatActivity implements PurchaseHistor
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> params = new HashMap<String, String>();
 
+                        params.put("Device", "5");
+                        return params;
+                    }
+
+                    //this is the part, that adds the header to the request
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/x-www-form-urlencoded");
+                        params.put("Authorization", appUtil.getPrefrence("token_type") + " " + appUtil.getPrefrence("access_token"));
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (5000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    // FarewayApplication.getInstance().addToRequestQueue(jsonObjectRequest);
+                    mQueue.add(jsonObjectRequest);
+                } catch (Exception e) {
+                    finish();
+                    e.printStackTrace();
+                }
+
+            } catch (Exception e) {
+                finish();
+                e.printStackTrace();
+                //  progressDialog.dismiss();
+//                displayAlert();
+            }
+
+        } else {
+            finish();
+            alertDialog = userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                    getString(R.string.ok), getString(R.string.alert));
+            alertDialog.show();
+//            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    //Check the internet connection.
+    private void NetwordDetect() {
+
+        boolean WIFI = false;
+
+        boolean MOBILE = false;
+
+        ConnectivityManager CM = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
+
+        NetworkInfo[] networkInfo = CM.getAllNetworkInfo();
+
+        for (NetworkInfo netInfo : networkInfo) {
+
+            if (netInfo.getTypeName().equalsIgnoreCase("WIFI"))
+
+                if (netInfo.isConnected())
+
+                    WIFI = true;
+
+            if (netInfo.getTypeName().equalsIgnoreCase("MOBILE"))
+
+                if (netInfo.isConnected())
+
+                    MOBILE = true;
+        }
+
+        if (WIFI == true) {
+            IPaddress = GetDeviceipWiFiData();
+            Log.i("ip", IPaddress);
+            //textview.setText(IPaddress);
+
+
+        }
+
+        if (MOBILE == true) {
+
+            IPaddress = GetDeviceipMobileData();
+            Log.i("mobileip", IPaddress);
+            // textview.setText(IPaddress);
+
+        }
+
+    }
+
+    public String GetDeviceipMobileData() {
+        try {
+            for (Enumeration<NetworkInterface> en = NetworkInterface.getNetworkInterfaces();
+                 en.hasMoreElements(); ) {
+                NetworkInterface networkinterface = en.nextElement();
+                for (Enumeration<InetAddress> enumIpAddr = networkinterface.getInetAddresses(); enumIpAddr.hasMoreElements(); ) {
+                    InetAddress inetAddress = enumIpAddr.nextElement();
+                    if (!inetAddress.isLoopbackAddress()) {
+                        return inetAddress.getHostAddress().toString();
+                    }
+                }
+            }
+        } catch (Exception ex) {
+            Log.e("Current IP", ex.toString());
+        }
+        return null;
+    }
+
+    public String GetDeviceipWiFiData() {
+
+        WifiManager wm = (WifiManager) getApplicationContext().getSystemService(WIFI_SERVICE);
+
+        @SuppressWarnings("deprecation")
+
+        String ip = Formatter.formatIpAddress(wm.getConnectionInfo().getIpAddress());
+
+        return ip;
+
+    }
+
+    private void saveLogin() {
+        if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+            try {
+                // progressDialog = new ProgressDialog(activity);
+                // progressDialog.setMessage("Processing");
+                //progressDialog.show();
+
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|10.6",
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.i("Fareway", response.toString());
+                                Log.i("url",Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|10.6");
+                                try {
+                                    JSONObject root = new JSONObject(response);
+                                    root.getString("errorcode");
+                                    Log.i("errorcode", root.getString("errorcode"));
+                                    appUtil.setPrefrence("SaveLogin", "yes");
+                                    /*if (root.getString("errorcode").equals("0")){
+
+                                        appUtil.setPrefrence("isLogin", "yes");
+                                        Intent i = new Intent(activity, MainFwActivity.class);
+                                        i.putExtra("comeFrom","mpp");
+                                        startActivity(i);
+                                        finish();
+                                    }else if (root.getString("errorcode").equals("200")){
+                                        finish();
+                                        Toast.makeText(activity, root.getString("message"), Toast.LENGTH_LONG).show();
+                                    }*/
+                                } catch (JSONException e) {
+                                    finish();
+                                    e.printStackTrace();
+                                }
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Volley error resp", "error----" + error.getMessage());
+                        error.printStackTrace();
+                        //  progressDialog.dismiss();
+                        if (error.networkResponse == null) {
+                            //      progressDialog.dismiss();
+                            if (error.getClass().equals(TimeoutError.class)) {
+//                                Toast.makeText(activity, "Time out error", Toast.LENGTH_LONG).show();
+                                alertDialog = userAlertDialog.createPositiveAlert("Time out error",
+                                        getString(R.string.ok), "Fail");
+                                alertDialog.show();
+
+                            }
+                        }
+                        finish();
+                    }
+                }) {
+
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/x-www-form-urlencoded";
+                    }
+
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
                         params.put("Device", "5");
                         return params;
                     }

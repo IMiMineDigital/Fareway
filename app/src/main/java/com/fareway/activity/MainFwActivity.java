@@ -1538,7 +1538,8 @@ public class MainFwActivity extends AppCompatActivity
             }
 
 
-        } else {
+        }
+        else {
             Log.i("save","login");
         }
 
@@ -3276,9 +3277,9 @@ public class MainFwActivity extends AppCompatActivity
 
         /*}*/
         if (diagonalInches >= 6.80) {
-            deviceType = "tablet";
+            deviceType = "5";
         } else {
-            deviceType = "mobile";
+            deviceType = "2";
         }
 
         messageLoad();
@@ -7982,7 +7983,7 @@ public class MainFwActivity extends AppCompatActivity
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
-                                Log.i("anshuman:", response);
+                                Log.i("Participating:", response);
 
                                 if (!response.equals("[]")) {
                                     try {
@@ -18435,12 +18436,12 @@ public class MainFwActivity extends AppCompatActivity
                 // progressDialog.setMessage("Processing");
                 //progressDialog.show();
 
-                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|10.6",
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST, Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|10.7",
                         new Response.Listener<String>() {
                             @Override
                             public void onResponse(String response) {
                                 Log.i("Fareway", response.toString());
-                                Log.i("url",Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|10.6");
+                                Log.i("url",Constant.WEB_URL + Constant.LOGINSAVE + "&Information=" + appUtil.getPrefrence("Email") + "|" + appUtil.getPrefrence("Password") + "|" + deviceType + "|Android-" + osName + "|" + myVersion + "|" + "" + "|" + "" + "|" + "" + "|" + Latitude + "|" + Longitude + "|10.7");
                                 try {
                                     JSONObject root = new JSONObject(response);
                                     root.getString("errorcode");

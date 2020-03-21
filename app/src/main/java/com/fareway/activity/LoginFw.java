@@ -278,9 +278,9 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
                                         Log.i("sdkVersion", String.valueOf(sdkVersion));
                                         Log.i("diagonalInches", String.valueOf(diagonalInches));
                                         if (diagonalInches>=6.80){
-                                            deviceType="tablet";
+                                            deviceType="5";
                                         }else {
-                                            deviceType="mobile";
+                                            deviceType="2";
                                         }
                                         Log.i("deviceType", deviceType);
                                         try {
