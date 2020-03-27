@@ -181,7 +181,8 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                                             activated_offer_fragment.setTextColor(getResources().getColor(R.color.grey));
                                             z=1;
                                             fetchShopping();
-                                        }else {
+                                        }
+                                        else {
                                             shopping_list_fragment.setBackground(getResources().getDrawable(R.color.white));
                                             shopping_list_fragment.setTextColor(getResources().getColor(R.color.black));
                                             activated_offer_fragment.setBackground(getResources().getDrawable(R.color.light_grey));
@@ -1630,16 +1631,20 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                                             shoppingId = null;
                                         }
 
-                                        if (shoppingId==null ){
+                                        if (shoppingId == null) {
+                                            Log.i("shoppingId1", "test");
 
-                                        }else {
-                                            Log.i("shoppingId", String.valueOf(shoppingId));
+                                        } else {
+                                            Log.i("shoppingId2", String.valueOf(shoppingId));
 
                                             for (int i = 0; i < shoppingId.length(); i++) {
-                                                JSONObject jsonParam= shoppingId.getJSONObject(i);
-                                                appUtil.setPrefrence("ShoppingListId", jsonParam.getString("ShoppingListId"));
-                                                Log.i("ShoppingListId",appUtil.getPrefrence("ShoppingListId"));
-                                                shoppingListLoad();
+                                                JSONObject jsonParam = shoppingId.getJSONObject(i);
+                                                if (jsonParam.getInt("IsActive") == 1) {
+                                                    appUtil.setPrefrence("ShoppingListId", jsonParam.getString("ShoppingListId"));
+                                                    Log.i("ShoppingListId", appUtil.getPrefrence("ShoppingListId"));
+                                                    shoppingListLoad();
+                                                }
+
 
                                             }
                                            /*   tv_number_item.setText(String.valueOf(shopping.length()));
