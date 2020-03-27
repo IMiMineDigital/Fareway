@@ -410,9 +410,9 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
     public void shoppingListLoad() {
         if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
             try {
-                progressDialog = new ProgressDialog(activity);
+                /*progressDialog = new ProgressDialog(activity);
                 progressDialog.setMessage("Processing");
-                progressDialog.show();
+                progressDialog.show();*/
                 StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET,Constant.WEB_URL + Constant.ShoppingList+"MemberId="+appUtil.getPrefrence("MemberId")+"&CategoryID=1",
                         new Response.Listener<String>(){
                             @Override
@@ -461,6 +461,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                     saveErrorLog("shoppingListLoadShoppingFW", e.getLocalizedMessage());
+                                    progressDialog.dismiss();
                                 }
                             }
                         }, new Response.ErrorListener() {
@@ -506,11 +507,9 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                 catch (Exception e)
                 {
                     e.printStackTrace();
-                    saveErrorLog("shoppingListLoadShoppingFW", e.getLocalizedMessage());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                saveErrorLog("shoppingListLoadShoppingFW", e.getLocalizedMessage());
                  progressDialog.dismiss();
 //                displayAlert();
             }
@@ -576,6 +575,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                     saveErrorLog("activatedOffersListIdLoadShoppingFW", e.getLocalizedMessage());
+                                    progressDialog.dismiss();
                                 }
                             }
                         }, new Response.ErrorListener() {
@@ -621,11 +621,9 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                 catch (Exception e)
                 {
                     e.printStackTrace();
-                    saveErrorLog("activatedOffersListIdLoadShoppingFW", e.getLocalizedMessage());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                saveErrorLog("activatedOffersListIdLoadShoppingFW", e.getLocalizedMessage());
                 progressDialog.dismiss();
 //                displayAlert();
             }
@@ -1209,7 +1207,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                                     appUtil.setPrefrence("expires_in", jsonParam.getString("expires_in"));
                                     appUtil.setPrefrence(".issued", jsonParam.getString(".issued"));
                                     appUtil.setPrefrence(".expires", jsonParam.getString(".expires"));
-                                    progressDialog.dismiss();
+                                    //progressDialog.dismiss();
                                   //  Intent i = new Intent(activity, LoginFw.class);
                                   //  startActivity(i);
                                  //   finish();
@@ -1668,7 +1666,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                         Log.i("Volley error resp", "error----" + error.getMessage());
                         error.printStackTrace();
                         saveErrorLog("shoppingListIdLoadShoppingFW", String.valueOf(error.networkResponse.statusCode));
-                        // progressDialog.dismiss();
+                         progressDialog.dismiss();
                     }
                 })
                 {
@@ -1705,11 +1703,9 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                 catch (Exception e)
                 {
                     e.printStackTrace();
-                    saveErrorLog("shoppingListIdLoadShoppingFW", e.getLocalizedMessage());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                saveErrorLog("shoppingListIdLoadShoppingFW", e.getLocalizedMessage());
             }
         } else {
             alertDialog=userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
@@ -2028,9 +2024,9 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
     private void getTokenkey2() {
         if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
             try {
-                // progressDialog = new ProgressDialog(activity);
-                //  progressDialog.setMessage("Processing");
-                //  progressDialog.show();
+                 progressDialog = new ProgressDialog(activity);
+                  progressDialog.setMessage("Processing");
+                  progressDialog.show();
                 StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST,Constant.WEB_URL + Constant.GET_TOKEN,
                         new Response.Listener<String>(){
                             @Override
@@ -2057,6 +2053,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                     public void onErrorResponse(VolleyError error) {
                         Log.i("Volley error resp", "error----" + error.getMessage());
                         error.printStackTrace();
+                        progressDialog.dismiss();
                         saveErrorLog("getTokenkey2ShoppingFw", String.valueOf(error.networkResponse.statusCode));
                         // progressDialog.dismiss();
                         if (error.networkResponse == null) {
@@ -2167,7 +2164,7 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
 
                             }
                         }
-                        finish();
+                        //finish();
                     }
                 }) {
 
@@ -2202,19 +2199,19 @@ public class ShoppingFw extends AppCompatActivity implements ShoppingListAdapter
                     // FarewayApplication.getInstance().addToRequestQueue(jsonObjectRequest);
                     mQueue.add(jsonObjectRequest);
                 } catch (Exception e) {
-                    finish();
+                    //finish();
                     e.printStackTrace();
                 }
 
             } catch (Exception e) {
-                finish();
+                //finish();
                 e.printStackTrace();
                 //  progressDialog.dismiss();
 //                displayAlert();
             }
 
         } else {
-            finish();
+            //finish();
             alertDialog = userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
                     getString(R.string.ok), getString(R.string.alert));
             alertDialog.show();
