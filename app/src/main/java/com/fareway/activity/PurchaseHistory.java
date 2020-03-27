@@ -194,9 +194,9 @@ public class PurchaseHistory extends AppCompatActivity implements PurchaseHistor
     private void purchaseHistoryLoad() {
         if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
             try {
-                progressDialog = new ProgressDialog(activity);
+                /*progressDialog = new ProgressDialog(activity);
                 progressDialog.setMessage("Processing");
-                progressDialog.show();
+                progressDialog.show();*/
                 StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET, Constant.WEB_URL + Constant.PURCHASEHISTORY+appUtil.getPrefrence("MemberId"),
                         new Response.Listener<String>(){
                             @Override
@@ -208,7 +208,7 @@ public class PurchaseHistory extends AppCompatActivity implements PurchaseHistor
                                     root.getString("errorcode");
                                     Log.i("errorcode", root.getString("errorcode"));
                                     if (root.getString("errorcode").equals("0")){
-                                        progressDialog.dismiss();
+
                                         purchasemessage= root.getJSONArray("purchasemessage");
 
                                         purchaseArrayList.clear();
@@ -221,6 +221,7 @@ public class PurchaseHistory extends AppCompatActivity implements PurchaseHistor
                                         progressDialog.dismiss();
                                     }
                                 } catch (JSONException e) {
+                                    progressDialog.dismiss();
                                     e.printStackTrace();
                                     saveErrorLog("purchaseHistoryLoad", e.getLocalizedMessage());
                                 }
@@ -268,11 +269,9 @@ public class PurchaseHistory extends AppCompatActivity implements PurchaseHistor
                 catch (Exception e)
                 {
                     e.printStackTrace();
-                    saveErrorLog("purchaseHistoryLoad", e.getLocalizedMessage());
                 }
             } catch (Exception e) {
                 e.printStackTrace();
-                saveErrorLog("purchaseHistoryLoad", e.getLocalizedMessage());
                 progressDialog.dismiss();
 //                displayAlert();
             }
@@ -319,9 +318,9 @@ public class PurchaseHistory extends AppCompatActivity implements PurchaseHistor
     private void getTokenkey() {
         if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
             try {
-                // progressDialog = new ProgressDialog(activity);
-                //  progressDialog.setMessage("Processing");
-                //  progressDialog.show();
+                 progressDialog = new ProgressDialog(activity);
+                  progressDialog.setMessage("Processing");
+                  progressDialog.show();
                 StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST,Constant.WEB_URL + Constant.GET_TOKEN,
                         new Response.Listener<String>(){
                             @Override
@@ -591,9 +590,9 @@ public class PurchaseHistory extends AppCompatActivity implements PurchaseHistor
     private void getTokenkey2() {
         if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
             try {
-                // progressDialog = new ProgressDialog(activity);
-                //  progressDialog.setMessage("Processing");
-                //  progressDialog.show();
+                 progressDialog = new ProgressDialog(activity);
+                  progressDialog.setMessage("Processing");
+                  progressDialog.show();
                 StringRequest jsonObjectRequest = new StringRequest(Request.Method.POST,Constant.WEB_URL + Constant.GET_TOKEN,
                         new Response.Listener<String>(){
                             @Override
