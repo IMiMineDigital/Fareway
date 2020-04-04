@@ -283,13 +283,6 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
                                             deviceType="2";
                                         }
                                         Log.i("deviceType", deviceType);
-                                        try {
-                                            Log.i("Latitude", Latitude);
-                                            Log.i("Longitude", Longitude);
-                                        }catch (Exception e){
-                                            e.printStackTrace();
-                                            saveErrorLog("login", e.getLocalizedMessage());
-                                        }
                                         //saveLogin();
 
                                     }else if (root.getString("errorcode").equals("200")){

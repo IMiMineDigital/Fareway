@@ -5150,7 +5150,8 @@ public class MainFwActivity extends AppCompatActivity
 
                         customAdapterPersonalPrices.notifyDataSetChanged();
                     }
-                } else {
+                }
+                else {
                     if (offferShort == true) {
                         List<Product> items = new Gson().fromJson("[" + categorydata.toString() + "]", new TypeToken<List<Product>>() {
                         }.getType());
@@ -5196,9 +5197,12 @@ public class MainFwActivity extends AppCompatActivity
                         customAdapterPersonalPrices.notifyDataSetChanged();
                     }
                 }
-
-
-                strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category \"}," + strCategory;
+                Log.i("test",strCategory);
+                if (strCategory.equalsIgnoreCase("")){
+                    strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category \"}";
+                }else {
+                    strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category \"}," + strCategory;
+                }
 
                 String data = "[" + String.valueOf(strCategory) + "]";
 
@@ -5220,11 +5224,7 @@ public class MainFwActivity extends AppCompatActivity
                         });
                     } catch (Exception e) {
                         e.printStackTrace();
-                        saveErrorLog("fetchProduct", e.getLocalizedMessage());
-
                     }
-
-
                     customAdapterFilter.notifyDataSetChanged();
                     rv_category.setAdapter(customAdapterFilter);
                 } catch (JSONException e) {
