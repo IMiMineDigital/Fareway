@@ -329,6 +329,8 @@ public class MainFwActivity extends AppCompatActivity
     private StoreUpdateHandler storeUpdateHandler;
     LinearLayout linear_search_layout,linear_header_logo_layout;
     private boolean isSearchHeader=false;
+    String lat="";
+    String lng="";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -1638,24 +1640,30 @@ public class MainFwActivity extends AppCompatActivity
                             StringRequest request = new StringRequest(Request.Method.GET, Constant.GEOCODER_API + address + "&key=" + API_KEY, new Response.Listener<String>() {
                                 @Override
                                 public void onResponse(String response) {
-                                    VolleyLog.wtf(response, "utf-8");
-                                    Geocoding geocoding = new GsonBuilder().create().fromJson(response, Geocoding.class);
-                                    if (!Constant.STATUS.equalsIgnoreCase(geocoding.getStatus())) {
-                                        errorMsgTxt1.setVisibility(View.VISIBLE);
-                                        errorMsgTxt1.setText(getResources().getString(R.string.error_msg2));
-                                        //dropDownList.clear();
-                                        dataAdapter.clear();
-                                        dropDownList.clear();
-                                        dropDownList.add(Constant.SELECT_STORE);
-                                        dataAdapter.notifyDataSetChanged();
-                                        return;
+                                    //VolleyLog.wtf(response, "utf-8");
+                                    try {
+                                        Geocoding geocoding = new GsonBuilder().create().fromJson(response, Geocoding.class);
+                                        if (!Constant.STATUS.equalsIgnoreCase(geocoding.getStatus())) {
+                                            errorMsgTxt1.setVisibility(View.VISIBLE);
+                                            errorMsgTxt1.setText(getResources().getString(R.string.error_msg2));
+                                            //dropDownList.clear();
+                                            dataAdapter.clear();
+                                            dropDownList.clear();
+                                            dropDownList.add(Constant.SELECT_STORE);
+                                            dataAdapter.notifyDataSetChanged();
+                                            return;
+                                        }
+                                        errorMsgTxt1.setVisibility(View.GONE);
+                                        Geocoding.Result result = geocoding.getResult().get(0);
+                                        Geocoding.Geometry geometry = result.geometry;
+                                        Geocoding.Location location = geometry.location;
+                                        lat = location.lat;
+                                        lng = location.lng;
+                                    }catch (Exception e){
+                                        saveErrorLog("findBtnisNumericChangeStore", e.getLocalizedMessage());
+
                                     }
-                                    errorMsgTxt1.setVisibility(View.GONE);
-                                    Geocoding.Result result = geocoding.getResult().get(0);
-                                    Geocoding.Geometry geometry = result.geometry;
-                                    Geocoding.Location location = geometry.location;
-                                    String lat = location.lat;
-                                    String lng = location.lng;
+
                                     StringRequest findStoreReq = new StringRequest(Request.Method.GET, Constant.FINDSTORE
                                             + lat + "&UserCurrentLongitude=" + lng + "&City=" + city, new Response.Listener<String>() {
                                         @Override
@@ -1671,6 +1679,8 @@ public class MainFwActivity extends AppCompatActivity
                                                     return;
                                                 }
                                             } catch (JSONException e) {
+                                                saveErrorLog("findStoreReqChangeStore", e.getLocalizedMessage());
+
                                                 Log.d(TAG, " Exception >> " + e.getMessage());
                                             }
                                             Store store = new GsonBuilder().create().fromJson(response, Store.class);
@@ -1792,6 +1802,8 @@ public class MainFwActivity extends AppCompatActivity
                                                         return;
                                                     }
                                                 } catch (JSONException e) {
+                                                    saveErrorLog("getLocationChangeStore", e.getLocalizedMessage());
+
                                                     Log.d(TAG, " Exception >> " + e.getMessage());
                                                 }
                                                 Store store = new GsonBuilder().create().fromJson(response, Store.class);
@@ -1874,23 +1886,29 @@ public class MainFwActivity extends AppCompatActivity
                                     @Override
                                     public void onResponse(String response) {
                                         VolleyLog.wtf(response, "utf-8");
-                                        Geocoding geocoding = new GsonBuilder().create().fromJson(response, Geocoding.class);
-                                        if (!Constant.STATUS.equalsIgnoreCase(geocoding.getStatus())) {
-                                            errorMsgTxt1.setVisibility(View.VISIBLE);
-                                            errorMsgTxt1.setText(getResources().getString(R.string.error_msg2));
-                                            //dropDownList.clear();
-                                            dataAdapter.clear();
-                                            dropDownList.clear();
-                                            dropDownList.add(Constant.SELECT_STORE);
-                                            dataAdapter.notifyDataSetChanged();
-                                            return;
+                                        try {
+                                            Geocoding geocoding = new GsonBuilder().create().fromJson(response, Geocoding.class);
+                                            if (!Constant.STATUS.equalsIgnoreCase(geocoding.getStatus())) {
+                                                errorMsgTxt1.setVisibility(View.VISIBLE);
+                                                errorMsgTxt1.setText(getResources().getString(R.string.error_msg2));
+                                                //dropDownList.clear();
+                                                dataAdapter.clear();
+                                                dropDownList.clear();
+                                                dropDownList.add(Constant.SELECT_STORE);
+                                                dataAdapter.notifyDataSetChanged();
+                                                return;
+                                            }
+                                            errorMsgTxt1.setVisibility(View.GONE);
+                                            Geocoding.Result result = geocoding.getResult().get(0);
+                                            Geocoding.Geometry geometry = result.geometry;
+                                            Geocoding.Location location = geometry.location;
+                                            lat = location.lat;
+                                            lng = location.lng;
+                                        }catch (Exception e){
+                                            saveErrorLog("Location OFFChangeStore", e.getLocalizedMessage());
+
                                         }
-                                        errorMsgTxt1.setVisibility(View.GONE);
-                                        Geocoding.Result result = geocoding.getResult().get(0);
-                                        Geocoding.Geometry geometry = result.geometry;
-                                        Geocoding.Location location = geometry.location;
-                                        String lat = location.lat;
-                                        String lng = location.lng;
+
                                         StringRequest findStoreReq = new StringRequest(Request.Method.GET, Constant.FINDSTORE
                                                 + lat + "&UserCurrentLongitude=" + lng + "&City=" + city, new Response.Listener<String>() {
                                             @Override
@@ -1906,6 +1924,8 @@ public class MainFwActivity extends AppCompatActivity
                                                         return;
                                                     }
                                                 } catch (JSONException e) {
+                                                    saveErrorLog("findStoreReqChangeStore", e.getLocalizedMessage());
+
                                                     Log.d(TAG, " Exception >> " + e.getMessage());
                                                 }
                                                 Store store = new GsonBuilder().create().fromJson(response, Store.class);
@@ -2256,14 +2276,20 @@ public class MainFwActivity extends AppCompatActivity
                                     @Override
                                     public void onResponse(String response) {
                                         Log.d(TAG, " Update api response >> " + response.toString());
-                                        UpdateStore updateStore = new GsonBuilder().create().fromJson(response, UpdateStore.class);
-                                        if (Constant.ERRORCODE.equalsIgnoreCase(updateStore.getErrorcode())) {
-                                            Log.d(TAG, ">> Change store successfully");
-                                            storeUpdateHandler.setStoreId(storeId);
-                                            checkCircular(storeId);
-                                        } else {
-                                            Log.d(TAG, ">> Change store Response code " + updateStore.getErrorcode());
+                                        try {
+                                            UpdateStore updateStore = new GsonBuilder().create().fromJson(response, UpdateStore.class);
+                                            if (Constant.ERRORCODE.equalsIgnoreCase(updateStore.getErrorcode())) {
+                                                Log.d(TAG, ">> Change store successfully");
+                                                storeUpdateHandler.setStoreId(storeId);
+                                                checkCircular(storeId);
+                                            } else {
+                                                Log.d(TAG, ">> Change store Response code " + updateStore.getErrorcode());
+                                            }
+                                        }catch (Exception e){
+                                            saveErrorLog("updateReqChangeStore", e.getLocalizedMessage());
+
                                         }
+
                                     }
                                 }, new Response.ErrorListener() {
                             @Override
@@ -2412,6 +2438,8 @@ public class MainFwActivity extends AppCompatActivity
                                                 }
                                             } catch (JSONException e) {
                                                 Log.d(TAG, " Exception >> " + e.getMessage());
+                                                saveErrorLog("Location on findBtnChangeStore", e.getLocalizedMessage());
+
                                             }
                                             Store store = new GsonBuilder().create().fromJson(response, Store.class);
                                             if (!Constant.ERRORCODE.equalsIgnoreCase(store.getErrorcode())) {
@@ -2493,23 +2521,29 @@ public class MainFwActivity extends AppCompatActivity
                                 @Override
                                 public void onResponse(String response) {
                                     VolleyLog.wtf(response, "utf-8");
-                                    Geocoding geocoding = new GsonBuilder().create().fromJson(response, Geocoding.class);
-                                    if (!Constant.STATUS.equalsIgnoreCase(geocoding.getStatus())) {
-                                        errorMsgTxt1.setVisibility(View.VISIBLE);
-                                        errorMsgTxt1.setText(getResources().getString(R.string.error_msg2));
-                                        //dropDownList.clear();
-                                        dataAdapter.clear();
-                                        dropDownList.clear();
-                                        dropDownList.add(Constant.SELECT_STORE);
-                                        dataAdapter.notifyDataSetChanged();
-                                        return;
+                                    try {
+                                        Geocoding geocoding = new GsonBuilder().create().fromJson(response, Geocoding.class);
+                                        if (!Constant.STATUS.equalsIgnoreCase(geocoding.getStatus())) {
+                                            errorMsgTxt1.setVisibility(View.VISIBLE);
+                                            errorMsgTxt1.setText(getResources().getString(R.string.error_msg2));
+                                            //dropDownList.clear();
+                                            dataAdapter.clear();
+                                            dropDownList.clear();
+                                            dropDownList.add(Constant.SELECT_STORE);
+                                            dataAdapter.notifyDataSetChanged();
+                                            return;
+                                        }
+                                        errorMsgTxt1.setVisibility(View.GONE);
+                                        Geocoding.Result result = geocoding.getResult().get(0);
+                                        Geocoding.Geometry geometry = result.geometry;
+                                        Geocoding.Location location = geometry.location;
+                                        lat = location.lat;
+                                        lng = location.lng;
+                                    }catch (Exception e){
+                                        saveErrorLog("Location OFF findStoreReqChangeStore", e.getLocalizedMessage());
+
                                     }
-                                    errorMsgTxt1.setVisibility(View.GONE);
-                                    Geocoding.Result result = geocoding.getResult().get(0);
-                                    Geocoding.Geometry geometry = result.geometry;
-                                    Geocoding.Location location = geometry.location;
-                                    String lat = location.lat;
-                                    String lng = location.lng;
+
                                     StringRequest findStoreReq = new StringRequest(Request.Method.GET, Constant.FINDSTORE
                                             + lat + "&UserCurrentLongitude=" + lng + "&City=" + city, new Response.Listener<String>() {
                                         @Override
@@ -2525,6 +2559,8 @@ public class MainFwActivity extends AppCompatActivity
                                                     return;
                                                 }
                                             } catch (JSONException e) {
+                                                saveErrorLog("findStoreReqChangeStore", e.getLocalizedMessage());
+
                                                 Log.d(TAG, " Exception >> " + e.getMessage());
                                             }
                                             Store store = new GsonBuilder().create().fromJson(response, Store.class);
@@ -2641,16 +2677,21 @@ public class MainFwActivity extends AppCompatActivity
                                     @Override
                                     public void onResponse(String response) {
                                         Log.d(TAG, " Update api response >> " + response.toString());
-                                        UpdateStore updateStore = new GsonBuilder().create().fromJson(response, UpdateStore.class);
-                                        if (Constant.ERRORCODE.equalsIgnoreCase(updateStore.getErrorcode())) {
-                                            Log.d(TAG, ">> Change store successfully");
-                                            storeUpdateHandler.setStoreId(storeId);
-                                            checkCircular(storeId);
-                                        } else {
-                                            window.dismiss();
-                                            progressDialog.dismiss();
-                                            Log.d(TAG, ">> Change store Response code " + updateStore.getErrorcode());
+                                        try {
+                                            UpdateStore updateStore = new GsonBuilder().create().fromJson(response, UpdateStore.class);
+                                            if (Constant.ERRORCODE.equalsIgnoreCase(updateStore.getErrorcode())) {
+                                                Log.d(TAG, ">> Change store successfully");
+                                                storeUpdateHandler.setStoreId(storeId);
+                                                checkCircular(storeId);
+                                            } else {
+                                                window.dismiss();
+                                                progressDialog.dismiss();
+                                                Log.d(TAG, ">> Change store Response code " + updateStore.getErrorcode());
+                                            }
+                                        }catch (Exception e){
+                                            saveErrorLog("updateBtnChangeStore", e.getLocalizedMessage());
                                         }
+
                                     }
                                 }, new Response.ErrorListener() {
                             @Override
@@ -2729,28 +2770,33 @@ public class MainFwActivity extends AppCompatActivity
                     @Override
                     public void onResponse(String response) {
                         Log.d(TAG, " new api >> " + response);
-                        CheckCircular checkCircular = new GsonBuilder().create().fromJson(response, CheckCircular.class);
-                        if (Constant.CREATED.equalsIgnoreCase(checkCircular.message)) {
-                            window.dismiss();
-                            if (x==3){
+                        try {
+                            CheckCircular checkCircular = new GsonBuilder().create().fromJson(response, CheckCircular.class);
+                            if (Constant.CREATED.equalsIgnoreCase(checkCircular.message)) {
+                                window.dismiss();
+                                if (x==3){
                                 /*couponTile = true;
                                 pdView = true;*/
-                                offerTitle.setText("Personal Ad");
-                                changeStore();
-                                messageChangeStoreLoad();
-                            }else if (x==0){
-                                couponTile = true;
-                                pdView = true;
-                                offerTitle.setText("Personal Ad");
-                                changeStore();
-                                messageChangeStoreLoad();
+                                    offerTitle.setText("Personal Ad");
+                                    changeStore();
+                                    messageChangeStoreLoad();
+                                }else if (x==0){
+                                    couponTile = true;
+                                    pdView = true;
+                                    offerTitle.setText("Personal Ad");
+                                    changeStore();
+                                    messageChangeStoreLoad();
+                                }
+
+
+                                //
+                            } else {
+                                checkCircular(storeId);
                             }
-
-
-                            //
-                        } else {
-                            checkCircular(storeId);
+                        }catch (Exception e){
+                            saveErrorLog("checkCircular", e.getLocalizedMessage());
                         }
+
                     }
                 }, new Response.ErrorListener() {
             @Override
@@ -18760,18 +18806,41 @@ public class MainFwActivity extends AppCompatActivity
                             @Override
                             public void onResponse(String response) {
                                 Log.i("Fareway Personal Deal", response.toString());
+                                if (response!=null){
+                                    try {
 
-                                try {
+                                        JSONObject root = new JSONObject(response);
+                                        root.getString("errorcode");
+                                        Log.i("errorcode", root.getString("errorcode"));
+                                        if (root.getString("errorcode").equals("0")) {
+                                            //progressDialog.dismiss();
+                                            message = root.getJSONArray("message");
+                                            Log.i("pdlength", String.valueOf(message.length()));
+                                            if (comeFrom.equalsIgnoreCase("moreOffer")) {
+                                                // moreCouponLoad();
+                                                x = 1;
+                                            } else {
+                                                CircularmoreCouponLoad();
+                                            }
 
+
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        saveErrorLog("messageChangeStoreLoad", e.getLocalizedMessage());
+                                        CircularmoreCouponLoad();
+                                    }
+                                }else {
+                                    CircularmoreCouponLoad();
+                                }
+                                /*try {
                                     JSONObject root = new JSONObject(response);
                                     root.getString("errorcode");
                                     Log.i("errorcode", root.getString("errorcode"));
                                     if (root.getString("errorcode").equals("0")) {
-                                        //progressDialog.dismiss();
                                         message = root.getJSONArray("message");
                                         Log.i("pdlength", String.valueOf(message.length()));
                                         if (comeFrom.equalsIgnoreCase("moreOffer")) {
-                                            // moreCouponLoad();
                                             x = 1;
                                         } else {
                                             CircularmoreCouponLoad();
@@ -18782,7 +18851,7 @@ public class MainFwActivity extends AppCompatActivity
                                 } catch (JSONException e) {
                                     e.printStackTrace();
                                     saveErrorLog("messageChangeStoreLoad", e.getLocalizedMessage());
-                                }
+                                }*/
                             }
                         }, new Response.ErrorListener() {
                     @Override
