@@ -1569,7 +1569,7 @@ public class MainFwActivity extends AppCompatActivity
                 View layout = inflater.inflate(R.layout.change_store_popup, null);
                 window = new PopupWindow(MainFwActivity.this);
                 window.setWidth(WindowManager.LayoutParams.MATCH_PARENT);
-                window.setHeight(WindowManager.LayoutParams.WRAP_CONTENT);
+                window.setHeight(WindowManager.LayoutParams.MATCH_PARENT);
                 window.setContentView(layout);
                 window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
                 window.setOutsideTouchable(false);
@@ -1624,6 +1624,8 @@ public class MainFwActivity extends AppCompatActivity
                 findBtn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                        imm.hideSoftInputFromWindow(zipCodeEdt.getWindowToken(), 0);
                         String address = zipCodeEdt.getText().toString();
                         if (address.matches("")) {
                             errorMsgTxt1.setVisibility(View.VISIBLE);

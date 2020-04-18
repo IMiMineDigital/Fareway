@@ -171,12 +171,16 @@ public class SplashFw extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         Log.i("Volley error resp", "error----" + error.getMessage());
                         error.printStackTrace();
-                        saveErrorLog("getTokenkey", String.valueOf(error.networkResponse.statusCode));
-                        // progressDialog.dismiss();
+                        try {
+                            saveErrorLog("getTokenkey", String.valueOf(error.networkResponse.statusCode));
+                        }catch (Exception e){
+                            e.printStackTrace();
+                            alertDialog=userAlertDialog.createPositiveAlert("Checking the network cables, modem, and router\nReconnecting to Wi-Fi",
+                                    getString(R.string.ok),"No Internet");
+                            alertDialog.show();
+                        }
                         if (error.networkResponse == null) {
-                            //  progressDialog.dismiss();
                             if (error.getClass().equals(TimeoutError.class)) {
-//                                Toast.makeText(activity, "Time out error", Toast.LENGTH_LONG).show();
                                 alertDialog=userAlertDialog.createPositiveAlert("Time out error",
                                         getString(R.string.ok),"Fail");
                                 alertDialog.show();
@@ -285,12 +289,16 @@ public class SplashFw extends AppCompatActivity {
                     public void onErrorResponse(VolleyError error) {
                         Log.i("Volley error resp", "error----" + error.getMessage());
                         error.printStackTrace();
-                        saveErrorLog("getTokenkey2", String.valueOf(error.networkResponse.statusCode));
-                        // progressDialog.dismiss();
+                        try {
+                            saveErrorLog("getTokenkey2", String.valueOf(error.networkResponse.statusCode));
+                        }catch (Exception e){
+                            e.printStackTrace();
+                            alertDialog=userAlertDialog.createPositiveAlert("Checking the network cables, modem, and router\nReconnecting to Wi-Fi",
+                                    getString(R.string.ok),"No Internet");
+                            alertDialog.show();
+                        }
                         if (error.networkResponse == null) {
-                            //  progressDialog.dismiss();
                             if (error.getClass().equals(TimeoutError.class)) {
-//                                Toast.makeText(activity, "Time out error", Toast.LENGTH_LONG).show();
                                 alertDialog=userAlertDialog.createPositiveAlert("Time out error",
                                         getString(R.string.ok),"Fail");
                                 alertDialog.show();
