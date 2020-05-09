@@ -301,21 +301,37 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+//                        Log.i("Volley error resp", "error----" + error.getMessage());
+//                        error.printStackTrace();
+//                        saveErrorLog("login", String.valueOf(error.networkResponse.statusCode));
+//                        if (error.networkResponse == null) {
+//                            if (error.getClass().equals(TimeoutError.class)) {
+//                                alertDialog=userAlertDialog.createPositiveAlert("Time out error",
+//                                        getString(R.string.ok),"Fail");
+//                                alertDialog.show();
+//
+//                            }
+//                        }
+//                        finish();
+
                         Log.i("Volley error resp", "error----" + error.getMessage());
                         error.printStackTrace();
-                        saveErrorLog("login", String.valueOf(error.networkResponse.statusCode));
-                        //  progressDialog.dismiss();
+                        try {
+                            saveErrorLog("login", String.valueOf(error.networkResponse.statusCode));
+                        }catch (Exception e){
+                            e.printStackTrace();
+                            alertDialog=userAlertDialog.createPositiveAlert("Checking the network cables, modem, and router\nReconnecting to Wi-Fi",
+                                    getString(R.string.ok),"No Internet");
+                            alertDialog.show();
+                        }
                         if (error.networkResponse == null) {
-                            //      progressDialog.dismiss();
                             if (error.getClass().equals(TimeoutError.class)) {
-//                                Toast.makeText(activity, "Time out error", Toast.LENGTH_LONG).show();
                                 alertDialog=userAlertDialog.createPositiveAlert("Time out error",
                                         getString(R.string.ok),"Fail");
                                 alertDialog.show();
 
                             }
                         }
-                        finish();
                     }
                 })
                 {
@@ -329,10 +345,10 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> params = new HashMap<String, String>();
                         ///////
-//                        appUtil.setPrefrence("Latitude", "0.00");
-//                        appUtil.setPrefrence("Longitude", "0.00");
-//                        appUtil.setPrefrence("Email", et_email.getText().toString());
-//                        appUtil.setPrefrence("Password", et_pwd.getText().toString());
+                        /*appUtil.setPrefrence("Latitude", "0.00");
+                        appUtil.setPrefrence("Longitude", "0.00");
+                        appUtil.setPrefrence("Email", et_email.getText().toString());
+                        appUtil.setPrefrence("Password", et_pwd.getText().toString());*/
                         ///////
                         String charsLowerEmail =lowercase(appUtil.getPrefrence("Email"));
                         appUtil.setPrefrence("Email", charsLowerEmail);

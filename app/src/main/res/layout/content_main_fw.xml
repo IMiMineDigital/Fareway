@@ -503,6 +503,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
             <TextView
+                android:visibility="gone"
                 android:fontFamily="@font/roboto"
                 android:textColor="@color/black"
                 android:gravity="center"
@@ -514,6 +515,7 @@
                 android:textSize="14sp"/>
 
             <TextView
+                android:visibility="gone"
                 android:textSize="12sp"
                 android:gravity="center"
                 android:layout_below="@+id/error_header"
@@ -526,6 +528,7 @@
                 android:text="We are only showing with a Deal or Coupon. Our stores still might carry it and if we do its at the right price."/>
 
             <LinearLayout
+                android:visibility="gone"
                 android:gravity="center"
                 android:orientation="horizontal"
                 android:layout_width="match_parent"
@@ -534,6 +537,7 @@
 
 
                 <TextView
+                    android:visibility="gone"
                     android:layout_marginRight="@dimen/_10sdp"
                     android:gravity="center"
                     android:padding="@dimen/_2sdp"
@@ -549,6 +553,7 @@
                     android:text="Return to Personal Ad"/>
 
                 <TextView
+                    android:visibility="gone"
                     android:layout_marginLeft="@dimen/_10sdp"
                     android:gravity="center"
                     android:padding="@dimen/_2sdp"

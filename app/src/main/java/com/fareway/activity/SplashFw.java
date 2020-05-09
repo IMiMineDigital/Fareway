@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 //import android.support.v7.app.AppCompatActivity;
+import android.net.Uri;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.Toast;
@@ -36,6 +37,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 public class SplashFw extends AppCompatActivity {
@@ -55,7 +57,6 @@ public class SplashFw extends AppCompatActivity {
         userAlertDialog = new UserAlertDialog(activity);
         mQueue = FarewayApplication.getmInstance(this).getmRequestQueue();
         getSupportActionBar().hide();
-
 
         String saveDate = appUtil.getPrefrence(".expires");
         Log.i("saveDate", saveDate);

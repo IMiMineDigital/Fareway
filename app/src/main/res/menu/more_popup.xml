@@ -17,4 +17,10 @@
       android:orderInCategory="100"
       android:title="Savings"
       app:showAsAction="never" />
+  <item
+      android:id="@+id/by_faq"
+      android:orderInCategory="100"
+      android:title="FAQ"
+      app:showAsAction="never" />
+
 </menu>

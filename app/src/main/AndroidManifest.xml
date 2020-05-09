@@ -6,60 +6,71 @@
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.RECORD_AUDIO" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION"/>
-    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE"/>
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
 
     <!--<application
-    android:allowBackup="true"
-    android:icon="@mipmap/ic_launcher"
-    android:label="@string/app_name"
-    android:roundIcon="@mipmap/ic_launcher_round"
-    android:supportsRtl="true"
-    android:theme="@style/AppTheme">
-    <activity android:name=".activity.ShoppingListPrint">
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_launcher"
+        android:label="@string/app_name"
+        android:roundIcon="@mipmap/ic_launcher_round"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme">
+        <activity
+            android:name=".activity.FaqWebViewFw"
+            android:theme="@style/FarewayMainTheme"/>
+        <activity android:name=".activity.ShoppingListPrint"></activity>
+        <activity
+            android:name=".activity.SplashFw"
+            android:theme="@style/FarewayMainTheme">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
 
-    </activity>
-    <activity
-        android:name=".activity.SplashFw"
-        android:theme="@style/FarewayMainTheme">
-        <intent-filter>
-            <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
 
-            <category android:name="android.intent.category.LAUNCHER" />
-        </intent-filter>
-    </activity>
-    <activity
-        android:name=".activity.MainFwActivity"
-        android:configChanges="keyboardHidden|screenSize|orientation"
-        android:label="@string/title_activity_main_fw"
-        android:screenOrientation="portrait"
-        android:theme="@style/FarewayTheme.NoActionBar"
-        android:windowSoftInputMode="adjustPan" />
-    <activity
-        android:name=".activity.LoginFw"
-        android:theme="@style/FarewayMainTheme" />
-    <activity
-        android:name=".activity.SavingFw"
-        android:theme="@style/FarewayMainTheme" />
-    <activity
-        android:name=".activity.WelcomeActivity"
-        android:theme="@style/FarewayTheme.NoActionBar" />
-    <activity
-        android:name=".activity.ShopperId"
-        android:theme="@style/FarewayMainTheme" />
-    <activity
-        android:name=".activity.PurchaseHistory"
-        android:theme="@style/FarewayMainTheme" />
-    <activity
-        android:name=".activity.PurchaseHistoryDetail"
-        android:theme="@style/FarewayMainTheme" />
-    <activity
-        android:name=".activity.ShoppingFw"
-        android:theme="@style/FarewayMainTheme" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
 
-    <meta-data
-        android:name="preloaded_fonts"
-        android:resource="@array/preloaded_fonts" />
-</application>-->
+                <data
+                    android:host="play.google.com"
+                    android:scheme="https" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".activity.MainFwActivity"
+            android:configChanges="keyboardHidden|screenSize|orientation"
+            android:label="@string/title_activity_main_fw"
+            android:screenOrientation="portrait"
+            android:theme="@style/FarewayTheme.NoActionBar"
+            android:windowSoftInputMode="adjustPan" />
+        <activity
+            android:name=".activity.LoginFw"
+            android:theme="@style/FarewayMainTheme" />
+        <activity
+            android:name=".activity.SavingFw"
+            android:theme="@style/FarewayMainTheme" />
+        <activity
+            android:name=".activity.WelcomeActivity"
+            android:theme="@style/FarewayTheme.NoActionBar" />
+        <activity
+            android:name=".activity.ShopperId"
+            android:theme="@style/FarewayMainTheme" />
+        <activity
+            android:name=".activity.PurchaseHistory"
+            android:theme="@style/FarewayMainTheme" />
+        <activity
+            android:name=".activity.PurchaseHistoryDetail"
+            android:theme="@style/FarewayMainTheme" />
+        <activity
+            android:name=".activity.ShoppingFw"
+            android:theme="@style/FarewayMainTheme" />
+
+        <meta-data
+            android:name="preloaded_fonts"
+            android:resource="@array/preloaded_fonts" />
+    </application>-->
 
 </manifest>

@@ -340,11 +340,16 @@ public class MainFwActivity extends AppCompatActivity
         storeUpdateHandler = StoreUpdateHandler.getInstance();
         //saveErrorLog();
 
-
         mQueue = FarewayApplication.getmInstance(this).getmRequestQueue();
         appUtil = new AppUtilFw(activity);
         userAlertDialog = new UserAlertDialog(activity);
         appUtil.setTagPreference("key", 0);
+
+        /*try {
+           id=appUtil.getPrefrence("tempupcid");
+        }catch (Exception e){
+            e.printStackTrace();
+        }*/
         linear_search_layout = findViewById(R.id.linear_search_layout);
         linear_header_logo_layout = findViewById(R.id.linear_header_logo_layout);
 
@@ -3331,6 +3336,9 @@ public class MainFwActivity extends AppCompatActivity
         }
 
         messageLoad();
+        //messageLoadtest("2133383074");
+
+        //searchLoad("beef");
         // moreCouponLoad();
         addBadgeView();
         //saveErrorLog();
@@ -4147,6 +4155,12 @@ public class MainFwActivity extends AppCompatActivity
                 startActivity(i1);
             }
 
+            else if (i2 == R.id.by_faq) {
+
+                Intent i1 = new Intent(activity, FaqWebViewFw.class);
+                startActivity(i1);
+            }
+
             return false;
         }
     }
@@ -4640,10 +4654,29 @@ public class MainFwActivity extends AppCompatActivity
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+//                        Log.i("Volley error resp", "error----" + error.getMessage());
+//                        error.printStackTrace();
+//                        saveErrorLog("messageLoad", String.valueOf(error.networkResponse.statusCode));
+                        // progressDialog.dismiss();
+
                         Log.i("Volley error resp", "error----" + error.getMessage());
                         error.printStackTrace();
-                        saveErrorLog("messageLoad", String.valueOf(error.networkResponse.statusCode));
-                        // progressDialog.dismiss();
+                        try {
+                            saveErrorLog("messageLoad", String.valueOf(error.networkResponse.statusCode));
+                        }catch (Exception e){
+                            e.printStackTrace();
+                            alertDialog=userAlertDialog.createPositiveAlert("Checking the network cables, modem, and router\nReconnecting to Wi-Fi",
+                                    getString(R.string.ok),"No Internet");
+                            alertDialog.show();
+                        }
+                        if (error.networkResponse == null) {
+                            if (error.getClass().equals(TimeoutError.class)) {
+                                alertDialog=userAlertDialog.createPositiveAlert("Time out error",
+                                        getString(R.string.ok),"Fail");
+                                alertDialog.show();
+
+                            }
+                        }
                     }
                 }) {
                     @Override
@@ -4941,7 +4974,8 @@ public class MainFwActivity extends AppCompatActivity
 
         if (message.length() == 0) {
             //no students
-        } else {
+        }
+        else {
             String strCategory = "";
             String strCategoryCheck = "";
             int Categoryid = 0;
@@ -5057,7 +5091,8 @@ public class MainFwActivity extends AppCompatActivity
 
                         customAdapterPersonalPrices.notifyDataSetChanged();
                         //rv_items.setAdapter(customAdapterPersonalPrices);
-                    } else if (savingsShort == true) {
+                    }
+                    else if (savingsShort == true) {
                         List<Product> items = new Gson().fromJson(message.toString(), new TypeToken<List<Product>>() {
                         }.getType());
                         productList.clear();
@@ -5075,7 +5110,8 @@ public class MainFwActivity extends AppCompatActivity
 
                         customAdapterPersonalPrices.notifyDataSetChanged();
                         //rv_items.setAdapter(customAdapterPersonalPrices);
-                    } else {
+                    }
+                    else {
                         List<Product> items = new Gson().fromJson(message.toString(), new TypeToken<List<Product>>() {
                         }.getType());
                         // adding product to product list
@@ -5111,7 +5147,8 @@ public class MainFwActivity extends AppCompatActivity
 
                     customAdapterFilter.notifyDataSetChanged();
                     rv_category.setAdapter(customAdapterFilter);
-                } catch (JSONException e) {
+                }
+                catch (JSONException e) {
                     e.printStackTrace();
                     saveErrorLog("fetchProduct", e.getLocalizedMessage());
                 }
@@ -5217,7 +5254,8 @@ public class MainFwActivity extends AppCompatActivity
 
                         customAdapterPersonalPrices.notifyDataSetChanged();
                         //rv_items.setAdapter(customAdapterPersonalPrices);
-                    } else if (savingsShort == true) {
+                    }
+                    else if (savingsShort == true) {
                         List<Product> items = new Gson().fromJson("[" + categorydata.toString() + "]", new TypeToken<List<Product>>() {
                         }.getType());
                         productList.clear();
@@ -5235,7 +5273,8 @@ public class MainFwActivity extends AppCompatActivity
 
                         customAdapterPersonalPrices.notifyDataSetChanged();
                         //rv_items.setAdapter(customAdapterPersonalPrices);
-                    } else {
+                    }
+                    else {
                         List<Product> items = new Gson().fromJson("[" + categorydata.toString() + "]", new TypeToken<List<Product>>() {
                         }.getType());
                         // adding product to product list
@@ -5282,7 +5321,6 @@ public class MainFwActivity extends AppCompatActivity
 
 
             }
-
         }
     }
 
@@ -5968,12 +6006,35 @@ public class MainFwActivity extends AppCompatActivity
                         }, new Response.ErrorListener() {
                     @Override
                     public void onErrorResponse(VolleyError error) {
+//                        Log.i("Volley error resp", "error----" + error.getMessage());
+//                        error.printStackTrace();
+//                        saveErrorLog("messageLoad", String.valueOf(error.networkResponse.statusCode));
+//                        fetchProduct();
+//                        shoppingListIdLoad();
+//                        progressDialog.dismiss();
+
                         Log.i("Volley error resp", "error----" + error.getMessage());
                         error.printStackTrace();
-                        saveErrorLog("messageLoad", String.valueOf(error.networkResponse.statusCode));
-                        fetchProduct();
-                        shoppingListIdLoad();
-                        progressDialog.dismiss();
+                        try {
+                            saveErrorLog("CircularmoreCouponLoad", String.valueOf(error.networkResponse.statusCode));
+                            fetchProduct();
+                            shoppingListIdLoad();
+                            progressDialog.dismiss();
+                        }catch (Exception e){
+                            e.printStackTrace();
+                            alertDialog=userAlertDialog.createPositiveAlert("Checking the network cables, modem, and router\nReconnecting to Wi-Fi",
+                                    getString(R.string.ok),"No Internet");
+                            alertDialog.show();
+                            progressDialog.dismiss();
+                        }
+                        if (error.networkResponse == null) {
+                            if (error.getClass().equals(TimeoutError.class)) {
+                                alertDialog=userAlertDialog.createPositiveAlert("Time out error",
+                                        getString(R.string.ok),"Fail");
+                                alertDialog.show();
+
+                            }
+                        }
                     }
                 }) {
                     @Override
@@ -18997,6 +19058,102 @@ public class MainFwActivity extends AppCompatActivity
 
         } else {
             finish();
+            alertDialog = userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                    getString(R.string.ok), getString(R.string.alert));
+            alertDialog.show();
+//            Toast.makeText(activity, "No internet", Toast.LENGTH_LONG).show();
+        }
+    }
+
+    private void messageLoadtest(String test) {
+        if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+            try {
+                progressDialog = new ProgressDialog(activity);
+                progressDialog.setMessage("Processing");
+                progressDialog.show();
+                progressDialog.setCanceledOnTouchOutside(false);
+                StringRequest jsonObjectRequest = new StringRequest(Request.Method.GET, Constant.WEB_URL + Constant.PRODUCTLIST + "?memberid=" + appUtil.getPrefrence("MemberId") + "&Plateform=2",
+                        new Response.Listener<String>() {
+                            @Override
+                            public void onResponse(String response) {
+                                Log.i("Fareway Personal Deal", response.toString());
+                                if (response!=null){
+                                    try {
+
+                                        JSONObject root = new JSONObject(response);
+                                        root.getString("errorcode");
+                                        Log.i("errorcode", root.getString("errorcode"));
+                                        if (root.getString("errorcode").equals("0")) {
+                                            //progressDialog.dismiss();
+                                            message = root.getJSONArray("message");
+                                            Log.i("pdlength", String.valueOf(message.length()));
+                                            if (comeFrom.equalsIgnoreCase("moreOffer")) {
+                                                // moreCouponLoad();
+                                                x = 1;
+                                            } else {
+                                                CircularmoreCouponLoad();
+                                            }
+
+
+                                        }
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                        saveErrorLog("messageLoad", e.getLocalizedMessage());
+                                        CircularmoreCouponLoad();
+                                    }
+                                }else {
+                                    CircularmoreCouponLoad();
+                                }
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+                        Log.i("Volley error resp", "error----" + error.getMessage());
+                        error.printStackTrace();
+                        saveErrorLog("messageLoad", String.valueOf(error.networkResponse.statusCode));
+                        // progressDialog.dismiss();
+                    }
+                }) {
+                    @Override
+                    public String getBodyContentType() {
+                        return "application/x-www-form-urlencoded";
+                    }
+
+                    @Override
+                    protected Map<String, String> getParams() throws AuthFailureError {
+                        Map<String, String> params = new HashMap<String, String>();
+                        // params.put("UserName", et_email.getText().toString().trim());
+                        // params.put("password", et_pwd.getText().toString().trim());
+                        params.put("Device", "5");
+                        return params;
+                    }
+
+                    //this is the part, that adds the header to the request
+                    @Override
+                    public Map<String, String> getHeaders() {
+                        Map<String, String> params = new HashMap<String, String>();
+                        params.put("Content-Type", "application/x-www-form-urlencoded");
+                        params.put("Authorization", appUtil.getPrefrence("token_type") + " " + appUtil.getPrefrence("access_token"));
+                        return params;
+                    }
+                };
+                RetryPolicy policy = new DefaultRetryPolicy
+                        (5000,
+                                DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                jsonObjectRequest.setRetryPolicy(policy);
+                try {
+                    // FarewayApplication.getInstance().addToRequestQueue(jsonObjectRequest);
+                    mQueue.add(jsonObjectRequest);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
+                // progressDialog.dismiss();
+//                displayAlert();
+            }
+        } else {
             alertDialog = userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
                     getString(R.string.ok), getString(R.string.alert));
             alertDialog.show();
