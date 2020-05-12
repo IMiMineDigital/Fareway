@@ -60,55 +60,51 @@ public class SplashFw extends AppCompatActivity {
 
         String saveDate = appUtil.getPrefrence(".expires");
         Log.i("saveDate", saveDate);
-        if (saveDate != null) {
 
-            if (saveDate.length() == 0) {
-                Log.i("start date", saveDate + appUtil.getPrefrence("isLogin").equalsIgnoreCase("yes"));
-                getTokenkey();
-            }
-            else {
-                 SimpleDateFormat spf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss");
-                Date newDate = null;
-                try {
-                    newDate = spf.parse(saveDate);
-                } catch (ParseException e) {
-                    e.printStackTrace();
-                }
-                String c = "yyyy-MM-dd HH:mm:ss";
-                spf = new SimpleDateFormat(c);
-                saveDate = spf.format(newDate);
-                System.out.println("saveDate " + saveDate);
+        Uri uri = getIntent().getData();
+        if (uri !=null){
+            List<String> params = uri.getPathSegments();
+            String id = params.get(params.size()-1);
+            Toast.makeText(this, "id="+id, Toast.LENGTH_SHORT).show();
+            if (appUtil.getPrefrence("isLogin").equalsIgnoreCase("yes")==true){
+                if (saveDate != null) {
 
-                Calendar c2 = Calendar.getInstance();
-                SimpleDateFormat dateformat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
-                String currentDate = dateformat2.format(c2.getTime());
-                System.out.println("currentDate " + currentDate);
-                appUtil.setPrefrence("comeFrom", "mpp");
-
-                if (appUtil.getPrefrence("isLogin").equalsIgnoreCase("yes")==true) {
-                    getTokenkey2();
-
-                    /*if (currentDate.compareTo(saveDate) < 0) {
-                        if (appUtil.getPrefrence("StoreId").equalsIgnoreCase(appUtil.getPrefrence("BackupStoreId"))){
-                            Intent i = new Intent(activity, MainFwActivity.class);
-
-                            if (appUtil.getPrefrence("comeFrom").equalsIgnoreCase("mpp")) {
-                                i.putExtra("comeFrom", "mpp");
-                            } else if (appUtil.getPrefrence("comeFrom").equalsIgnoreCase("moreOffer")) {
-                                i.putExtra("comeFrom", "moreOffer");
-                            }
-
-                            startActivity(i);
-                            finish();
-                        }else {
-                            getTokenkey();
+                    if (saveDate.length() == 0) {
+                        Log.i("start date", saveDate + appUtil.getPrefrence("isLogin").equalsIgnoreCase("yes"));
+                        getTokenkey();
+                    }
+                    else {
+                        SimpleDateFormat spf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss");
+                        Date newDate = null;
+                        try {
+                            newDate = spf.parse(saveDate);
+                        } catch (ParseException e) {
+                            e.printStackTrace();
                         }
+                        String c = "yyyy-MM-dd HH:mm:ss";
+                        spf = new SimpleDateFormat(c);
+                        saveDate = spf.format(newDate);
+                        System.out.println("saveDate " + saveDate);
 
+                        Calendar c2 = Calendar.getInstance();
+                        SimpleDateFormat dateformat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                        String currentDate = dateformat2.format(c2.getTime());
+                        System.out.println("currentDate " + currentDate);
+                        appUtil.setPrefrence("comeFrom", "mpp");
 
-
-                    } else {
-                        getTokenkey2();
-                    }*/
+                        if (appUtil.getPrefrence("isLogin").equalsIgnoreCase("yes")==true) {
+                            getTokenkey2();
+                        }
+                        else {
+                            if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+                                getTokenkey();
+                            } else {
+                                alertDialog = userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                                        getString(R.string.ok), getString(R.string.alert));
+                                alertDialog.show();
+                            }
+                        }
+                    }
 
                 }
                 else {
@@ -120,22 +116,66 @@ public class SplashFw extends AppCompatActivity {
                                 getString(R.string.ok), getString(R.string.alert));
                         alertDialog.show();
                     }
+                }
+            }else {
+                finish();
+                //startActivity(new Intent(MainActivity.this, Second.class));
+                Log.i("test",id+"id");
 
+            }
+        }else {
+            if (saveDate != null) {
 
+                if (saveDate.length() == 0) {
+                    Log.i("start date", saveDate + appUtil.getPrefrence("isLogin").equalsIgnoreCase("yes"));
+                    getTokenkey();
+                }
+                else {
+                    SimpleDateFormat spf = new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss");
+                    Date newDate = null;
+                    try {
+                        newDate = spf.parse(saveDate);
+                    } catch (ParseException e) {
+                        e.printStackTrace();
+                    }
+                    String c = "yyyy-MM-dd HH:mm:ss";
+                    spf = new SimpleDateFormat(c);
+                    saveDate = spf.format(newDate);
+                    System.out.println("saveDate " + saveDate);
+
+                    Calendar c2 = Calendar.getInstance();
+                    SimpleDateFormat dateformat2 = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+                    String currentDate = dateformat2.format(c2.getTime());
+                    System.out.println("currentDate " + currentDate);
+                    appUtil.setPrefrence("comeFrom", "mpp");
+
+                    if (appUtil.getPrefrence("isLogin").equalsIgnoreCase("yes")==true) {
+                        getTokenkey2();
+                    }
+                    else {
+                        if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+                            getTokenkey();
+                        } else {
+                            alertDialog = userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                                    getString(R.string.ok), getString(R.string.alert));
+                            alertDialog.show();
+                        }
+                    }
+                }
+
+            }
+            else {
+
+                if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+                    getTokenkey();
+                } else {
+                    alertDialog = userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
+                            getString(R.string.ok), getString(R.string.alert));
+                    alertDialog.show();
                 }
             }
-
         }
-        else {
 
-            if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
-                getTokenkey();
-            } else {
-                alertDialog = userAlertDialog.createPositiveAlert(getString(R.string.noInternet),
-                        getString(R.string.ok), getString(R.string.alert));
-                alertDialog.show();
-            }
-        }
     }
 
     private void getTokenkey() {
