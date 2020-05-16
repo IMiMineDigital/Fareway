@@ -65,7 +65,7 @@ public class SplashFw extends AppCompatActivity {
         if (uri !=null){
             List<String> params = uri.getPathSegments();
             String id = params.get(params.size()-1);
-            Toast.makeText(this, "id="+id, Toast.LENGTH_SHORT).show();
+            //Toast.makeText(this, "id="+id, Toast.LENGTH_SHORT).show();
             if (appUtil.getPrefrence("isLogin").equalsIgnoreCase("yes")==true){
                 if (saveDate != null) {
 
@@ -123,7 +123,8 @@ public class SplashFw extends AppCompatActivity {
                 Log.i("test",id+"id");
 
             }
-        }else {
+        }
+        else {
             if (saveDate != null) {
 
                 if (saveDate.length() == 0) {
