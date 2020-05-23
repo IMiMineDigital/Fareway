@@ -1143,10 +1143,15 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }
 
                     if (product.getMinAmount() > 0||product.getOfferDefinitionId() == 8 ||product.getOfferDefinitionId() == 9) {
-                        headerContent = "<strong>* With $" + product.getMinAmount() + " Purchase " + "</strong><br><span>Exp " + saveDate + "</span>";
-                        String charsStarCouponShort = capitalize(product.getCouponShortDescription());
-                        holder.tv_detail.setText("*" + charsStarCouponShort);
-                        //headerContent = "* WITH $" + product.getMinAmount() + " PURCHASE" + "\nLimit " + product.getLimitPerTransection() + ", Exp " + saveDate;
+                        if (product.getMinAmount()==0.0||product.getMinAmount()==0.00){
+                            headerContent = "<br><span>Exp " + saveDate + "</span>";
+                            String charsStarCouponShort = capitalize(product.getCouponShortDescription());
+                            holder.tv_detail.setText("*" + charsStarCouponShort);
+                        }else {
+                            headerContent = "<strong>* With $" + product.getMinAmount() + " Purchase " + "</strong><br><span>Exp " + saveDate + "</span>";
+                            String charsStarCouponShort = capitalize(product.getCouponShortDescription());
+                            holder.tv_detail.setText("*" + charsStarCouponShort);
+                        }
                     }  else if (product.getRequiredQty() > 1) {
                         if (product.getLimitPerTransection() > 1) {
                             //<strong>must</strong></br><span>test</span>
@@ -1225,16 +1230,16 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
                     if (product.getIsbadged().equalsIgnoreCase("True")) {
                         Picasso.get().load(product.getBadgeFileName()).into(holder.coupon_badge);
-                        if (product.getLimitPerTransection() > 1) {
-                            headerContent = "<br>Limit " + String.valueOf(product.getLimitPerTransection()) + ", Exp " + saveDate;
-                            holder.limit.setGravity(Gravity.CENTER);
-                        } else {
-                            headerContent = "<br>Exp " + saveDate;
-                            holder.limit.setGravity(Gravity.CENTER);
-                        }
-                        Spanned headerHtml2 = Html.fromHtml(headerContent);
-
-                        holder.limit.setText(headerHtml2);
+//                        if (product.getLimitPerTransection() > 1) {
+//                            headerContent = "<br>Limit " + String.valueOf(product.getLimitPerTransection()) + ", Exp " + saveDate;
+//                            holder.limit.setGravity(Gravity.CENTER);
+//                        } else {
+//                            headerContent = "<br>Exp " + saveDate;
+//                            holder.limit.setGravity(Gravity.CENTER);
+//                        }
+//                        Spanned headerHtml2 = Html.fromHtml(headerContent);
+//
+//                        holder.limit.setText(headerHtml2);
 
 
                     } else {
@@ -1337,6 +1342,19 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                                 float myFloatAdPrice = Float.parseFloat(product.getAdPrice() + "f");
                                 String formattedAdPriceString = String.format("%.02f", myFloatAdPrice);
                                 holder.tv_promo_price.setText("$" + formattedAdPriceString);
+                                if (myFloatRegularPrice==0.00&&myFloatAdPrice==0.00){
+                                    holder.liner_save.setVisibility(View.GONE);
+                                    holder.liner_promo_price.setVisibility(View.GONE);
+                                    holder.tv_coupon_type_1.setVisibility(View.GONE);
+                                }else if (myFloatRegularPrice==myFloatAdPrice){
+                                    holder.liner_save.setVisibility(View.VISIBLE);
+                                    holder.liner_promo_price.setVisibility(View.GONE);
+                                    holder.tv_coupon_type_1.setVisibility(View.GONE);
+                                }else if (myFloatAdPrice==0.00){
+                                    holder.liner_save.setVisibility(View.GONE);
+                                    holder.liner_promo_price.setVisibility(View.GONE);
+                                    holder.tv_coupon_type_1.setVisibility(View.GONE);
+                                }
                             } else {
                                 holder.liner_save.setVisibility(View.GONE);
                                 holder.liner_promo_price.setVisibility(View.GONE);
@@ -2634,9 +2652,16 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                     }
 
                     if (product.getMinAmount() > 0||product.getOfferDefinitionId() == 8 ||product.getOfferDefinitionId() == 9) {
-                        headerContent = "<strong>* With $" + product.getMinAmount() + " Purchase " + "</strong><br><span>Exp " + saveDate + "</span>";
-                        String charsStarCouponShort = capitalize(product.getCouponShortDescription());
-                        holder.tv_detail.setText("*" + charsStarCouponShort);
+                        if (product.getMinAmount()==0.0||product.getMinAmount()==0.00){
+                            headerContent = "<br><span>Exp " + saveDate + "</span>";
+                            String charsStarCouponShort = capitalize(product.getCouponShortDescription());
+                            holder.tv_detail.setText("*" + charsStarCouponShort);
+                        }else {
+                            headerContent = "<strong>* With $" + product.getMinAmount() + " Purchase " + "</strong><br><span>Exp " + saveDate + "</span>";
+                            String charsStarCouponShort = capitalize(product.getCouponShortDescription());
+                            holder.tv_detail.setText("*" + charsStarCouponShort);
+                        }
+
                         //headerContent = "* WITH $" + product.getMinAmount() + " PURCHASE" + "\nLimit " + product.getLimitPerTransection() + ", Exp " + saveDate;
                     } else if (product.getRequiredQty() > 1) {
                         if (product.getLimitPerTransection() > 1) {
@@ -2718,16 +2743,16 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
 
                     if (product.getIsbadged().equalsIgnoreCase("True")) {
                         Picasso.get().load(product.getBadgeFileName()).into(holder.coupon_badge);
-                        if (product.getLimitPerTransection() > 1) {
-                            headerContent = "<br>Limit " + String.valueOf(product.getLimitPerTransection()) + ", Exp " + saveDate;
-                            holder.limit.setGravity(Gravity.RIGHT);
-                        } else {
-                            headerContent = "<br>Exp " + saveDate;
-                            holder.limit.setGravity(Gravity.CENTER);
-                        }
-                        Spanned headerHtml2 = Html.fromHtml(headerContent);
-
-                        holder.limit.setText(headerHtml2);
+//                        if (product.getLimitPerTransection() > 1) {
+//                            headerContent = "Limit " + String.valueOf(product.getLimitPerTransection()) + "<br>Exp " + saveDate;
+//                            //holder.limit.setGravity(Gravity.RIGHT);
+//                        } else {
+//                            headerContent = "<br>Exp " + saveDate;
+//                            holder.limit.setGravity(Gravity.CENTER);
+//                        }
+//                        Spanned headerHtml2 = Html.fromHtml(headerContent);
+//
+//                        holder.limit.setText(headerHtml2);
 
 
                     } else {
@@ -2821,7 +2846,21 @@ public class CustomAdapterPersonalPrices extends RecyclerView.Adapter<CustomAdap
                                 float myFloatAdPrice = Float.parseFloat(product.getAdPrice() + "f");
                                 String formattedAdPriceString = String.format("%.02f", myFloatAdPrice);
                                 holder.tv_promo_price.setText("$" + formattedAdPriceString);
-                            } else {
+                                if (myFloatRegularPrice==0.00&&myFloatAdPrice==0.00){
+                                    holder.liner_save.setVisibility(View.GONE);
+                                    holder.liner_promo_price.setVisibility(View.GONE);
+                                    holder.tv_coupon_type_1.setVisibility(View.GONE);
+                                }else if (myFloatRegularPrice==myFloatAdPrice){
+                                    holder.liner_save.setVisibility(View.VISIBLE);
+                                    holder.liner_promo_price.setVisibility(View.GONE);
+                                    holder.tv_coupon_type_1.setVisibility(View.GONE);
+                                }else if (myFloatAdPrice==0.00){
+                                    holder.liner_save.setVisibility(View.GONE);
+                                    holder.liner_promo_price.setVisibility(View.GONE);
+                                    holder.tv_coupon_type_1.setVisibility(View.GONE);
+                                }
+                            }
+                            else {
                                 holder.liner_save.setVisibility(View.GONE);
                                 holder.liner_promo_price.setVisibility(View.GONE);
                                 holder.tv_coupon_type_1.setVisibility(View.GONE);
