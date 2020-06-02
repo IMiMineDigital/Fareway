@@ -30,7 +30,7 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.speech.RecognizerIntent;
-import android.support.annotation.NonNull;
+//import android.support.annotation.NonNull;
 /*
 import android.support.design.internal.BottomNavigationItemView;
 import android.support.design.internal.BottomNavigationMenuView;
@@ -77,6 +77,7 @@ import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.SearchView;
@@ -174,7 +175,8 @@ public class MainFwActivity extends AppCompatActivity
     private Toolbar DetaileToolbar;
     private Toolbar participateToolbar;
     //private NavigationView navigationView;
-    private TextView mTextMessage, tv_uname, tv_filter_by_category, tv_filter_by_offer, tv_type, tv_number_item, add_item;
+    private TextView tv_change_no_store_popup,mTextMessage, tv_uname, tv_filter_by_category, tv_filter_by_offer, tv_type, tv_number_item, add_item;
+    private RelativeLayout relative_no_store;
     private ImageView imv_view_list, imv_all_delete, imv_logo, imv_status_verities;
     private static RecyclerView rv_items, rv_items_verite, rv_items_group;
     private static CustomAdapterParticipateItems customAdapterParticipateItems;
@@ -350,6 +352,10 @@ public class MainFwActivity extends AppCompatActivity
         }catch (Exception e){
             e.printStackTrace();
         }*/
+
+        tv_change_no_store_popup = findViewById(R.id.tv_change_no_store_popup);
+        relative_no_store =findViewById(R.id.relative_no_store);
+
         linear_search_layout = findViewById(R.id.linear_search_layout);
         linear_header_logo_layout = findViewById(R.id.linear_header_logo_layout);
 
@@ -2292,6 +2298,27 @@ public class MainFwActivity extends AppCompatActivity
                                             } else {
                                                 Log.d(TAG, ">> Change store Response code " + updateStore.getErrorcode());
                                             }
+                                            ////////////
+
+                                            JSONObject root = new JSONObject(response);
+                                            root.getString("errorcode");
+                                            if (root.getString("errorcode").equals("0")){
+                                                JSONArray message= root.getJSONArray("message");
+                                                for(int i=0;i<message.length();i++)
+                                                {
+                                                    JSONObject jsonParam= message.getJSONObject(i);
+                                                    appUtil.setPrefrence("IsAllowedPrefStore", jsonParam.getString("IsAllowedPrefStore"));
+                                                }
+                                                if (appUtil.getPrefrence("IsAllowedPrefStore").equalsIgnoreCase("0")){
+                                                    tv_change_no_store_popup.setText(appUtil.getPrefrence("StoreMessageApp"));
+                                                    relative_no_store.setVisibility(View.VISIBLE);
+                                                }else {
+                                                    //messageLoad();
+                                                }
+                                            }else if (root.getString("errorcode").equals("200")){
+                                            }
+
+
                                         }catch (Exception e){
                                             saveErrorLog("updateReqChangeStore", e.getLocalizedMessage());
 
@@ -2786,13 +2813,25 @@ public class MainFwActivity extends AppCompatActivity
                                 pdView = true;*/
                                     offerTitle.setText("Personal Ad");
                                     changeStore();
-                                    messageChangeStoreLoad();
+                                    if (appUtil.getPrefrence("IsAllowedPrefStore").equalsIgnoreCase("0")){
+                                        tv_change_no_store_popup.setText(appUtil.getPrefrence("StoreMessageApp"));
+                                        relative_no_store.setVisibility(View.VISIBLE);
+                                    }else {
+                                        relative_no_store.setVisibility(View.GONE);
+                                        messageChangeStoreLoad();
+                                    }
                                 }else if (x==0){
                                     couponTile = true;
                                     pdView = true;
                                     offerTitle.setText("Personal Ad");
                                     changeStore();
-                                    messageChangeStoreLoad();
+                                    if (appUtil.getPrefrence("IsAllowedPrefStore").equalsIgnoreCase("0")){
+                                        tv_change_no_store_popup.setText(appUtil.getPrefrence("StoreMessageApp"));
+                                        relative_no_store.setVisibility(View.VISIBLE);
+                                    }else {
+                                        relative_no_store.setVisibility(View.GONE);
+                                        messageChangeStoreLoad();
+                                    }
                                 }
 
 
@@ -3334,8 +3373,14 @@ public class MainFwActivity extends AppCompatActivity
         } else {
             deviceType = "2";
         }
+        if (appUtil.getPrefrence("StoreSettingID").equalsIgnoreCase("3")&&appUtil.getPrefrence("IsAllowedPrefStore").equalsIgnoreCase("0")){
+            tv_change_no_store_popup.setText(appUtil.getPrefrence("StoreMessageApp"));
+            relative_no_store.setVisibility(View.VISIBLE);
+        }else {
+            messageLoad();
+        }
 
-        messageLoad();
+        //messageLoad();
         //messageLoadtest("2133383074");
 
         //searchLoad("beef");
@@ -3391,7 +3436,7 @@ public class MainFwActivity extends AppCompatActivity
                 startActivity(i1);
                 return true;
             } else if (i == R.id.filter) {
-                //rv_shopping_list_items.setVisibility(View.GONE);
+
                 PopupMenu popupMenu = null;
                 if (android.os.Build.VERSION.SDK_INT >= android.os.Build.VERSION_CODES.KITKAT) {
                     popupMenu = new PopupMenu(MainFwActivity.this, navigation, Gravity.END);
@@ -3407,156 +3452,165 @@ public class MainFwActivity extends AppCompatActivity
                 } else if (x == 3) {
                     popupMenu.inflate(R.menu.filter);
                 }
+                if (appUtil.getPrefrence("StoreSettingID").equalsIgnoreCase("3")&&appUtil.getPrefrence("IsAllowedPrefStore").equalsIgnoreCase("0")){
+                    popupMenu.dismiss();
+                }else {
+                    popupMenu.show();
+                }
 
-                popupMenu.show();
+
                 return true;
             } else if (i == R.id.ShoppingList) {
-                //startActivity(new Intent(MainFwActivity.this,ShoppingFw.class));
-                if (x == 0 || x == 3) {
-                    isMyFarewayList=true;
-                    linear_shopping_list_tab.setVisibility(View.GONE);
-                    linear_coupon_tab.setVisibility(View.VISIBLE);
+                if (appUtil.getPrefrence("StoreSettingID").equalsIgnoreCase("3")&&appUtil.getPrefrence("IsAllowedPrefStore").equalsIgnoreCase("0")){
+                    //relative_no_store.setVisibility(View.GONE);
+                }else {
+                    //startActivity(new Intent(MainFwActivity.this,ShoppingFw.class));
+                    if (x == 0 || x == 3) {
+                        isMyFarewayList=true;
+                        linear_shopping_list_tab.setVisibility(View.GONE);
+                        linear_coupon_tab.setVisibility(View.VISIBLE);
 
-                    rv_shopping_list_items.setVisibility(View.VISIBLE);
-                    shopping_list_header.setVisibility(View.VISIBLE);
-                    navigation.setVisibility(View.VISIBLE);
-                    DetaileToolbar.setVisibility(View.VISIBLE);
-                    rv_items.setVisibility(View.GONE);
-                    rv_items_verite.setVisibility(View.GONE);
-                    toolbar.setVisibility(View.GONE);
+                        rv_shopping_list_items.setVisibility(View.VISIBLE);
+                        shopping_list_header.setVisibility(View.VISIBLE);
+                        navigation.setVisibility(View.VISIBLE);
+                        DetaileToolbar.setVisibility(View.VISIBLE);
+                        rv_items.setVisibility(View.GONE);
+                        rv_items_verite.setVisibility(View.GONE);
+                        toolbar.setVisibility(View.GONE);
 
-                    tv.setVisibility(View.GONE);
-                    tv2.setVisibility(View.GONE);
+                        tv.setVisibility(View.GONE);
+                        tv2.setVisibility(View.GONE);
 
-                    rv_category.setVisibility(View.GONE);
-                    rowLayout.setVisibility(View.GONE);
-                    rowLayoutShort.setVisibility(View.GONE);
+                        rv_category.setVisibility(View.GONE);
+                        rowLayout.setVisibility(View.GONE);
+                        rowLayoutShort.setVisibility(View.GONE);
 
-                    x = 1;
-                    z = 0;
-                    shopping_list_fragment.setBackground(getResources().getDrawable(R.color.light_grey));
-                    shopping_list_fragment.setTextColor(getResources().getColor(R.color.grey));
-                    activated_offer_fragment.setBackground(getResources().getDrawable(R.color.white));
-                    activated_offer_fragment.setTextColor(getResources().getColor(R.color.black));
-                    navigation.getMenu().findItem(R.id.ShoppingList).setTitle("Personal Ad");
-                    navigation.getMenu().findItem(R.id.ShoppingList).setIcon(R.drawable.account);
+                        x = 1;
+                        z = 0;
+                        shopping_list_fragment.setBackground(getResources().getDrawable(R.color.light_grey));
+                        shopping_list_fragment.setTextColor(getResources().getColor(R.color.grey));
+                        activated_offer_fragment.setBackground(getResources().getDrawable(R.color.white));
+                        activated_offer_fragment.setTextColor(getResources().getColor(R.color.black));
+                        navigation.getMenu().findItem(R.id.ShoppingList).setTitle("Personal Ad");
+                        navigation.getMenu().findItem(R.id.ShoppingList).setIcon(R.drawable.account);
 
-                    activatedOffersListIdLoad();
+                        activatedOffersListIdLoad();
 
-                    imv_all_delete.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            ViewRemoveAllDialog alert = new ViewRemoveAllDialog();
-                            alert.showDialog(activity, "Do you want to delete all the items from the shopping list?");
+                        imv_all_delete.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                ViewRemoveAllDialog alert = new ViewRemoveAllDialog();
+                                alert.showDialog(activity, "Do you want to delete all the items from the shopping list?");
+                            }
+                        });
+
+                        DetaileToolbar.setTitle("MyFareway List");
+                        DetaileToolbar.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                //
+                                x = 0;
+                                z = 0;
+                                shoppingArrayList.clear();
+                                shoppingListAdapter.notifyDataSetChanged();
+
+                                navigation.getMenu().findItem(R.id.ShoppingList).setTitle("MyFareway List");
+                                navigation.getMenu().findItem(R.id.ShoppingList).setIcon(R.drawable.ic_view_list_black_24dp);
+                                tv.setVisibility(View.VISIBLE);
+                                tv2.setVisibility(View.VISIBLE);
+                                shopping_list_header.setVisibility(View.GONE);
+                                navigation.setVisibility(View.VISIBLE);
+                                rv_shopping_list_items.setVisibility(View.GONE);
+                                DetaileToolbar.setVisibility(View.GONE);
+                                rv_items.setVisibility(View.VISIBLE);
+                                toolbar.setVisibility(View.VISIBLE);
+                                if (pdView==true){
+                                    linearLayout.setVisibility(View.VISIBLE);
+                                }
+                                else {
+
+                                    linearLayout.setVisibility(View.GONE);
+                                    if (tmp==1||tmp==2||tmp==3){
+                                        filter_offer_label.setVisibility(View.VISIBLE);
+                                    }
+                                    if (categoryShort==true){
+                                        filter_offer_label.setVisibility(View.VISIBLE);
+                                        tv_category_name.setVisibility(View.VISIBLE);
+                                        img_category_cross_button.setVisibility(View.VISIBLE);
+                                    } else {
+                                        //filter_offer_label.setVisibility(View.VISIBLE);
+                                        tv_category_name.setVisibility(View.GONE);
+                                        img_category_cross_button.setVisibility(View.GONE);
+                                    }
+                                    if (offferShort==true||savingsShort==true){
+                                        filter_label.setVisibility(View.VISIBLE);
+                                    }else {
+                                        filter_label.setVisibility(View.GONE);
+                                    }
+
+                                }
+
+                            }
+                        });
+
+                    }
+                    else if (x == 1) {
+                        isMyFarewayList=false;
+                        if (searchLable == true) {
+                            x = 3;
+                            z = 0;
+                            if (participate == 0) {
+                                search_message.setVisibility(View.VISIBLE);
+                            } else if (participate == 1) {
+                                search_message.setVisibility(View.GONE);
+                            }
                         }
-                    });
-
-                    DetaileToolbar.setTitle("MyFareway List");
-                    DetaileToolbar.setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            //
+                        else {
                             x = 0;
                             z = 0;
-                            shoppingArrayList.clear();
-                            shoppingListAdapter.notifyDataSetChanged();
+                        }
 
-                            navigation.getMenu().findItem(R.id.ShoppingList).setTitle("MyFareway List");
-                            navigation.getMenu().findItem(R.id.ShoppingList).setIcon(R.drawable.ic_view_list_black_24dp);
-                            tv.setVisibility(View.VISIBLE);
-                            tv2.setVisibility(View.VISIBLE);
-                            shopping_list_header.setVisibility(View.GONE);
-                            navigation.setVisibility(View.VISIBLE);
-                            rv_shopping_list_items.setVisibility(View.GONE);
-                            DetaileToolbar.setVisibility(View.GONE);
-                            rv_items.setVisibility(View.VISIBLE);
-                            toolbar.setVisibility(View.VISIBLE);
-                            if (pdView==true){
-                                linearLayout.setVisibility(View.VISIBLE);
+
+                        shoppingArrayList.clear();
+                        shoppingListAdapter.notifyDataSetChanged();
+                        if (pdView==true){
+                            linearLayout.setVisibility(View.VISIBLE);
+                        }
+                        else {
+
+                            linearLayout.setVisibility(View.GONE);
+                            if (tmp==1||tmp==2||tmp==3){
+                                filter_offer_label.setVisibility(View.VISIBLE);
                             }
-                            else {
-
-                                linearLayout.setVisibility(View.GONE);
-                                if (tmp==1||tmp==2||tmp==3){
-                                    filter_offer_label.setVisibility(View.VISIBLE);
-                                }
-                                if (categoryShort==true){
-                                    filter_offer_label.setVisibility(View.VISIBLE);
-                                    tv_category_name.setVisibility(View.VISIBLE);
-                                    img_category_cross_button.setVisibility(View.VISIBLE);
-                                } else {
-                                    //filter_offer_label.setVisibility(View.VISIBLE);
-                                    tv_category_name.setVisibility(View.GONE);
-                                    img_category_cross_button.setVisibility(View.GONE);
-                                }
-                                if (offferShort==true||savingsShort==true){
-                                    filter_label.setVisibility(View.VISIBLE);
-                                }else {
-                                    filter_label.setVisibility(View.GONE);
-                                }
-
+                            if (categoryShort==true){
+                                filter_offer_label.setVisibility(View.VISIBLE);
+                                tv_category_name.setVisibility(View.VISIBLE);
+                                img_category_cross_button.setVisibility(View.VISIBLE);
+                            } else {
+                                tv_category_name.setVisibility(View.GONE);
+                                img_category_cross_button.setVisibility(View.GONE);
+                            }
+                            if (offferShort==true||savingsShort==true){
+                                filter_label.setVisibility(View.VISIBLE);
+                            }else {
+                                filter_label.setVisibility(View.GONE);
                             }
 
                         }
-                    });
 
-                }
-                else if (x == 1) {
-                    isMyFarewayList=false;
-                    if (searchLable == true) {
-                        x = 3;
-                        z = 0;
-                        if (participate == 0) {
-                            search_message.setVisibility(View.VISIBLE);
-                        } else if (participate == 1) {
-                            search_message.setVisibility(View.GONE);
-                        }
-                    }
-                    else {
-                        x = 0;
-                        z = 0;
-                    }
+                        navigation.getMenu().findItem(R.id.ShoppingList).setTitle("MyFareway List");
+                        navigation.getMenu().findItem(R.id.ShoppingList).setIcon(R.drawable.ic_view_list_black_24dp);
+                        tv.setVisibility(View.GONE);
+                        tv2.setVisibility(View.VISIBLE);
+                        shopping_list_header.setVisibility(View.GONE);
+                        navigation.setVisibility(View.VISIBLE);
+                        rv_shopping_list_items.setVisibility(View.GONE);
 
-
-                    shoppingArrayList.clear();
-                    shoppingListAdapter.notifyDataSetChanged();
-                    if (pdView==true){
-                        linearLayout.setVisibility(View.VISIBLE);
-                    }
-                    else {
-
-                        linearLayout.setVisibility(View.GONE);
-                        if (tmp==1||tmp==2||tmp==3){
-                            filter_offer_label.setVisibility(View.VISIBLE);
-                        }
-                        if (categoryShort==true){
-                            filter_offer_label.setVisibility(View.VISIBLE);
-                            tv_category_name.setVisibility(View.VISIBLE);
-                            img_category_cross_button.setVisibility(View.VISIBLE);
-                        } else {
-                            tv_category_name.setVisibility(View.GONE);
-                            img_category_cross_button.setVisibility(View.GONE);
-                        }
-                        if (offferShort==true||savingsShort==true){
-                            filter_label.setVisibility(View.VISIBLE);
-                        }else {
-                            filter_label.setVisibility(View.GONE);
-                        }
+                        DetaileToolbar.setVisibility(View.GONE);
+                        rv_items.setVisibility(View.VISIBLE);
+                        toolbar.setVisibility(View.VISIBLE);
 
                     }
-
-                    navigation.getMenu().findItem(R.id.ShoppingList).setTitle("MyFareway List");
-                    navigation.getMenu().findItem(R.id.ShoppingList).setIcon(R.drawable.ic_view_list_black_24dp);
-                    tv.setVisibility(View.GONE);
-                    tv2.setVisibility(View.VISIBLE);
-                    shopping_list_header.setVisibility(View.GONE);
-                    navigation.setVisibility(View.VISIBLE);
-                    rv_shopping_list_items.setVisibility(View.GONE);
-
-                    DetaileToolbar.setVisibility(View.GONE);
-                    rv_items.setVisibility(View.VISIBLE);
-                    toolbar.setVisibility(View.VISIBLE);
-
                 }
 
             } else if (i == R.id.ShopperID) {
@@ -4644,7 +4698,7 @@ public class MainFwActivity extends AppCompatActivity
                                         }
                                     } catch (JSONException e) {
                                         e.printStackTrace();
-                                        saveErrorLog("messageLoad", e.getLocalizedMessage());
+                                        //saveErrorLog("messageLoad", e.getLocalizedMessage());
                                         CircularmoreCouponLoad();
                                     }
                                 }else {
@@ -4971,99 +5025,99 @@ public class MainFwActivity extends AppCompatActivity
     }
 
     private void fetchProduct() {
+       try {
+           if (message.length() == 0) {
+               //no students
+           }
+           else {
+               String strCategory = "";
+               String strCategoryCheck = "";
+               int Categoryid = 0;
+               int category_count = 0;
+               int subcat = 0;
+               if (tmp == 0) {
 
-        if (message.length() == 0) {
-            //no students
-        }
-        else {
-            String strCategory = "";
-            String strCategoryCheck = "";
-            int Categoryid = 0;
-            int category_count = 0;
-            int subcat = 0;
-            if (tmp == 0) {
+                   for (int i = 0; i < message.length(); i++) {
+                       category_count = category_count + 1;
+                       try {
+                           if (Categoryid != message.getJSONObject(i).getInt("CategoryID")) {
 
-                for (int i = 0; i < message.length(); i++) {
-                    category_count = category_count + 1;
-                    try {
-                        if (Categoryid != message.getJSONObject(i).getInt("CategoryID")) {
+                               if (!strCategoryCheck.contains("#" + message.getJSONObject(i).getInt("CategoryID") + "#")) {
+                                   strCategoryCheck += "#" + message.getJSONObject(i).getInt("CategoryID") + "#" + ",";
+                                   subcat = 0;
+                                   for (int q = 0; q < message.length(); q++) {
+                                       if (message.getJSONObject(q).getInt("CategoryID") == message.getJSONObject(i).getInt("CategoryID")) {
+                                           subcat = subcat + 1;
+                                       }
+                                   }
+                                   Categoryid = message.getJSONObject(i).getInt("CategoryID");
+                                   strCategory += (strCategory == "" ? "{" + "\"CategoryID\":" + message.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message.getJSONObject(i).getString("CategoryName").replace("\n", "") + " (" + subcat + ")\"}" : "," + "{" + "\"CategoryID\":" + message.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message.getJSONObject(i).getString("CategoryName").replace("\n", "") + " (" + subcat + ")\"}");
+                               }
+                           }
+                       } catch (JSONException e) {
+                           e.printStackTrace();
+                           saveErrorLog("fetchProduct", e.getLocalizedMessage());
+                       }
 
-                            if (!strCategoryCheck.contains("#" + message.getJSONObject(i).getInt("CategoryID") + "#")) {
-                                strCategoryCheck += "#" + message.getJSONObject(i).getInt("CategoryID") + "#" + ",";
-                                subcat = 0;
-                                for (int q = 0; q < message.length(); q++) {
-                                    if (message.getJSONObject(q).getInt("CategoryID") == message.getJSONObject(i).getInt("CategoryID")) {
-                                        subcat = subcat + 1;
-                                    }
-                                }
-                                Categoryid = message.getJSONObject(i).getInt("CategoryID");
-                                strCategory += (strCategory == "" ? "{" + "\"CategoryID\":" + message.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message.getJSONObject(i).getString("CategoryName").replace("\n", "") + " (" + subcat + ")\"}" : "," + "{" + "\"CategoryID\":" + message.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message.getJSONObject(i).getString("CategoryName").replace("\n", "") + " (" + subcat + ")\"}");
-                            }
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        saveErrorLog("fetchProduct", e.getLocalizedMessage());
-                    }
-
-                }
+                   }
 
 
-                // adding product to product list
+                   // adding product to product list
                    /* productList.clear();
                     productList.addAll(items);
 
                     customAdapterPersonalPrices.notifyDataSetChanged();*/
-                //
-                if (categoryShort == true) {
-                    if (offferShort == true) {
+                   //
+                   if (categoryShort == true) {
+                       if (offferShort == true) {
 
-                        List<Product> items = new Gson().fromJson(messageCategory.toString(), new TypeToken<List<Product>>() {
-                        }.getType());
-                        productList.clear();
-                        productList.addAll(items);
+                           List<Product> items = new Gson().fromJson(messageCategory.toString(), new TypeToken<List<Product>>() {
+                           }.getType());
+                           productList.clear();
+                           productList.addAll(items);
 
-                        Collections.sort(productList, new Comparator<Product>() {
+                           Collections.sort(productList, new Comparator<Product>() {
 
-                            @Override
-                            public int compare(Product o2, Product o1) {
-                                return Integer.parseInt(String.valueOf(o1.getPrimaryOfferTypeId())) - Integer.parseInt(String.valueOf(o2.getPrimaryOfferTypeId()));
-                            }
+                               @Override
+                               public int compare(Product o2, Product o1) {
+                                   return Integer.parseInt(String.valueOf(o1.getPrimaryOfferTypeId())) - Integer.parseInt(String.valueOf(o2.getPrimaryOfferTypeId()));
+                               }
 
-                        });
+                           });
 
-                        customAdapterPersonalPrices.notifyDataSetChanged();
-                        //rv_items.setAdapter(customAdapterPersonalPrices);
-                    } else if (savingsShort == true) {
-                        List<Product> items = new Gson().fromJson(messageCategory.toString(), new TypeToken<List<Product>>() {
-                        }.getType());
-                        productList.clear();
-                        productList.addAll(items);
+                           customAdapterPersonalPrices.notifyDataSetChanged();
+                           //rv_items.setAdapter(customAdapterPersonalPrices);
+                       } else if (savingsShort == true) {
+                           List<Product> items = new Gson().fromJson(messageCategory.toString(), new TypeToken<List<Product>>() {
+                           }.getType());
+                           productList.clear();
+                           productList.addAll(items);
 
-                        Collections.sort(productList, new Comparator<Product>() {
+                           Collections.sort(productList, new Comparator<Product>() {
 
-                            @Override
-                            public int compare(Product o2, Product o1) {
-                                return Float.valueOf(o1.getSavings()).compareTo(Float.valueOf(o2.getSavings()));
-                                // return Integer.parseInt(String.valueOf(o1.getSavings())) - Integer.parseInt(String.valueOf(o2.getSavings()));
-                            }
+                               @Override
+                               public int compare(Product o2, Product o1) {
+                                   return Float.valueOf(o1.getSavings()).compareTo(Float.valueOf(o2.getSavings()));
+                                   // return Integer.parseInt(String.valueOf(o1.getSavings())) - Integer.parseInt(String.valueOf(o2.getSavings()));
+                               }
 
-                        });
+                           });
 
-                        customAdapterPersonalPrices.notifyDataSetChanged();
-                        //rv_items.setAdapter(customAdapterPersonalPrices);
-                    } else {
-                        try {
-                            List<Product> items = new Gson().fromJson(messageCategory.toString(), new TypeToken<List<Product>>() {
-                            }.getType());
-                            // adding product to product list
-                            productList.clear();
-                            productList.addAll(items);
+                           customAdapterPersonalPrices.notifyDataSetChanged();
+                           //rv_items.setAdapter(customAdapterPersonalPrices);
+                       } else {
+                           try {
+                               List<Product> items = new Gson().fromJson(messageCategory.toString(), new TypeToken<List<Product>>() {
+                               }.getType());
+                               // adding product to product list
+                               productList.clear();
+                               productList.addAll(items);
 
-                            customAdapterPersonalPrices.notifyDataSetChanged();
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                            saveErrorLog("fetchProduct", e.getLocalizedMessage());
-                        }
+                               customAdapterPersonalPrices.notifyDataSetChanged();
+                           } catch (Exception e) {
+                               e.printStackTrace();
+                               saveErrorLog("fetchProduct", e.getLocalizedMessage());
+                           }
                         /*List<Product> items = new Gson().fromJson(messageCategory.toString(), new TypeToken<List<Product>>() {
                         }.getType());
                         // adding product to product list
@@ -5071,257 +5125,262 @@ public class MainFwActivity extends AppCompatActivity
                         productList.addAll(items);
 
                         customAdapterPersonalPrices.notifyDataSetChanged();*/
-                    }
-                }
-                else {
-                    if (offferShort == true) {
-                        List<Product> items = new Gson().fromJson(message.toString(), new TypeToken<List<Product>>() {
-                        }.getType());
-                        productList.clear();
-                        productList.addAll(items);
+                       }
+                   }
+                   else {
+                       if (offferShort == true) {
+                           List<Product> items = new Gson().fromJson(message.toString(), new TypeToken<List<Product>>() {
+                           }.getType());
+                           productList.clear();
+                           productList.addAll(items);
 
-                        Collections.sort(productList, new Comparator<Product>() {
+                           Collections.sort(productList, new Comparator<Product>() {
 
-                            @Override
-                            public int compare(Product o2, Product o1) {
-                                return Integer.parseInt(String.valueOf(o1.getPrimaryOfferTypeId())) - Integer.parseInt(String.valueOf(o2.getPrimaryOfferTypeId()));
-                            }
+                               @Override
+                               public int compare(Product o2, Product o1) {
+                                   return Integer.parseInt(String.valueOf(o1.getPrimaryOfferTypeId())) - Integer.parseInt(String.valueOf(o2.getPrimaryOfferTypeId()));
+                               }
 
-                        });
+                           });
 
-                        customAdapterPersonalPrices.notifyDataSetChanged();
-                        //rv_items.setAdapter(customAdapterPersonalPrices);
-                    }
-                    else if (savingsShort == true) {
-                        List<Product> items = new Gson().fromJson(message.toString(), new TypeToken<List<Product>>() {
-                        }.getType());
-                        productList.clear();
-                        productList.addAll(items);
+                           customAdapterPersonalPrices.notifyDataSetChanged();
+                           //rv_items.setAdapter(customAdapterPersonalPrices);
+                       }
+                       else if (savingsShort == true) {
+                           List<Product> items = new Gson().fromJson(message.toString(), new TypeToken<List<Product>>() {
+                           }.getType());
+                           productList.clear();
+                           productList.addAll(items);
 
-                        Collections.sort(productList, new Comparator<Product>() {
+                           Collections.sort(productList, new Comparator<Product>() {
 
-                            @Override
-                            public int compare(Product o2, Product o1) {
-                                return Float.valueOf(o1.getSavings()).compareTo(Float.valueOf(o2.getSavings()));
-                                // return Integer.parseInt(String.valueOf(o1.getSavings())) - Integer.parseInt(String.valueOf(o2.getSavings()));
-                            }
+                               @Override
+                               public int compare(Product o2, Product o1) {
+                                   return Float.valueOf(o1.getSavings()).compareTo(Float.valueOf(o2.getSavings()));
+                                   // return Integer.parseInt(String.valueOf(o1.getSavings())) - Integer.parseInt(String.valueOf(o2.getSavings()));
+                               }
 
-                        });
+                           });
 
-                        customAdapterPersonalPrices.notifyDataSetChanged();
-                        //rv_items.setAdapter(customAdapterPersonalPrices);
-                    }
-                    else {
-                        List<Product> items = new Gson().fromJson(message.toString(), new TypeToken<List<Product>>() {
-                        }.getType());
-                        // adding product to product list
-                        productList.clear();
-                        productList.addAll(items);
+                           customAdapterPersonalPrices.notifyDataSetChanged();
+                           //rv_items.setAdapter(customAdapterPersonalPrices);
+                       }
+                       else {
+                           List<Product> items = new Gson().fromJson(message.toString(), new TypeToken<List<Product>>() {
+                           }.getType());
+                           // adding product to product list
+                           productList.clear();
+                           productList.addAll(items);
 
-                        customAdapterPersonalPrices.notifyDataSetChanged();
-                    }
-                }
-
-
-                //
-
-                strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category \"}," + strCategory;
-                String data = "[" + String.valueOf(strCategory) + "]";
-                // categoryList.clear();
-                try {
-                    JSONArray jsonParam = new JSONArray(data.toString());
-                    // refreshing recycler view
-                    List<Category> items1 = new Gson().fromJson(data, new TypeToken<List<Category>>() {
-                    }.getType());
-                    categoryList.clear();
-                    categoryList.addAll(items1);
-
-                    Collections.sort(categoryList, new Comparator<Category>() {
-
-                        @Override
-                        public int compare(Category o1, Category o2) {
-                            return o1.getCategoryName().compareTo(o2.getCategoryName());
-                        }
-
-                    });
-
-                    customAdapterFilter.notifyDataSetChanged();
-                    rv_category.setAdapter(customAdapterFilter);
-                }
-                catch (JSONException e) {
-                    e.printStackTrace();
-                    saveErrorLog("fetchProduct", e.getLocalizedMessage());
-                }
+                           customAdapterPersonalPrices.notifyDataSetChanged();
+                       }
+                   }
 
 
-            }
-            else {
-                String categorydata = "";
-                for (int i = 0; i < message.length(); i++) {
-                    try {
-                        if (tmp == message.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
-                            JSONObject finalObject = message.getJSONObject(i);
-                            categorydata += (categorydata == "" ? String.valueOf(finalObject) : "," + String.valueOf(finalObject));
-                            category_count = category_count + 1;
-                            if (Categoryid != message.getJSONObject(i).getInt("CategoryID")) {
-                                if (!strCategoryCheck.contains("#" + message.getJSONObject(i).getInt("CategoryID") + "#")) {
-                                    strCategoryCheck += "#" + message.getJSONObject(i).getInt("CategoryID") + "#" + ",";
-                                    subcat = 0;
-                                    for (int q = 0; q < message.length(); q++) {
-                                        if (tmp == message.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
-                                            if (message.getJSONObject(q).getInt("CategoryID") == message.getJSONObject(i).getInt("CategoryID") && message.getJSONObject(q).getInt("PrimaryOfferTypeId") == message.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
-                                                subcat = subcat + 1;
-                                            }
-                                        }
-                                    }
-                                    Categoryid = message.getJSONObject(i).getInt("CategoryID");
-                                    strCategory += (strCategory == "" ? "{" + "\"CategoryID\":" + message.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message.getJSONObject(i).getString("CategoryName").replace("\n", "") + " (" + subcat + ")\"}" : "," + "{" + "\"CategoryID\":" + message.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message.getJSONObject(i).getString("CategoryName").replace("\n", "") + " (" + subcat + ")\"}");
-                                }
-                            }
-                        }
-                    } catch (JSONException e) {
-                        e.printStackTrace();
-                        saveErrorLog("fetchProduct", e.getLocalizedMessage());
-                    }
-                }
+                   //
+
+                   strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category \"}," + strCategory;
+                   String data = "[" + String.valueOf(strCategory) + "]";
+                   // categoryList.clear();
+                   try {
+                       JSONArray jsonParam = new JSONArray(data.toString());
+                       // refreshing recycler view
+                       List<Category> items1 = new Gson().fromJson(data, new TypeToken<List<Category>>() {
+                       }.getType());
+                       categoryList.clear();
+                       categoryList.addAll(items1);
+
+                       Collections.sort(categoryList, new Comparator<Category>() {
+
+                           @Override
+                           public int compare(Category o1, Category o2) {
+                               return o1.getCategoryName().compareTo(o2.getCategoryName());
+                           }
+
+                       });
+
+                       customAdapterFilter.notifyDataSetChanged();
+                       rv_category.setAdapter(customAdapterFilter);
+                   }
+                   catch (JSONException e) {
+                       e.printStackTrace();
+                       saveErrorLog("fetchProduct", e.getLocalizedMessage());
+                   }
+
+
+               }
+               else {
+                   String categorydata = "";
+                   for (int i = 0; i < message.length(); i++) {
+                       try {
+                           if (tmp == message.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
+                               JSONObject finalObject = message.getJSONObject(i);
+                               categorydata += (categorydata == "" ? String.valueOf(finalObject) : "," + String.valueOf(finalObject));
+                               category_count = category_count + 1;
+                               if (Categoryid != message.getJSONObject(i).getInt("CategoryID")) {
+                                   if (!strCategoryCheck.contains("#" + message.getJSONObject(i).getInt("CategoryID") + "#")) {
+                                       strCategoryCheck += "#" + message.getJSONObject(i).getInt("CategoryID") + "#" + ",";
+                                       subcat = 0;
+                                       for (int q = 0; q < message.length(); q++) {
+                                           if (tmp == message.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
+                                               if (message.getJSONObject(q).getInt("CategoryID") == message.getJSONObject(i).getInt("CategoryID") && message.getJSONObject(q).getInt("PrimaryOfferTypeId") == message.getJSONObject(i).getInt("PrimaryOfferTypeId")) {
+                                                   subcat = subcat + 1;
+                                               }
+                                           }
+                                       }
+                                       Categoryid = message.getJSONObject(i).getInt("CategoryID");
+                                       strCategory += (strCategory == "" ? "{" + "\"CategoryID\":" + message.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message.getJSONObject(i).getString("CategoryName").replace("\n", "") + " (" + subcat + ")\"}" : "," + "{" + "\"CategoryID\":" + message.getJSONObject(i).getInt("CategoryID") + "," + "\"CategoryName\":\"" + message.getJSONObject(i).getString("CategoryName").replace("\n", "") + " (" + subcat + ")\"}");
+                                   }
+                               }
+                           }
+                       } catch (JSONException e) {
+                           e.printStackTrace();
+                           saveErrorLog("fetchProduct", e.getLocalizedMessage());
+                       }
+                   }
                         /*
                         List<Product> items1 = new Gson().fromJson("["+categorydata.toString()+"]", new TypeToken<List<Product>>() {
                         }.getType());
                         productList.clear();
                         productList.addAll(items1);
                         customAdapterPersonalPrices.notifyDataSetChanged();*/
-                if (categoryShort == true) {
-                    if (offferShort == true) {
-                        List<Product> items = new Gson().fromJson(messageCategory.toString(), new TypeToken<List<Product>>() {
-                        }.getType());
-                        productList.clear();
-                        productList.addAll(items);
+                   if (categoryShort == true) {
+                       if (offferShort == true) {
+                           List<Product> items = new Gson().fromJson(messageCategory.toString(), new TypeToken<List<Product>>() {
+                           }.getType());
+                           productList.clear();
+                           productList.addAll(items);
 
-                        Collections.sort(productList, new Comparator<Product>() {
+                           Collections.sort(productList, new Comparator<Product>() {
 
-                            @Override
-                            public int compare(Product o2, Product o1) {
-                                return Integer.parseInt(String.valueOf(o1.getPrimaryOfferTypeId())) - Integer.parseInt(String.valueOf(o2.getPrimaryOfferTypeId()));
-                            }
+                               @Override
+                               public int compare(Product o2, Product o1) {
+                                   return Integer.parseInt(String.valueOf(o1.getPrimaryOfferTypeId())) - Integer.parseInt(String.valueOf(o2.getPrimaryOfferTypeId()));
+                               }
 
-                        });
+                           });
 
-                        customAdapterPersonalPrices.notifyDataSetChanged();
-                        //rv_items.setAdapter(customAdapterPersonalPrices);
-                    } else if (savingsShort == true) {
-                        List<Product> items = new Gson().fromJson(messageCategory.toString(), new TypeToken<List<Product>>() {
-                        }.getType());
-                        productList.clear();
-                        productList.addAll(items);
+                           customAdapterPersonalPrices.notifyDataSetChanged();
+                           //rv_items.setAdapter(customAdapterPersonalPrices);
+                       } else if (savingsShort == true) {
+                           List<Product> items = new Gson().fromJson(messageCategory.toString(), new TypeToken<List<Product>>() {
+                           }.getType());
+                           productList.clear();
+                           productList.addAll(items);
 
-                        Collections.sort(productList, new Comparator<Product>() {
+                           Collections.sort(productList, new Comparator<Product>() {
 
-                            @Override
-                            public int compare(Product o2, Product o1) {
-                                return Float.valueOf(o1.getSavings()).compareTo(Float.valueOf(o2.getSavings()));
-                                // return Integer.parseInt(String.valueOf(o1.getSavings())) - Integer.parseInt(String.valueOf(o2.getSavings()));
-                            }
+                               @Override
+                               public int compare(Product o2, Product o1) {
+                                   return Float.valueOf(o1.getSavings()).compareTo(Float.valueOf(o2.getSavings()));
+                                   // return Integer.parseInt(String.valueOf(o1.getSavings())) - Integer.parseInt(String.valueOf(o2.getSavings()));
+                               }
 
-                        });
+                           });
 
-                        customAdapterPersonalPrices.notifyDataSetChanged();
-                        //rv_items.setAdapter(customAdapterPersonalPrices);
-                    } else {
-                        List<Product> items = new Gson().fromJson(messageCategory.toString(), new TypeToken<List<Product>>() {
-                        }.getType());
-                        // adding product to product list
-                        productList.clear();
-                        productList.addAll(items);
+                           customAdapterPersonalPrices.notifyDataSetChanged();
+                           //rv_items.setAdapter(customAdapterPersonalPrices);
+                       } else {
+                           List<Product> items = new Gson().fromJson(messageCategory.toString(), new TypeToken<List<Product>>() {
+                           }.getType());
+                           // adding product to product list
+                           productList.clear();
+                           productList.addAll(items);
 
-                        customAdapterPersonalPrices.notifyDataSetChanged();
-                    }
-                }
-                else {
-                    if (offferShort == true) {
-                        List<Product> items = new Gson().fromJson("[" + categorydata.toString() + "]", new TypeToken<List<Product>>() {
-                        }.getType());
-                        productList.clear();
-                        productList.addAll(items);
+                           customAdapterPersonalPrices.notifyDataSetChanged();
+                       }
+                   }
+                   else {
+                       if (offferShort == true) {
+                           List<Product> items = new Gson().fromJson("[" + categorydata.toString() + "]", new TypeToken<List<Product>>() {
+                           }.getType());
+                           productList.clear();
+                           productList.addAll(items);
 
-                        Collections.sort(productList, new Comparator<Product>() {
+                           Collections.sort(productList, new Comparator<Product>() {
 
-                            @Override
-                            public int compare(Product o2, Product o1) {
-                                return Integer.parseInt(String.valueOf(o1.getPrimaryOfferTypeId())) - Integer.parseInt(String.valueOf(o2.getPrimaryOfferTypeId()));
-                            }
+                               @Override
+                               public int compare(Product o2, Product o1) {
+                                   return Integer.parseInt(String.valueOf(o1.getPrimaryOfferTypeId())) - Integer.parseInt(String.valueOf(o2.getPrimaryOfferTypeId()));
+                               }
 
-                        });
+                           });
 
-                        customAdapterPersonalPrices.notifyDataSetChanged();
-                        //rv_items.setAdapter(customAdapterPersonalPrices);
-                    }
-                    else if (savingsShort == true) {
-                        List<Product> items = new Gson().fromJson("[" + categorydata.toString() + "]", new TypeToken<List<Product>>() {
-                        }.getType());
-                        productList.clear();
-                        productList.addAll(items);
+                           customAdapterPersonalPrices.notifyDataSetChanged();
+                           //rv_items.setAdapter(customAdapterPersonalPrices);
+                       }
+                       else if (savingsShort == true) {
+                           List<Product> items = new Gson().fromJson("[" + categorydata.toString() + "]", new TypeToken<List<Product>>() {
+                           }.getType());
+                           productList.clear();
+                           productList.addAll(items);
 
-                        Collections.sort(productList, new Comparator<Product>() {
+                           Collections.sort(productList, new Comparator<Product>() {
 
-                            @Override
-                            public int compare(Product o2, Product o1) {
-                                return Float.valueOf(o1.getSavings()).compareTo(Float.valueOf(o2.getSavings()));
-                                // return Integer.parseInt(String.valueOf(o1.getSavings())) - Integer.parseInt(String.valueOf(o2.getSavings()));
-                            }
+                               @Override
+                               public int compare(Product o2, Product o1) {
+                                   return Float.valueOf(o1.getSavings()).compareTo(Float.valueOf(o2.getSavings()));
+                                   // return Integer.parseInt(String.valueOf(o1.getSavings())) - Integer.parseInt(String.valueOf(o2.getSavings()));
+                               }
 
-                        });
+                           });
 
-                        customAdapterPersonalPrices.notifyDataSetChanged();
-                        //rv_items.setAdapter(customAdapterPersonalPrices);
-                    }
-                    else {
-                        List<Product> items = new Gson().fromJson("[" + categorydata.toString() + "]", new TypeToken<List<Product>>() {
-                        }.getType());
-                        // adding product to product list
-                        productList.clear();
-                        productList.addAll(items);
+                           customAdapterPersonalPrices.notifyDataSetChanged();
+                           //rv_items.setAdapter(customAdapterPersonalPrices);
+                       }
+                       else {
+                           List<Product> items = new Gson().fromJson("[" + categorydata.toString() + "]", new TypeToken<List<Product>>() {
+                           }.getType());
+                           // adding product to product list
+                           productList.clear();
+                           productList.addAll(items);
 
-                        customAdapterPersonalPrices.notifyDataSetChanged();
-                    }
-                }
-                Log.i("test",strCategory);
-                if (strCategory.equalsIgnoreCase("")){
-                    strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category \"}";
-                }else {
-                    strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category \"}," + strCategory;
-                }
+                           customAdapterPersonalPrices.notifyDataSetChanged();
+                       }
+                   }
+                   Log.i("test",strCategory);
+                   if (strCategory.equalsIgnoreCase("")){
+                       strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category \"}";
+                   }else {
+                       strCategory = "{" + "\"CategoryID\":" + 0 + "," + "\"CategoryName\":" + "\"All Category \"}," + strCategory;
+                   }
 
-                String data = "[" + String.valueOf(strCategory) + "]";
+                   String data = "[" + String.valueOf(strCategory) + "]";
 
-                try {
-                    JSONArray jsonParam = new JSONArray(data.toString());
-                    // refreshing recycler view
-                    List<Category> items2 = new Gson().fromJson(data, new TypeToken<List<Category>>() {
-                    }.getType());
-                    categoryList.clear();
-                    categoryList.addAll(items2);
-                    try {
-                        Collections.sort(categoryList, new Comparator<Category>() {
+                   try {
+                       JSONArray jsonParam = new JSONArray(data.toString());
+                       // refreshing recycler view
+                       List<Category> items2 = new Gson().fromJson(data, new TypeToken<List<Category>>() {
+                       }.getType());
+                       categoryList.clear();
+                       categoryList.addAll(items2);
+                       try {
+                           Collections.sort(categoryList, new Comparator<Category>() {
 
-                            @Override
-                            public int compare(Category o1, Category o2) {
-                                return o1.getCategoryName().compareTo(o2.getCategoryName());
-                            }
+                               @Override
+                               public int compare(Category o1, Category o2) {
+                                   return o1.getCategoryName().compareTo(o2.getCategoryName());
+                               }
 
-                        });
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                    customAdapterFilter.notifyDataSetChanged();
-                    rv_category.setAdapter(customAdapterFilter);
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    saveErrorLog("fetchProduct", e.getLocalizedMessage());
-                }
+                           });
+                       } catch (Exception e) {
+                           e.printStackTrace();
+                       }
+                       customAdapterFilter.notifyDataSetChanged();
+                       rv_category.setAdapter(customAdapterFilter);
+                   } catch (JSONException e) {
+                       e.printStackTrace();
+                       saveErrorLog("fetchProduct", e.getLocalizedMessage());
+                   }
 
 
-            }
-        }
+               }
+           }
+       }catch (Exception e){
+           e.printStackTrace();
+       }
+
+
     }
 
     private void searchProduct() {
@@ -5991,7 +6050,7 @@ public class MainFwActivity extends AppCompatActivity
                                         }
 
                                         e.printStackTrace();
-                                        saveErrorLog("CircularmoreCouponLoad", e.getLocalizedMessage());
+                                        //saveErrorLog("CircularmoreCouponLoad", e.getLocalizedMessage());
                                     }
                                 }else {
                                     if (message==null){
@@ -18760,6 +18819,7 @@ public class MainFwActivity extends AppCompatActivity
                                             appUtil.setPrefrence("BackupStoreId", jsonParam.getString("StoreID"));
                                             appUtil.setPrefrence("StoreName", jsonParam.getString("StoreAddress") + ", " + jsonParam.getString("StoreCity") + ", " + jsonParam.getString("StoreState"));
                                         }
+                                        tv_location_title.setText(appUtil.getPrefrence("StoreName"));
 
                                     } else if (root.getString("errorcode").equals("200")) {
                                         finish();
@@ -18921,7 +18981,24 @@ public class MainFwActivity extends AppCompatActivity
                     public void onErrorResponse(VolleyError error) {
                         Log.i("Volley error resp", "error----" + error.getMessage());
                         error.printStackTrace();
-                        saveErrorLog("messageChangeStoreLoad", String.valueOf(error.networkResponse.statusCode));
+
+
+                        try {
+                            saveErrorLog("messageChangeStoreLoad", String.valueOf(error.networkResponse.statusCode));
+                        }catch (Exception e){
+                            e.printStackTrace();
+                            alertDialog=userAlertDialog.createPositiveAlert("Checking the network cables, modem, and router\nReconnecting to Wi-Fi",
+                                    getString(R.string.ok),"No Internet");
+                            alertDialog.show();
+                        }
+                        if (error.networkResponse == null) {
+                            if (error.getClass().equals(TimeoutError.class)) {
+                                alertDialog=userAlertDialog.createPositiveAlert("Time out error",
+                                        getString(R.string.ok),"Fail");
+                                alertDialog.show();
+
+                            }
+                        }
                         // progressDialog.dismiss();
                     }
                 }) {

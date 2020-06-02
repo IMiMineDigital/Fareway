@@ -129,7 +129,7 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
         appUtil.setPrefrence("Password", "123456");*/
         linkUIElements();
         //checkLocationPermission();
-        login();
+        //login();
 
     }
     private void linkUIElements()
@@ -262,6 +262,9 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
                                             appUtil.setPrefrence("StoreId", jsonParam.getString("StoreId"));
                                             appUtil.setPrefrence("BackupStoreId", jsonParam.getString("StoreId"));
                                             appUtil.setPrefrence("StoreName", jsonParam.getString("storename"));
+                                            appUtil.setPrefrence("StoreSettingID", jsonParam.getString("StoreSettingID"));
+                                            appUtil.setPrefrence("IsAllowedPrefStore", jsonParam.getString("IsAllowedPrefStore"));
+                                            appUtil.setPrefrence("StoreMessageApp", jsonParam.getString("StoreMessageApp"));
 
                                         }
                                         appUtil.setPrefrence("SaveLogin", "no");
@@ -345,10 +348,10 @@ public class LoginFw extends AppCompatActivity implements View.OnClickListener {
                     protected Map<String, String> getParams() throws AuthFailureError {
                         Map<String, String> params = new HashMap<String, String>();
                         ///////
-                        /*appUtil.setPrefrence("Latitude", "0.00");
+                        appUtil.setPrefrence("Latitude", "0.00");
                         appUtil.setPrefrence("Longitude", "0.00");
                         appUtil.setPrefrence("Email", et_email.getText().toString());
-                        appUtil.setPrefrence("Password", et_pwd.getText().toString());*/
+                        appUtil.setPrefrence("Password", et_pwd.getText().toString());
                         ///////
                         String charsLowerEmail =lowercase(appUtil.getPrefrence("Email"));
                         appUtil.setPrefrence("Email", charsLowerEmail);

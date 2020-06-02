@@ -2042,4 +2042,28 @@
 
     </ScrollView>
 
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/relative_no_store"
+        android:background="@drawable/popup_red_cornar_background"
+        android:layout_below="@+id/personal_label_fixed"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="20dp"
+        android:layout_marginLeft="20dp"
+        android:layout_marginRight="20dp"
+        android:elevation="25dp">
+
+        <TextView
+            android:textColor="@color/black"
+            android:id="@+id/tv_change_no_store_popup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="20sp"
+            android:textStyle="bold"
+            android:padding="10dp"/>
+
+    </RelativeLayout >
+
 </RelativeLayout>
