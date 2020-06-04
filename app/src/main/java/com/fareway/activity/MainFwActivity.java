@@ -2139,8 +2139,8 @@ public class MainFwActivity extends AppCompatActivity
             }
         };
         try {
-            ss.setSpan(clickableSpan,84,89, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            ss.setSpan(fcsGreen,84,89, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ss.setSpan(clickableSpan,74,89, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ss.setSpan(fcsGreen,74,89, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }catch (Exception e){
             e.printStackTrace();
         }
