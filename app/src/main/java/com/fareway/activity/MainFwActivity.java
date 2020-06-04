@@ -1565,7 +1565,7 @@ public class MainFwActivity extends AppCompatActivity
         ForegroundColorSpan fcsRed = new ForegroundColorSpan(Color.rgb(210,31,38));
         ForegroundColorSpan fcsGreen = new ForegroundColorSpan(Color.rgb(210,31,38));
         try {
-            ss.setSpan(fcsRed,21,43, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ss.setSpan(fcsRed,31,53, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }catch (Exception e){
             e.printStackTrace();
         }
@@ -2139,8 +2139,8 @@ public class MainFwActivity extends AppCompatActivity
             }
         };
         try {
-            ss.setSpan(clickableSpan,62,67, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-            ss.setSpan(fcsGreen,62,67, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ss.setSpan(clickableSpan,84,89, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ss.setSpan(fcsGreen,84,89, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         }catch (Exception e){
             e.printStackTrace();
         }

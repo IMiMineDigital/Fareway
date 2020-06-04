@@ -2,7 +2,7 @@ package com.fareway.utility;
 
 public class Constant {
 
-    public static final String APP_VERSION = "11.7";
+    public static final String APP_VERSION = "11.8";
     public static final String WEB_URL="https://fwstagingapi.immdemo.net/api/v1/";
     public static final String PRINT_WEB_URL="https://fwstaging.immdemo.net/web/printshoppinglist.aspx?";
     public static final String GET_TOKEN="Token";
