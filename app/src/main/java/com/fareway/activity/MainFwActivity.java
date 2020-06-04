@@ -42,8 +42,12 @@ import android.support.v7.widget.RecyclerView;
 import android.support.v7.widget.SearchView;
 import android.support.v7.widget.helper.ItemTouchHelper;*/
 import android.text.Html;
+import android.text.SpannableString;
 import android.text.Spanned;
 import android.text.format.Formatter;
+import android.text.method.LinkMovementMethod;
+import android.text.style.ClickableSpan;
+import android.text.style.ForegroundColorSpan;
 import android.util.DisplayMetrics;
 import android.util.Log;
 import android.view.Display;
@@ -1555,6 +1559,594 @@ public class MainFwActivity extends AppCompatActivity
         else {
             Log.i("save","login");
         }
+
+        String text = appUtil.getPrefrence("StoreMessageApp");
+        SpannableString ss = new SpannableString(text);
+        ForegroundColorSpan fcsRed = new ForegroundColorSpan(Color.rgb(210,31,38));
+        ForegroundColorSpan fcsGreen = new ForegroundColorSpan(Color.rgb(210,31,38));
+        try {
+            ss.setSpan(fcsRed,21,43, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+
+        ClickableSpan clickableSpan = new ClickableSpan() {
+            @Override
+            public void onClick(View view) {
+                //Toast.makeText(activity, "one", Toast.LENGTH_SHORT).show();
+                view.setOnClickListener(new View.OnClickListener() {
+                    String city = "";
+                    ImageView closePopUp;
+                    Spinner storeDropDown;
+                    Button findBtn;
+                    TextView errorMsgTxt1;
+                    TextView errorMsgTxt2;
+                    Button updateBtn;
+                    EditText zipCodeEdt;
+                    String zipCode = null;
+                    String selectedStore = Constant.SELECT_STORE;
+                    List<String> dropDownList = new ArrayList<>();
+                    ArrayAdapter<String> dataAdapter;
+                    List<Store.Message> messages = new ArrayList<>();
+                    List<String> storeIds = new ArrayList<>();
+                    String storeId = null;
+
+                    @Override
+                    public void onClick(View v) {
+                        Log.d(TAG, " >> memid " + appUtil.getPrefrence("MemberId"));
+                        LayoutInflater inflater = (LayoutInflater) MainFwActivity.this.getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        View layout = inflater.inflate(R.layout.change_store_popup, null);
+                        window = new PopupWindow(MainFwActivity.this);
+                        window.setWidth(WindowManager.LayoutParams.MATCH_PARENT);
+                        window.setHeight(WindowManager.LayoutParams.MATCH_PARENT);
+                        window.setContentView(layout);
+                        window.setBackgroundDrawable(new ColorDrawable(Color.TRANSPARENT));
+                        window.setOutsideTouchable(false);
+                        window.setFocusable(true);
+                        window.showAtLocation(layout, Gravity.NO_GRAVITY, 0, 0);
+                        dropDownList.clear();
+                        storeIds.clear();
+                        dropDownList.add(Constant.SELECT_STORE);
+                        storeIds.add("0");
+                        closePopUp = layout.findViewById(R.id.close_icon);
+                        zipCodeEdt = layout.findViewById(R.id.zip_code_edt);
+                        findBtn = layout.findViewById(R.id.find_btn);
+                        updateBtn = layout.findViewById(R.id.update_btn);
+                        updateBtn.setEnabled(false);
+                        errorMsgTxt1 = layout.findViewById(R.id.error_msg);
+                        errorMsgTxt2 = layout.findViewById(R.id.error_msg2);
+                        storeDropDown = layout.findViewById(R.id.store_spinner);
+                        storeDropDown.setEnabled(false);
+                        dataAdapter = new ArrayAdapter<String>(MainFwActivity.this,
+                                R.layout.change_store_spinner_item, dropDownList);
+                        dataAdapter.setDropDownViewResource(R.layout.change_store_spinner_item);
+                        storeDropDown.setAdapter(dataAdapter);
+                        storeDropDown.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
+                            @Override
+                            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
+                                selectedStore = dropDownList.get(position);
+                                Log.d(TAG, " Selected Store >> " + selectedStore);
+                                Log.d(TAG, "Store Id >> " + storeIds.get(position));
+                                storeId = storeIds.get(position);
+                            }
+
+                            @Override
+                            public void onNothingSelected(AdapterView<?> parent) { }
+                        });
+
+                        closePopUp.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                storeIds.clear();
+                                window.dismiss();
+                            }
+                        });
+                        findBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                InputMethodManager imm = (InputMethodManager) getSystemService(Context.INPUT_METHOD_SERVICE);
+                                imm.hideSoftInputFromWindow(zipCodeEdt.getWindowToken(), 0);
+                                String address = zipCodeEdt.getText().toString();
+                                if (address.matches("")) {
+                                    errorMsgTxt1.setVisibility(View.VISIBLE);
+                                    return;
+                                }
+                                dropDownList.clear();
+                                dropDownList.add("Locating store near you");
+                                dataAdapter.notifyDataSetChanged();
+                                if (isNumeric(address)) {
+                                    city = "";
+                                    //address is numeric no need to check user current location.
+                                    Log.d(TAG, ">> Address is zipcode getting lat long by google api");
+                                    String API_KEY = getResources().getString(R.string.api_key);
+                                    StringRequest request = new StringRequest(Request.Method.GET, Constant.GEOCODER_API + address + "&key=" + API_KEY, new Response.Listener<String>() {
+                                        @Override
+                                        public void onResponse(String response) {
+                                            //VolleyLog.wtf(response, "utf-8");
+                                            try {
+                                                Geocoding geocoding = new GsonBuilder().create().fromJson(response, Geocoding.class);
+                                                if (!Constant.STATUS.equalsIgnoreCase(geocoding.getStatus())) {
+                                                    errorMsgTxt1.setVisibility(View.VISIBLE);
+                                                    errorMsgTxt1.setText(getResources().getString(R.string.error_msg2));
+                                                    //dropDownList.clear();
+                                                    dataAdapter.clear();
+                                                    dropDownList.clear();
+                                                    dropDownList.add(Constant.SELECT_STORE);
+                                                    dataAdapter.notifyDataSetChanged();
+                                                    return;
+                                                }
+                                                errorMsgTxt1.setVisibility(View.GONE);
+                                                Geocoding.Result result = geocoding.getResult().get(0);
+                                                Geocoding.Geometry geometry = result.geometry;
+                                                Geocoding.Location location = geometry.location;
+                                                lat = location.lat;
+                                                lng = location.lng;
+                                            }catch (Exception e){
+                                                saveErrorLog("findBtnisNumericChangeStore", e.getLocalizedMessage());
+
+                                            }
+
+                                            StringRequest findStoreReq = new StringRequest(Request.Method.GET, Constant.FINDSTORE
+                                                    + lat + "&UserCurrentLongitude=" + lng + "&City=" + city, new Response.Listener<String>() {
+                                                @Override
+                                                public void onResponse(String response) {
+                                                    VolleyLog.wtf(response, "utf-8");
+                                                    try {
+                                                        JSONObject root = new JSONObject(response);
+                                                        String errorCode = root.getString("errorcode");
+                                                        Log.d(TAG, "Store Api status >> " + errorCode);
+                                                        if ("200".equals(errorCode)) {
+                                                            errorMsgTxt1.setVisibility(View.VISIBLE);
+                                                            errorMsgTxt1.setText(root.getString("message"));
+                                                            return;
+                                                        }
+                                                    } catch (JSONException e) {
+                                                        saveErrorLog("findStoreReqChangeStore", e.getLocalizedMessage());
+
+                                                        Log.d(TAG, " Exception >> " + e.getMessage());
+                                                    }
+                                                    Store store = new GsonBuilder().create().fromJson(response, Store.class);
+                                                    if (!Constant.ERRORCODE.equalsIgnoreCase(store.getErrorcode())) {
+                                                        Log.d(TAG, ">> Something went wrong");
+                                                        errorMsgTxt2.setVisibility(View.VISIBLE);
+                                                        errorMsgTxt2.setText("Some thing went wrong");
+                                                        dropDownList.clear();
+                                                        dataAdapter.clear();
+                                                        dropDownList.add(Constant.SELECT_STORE);
+                                                        dataAdapter.addAll(dropDownList);
+                                                        storeDropDown.setAdapter(dataAdapter);
+                                                        return;
+                                                    }
+                                                    errorMsgTxt2.setVisibility(View.GONE);
+                                                    messages = store.getMessage();
+                                                    dropDownList.clear();
+                                                    dropDownList.add(Constant.SELECT_STORE);
+                                                    for (Store.Message msg : messages) {
+                                                        String distance = msg.getDistance();
+                                                        Float dis = Float.parseFloat(distance);
+                                                        DecimalFormat df = new DecimalFormat("0.00");
+                                                        df.setMaximumFractionDigits(2);
+                                                        distance = df.format(dis);
+                                                        String address = msg.getStoreAddress() + ", " + msg.getStoreCity() + ", " +
+                                                                msg.getStoreState() + " (" + distance + " miles)";
+                                                        dropDownList.add(address);
+                                                        storeIds.add(msg.getStoreID());
+                                                    }
+                                                    storeDropDown.setEnabled(true);
+                                                    dataAdapter.notifyDataSetChanged();
+                                                    updateBtn.setEnabled(true);
+                                                }
+                                            }, new Response.ErrorListener() {
+                                                @Override
+                                                public void onErrorResponse(VolleyError error) {
+                                                    Log.d(TAG, " >> ERROR in Store Api" + error.getMessage());
+                                                    dropDownList.clear();
+                                                    dataAdapter.clear();
+                                                    dropDownList.add(Constant.SELECT_STORE);
+                                                    dataAdapter.addAll(dropDownList);
+                                                    storeDropDown.setAdapter(dataAdapter);
+                                                }
+                                            }) {
+
+                                                @Override
+                                                public String getBodyContentType() {
+                                                    return "application/x-www-form-urlencoded";
+                                                }
+
+                                                @Override
+                                                public Map<String, String> getHeaders() {
+                                                    Map<String, String> params = new HashMap<String, String>();
+                                                    params.put("Content-Type", "application/x-www-form-urlencoded");
+                                                    params.put("Authorization", appUtil.getPrefrence("token_type") + " " + appUtil.getPrefrence("access_token"));
+                                                    return params;
+                                                }
+                                            };
+                                            RetryPolicy policy = new DefaultRetryPolicy(5000,
+                                                    DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                                    DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                                            findStoreReq.setRetryPolicy(policy);
+                                            try {
+                                                if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+                                                    Log.d(TAG, " Req Url >> " + findStoreReq.getUrl());
+                                                    Log.d(TAG, " Req Header >> " + findStoreReq.getHeaders());
+                                                    mQueue.add(findStoreReq);
+
+                                                } else {
+                                                    Toast.makeText(MainFwActivity.this, getResources().getString(R.string.noInternet), Toast.LENGTH_SHORT).show();
+                                                }
+                                            } catch (Exception e) {
+                                                Log.d(TAG, " Exception >> " + e.getMessage());
+                                            }
+                                        }
+                                    }, new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+                                            errorMsgTxt2.setVisibility(View.VISIBLE);
+                                            errorMsgTxt2.setText(error.getMessage());
+                                            dropDownList.clear();
+                                            dataAdapter.clear();
+                                            dropDownList.add(Constant.SELECT_STORE);
+                                            dataAdapter.addAll(dropDownList);
+                                            storeDropDown.setAdapter(dataAdapter);
+                                            Log.d(TAG, " >> ERROR " + error.getLocalizedMessage());
+                                        }
+                                    });
+                                    try {
+                                        if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+
+                                            mQueue.add(request);
+                                        } else {
+                                            Toast.makeText(MainFwActivity.this, getResources().getString(R.string.noInternet), Toast.LENGTH_SHORT).show();
+                                        }
+
+                                    } catch (Exception e) {
+                                        Log.d(TAG, " Exception >> " + e.getMessage());
+                                    }
+                                } else {
+                                    city = address;
+                                    //address is text need to check user current location.
+                                    Log.d(TAG, " >> Address is text check user location.");
+                                    if (getLocation()) {
+                                        if (userLocation != null) {
+                                            if (userLocation.longitude != null && userLocation.latitude != null) {
+                                                StringRequest findStoreReq = new StringRequest(Request.Method.GET, Constant.FINDSTORE
+                                                        + userLocation.latitude + "&UserCurrentLongitude=" + userLocation.longitude + "&City=" + city, new Response.Listener<String>() {
+                                                    @Override
+                                                    public void onResponse(String response) {
+                                                        VolleyLog.wtf(response, "utf-8");
+                                                        try {
+                                                            JSONObject root = new JSONObject(response);
+                                                            String errorCode = root.getString("errorcode");
+                                                            Log.d(TAG, "Store Api status >> " + errorCode);
+                                                            if ("200".equals(errorCode)) {
+                                                                errorMsgTxt1.setVisibility(View.VISIBLE);
+                                                                errorMsgTxt1.setText(root.getString("message"));
+                                                                return;
+                                                            }
+                                                        } catch (JSONException e) {
+                                                            saveErrorLog("getLocationChangeStore", e.getLocalizedMessage());
+
+                                                            Log.d(TAG, " Exception >> " + e.getMessage());
+                                                        }
+                                                        Store store = new GsonBuilder().create().fromJson(response, Store.class);
+                                                        if (!Constant.ERRORCODE.equalsIgnoreCase(store.getErrorcode())) {
+                                                            Log.d(TAG, ">> Something went wrong");
+                                                            errorMsgTxt2.setVisibility(View.VISIBLE);
+                                                            errorMsgTxt2.setText("Some thing went wrong");
+                                                            dropDownList.clear();
+                                                            dataAdapter.clear();
+                                                            dropDownList.add(Constant.SELECT_STORE);
+                                                            dataAdapter.addAll(dropDownList);
+                                                            storeDropDown.setAdapter(dataAdapter);
+                                                            return;
+                                                        }
+                                                        errorMsgTxt2.setVisibility(View.GONE);
+                                                        messages = store.getMessage();
+                                                        dropDownList.clear();
+                                                        dropDownList.add(Constant.SELECT_STORE);
+                                                        for (Store.Message msg : messages) {
+                                                            String distance = msg.getDistance();
+                                                            Float dis = Float.parseFloat(distance);
+                                                            DecimalFormat df = new DecimalFormat("0.00");
+                                                            df.setMaximumFractionDigits(2);
+                                                            distance = df.format(dis);
+                                                            String address = msg.getStoreAddress() + ", " + msg.getStoreCity() + ", " +
+                                                                    msg.getStoreState() + " (" + distance + " miles)";
+                                                            dropDownList.add(address);
+                                                            storeIds.add(msg.getStoreID());
+                                                        }
+                                                        storeDropDown.setEnabled(true);
+                                                        dataAdapter.notifyDataSetChanged();
+                                                        updateBtn.setEnabled(true);
+                                                    }
+                                                }, new Response.ErrorListener() {
+                                                    @Override
+                                                    public void onErrorResponse(VolleyError error) {
+                                                        Log.d(TAG, " >> ERROR in Store Api" + error.getMessage());
+                                                        dropDownList.clear();
+                                                        dataAdapter.clear();
+                                                        dropDownList.add(Constant.SELECT_STORE);
+                                                        dataAdapter.addAll(dropDownList);
+                                                        storeDropDown.setAdapter(dataAdapter);
+                                                    }
+                                                }) {
+                                                    @Override
+                                                    public String getBodyContentType() {
+                                                        return "application/x-www-form-urlencoded";
+                                                    }
+                                                    @Override
+                                                    public Map<String, String> getHeaders() {
+                                                        Map<String, String> params = new HashMap<String, String>();
+                                                        params.put("Content-Type", "application/x-www-form-urlencoded");
+                                                        params.put("Authorization", appUtil.getPrefrence("token_type") + " " + appUtil.getPrefrence("access_token"));
+                                                        return params;
+                                                    }
+                                                };
+                                                RetryPolicy policy = new DefaultRetryPolicy(5000,
+                                                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                                                findStoreReq.setRetryPolicy(policy);
+                                                try {
+                                                    if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+                                                        Log.d(TAG, " Req Url >> " + findStoreReq.getUrl());
+                                                        Log.d(TAG, " Req Header >> " + findStoreReq.getHeaders());
+                                                        mQueue.add(findStoreReq);
+
+                                                    } else {
+                                                        Toast.makeText(MainFwActivity.this, getResources().getString(R.string.noInternet), Toast.LENGTH_SHORT).show();
+                                                    }
+                                                } catch (Exception e) {
+                                                    Log.d(TAG, " Exception >> " + e.getMessage());
+                                                }
+                                            }
+                                        }
+
+                                    } else {
+                                        Log.d(TAG, ">> Location OFF, calling google api");
+                                        String API_KEY = getResources().getString(R.string.api_key);
+                                        StringRequest request = new StringRequest(Request.Method.GET, Constant.GEOCODER_API + address + "&key=" + API_KEY, new Response.Listener<String>() {
+                                            @Override
+                                            public void onResponse(String response) {
+                                                VolleyLog.wtf(response, "utf-8");
+                                                try {
+                                                    Geocoding geocoding = new GsonBuilder().create().fromJson(response, Geocoding.class);
+                                                    if (!Constant.STATUS.equalsIgnoreCase(geocoding.getStatus())) {
+                                                        errorMsgTxt1.setVisibility(View.VISIBLE);
+                                                        errorMsgTxt1.setText(getResources().getString(R.string.error_msg2));
+                                                        //dropDownList.clear();
+                                                        dataAdapter.clear();
+                                                        dropDownList.clear();
+                                                        dropDownList.add(Constant.SELECT_STORE);
+                                                        dataAdapter.notifyDataSetChanged();
+                                                        return;
+                                                    }
+                                                    errorMsgTxt1.setVisibility(View.GONE);
+                                                    Geocoding.Result result = geocoding.getResult().get(0);
+                                                    Geocoding.Geometry geometry = result.geometry;
+                                                    Geocoding.Location location = geometry.location;
+                                                    lat = location.lat;
+                                                    lng = location.lng;
+                                                }catch (Exception e){
+                                                    saveErrorLog("Location OFFChangeStore", e.getLocalizedMessage());
+
+                                                }
+
+                                                StringRequest findStoreReq = new StringRequest(Request.Method.GET, Constant.FINDSTORE
+                                                        + lat + "&UserCurrentLongitude=" + lng + "&City=" + city, new Response.Listener<String>() {
+                                                    @Override
+                                                    public void onResponse(String response) {
+                                                        VolleyLog.wtf(response, "utf-8");
+                                                        try {
+                                                            JSONObject root = new JSONObject(response);
+                                                            String errorCode = root.getString("errorcode");
+                                                            Log.d(TAG, "Store Api status >> " + errorCode);
+                                                            if ("200".equals(errorCode)) {
+                                                                errorMsgTxt1.setVisibility(View.VISIBLE);
+                                                                errorMsgTxt1.setText(root.getString("message"));
+                                                                return;
+                                                            }
+                                                        } catch (JSONException e) {
+                                                            saveErrorLog("findStoreReqChangeStore", e.getLocalizedMessage());
+
+                                                            Log.d(TAG, " Exception >> " + e.getMessage());
+                                                        }
+                                                        Store store = new GsonBuilder().create().fromJson(response, Store.class);
+                                                        if (!Constant.ERRORCODE.equalsIgnoreCase(store.getErrorcode())) {
+                                                            Log.d(TAG, ">> Something went wrong");
+                                                            errorMsgTxt2.setVisibility(View.VISIBLE);
+                                                            errorMsgTxt2.setText("Some thing went wrong");
+                                                            dropDownList.clear();
+                                                            dataAdapter.clear();
+                                                            dropDownList.add(Constant.SELECT_STORE);
+                                                            dataAdapter.addAll(dropDownList);
+                                                            storeDropDown.setAdapter(dataAdapter);
+                                                            return;
+                                                        }
+                                                        errorMsgTxt2.setVisibility(View.GONE);
+                                                        messages = store.getMessage();
+                                                        dropDownList.clear();
+                                                        dropDownList.add(Constant.SELECT_STORE);
+                                                        for (Store.Message msg : messages) {
+                                                            String distance = msg.getDistance();
+                                                            Float dis = Float.parseFloat(distance);
+                                                            DecimalFormat df = new DecimalFormat("0.00");
+                                                            df.setMaximumFractionDigits(2);
+                                                            distance = df.format(dis);
+                                                            String address = msg.getStoreAddress() + ", " + msg.getStoreCity() + ", " +
+                                                                    msg.getStoreState() + " (" + distance + " miles)";
+                                                            dropDownList.add(address);
+                                                            storeIds.add(msg.getStoreID());
+                                                        }
+                                                        storeDropDown.setEnabled(true);
+                                                        dataAdapter.notifyDataSetChanged();
+                                                        updateBtn.setEnabled(true);
+                                                    }
+                                                }, new Response.ErrorListener() {
+                                                    @Override
+                                                    public void onErrorResponse(VolleyError error) {
+                                                        Log.d(TAG, " >> ERROR in Store Api" + error.getMessage());
+                                                        dropDownList.clear();
+                                                        dataAdapter.clear();
+                                                        dropDownList.add(Constant.SELECT_STORE);
+                                                        dataAdapter.addAll(dropDownList);
+                                                        storeDropDown.setAdapter(dataAdapter);
+                                                    }
+                                                }) {
+
+                                                    @Override
+                                                    public String getBodyContentType() {
+                                                        return "application/x-www-form-urlencoded";
+                                                    }
+
+                                                    @Override
+                                                    public Map<String, String> getHeaders() {
+                                                        Map<String, String> params = new HashMap<String, String>();
+                                                        params.put("Content-Type", "application/x-www-form-urlencoded");
+                                                        params.put("Authorization", appUtil.getPrefrence("token_type") + " " + appUtil.getPrefrence("access_token"));
+                                                        return params;
+                                                    }
+                                                };
+                                                RetryPolicy policy = new DefaultRetryPolicy(5000,
+                                                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                                                findStoreReq.setRetryPolicy(policy);
+                                                try {
+                                                    if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+                                                        Log.d(TAG, " Req Url >> " + findStoreReq.getUrl());
+                                                        Log.d(TAG, " Req Header >> " + findStoreReq.getHeaders());
+                                                        mQueue.add(findStoreReq);
+
+                                                    } else {
+                                                        Toast.makeText(MainFwActivity.this, getResources().getString(R.string.noInternet), Toast.LENGTH_SHORT).show();
+                                                    }
+                                                } catch (Exception e) {
+                                                    Log.d(TAG, " Exception >> " + e.getMessage());
+                                                }
+                                            }
+                                        }, new Response.ErrorListener() {
+                                            @Override
+                                            public void onErrorResponse(VolleyError error) {
+                                                errorMsgTxt2.setVisibility(View.VISIBLE);
+                                                errorMsgTxt2.setText(error.getMessage());
+                                                dropDownList.clear();
+                                                dataAdapter.clear();
+                                                dropDownList.add(Constant.SELECT_STORE);
+                                                dataAdapter.addAll(dropDownList);
+                                                storeDropDown.setAdapter(dataAdapter);
+                                                Log.d(TAG, " >> ERROR " + error.getLocalizedMessage());
+                                            }
+                                        });
+                                        try {
+                                            if (ConnectivityReceiver.isConnected(activity) != NetworkUtils.TYPE_NOT_CONNECTED) {
+
+                                                mQueue.add(request);
+                                            } else {
+                                                Toast.makeText(MainFwActivity.this, getResources().getString(R.string.noInternet), Toast.LENGTH_SHORT).show();
+                                            }
+
+                                        } catch (Exception e) {
+                                            Log.d(TAG, " Exception >> " + e.getMessage());
+                                        }
+                                    }
+                                }
+                            }
+                        });
+                        updateBtn.setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                if ("0".equalsIgnoreCase(storeId)) {
+                                    errorMsgTxt2.setText(getResources().getString(R.string.error_msg3));
+                                    errorMsgTxt2.setVisibility(View.VISIBLE);
+                                    return;
+                                }
+                                StringRequest updateReq = new StringRequest(Request.Method.POST,
+                                        Constant.UPDATE_STORE + appUtil.getPrefrence("ShopperID") + "&StoreId=" + storeId,
+                                        new Response.Listener<String>() {
+                                            @Override
+                                            public void onResponse(String response) {
+                                                Log.d(TAG, " Update api response >> " + response.toString());
+                                                try {
+                                                    UpdateStore updateStore = new GsonBuilder().create().fromJson(response, UpdateStore.class);
+                                                    if (Constant.ERRORCODE.equalsIgnoreCase(updateStore.getErrorcode())) {
+                                                        Log.d(TAG, ">> Change store successfully");
+                                                        storeUpdateHandler.setStoreId(storeId);
+                                                        checkCircular(storeId);
+                                                    } else {
+                                                        Log.d(TAG, ">> Change store Response code " + updateStore.getErrorcode());
+                                                    }
+                                                    ////////////
+
+                                                    JSONObject root = new JSONObject(response);
+                                                    root.getString("errorcode");
+                                                    if (root.getString("errorcode").equals("0")){
+                                                        JSONArray message= root.getJSONArray("message");
+                                                        for(int i=0;i<message.length();i++)
+                                                        {
+                                                            JSONObject jsonParam= message.getJSONObject(i);
+                                                            appUtil.setPrefrence("IsAllowedPrefStore", jsonParam.getString("IsAllowedPrefStore"));
+                                                        }
+                                                        if (appUtil.getPrefrence("IsAllowedPrefStore").equalsIgnoreCase("0")){
+                                                            tv_change_no_store_popup.setText(appUtil.getPrefrence("StoreMessageApp"));
+                                                            relative_no_store.setVisibility(View.VISIBLE);
+                                                        }else {
+                                                            //messageLoad();
+                                                        }
+                                                    }else if (root.getString("errorcode").equals("200")){
+                                                    }
+
+
+                                                }catch (Exception e){
+                                                    saveErrorLog("updateReqChangeStore", e.getLocalizedMessage());
+
+                                                }
+
+                                            }
+                                        }, new Response.ErrorListener() {
+                                    @Override
+                                    public void onErrorResponse(VolleyError error) {
+                                        Log.d(TAG, " Error in update store " + error.getMessage(), error);
+                                    }
+                                }){
+                                    @Override
+                                    public String getBodyContentType() {
+                                        return "application/x-www-form-urlencoded";
+                                    }
+                                    @Override
+                                    public Map<String, String> getHeaders() throws AuthFailureError {
+                                        Map<String, String> params = new HashMap<String, String>();
+                                        params.put("Content-Type", "application/x-www-form-urlencoded");
+                                        params.put("Authorization", appUtil.getPrefrence("token_type") + " " + appUtil.getPrefrence("access_token"));
+                                        return params;
+                                    }
+                                };
+                                RetryPolicy policy = new DefaultRetryPolicy(5000,
+                                        DefaultRetryPolicy.DEFAULT_MAX_RETRIES,
+                                        DefaultRetryPolicy.DEFAULT_BACKOFF_MULT);
+                                updateReq.setRetryPolicy(policy);
+                                try {
+                                    mQueue.add(updateReq);
+                                    progressDialog = new ProgressDialog(activity);
+                                    progressDialog.setMessage("Processing");
+                                    progressDialog.show();
+                                } catch (Exception e) {
+                                    Log.d(TAG, " Exception >> " + e.getMessage());
+                                }
+                            }
+                        });
+                    }
+                });
+            }
+        };
+        try {
+            ss.setSpan(clickableSpan,62,67, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+            ss.setSpan(fcsGreen,62,67, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+
+        tv_change_no_store_popup.setText(ss);
+        tv_change_no_store_popup.setMovementMethod(LinkMovementMethod.getInstance());
 
         this.changeStore.setOnClickListener(new View.OnClickListener() {
             String city = "";
@@ -3374,7 +3966,7 @@ public class MainFwActivity extends AppCompatActivity
             deviceType = "2";
         }
         if (appUtil.getPrefrence("StoreSettingID").equalsIgnoreCase("3")&&appUtil.getPrefrence("IsAllowedPrefStore").equalsIgnoreCase("0")){
-            tv_change_no_store_popup.setText(appUtil.getPrefrence("StoreMessageApp"));
+            //tv_change_no_store_popup.setText(appUtil.getPrefrence("StoreMessageApp"));
             relative_no_store.setVisibility(View.VISIBLE);
         }else {
             messageLoad();
